@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Мнение клиентов{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Мнение клиентов</h1>
+    
+    {% if categories %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="btn-group">
+                <a href="{% url 'news:list' %}" class="btn btn-outline-primary">Все</a>
+                {% for category in categories %}
+                <a href="{% url 'news:by_category' category.slug %}" class="btn btn-outline-primary">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="row">
+        {% for news in news_list %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if news.image %}
+                <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ news.title }}</h5>
+                    <p class="card-text">{{ news.meta_description|truncatewords:20 }}</p>
+                    <a href="{% url 'news:detail' news.slug %}" class="btn btn-primary">Читать далее</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p>Новостей пока нет.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
