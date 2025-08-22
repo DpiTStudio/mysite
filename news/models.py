@@ -1,5 +1,4 @@
 from django.db import models
-from ckeditor.fields import RichTextField
 
 
 class NewsCategory(models.Model):
@@ -26,7 +25,7 @@ class News(models.Model):
         NewsCategory, on_delete=models.CASCADE, verbose_name="Категория"
     )
     image = models.ImageField(upload_to="news/images/", verbose_name="Изображение")
-    content = RichTextField(verbose_name="Содержание")
+    content = models.TextField(verbose_name="Содержание")
     meta_title = models.CharField(max_length=200, verbose_name="Мета заголовок")
     meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
     meta_description = models.CharField(max_length=255, verbose_name="Мета описание")

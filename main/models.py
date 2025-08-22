@@ -1,5 +1,4 @@
 from django.db import models
-from ckeditor.fields import RichTextField
 
 
 class SiteSettings(models.Model):
@@ -19,7 +18,7 @@ class SiteSettings(models.Model):
 class Page(models.Model):
     title = models.CharField(max_length=200, verbose_name="Заголовок страницы")
     slug = models.SlugField(unique=True, verbose_name="URL")
-    content = RichTextField(verbose_name="Содержание")
+    content = models.TextField(verbose_name="Содержание")
     meta_title = models.CharField(max_length=200, verbose_name="Мета заголовок")
     meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
     meta_description = models.CharField(max_length=255, verbose_name="Мета описание")

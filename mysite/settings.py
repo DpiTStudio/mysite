@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "ckeditor",
     "main",
     "news",
     "portfolio",
@@ -133,15 +132,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# CKEditor настройки
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_CONFIGS = {
-    "default": {
-        "toolbar": "Full",
-        "height": 300,
-        "width": "100%",
-    },
-}
 
 # Jazzmin настройки
 JAZZMIN_SETTINGS = {
