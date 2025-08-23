@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "news",
     "portfolio",
     "reviews",
+    "tinymce",
 ]
 
 MIDDLEWARE = [
@@ -135,9 +136,64 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Jazzmin настройки
 JAZZMIN_SETTINGS = {
-    "site_title": "MySite Admin",
-    "site_header": "MySite",
-    "site_brand": "MySite Administration",
+    "site_title": "DPIT-CMS Admin",
+    "site_header": "DPIT-CMS",
+    "site_brand": "DPIT-CMS",
+    "site_brand_small": "DPIT-CMS",
+    "site_logo_classes": "img-circle",
     "welcome_sign": "Добро пожаловать в админ-панель",
-    "copyright": "MySite",
+    "copyright": "DPIT-CMS",
+    "show_ui_builder": True,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+    "menu": [
+        {"app": "main"},
+        {"app": "news"},
+        {"app": "portfolio"},
+        {"app": "reviews"},
+    ],
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": True,
+    "footer_small_text": True,
+    "body_small_text": True,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-white navbar-light",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": True,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
+    "actions_sticky_top": True,
+}
+
+# TinyMCE конфигурация
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 360,
+    "width": "100%",
+    "plugins": "advlist autolink lists link image charmap print preview anchor",
+    "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
 }

@@ -1,4 +1,5 @@
 from django.db import models
+from tinymce.models import HTMLField
 
 
 class SiteSettings(models.Model):
@@ -6,6 +7,7 @@ class SiteSettings(models.Model):
     site_description = models.TextField(verbose_name="Описание сайта")
     meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
     meta_description = models.CharField(max_length=255, verbose_name="Мета описание")
+    content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
     logo = models.ImageField(upload_to="logos/", verbose_name="Логотип")
     favicon = models.ImageField(upload_to="favicons/", verbose_name="Фавикон")
     is_active = models.BooleanField(default=True, verbose_name="Активно")
