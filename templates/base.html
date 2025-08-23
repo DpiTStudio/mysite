@@ -19,13 +19,30 @@
     <section class="bl-nav">
         {% include 'header.html' %}
     </section>
+
     <section class="bl-logo, container-fluid">
         {% include 'logo_p.html' %}
     </section>
-    <main class="container-fluid">
-        {% block content %}
-        {% endblock %}
-    </main>
+
+    <section class="container-fluid">
+        {% include 'category-bl.html' %}
+    </section>
+
+
+        <div class="container-fluid text-left">
+            <div class="row">
+                <div class="col-8">
+                    <main class="">
+                        {% block content %}
+                        {% endblock %}
+                    </main>
+                </div>
+                <div class="col-4">
+                Column
+                </div>
+            </div>
+        </div>
+
     
     
     {% include 'footer.html' %}
