@@ -141,6 +141,9 @@ JAZZMIN_SETTINGS = {
     "site_brand": "DPIT-CMS",
     "site_brand_small": "DPIT-CMS",
     "site_logo_classes": "img-circle",
+    "site_logo": "images/logo.png",
+    "site_footer": "DPIT-CMS",
+    "menu_open_first_child": True,
     "welcome_sign": "Добро пожаловать в админ-панель",
     "copyright": "DPIT-CMS",
     "show_ui_builder": True,
@@ -148,6 +151,7 @@ JAZZMIN_SETTINGS = {
     "changeform_format_overrides": {
         "auth.user": "collapsible",
         "auth.group": "vertical_tabs",
+        "admin.logentry": "vertical_tabs",
     },
     "menu": [
         {"app": "main"},
@@ -197,3 +201,22 @@ TINYMCE_DEFAULT_CONFIG = {
     "plugins": "advlist autolink lists link image charmap print preview anchor",
     "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
 }
+
+
+# Настройки CSRF
+CSRF_TRUSTED_ORIGINS = [
+    "https://dpit-cms.ru",
+    "http://dpit-cms.ru",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
+# Если используете HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# CSRF_COOKIE_DOMAIN = 'dpit-cms.ru'
+# SESSION_COOKIE_DOMAIN = 'dpit-cms.ru'
+
+# CSRF_COOKIE_SAMESITE = 'None'
+# SESSION_COOKIE_SAMESITE = 'None'
