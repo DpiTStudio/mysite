@@ -9,13 +9,28 @@
     {% if categories %}
     <div class="row mb-4">
         <div class="col-12">
-            <div class="btn-group">
-                <a href="{% url 'news:list' %}" class="btn btn-outline-primary">Все</a>
+            <div class="btn-group flex-wrap">
+                <a href="{% url 'news:list' %}" class="btn btn-outline-primary mb-2">
+                    Все новости
+                </a>
                 {% for category in categories %}
-                <a href="{% url 'news:by_category' category.slug %}" class="btn btn-outline-primary">{{ category.name }}</a>
+                <a href="{% url 'news:by_category' category.slug %}" 
+                class="btn btn-outline-primary mb-2 {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                {{ category.name }} 
+                <span class="badge bg-secondary">{{ category.news_count }}</span>
+                </a>
                 {% endfor %}
             </div>
         </div>
+    </div>
+    {% endif %}
+    
+    {% if current_category %}
+    <div class="alert alert-info">
+        <h2>Категория: {{ current_category.name }}</h2>
+        {% if current_category.description %}
+        <p>{{ current_category.description }}</p>
+        {% endif %}
     </div>
     {% endif %}
     
@@ -24,18 +39,28 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 {% if news.image %}
-                <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+                <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}" style="height: 200px; object-fit: cover;">
                 {% endif %}
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
+                    <span class="badge bg-primary mb-2">{{ news.category.name }}</span>
                     <h5 class="card-title">{{ news.title }}</h5>
-                    <p class="card-text">{{ news.meta_description|truncatewords:20 }}</p>
-                    <a href="{% url 'news:detail' news.slug %}" class="btn btn-primary">Читать далее</a>
+                    <p class="card-text flex-grow-1">{{ news.meta_description|truncatewords:20 }}</p>
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ news.created_at|date:"d.m.Y" }}</small>
+                            <small class="text-muted">👁️ {{ news.views }}</small>
+                        </div>
+                        <a href="{% url 'news:detail' news.slug %}" class="btn btn-primary w-100 mt-2">Читать далее</a>
+                    </div>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col-12">
-            <p>Новостей пока нет.</p>
+            <div class="alert alert-warning">
+                <h4>Новостей пока нет</h4>
+                <p>В этой категории еще не опубликовано новостей.</p>
+            </div>
         </div>
         {% endfor %}
     </div>
