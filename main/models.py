@@ -20,10 +20,10 @@ class SiteSettings(models.Model):
 class Page(models.Model):
     title = models.CharField(max_length=200, verbose_name="Заголовок страницы")
     slug = models.SlugField(unique=True, verbose_name="URL")
-    content = models.TextField(verbose_name="Содержание")
     meta_title = models.CharField(max_length=200, verbose_name="Мета заголовок")
     meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
     meta_description = models.CharField(max_length=255, verbose_name="Мета описание")
+    content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
     show_in_menu = models.BooleanField(default=True, verbose_name="Показывать в меню")
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     order = models.IntegerField(default=0, verbose_name="Порядок")
