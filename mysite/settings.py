@@ -26,7 +26,15 @@ SECRET_KEY = "django-insecure-tigran-quk)3wy#imok*1%@9f^5n63gh0=j&b66jw_3*(-awet
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
+# Добавьте ваш домен/IP в ALLOWED_HOSTS
+ALLOWED_HOSTS = [
+    "*",
+    "dpit-cms.ru",
+    "213.171.7.204",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
