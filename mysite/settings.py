@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "news",
     "portfolio",
     "reviews",
-    # "tinymce",
+    "tinymce",
 ]
 
 MIDDLEWARE = [
