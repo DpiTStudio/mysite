@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "news",
     "portfolio",
     "reviews",
+    "tinymce",
 ]
 
 MIDDLEWARE = [
@@ -187,4 +188,12 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success",
     },
     "actions_sticky_top": True,
+}
+
+# TinyMCE конфигурация
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 360,
+    "width": "100%",
+    "plugins": "advlist autolink lists link image charmap print preview anchor",
+    "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
 }
