@@ -140,7 +140,8 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
+# Разрешите доступ к статическим файлам
+SECURE_CONTENT_TYPE_NOSNIFF = False
 
 # Jazzmin настройки
 JAZZMIN_SETTINGS = {
