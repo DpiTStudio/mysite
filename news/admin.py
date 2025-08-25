@@ -5,7 +5,7 @@ from .forms import NewsCategoryForm, NewsForm
 
 class NewsCategoryAdmin(admin.ModelAdmin):
     form = NewsCategoryForm
-    list_display = ["name", "order", "is_active"]
+    list_display = ["name", "is_active", "order"]
     list_editable = ["order", "is_active"]
     prepopulated_fields = {"slug": ("name",)}
     list_filter = ["is_active"]
