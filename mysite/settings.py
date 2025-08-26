@@ -79,6 +79,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "main.context_processors.main_context",
                 "news.context_processors.latest_news",
+                "portfolio.context_processors.latest_portfolio",
                 # "main.context_processors.latest_news",
             ],
         },
