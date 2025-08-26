@@ -77,12 +77,6 @@ a.nav-link:hover {
     transform: translateY(-5px);
 }
 
-.footer {
-    background-color: var(--color-fon-1);
-    color: var(--color-text-2);
-    padding: 20px 0;
-}
-
 .rating {
     color: #ffc107;
 }
