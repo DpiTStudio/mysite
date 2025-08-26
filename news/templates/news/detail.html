@@ -1,121 +1,196 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load news_extras %}
 
 {% block title %}{{ news.meta_title|default:news.title }}{% endblock %}
 
+{% block meta %}
+<meta name="keywords" content="{{ news.meta_keywords }}">
+<meta name="description" content="{{ news.meta_description }}">
+{% endblock %}
+
 {% block extra_css %}
 <style>
-    .news-content img {
-        max-width: 100%;
-        height: auto;
-        margin: 1rem 0;
-    }
-    
-    .related-news-card {
-        transition: transform 0.3s ease;
-        height: 100%;
-    }
-    
-    .related-news-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
+.news-detail-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+.news-image-detail {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.news-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2c3e50;
+}
+
+.news-content p {
+    margin-bottom: 1.5rem;
+}
+
+.news-meta-detail {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.related-news-card {
+    transition: transform 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.related-news-card:hover {
+    transform: translateY(-3px);
+}
+
+.related-news-image {
+    height: 180px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.social-share {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1.5rem;
+}
+
+.share-btn {
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <!-- Хлебные крошки -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'news:list' %}">Новости</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'news:by_category' news.category.slug %}">{{ news.category.name }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ news.title|truncatewords:5 }}</li>
-        </ol>
-    </nav>
-
-    <!-- Основной контент новости -->
-    <article>
-        <header class="mb-4">
-            <span class="badge bg-primary mb-2">{{ news.category.name }}</span>
-            <h1 class="display-5 fw-bold">{{ news.title }}</h1>
-            
-            <div class="d-flex justify-content-between align-items-center text-muted mb-3">
-                <small>Опубликовано: {{ news.created_at|date:"d.m.Y H:i" }}</small>
-                <small>👁️ {{ news.views }} просмотров</small>
+<!-- Шапка новости -->
+<div class="news-detail-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'news:list' %}" class="text-white">Новости</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'news:by_category' news.category.slug %}" class="text-white">{{ news.category.name }}</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">{{ news.title }}</li>
+                    </ol>
+                </nav>
+                <span class="badge bg-light text-primary mb-3 fs-6">{{ news.category.name }}</span>
+                <h1 class="display-4 fw-bold mb-3">{{ news.title }}</h1>
+                <div class="d-flex align-items-center text-white-50">
+                    <span class="me-3">{{ news.created_at|date:"d.m.Y в H:i" }}</span>
+                    <span>👁️ {{ news.views }} просмотров</span>
+                </div>
             </div>
+        </div>
+    </div>
+</div>
 
+<div class="container py-4">
+    <div class="row">
+        <!-- Основной контент -->
+        <div class="col-lg-8">
+            <!-- Изображение новости -->
             {% if news.image %}
-            <div class="text-center mb-4">
-                <img src="{{ news.image.url }}" alt="{{ news.title }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover;">
+            <div class="mb-4">
+                <img src="{{ news.image.url }}" class="news-image-detail" alt="{{ news.title }}">
             </div>
             {% endif %}
-        </header>
 
-        <!-- Содержание новости -->
-        <div class="news-content mb-5">
-            {{ news.content|linebreaks }}
-        </div>
+            <!-- Содержание новости -->
+            <article class="news-content mb-5">
+                {{ news.content|linebreaks }}
+            </article>
 
-        <!-- SEO информация -->
-        {% if news.meta_description %}
-        <div class="card bg-light mb-5">
-            <div class="card-body">
-                <small class="text-muted">{{ news.meta_description }}</small>
-            </div>
-        </div>
-        {% endif %}
-    </article>
-
-    <!-- Похожие новости -->
-    {% if related_news %}
-    <section class="mb-5">
-        <h3 class="mb-4">Похожие новости</h3>
-        <div class="row">
-            {% for related in related_news %}
-            <div class="col-md-4 mb-4">
-                <div class="card related-news-card h-100">
-                    {% if related.image %}
-                    <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}" style="height: 200px; object-fit: cover;">
-                    {% endif %}
-                    <div class="card-body d-flex flex-column">
-                        <span class="badge bg-primary mb-2">{{ related.category.name }}</span>
-                        <h5 class="card-title">{{ related.title|truncatewords:8 }}</h5>
-                        <p class="card-text flex-grow-1">{{ related.meta_description|truncatewords:15 }}</p>
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">{{ related.created_at|date:"d.m.Y" }}</small>
-                                <small class="text-muted">👁️ {{ related.views }}</small>
-                            </div>
-                            <a href="{% url 'news:detail' related.slug %}" class="btn btn-outline-primary w-100 mt-2">Читать</a>
+            <!-- Мета-информация и соцсети -->
+            <div class="news-meta-detail mb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Информация о новости</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Категория:</strong> {{ news.category.name }}</li>
+                            <li><strong>Опубликовано:</strong> {{ news.created_at|date:"d.m.Y" }}</li>
+                            <li><strong>Просмотров:</strong> {{ news.views }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 social-share">
+                        <h6 class="text-muted">Поделиться</h6>
+                        <div class="d-flex flex-wrap">
+                            <a href="#" class="btn btn-primary share-btn">Facebook</a>
+                            <a href="#" class="btn btn-info share-btn">Twitter</a>
+                            <a href="#" class="btn btn-danger share-btn">VK</a>
+                            <a href="#" class="btn btn-success share-btn">WhatsApp</a>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
 
-    <!-- Навигация между новостями -->
-    <nav aria-label="Навигация по новостям" class="mb-5">
-        <ul class="pagination justify-content-center">
-            {% if previous_news %}
-            <li class="page-item">
-                <a class="page-link" href="{% url 'news:detail' previous_news.slug %}" title="{{ previous_news.title }}">
-                    ← Предыдущая новость
-                </a>
-            </li>
-            {% endif %}
-            
-            {% if next_news %}
-            <li class="page-item ms-auto">
-                <a class="page-link" href="{% url 'news:detail' next_news.slug %}" title="{{ next_news.title }}">
-                    Следующая новость →
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+
+
+        {% comment %} <!-- Боковая панель -->
+        <div class="col-lg-4">
+            <!-- Последние новости -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Последние новости</h5>
+                </div>
+                <div class="card-body">
+                    {% for latest in latest_news %}
+                    <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <h6 class="fw-semibold mb-1">
+                            <a href="{% url 'news:detail' latest.slug %}" class="text-decoration-none text-dark">
+                                {{ latest.title }}
+                            </a>
+                        </h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ latest.created_at|date:"d.m.Y" }}</small>
+                            <span class="badge bg-primary bg-opacity-10 text-primary fs-3">
+                                {{ latest.category.name }}
+                            </span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted mb-0">Новостей пока нет</p>
+                    {% endfor %}
+                </div>
+            </div> {% endcomment %}
+
+            <!-- Категории -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Категории</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'news:list' %}" class="list-group-item list-group-item-action border-0">
+                            Все новости
+                        </a>
+                        {% for category in categories %}
+                        <a href="{% url 'news:by_category' category.slug %}" 
+                           class="list-group-item list-group-item-action border-0 {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                            {{ category.name }}
+                            <span class="badge bg-primary float-end">{{ category.news_count }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

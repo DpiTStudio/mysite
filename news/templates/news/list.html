@@ -1,71 +1,265 @@
 {% extends 'base.html' %}
+{% load news_extras %}
 
-{% block title %}Новости{% endblock %}
+{% block title %}
+    {% if current_category %}{{ current_category.name }} - {% endif %}Новости
+{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+.news-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.news-image {
+    height: 220px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.news-category-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.news-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.news-excerpt {
+    color: #6c757d;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+.news-meta {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.pagination {
+    margin-top: 2rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-link {
+    color: #007bff;
+    border-radius: 8px;
+    margin: 0 3px;
+    border: 1px solid #dee2e6;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.category-btn {
+    border-radius: 25px;
+    margin: 0.25rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid #007bff;
+    transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.category-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.badge-count {
+    font-size: 0.7rem;
+    margin-left: 0.3rem;
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Новости</h1>
-    
-    {% if categories %}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="btn-group flex-wrap">
-                <a href="{% url 'news:list' %}" class="btn btn-outline-primary mb-2">
-                    Все новости
-                </a>
-                {% for category in categories %}
-                <a href="{% url 'news:by_category' category.slug %}" 
-                class="btn btn-outline-primary mb-2 {% if current_category and current_category.slug == category.slug %}active{% endif %}">
-                {{ category.name }} 
-                <span class="badge bg-secondary">{{ category.news_count }}</span>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    
-    {% if current_category %}
-    <div class="alert alert-info">
-        <h2>Категория: {{ current_category.name }}</h2>
-        {% if current_category.description %}
-        <p>{{ current_category.description }}</p>
-        {% endif %}
-    </div>
-    {% endif %}
-    
+<div class="container py-4">
     <div class="row">
-        {% for news in news_list %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if news.image %}
-                <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}" style="height: 200px; object-fit: cover;">
+        <!-- Основной контент -->
+        <div class="col-lg-12 col-md-12">
+            <div class="mb-4">
+                <h1 class="display-5 fw-bold text-primary mb-3">
+                    {% if current_category %}{{ current_category.name }}{% else %}Новости{% endif %}
+                </h1>
+                
+                {% if current_category and current_category.description %}
+                <div class="alert alert-info border-0 rounded-3">
+                    <p class="mb-0">{{ current_category.description }}</p>
+                </div>
                 {% endif %}
-                <div class="card-body d-flex flex-column">
-                    <span class="badge bg-primary mb-2">{{ news.category.name }}</span>
-                    <h5 class="card-title">{{ news.title }}</h5>
-                    <p class="card-text flex-grow-1">{{ news.meta_description|truncatewords:20 }}</p>
-                    <div class="mt-auto">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">{{ news.created_at|date:"d.m.Y" }}</small>
-                            <small class="text-muted">👁️ {{ news.views }}</small>
-                        </div>
-                        <a href="{% url 'news:detail' news.slug %}" class="btn btn-primary w-100 mt-2">Читать далее</a>
+            </div>
+
+            <!-- Категории -->
+            {% if categories %}
+            <div class="mb-4">
+                <div class="d-flex flex-wrap align-items-center mb-3">
+                    <span class="me-3 fw-semibold">Категории:</span>
+                    <div class="d-flex flex-wrap">
+                        <a href="{% url 'news:list' %}" 
+                           class="btn btn-outline-primary category-btn {% if not current_category %}active{% endif %}">
+                            Все новости
+                        </a>
+                        {% for category in categories %}
+                        <a href="{% url 'news:by_category' category.slug %}" 
+                           class="btn btn-outline-primary category-btn {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                            {{ category.name }}
+                            <span class="badge bg-secondary badge-count">{{ category.news_count }}</span>
+                        </a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
-        {% empty %}
-        <div class="col-12">
-            <div class="alert alert-warning">
-                <h4>Новостей пока нет</h4>
-                <p>В этой категории еще не опубликовано новостей.</p>
+            {% endif %}
+
+            <!-- Список новостей -->
+            <div class="row">
+                {% for news in news_list %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card news-card h-100">
+                        {% if news.image %}
+                        <img src="{{ news.image.url }}" class="news-image" alt="{{ news.title }}">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge news-category-badge bg-primary mb-2">{{ news.category.name }}</span>
+                            <h5 class="news-title">{{ news.title }}</h5>
+                            <p class="news-excerpt flex-grow-1">{{ news.meta_description|truncatewords:15 }}</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <small class="news-meta">{{ news.created_at|date:"d.m.Y" }}</small>
+                                    <small class="news-meta">👁️ {{ news.views }}</small>
+                                </div>
+                                <a href="{% url 'news:detail' news.slug %}" class="btn btn-primary w-100">
+                                    Читать далее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-warning text-center py-4">
+                        <i class="bi bi-newspaper fs-1 text-warning mb-3"></i>
+                        <h4>Новостей пока нет</h4>
+                        <p class="mb-0">В этой категории еще не опубликовано новостей.</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
+
+            <!-- Пагинация -->
+            {% if news_list.has_other_pages %}
+            <nav aria-label="Page navigation" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if news_list.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ news_list.previous_page_number }}" aria-label="Previous">
+                            &laquo;
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in news_list.paginator.page_range %}
+                        {% if news_list.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if news_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ news_list.next_page_number }}" aria-label="Next">
+                            &raquo;
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
         </div>
-        {% endfor %}
+
+        <!-- Боковая панель -->
+        {% comment %} <div class="col-lg-4">
+            <!-- Последние новости -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Последние новости</h5>
+                </div>
+                <div class="card-body">
+                    {% for news in latest_news %}
+                    <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <h6 class="fw-semibold mb-1">
+                            <a href="{% url 'news:detail' news.slug %}" class="text-decoration-none text-dark">
+                                {{ news.title }}
+                            </a>
+                        </h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ news.created_at|date:"d.m.Y" }}</small>
+                            <span class="badge bg-primary bg-opacity-10 text-primary fs-3">
+                                {{ news.category.name }}
+                            </span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted mb-0">Новостей пока нет</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Категории в боковой панели -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Категории</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'news:list' %}" class="list-group-item list-group-item-action border-0">
+                            Все новости
+                            <span class="badge bg-primary float-end">
+                                {{ categories|sum_news_count }}
+                            </span>
+                        </a>
+                        {% for category in categories %}
+                        <a href="{% url 'news:by_category' category.slug %}" 
+                           class="list-group-item list-group-item-action border-0 {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                            {{ category.name }}
+                            <span class="badge bg-primary float-end">{{ category.news_count }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div> {% endcomment %}
     </div>
-
-
-    
 </div>
 {% endblock %}
