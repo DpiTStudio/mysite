@@ -10,14 +10,14 @@
 .news-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
-    border-radius: 12px;
+    border-radius: 1px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     height: 100%;
 }
 
 .news-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-1px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
@@ -56,7 +56,7 @@
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #007bff;
+    background-color: var(--color-fon-1);
     border-color: #007bff;
 }
 
@@ -73,17 +73,19 @@
 }
 
 .category-btn {
-    border-radius: 25px;
+    text-align: left;
+    border-radius: 2px;
     margin: 0.25rem;
     padding: 0.5rem 1rem;
     border: 2px solid #007bff;
     transition: all 0.3s ease;
+    width: 25%;
 }
 
 .category-btn:hover {
     background-color: #007bff;
     color: white;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .category-btn.active {
@@ -128,8 +130,8 @@
                         {% for category in categories %}
                         <a href="{% url 'news:by_category' category.slug %}" 
                            class="btn btn-outline-primary category-btn {% if current_category and current_category.slug == category.slug %}active{% endif %}">
-                            {{ category.name }}
-                            <span class="badge bg-secondary badge-count">{{ category.news_count }}</span>
+                        <span class="badge bg-secondary badge-count">{{ category.news_count }}</span> | {{ category.name }}
+
                         </a>
                         {% endfor %}
                     </div>
