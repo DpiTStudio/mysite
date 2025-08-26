@@ -39,6 +39,7 @@
     background: #f8f9fa;
     border-radius: 10px;
     padding: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .related-portfolio-card {
@@ -62,6 +63,7 @@
 .social-share {
     border-top: 1px solid #e9ecef;
     padding-top: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .share-btn {
@@ -74,6 +76,35 @@
 .share-btn:hover {
     transform: translateY(-2px);
 }
+
+/* Исправления для боковой панели */
+.sidebar-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.sidebar-card .card-header {
+    border: none;
+    font-weight: 600;
+}
+
+.category-list .list-group-item {
+    border: none;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 0.75rem 1rem;
+}
+
+.category-list .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.category-list .badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.5rem;
+}
 </style>
 {% endblock %}
 
@@ -85,13 +116,13 @@
             <div class="col-md-8">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'portfolio:list' %}" class="text-white">Новости</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'portfolio:list' %}" class="text-white">Портфолио</a></li>
                         <li class="breadcrumb-item"><a href="{% url 'portfolio:by_category' portfolio.category.slug %}" class="text-white">{{ portfolio.category.name }}</a></li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">{{ portfolio.title }}</li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">{{ portfolio.title|truncatewords:5 }}</li>
                     </ol>
                 </nav>
                 <span class="badge bg-light text-primary mb-3 fs-6">{{ portfolio.category.name }}</span>
-                <h1 class="display-4 fw-bold mb-3">{{ portfolio.title }}</h1>
+                <h1 class="display-5 fw-bold mb-3">{{ portfolio.title }}</h1>
                 <div class="d-flex align-items-center text-white-50">
                     <span class="me-3">{{ portfolio.created_at|date:"d.m.Y в H:i" }}</span>
                     <span>👁️ {{ portfolio.views }} просмотров</span>
@@ -105,89 +136,91 @@
     <div class="row">
         <!-- Основной контент -->
         <div class="col-lg-8">
-            <!-- Изображение новости -->
+            <!-- Изображение портфолио -->
             {% if portfolio.image %}
             <div class="mb-4">
                 <img src="{{ portfolio.image.url }}" class="portfolio-image-detail" alt="{{ portfolio.title }}">
             </div>
             {% endif %}
 
-            <!-- Содержание новости -->
+            <!-- Содержание портфолио -->
             <article class="portfolio-content mb-5">
                 {{ portfolio.content|linebreaks }}
             </article>
 
             <!-- Мета-информация и соцсети -->
-            <div class="portfolio-meta-detail mb-5">
+            <div class="portfolio-meta-detail">
                 <div class="row">
                     <div class="col-md-6">
-                        <h6 class="text-muted">Информация о новости</h6>
+                        <h6 class="text-muted mb-3">Информация о проекте</h6>
                         <ul class="list-unstyled">
-                            <li><strong>Категория:</strong> {{ portfolio.category.name }}</li>
-                            <li><strong>Опубликовано:</strong> {{ portfolio.created_at|date:"d.m.Y" }}</li>
+                            <li class="mb-2"><strong>Категория:</strong> {{ portfolio.category.name }}</li>
+                            <li class="mb-2"><strong>Опубликовано:</strong> {{ portfolio.created_at|date:"d.m.Y" }}</li>
                             <li><strong>Просмотров:</strong> {{ portfolio.views }}</li>
                         </ul>
                     </div>
-                    <div class="col-md-6 social-share">
-                        <h6 class="text-muted">Поделиться</h6>
-                        <div class="d-flex flex-wrap">
-                            <a href="#" class="btn btn-primary share-btn">Facebook</a>
-                            <a href="#" class="btn btn-info share-btn">Twitter</a>
-                            <a href="#" class="btn btn-danger share-btn">VK</a>
-                            <a href="#" class="btn btn-success share-btn">WhatsApp</a>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-3">Поделиться</h6>
+                        <div class="social-share">
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="#" class="btn btn-primary share-btn">Facebook</a>
+                                <a href="#" class="btn btn-info share-btn">Twitter</a>
+                                <a href="#" class="btn btn-danger share-btn">VK</a>
+                                <a href="#" class="btn btn-success share-btn">WhatsApp</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-
-
-        {% comment %} <!-- Боковая панель -->
+        <!-- Боковая панель -->
         <div class="col-lg-4">
-            <!-- Последние новости -->
-            <div class="card border-0 shadow-sm mb-4">
+            <!-- Категории -->
+            <div class="card sidebar-card">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Последние новости</h5>
+                    <h5 class="mb-0">Категории</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush category-list">
+                        <a href="{% url 'portfolio:list' %}" class="list-group-item list-group-item-action">
+                            Все проекты
+                            <span class="badge bg-primary float-end">{{ categories|sum_portfolio_count }}</span>
+                        </a>
+                        {% for category in categories %}
+                        <a href="{% url 'portfolio:by_category' category.slug %}" 
+                           class="list-group-item list-group-item-action {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                            {{ category.name }}
+                            <span class="badge bg-primary float-end">{{ category.portfolio_count }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Последние проекты -->
+            <div class="card sidebar-card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Последние проекты</h5>
                 </div>
                 <div class="card-body">
                     {% for latest in latest_portfolio %}
                     <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
                         <h6 class="fw-semibold mb-1">
                             <a href="{% url 'portfolio:detail' latest.slug %}" class="text-decoration-none text-dark">
-                                {{ latest.title }}
+                                {{ latest.title|truncatewords:6 }}
                             </a>
                         </h6>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">{{ latest.created_at|date:"d.m.Y" }}</small>
-                            <span class="badge bg-primary bg-opacity-10 text-primary fs-3">
+                            <span class="badge bg-primary bg-opacity-10 text-primary">
                                 {{ latest.category.name }}
                             </span>
                         </div>
                     </div>
                     {% empty %}
-                    <p class="text-muted mb-0">Новостей пока нет</p>
+                    <p class="text-muted mb-0">Проектов пока нет</p>
                     {% endfor %}
-                </div>
-            </div> {% endcomment %}
-
-            <!-- Категории -->
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">Категории</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <a href="{% url 'portfolio:list' %}" class="list-group-item list-group-item-action border-0">
-                            Все новости
-                        </a>
-                        {% for category in categories %}
-                        <a href="{% url 'portfolio:by_category' category.slug %}" 
-                           class="list-group-item list-group-item-action border-0 {% if current_category and current_category.slug == category.slug %}active{% endif %}">
-                            {{ category.name }}
-                            <span class="badge bg-primary float-end">{{ category.portfolio_count }}</span>
-                        </a>
-                        {% endfor %}
-                    </div>
                 </div>
             </div>
         </div>
