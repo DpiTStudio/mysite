@@ -8,7 +8,7 @@ class NewsCategoryForm(forms.ModelForm):
         model = NewsCategory
         fields = "__all__"
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 4}),
+            "description": TinyMCE(attrs={"cols": 80, "rows": 30}),
         }
 
 
@@ -18,5 +18,5 @@ class NewsForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "content": TinyMCE(attrs={"cols": 80, "rows": 30}),
-            "meta_description": forms.Textarea(attrs={"rows": 3}),
+            "meta_description": TinyMCE(attrs={"cols": 80, "rows": 30}),
         }

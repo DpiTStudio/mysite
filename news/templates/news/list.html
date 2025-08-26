@@ -57,11 +57,11 @@
 
 .pagination .page-item.active .page-link {
     background-color: var(--color-fon-1);
-    border-color: #007bff;
+    border-color: var(--color-border-1);
 }
 
 .pagination .page-link {
-    color: #007bff;
+    color: var(--color-text-3);
     border-radius: 8px;
     margin: 0 3px;
     border: 1px solid #dee2e6;
@@ -77,7 +77,7 @@
     border-radius: 2px;
     margin: 0.25rem;
     padding: 0.5rem 1rem;
-    border: 2px solid #007bff;
+    border: 2px solid var(--color-border-1);
     transition: all 0.3s ease;
     width: 25%;
 }
@@ -110,9 +110,9 @@
                     {% if current_category %}{{ current_category.name }}{% else %}Новости{% endif %}
                 </h1>
                 
-                {% if current_category and current_category.description %}
+                {% if current_category and current_category.content %}
                 <div class="alert alert-info border-0 rounded-3">
-                    <p class="mb-0">{{ current_category.description }}</p>
+                    <p class="mb-0">{{ current_category.content|safe }}</p>
                 </div>
                 {% endif %}
             </div>

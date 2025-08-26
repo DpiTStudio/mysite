@@ -3,14 +3,17 @@
     --color-fon-2: hsla(221, 71%, 48%, 0.175);
     --color-fon-3: hwb(270 29% 36%);
     --color-fon-4: hwb(0 100% 0%);
+    --color-fon-5: hsla(221, 87%, 62%, 0.132);
+
     --color-text-1: hsl(0, 0%, 0%);
     --color-text-2: hsl(0, 0%, 100%);
     --color-text-3: hsl(221, 71%, 48%);
+
     --color-border-1: hsl(221, 71%, 48%);
     --color-border-2: hsl(0, 0%, 100%);
+    
     --color-box-shadow-1: hsla(0, 0%, 0%, 0.1);
 }
-
 
 * {
     padding: 0px;
@@ -25,13 +28,17 @@ body {
 .navbar {
     background-color: var(--color-fon-1) !important;
     padding: 10px;
-    border-radius: 10px;
     color: var(--color-text-1) !important;
 }
 .navbar-brand img {
     max-height: 40px;
 }
-
+a.nav-link {
+    color: var(--color-text-2) !important;
+}
+a.nav-link:hover {
+    color: var(--color-text-1) !important;
+}
 
 .logo-container {
     transition: transform 0.3s ease;
@@ -156,12 +163,6 @@ body {
 .nav-item {
     font-size: 1rem !important;
     text-wrap: balance;
-}
-a.nav-link {
-    color: black;
-}
-a.nav-link:hover {
-    color: darkred;
 }
 
 /* Sidebar Widgets */

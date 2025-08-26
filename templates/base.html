@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}{% endif %}{% endblock %}</title>
     
-    <!-- Favicon -->
+    <!-- Фавикон -->
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
@@ -29,42 +29,41 @@
     {% block meta %}{% endblock %}
 </head>
 <body>
-    <!-- Header -->
+    <!-- Шапка + меню -->
     <section class="bl-nav">
         {% include 'header.html' %}
     </section>
 
-    <!-- Logo -->
+    <!-- Шапка + лого -->
     <section class="bl-logo container-fluid">
         {% include 'logo_p.html' %}
     </section>
 
-    <!-- Main Content -->
+    <!-- Содержимое -->
     <div class="container-fluid">
         <div class="row">
-            <!-- Categories -->
+            <!-- Категории -->
             <div class="col-12">
                 {% include 'category-bl.html' %}
             </div>
             
-            <!-- Main Content Area -->
-            <div class="col-12 col-lg-8">
+            <!--Основной контет -->
+            <div class="col-12 col-lg-9">
                 <main class="py-3">
                     {% block content %}
                     {% endblock %}
                 </main>            
             </div>
 
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-lg-3">
                 <!-- Боковая панель -->
-                {% comment %} {% include 'includes/latest_news.html' %}  {% endcomment %}
                 {% include 'includes/news_bar.html' %}
             </div>
             
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Футер -->
     {% include 'footer.html' %}
     
     <!-- JavaScript -->
