@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.meta_title|default:news.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .news-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1rem 0;
+    }
+    
+    .related-news-card {
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+    
+    .related-news-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Хлебные крошки -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'news:list' %}">Новости</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'news:by_category' news.category.slug %}">{{ news.category.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ news.title|truncatewords:5 }}</li>
+        </ol>
+    </nav>
+
+    <!-- Основной контент новости -->
+    <article>
+        <header class="mb-4">
+            <span class="badge bg-primary mb-2">{{ news.category.name }}</span>
+            <h1 class="display-5 fw-bold">{{ news.title }}</h1>
+            
+            <div class="d-flex justify-content-between align-items-center text-muted mb-3">
+                <small>Опубликовано: {{ news.created_at|date:"d.m.Y H:i" }}</small>
+                <small>👁️ {{ news.views }} просмотров</small>
+            </div>
+
+            {% if news.image %}
+            <div class="text-center mb-4">
+                <img src="{{ news.image.url }}" alt="{{ news.title }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover;">
+            </div>
+            {% endif %}
+        </header>
+
+        <!-- Содержание новости -->
+        <div class="news-content mb-5">
+            {{ news.content|linebreaks }}
+        </div>
+
+        <!-- SEO информация -->
+        {% if news.meta_description %}
+        <div class="card bg-light mb-5">
+            <div class="card-body">
+                <small class="text-muted">{{ news.meta_description }}</small>
+            </div>
+        </div>
+        {% endif %}
+    </article>
+
+    <!-- Похожие новости -->
+    {% if related_news %}
+    <section class="mb-5">
+        <h3 class="mb-4">Похожие новости</h3>
+        <div class="row">
+            {% for related in related_news %}
+            <div class="col-md-4 mb-4">
+                <div class="card related-news-card h-100">
+                    {% if related.image %}
+                    <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <span class="badge bg-primary mb-2">{{ related.category.name }}</span>
+                        <h5 class="card-title">{{ related.title|truncatewords:8 }}</h5>
+                        <p class="card-text flex-grow-1">{{ related.meta_description|truncatewords:15 }}</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">{{ related.created_at|date:"d.m.Y" }}</small>
+                                <small class="text-muted">👁️ {{ related.views }}</small>
+                            </div>
+                            <a href="{% url 'news:detail' related.slug %}" class="btn btn-outline-primary w-100 mt-2">Читать</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Навигация между новостями -->
+    <nav aria-label="Навигация по новостям" class="mb-5">
+        <ul class="pagination justify-content-center">
+            {% if previous_news %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'news:detail' previous_news.slug %}" title="{{ previous_news.title }}">
+                    ← Предыдущая новость
+                </a>
+            </li>
+            {% endif %}
+            
+            {% if next_news %}
+            <li class="page-item ms-auto">
+                <a class="page-link" href="{% url 'news:detail' next_news.slug %}" title="{{ next_news.title }}">
+                    Следующая новость →
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}
