@@ -11,16 +11,15 @@
 {% block extra_css %}
 <style>
 .news-detail-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    color: var(--color-text-1);
     padding: 3rem 0;
     margin-bottom: 2rem;
 }
 
 .news-image-detail {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
+    width: 20%;
+    /* object-fit: cover; */
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
@@ -43,7 +42,6 @@
 }
 
 .news-meta-detail {
-    background: #f8f9fa;
     border-radius: 10px;
     padding: 1.5rem;
     margin-bottom: 2rem;
@@ -187,14 +185,14 @@
             <div class="col-md-8">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'news:list' %}" class="text-white">Новости</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'news:by_category' news.category.slug %}" class="text-white">{{ news.category.name }}</a></li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">{{ news.title|truncatewords:5 }}</li>
+                        <li class="breadcrumb-item"><a href="{% url 'news:list' %}" class="text">Новости</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'news:by_category' news.category.slug %}" class="text">{{ news.category.name }}</a></li>
+                        <li class="breadcrumb-item active text" aria-current="page">{{ news.title|truncatewords:5 }}</li>
                     </ol>
                 </nav>
                 <span class="badge bg-light text-primary mb-3 fs-6">{{ news.category.name }}</span>
                 <h1 class="display-5 fw-bold mb-3">{{ news.title }}</h1>
-                <div class="d-flex align-items-center text-white-50 flex-wrap">
+                <div class="d-flex align-items-left text-50 flex-wrap">
                     <span class="me-3">{{ news.created_at|date:"d.m.Y в H:i" }}</span>
                     <span>👁️ {{ news.views }} просмотров</span>
                 </div>
@@ -206,21 +204,21 @@
 <div class="container py-4">
     <div class="row">
         <!-- Основной контент -->
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <!-- Изображение новости -->
             {% if news.image %}
             <div class="mb-4">
                 <img src="{{ news.image.url }}" class="news-image-detail" alt="{{ news.title }}">
             </div>
             {% else %}
-            <div class="mb-4 news-image-detail bg-light d-flex align-items-center justify-content-center">
+            <div class="mb-4 news-image-detail bg-light d-flex align-items-center justify-content-left">
                 <i class="bi bi-newspaper fs-1 text-muted"></i>
             </div>
             {% endif %}
 
             <!-- Содержание новости -->
-            <article class="news-content mb-5">
-                {{ news.content|linebreaks }}
+            <article class="news-content mb-10">
+                {{ news.content|safe }}
             </article>
 
             <!-- Мета-информация и соцсети -->
@@ -234,7 +232,7 @@
                             <li><strong>Просмотров:</strong> {{ news.views }}</li>
                         </ul>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <h6 class="text-muted mb-3">Поделиться</h6>
                         <div class="social-share">
                             <div class="d-flex flex-wrap gap-2">
@@ -251,7 +249,7 @@
 
         <!-- Боковая панель -->
         <div class="col-lg-4">
-            <!-- Категории -->
+            {% comment %} <!-- Категории -->
             <div class="card sidebar-card">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">Категории новостей</h5>
@@ -260,7 +258,7 @@
                     <div class="list-group list-group-flush category-list">
                         <a href="{% url 'news:list' %}" class="list-group-item list-group-item-action">
                             Все новости
-                            <span class="badge bg-primary float-end">{{ categories|sum_news_count }}</span>
+                            
                         </a>
                         {% for category in categories %}
                         <a href="{% url 'news:by_category' category.slug %}" 
@@ -271,10 +269,10 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Последние новости -->
-            <div class="card sidebar-card">
+            {% comment %} <div class="card sidebar-card">
                 <div class="card-header bg-success text-white">
                     <h5 class="mb-0">Последние новости</h5>
                 </div>
@@ -297,7 +295,7 @@
                     <p class="text-muted mb-0">Новостей пока нет</p>
                     {% endfor %}
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
 </div>
