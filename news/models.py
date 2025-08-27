@@ -49,3 +49,14 @@ class News(models.Model):
     def increment_views(self):
         self.views += 1
         self.save()
+
+
+class Comment(models.Model):
+    news = models.ForeignKey(
+        News,
+        on_delete=models.CASCADE,
+        related_name="comments",  # ← это важно!
+    )
+    rating = models.IntegerField(default=0)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
