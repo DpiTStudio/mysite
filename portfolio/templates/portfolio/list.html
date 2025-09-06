@@ -10,14 +10,14 @@
 .portfolio-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
-    border-radius: 1px;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     height: 100%;
 }
 
 .portfolio-card:hover {
-    transform: translateY(-1px);
+    transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
@@ -44,6 +44,7 @@
     color: #6c757d;
     line-height: 1.5;
     font-size: 0.9rem;
+    margin-bottom: 1rem;
 }
 
 .portfolio-meta {
@@ -56,46 +57,98 @@
 }
 
 .pagination .page-item.active .page-link {
-    background-color: var(--color-fon-1);
-    border-color: var(--color-border-1);
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
 }
 
 .pagination .page-link {
-    color: var(--color-text-3);
+    color: #007bff;
     border-radius: 8px;
     margin: 0 3px;
     border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
 }
 
 .pagination .page-link:hover {
     background-color: #e9ecef;
     border-color: #dee2e6;
+    color: #0056b3;
+}
+
+.category-filter {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .category-btn {
-    text-align: left;
-    border-radius: 2px;
+    text-align: center;
+    border-radius: 8px;
     margin: 0.25rem;
     padding: 0.5rem 1rem;
-    border: 2px solid var(--color-border-1);
+    border: 2px solid #dee2e6;
     transition: all 0.3s ease;
-    width: 25%;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .category-btn:hover {
     background-color: #007bff;
     color: white;
-    transform: translateY(-1px);
+    border-color: #007bff;
+    transform: translateY(-2px);
 }
 
 .category-btn.active {
     background-color: #007bff;
     color: white;
+    border-color: #007bff;
 }
 
 .badge-count {
     font-size: 0.7rem;
     margin-left: 0.3rem;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .category-btn {
+        width: calc(50% - 0.5rem);
+        margin: 0.25rem;
+    }
+    
+    .portfolio-title {
+        font-size: 1rem;
+    }
+    
+    .portfolio-image {
+        height: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .category-btn {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+    
+    .portfolio-card {
+        margin-bottom: 1.5rem;
+    }
 }
 
 .latest-portfolio-sidebar .portfolio-item-sidebar {
@@ -137,10 +190,10 @@
 <div class="container py-4">
     <div class="row">
         <!-- Основной контент -->
-        <div class="col-lg-12 col-md-12">
+        <div class="col-12">
             <div class="mb-4">
                 <h1 class="display-5 fw-bold text-primary mb-3">
-                    {% if current_category %}{{ current_category.name }}{% else %}Портфолио{% endif %}
+                    {% if current_category %}{{ current_category.name }}{% else %}Наше Портфолио{% endif %}
                 </h1>
                 
                 {% if current_category and current_category.content %}
@@ -152,6 +205,7 @@
 
             <!-- Категории -->
             {% if categories %}
+<<<<<<< HEAD
             <div class="mb-4">
                 <div class="d-flex flex-wrap align-items-center mb-3">
                     <span class="me-3 fw-semibold">Категории:</span>
@@ -168,11 +222,27 @@
                         </a>
                         {% endfor %}
                     </div>
+=======
+            <div class="category-filter">
+                <h5 class="fw-semibold mb-12">Фильтр по категориям:</h5><hr>
+                <div class="d-flex flex-wrap">
+                    <a href="{% url 'portfolio:list' %}" 
+                       class="category-btn {% if not current_category %}active{% endif %}">
+                        Все проекты
+                    </a>
+                    {% for category in categories %}
+                    <a href="{% url 'portfolio:by_category' category.slug %}" 
+                       class="category-btn {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                        {{ category.name }}
+                        <span class="badge badge-count">{{ category.portfolio_count }}</span>
+                    </a>
+                    {% endfor %}
+>>>>>>> b970fdde590bb2c4c2dbafdf8a9de2cf8043633e
                 </div>
             </div>
             {% endif %}
 
-            <!-- Список -->
+            <!-- Список проектов -->
             <div class="row">
                 {% for portfolio in portfolio_list %}
                 <div class="col-md-6 col-lg-4 mb-4">
@@ -190,7 +260,7 @@
                                     <small class="portfolio-meta">👁️ {{ portfolio.views }}</small>
                                 </div>
                                 <a href="{% url 'portfolio:detail' portfolio.slug %}" class="btn btn-primary w-100">
-                                    Читать далее
+                                    Подробнее
                                 </a>
                             </div>
                         </div>
@@ -198,10 +268,13 @@
                 </div>
                 {% empty %}
                 <div class="col-12">
-                    <div class="alert alert-warning text-center py-4">
-                        <i class="bi bi-newspaper fs-1 text-warning mb-3"></i>
-                        <h4>Портфолио пока нет</h4>
-                        <p class="mb-0">В этой категории еще не опубликовано.</p>
+                    <div class="empty-state">
+                        <i class="bi bi-folder-x text-warning"></i>
+                        <h4>Проекты пока отсутствуют</h4>
+                        <p class="text-muted">В этой категории еще нет добавленных проектов.</p>
+                        <a href="{% url 'portfolio:list' %}" class="btn btn-primary mt-2">
+                            Вернуться ко всем проектам
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
@@ -242,59 +315,6 @@
             </nav>
             {% endif %}
         </div>
-
-        <!-- Боковая панель -->
-        {% comment %} <div class="col-lg-4">
-            <!-- Последние новости -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Последние новости</h5>
-                </div>
-                <div class="card-body">
-                    {% for portfolio in latest_portfolio %}
-                    <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
-                        <h6 class="fw-semibold mb-1">
-                            <a href="{% url 'portfolio:detail' portfolio.slug %}" class="text-decoration-none text-dark">
-                                {{ portfolio.title }}
-                            </a>
-                        </h6>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">{{ portfolio.created_at|date:"d.m.Y" }}</small>
-                            <span class="badge bg-primary bg-opacity-10 text-primary fs-3">
-                                {{ portfolio.category.name }}
-                            </span>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <p class="text-muted mb-0">Новостей пока нет</p>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Категории в боковой панели -->
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">Категории</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <a href="{% url 'portfolio:list' %}" class="list-group-item list-group-item-action border-0">
-                            Все новости
-                            <span class="badge bg-primary float-end">
-                                {{ categories|sum_portfolio_count }}
-                            </span>
-                        </a>
-                        {% for category in categories %}
-                        <a href="{% url 'portfolio:by_category' category.slug %}" 
-                           class="list-group-item list-group-item-action border-0 {% if current_category and current_category.slug == category.slug %}active{% endif %}">
-                            {{ category.name }}
-                            <span class="badge bg-primary float-end">{{ category.portfolio_count }}</span>
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div> {% endcomment %}
     </div>
 </div>
 {% endblock %}
