@@ -1,43 +1,268 @@
 {% extends 'base.html' %}
+{% load portfolio_extras %}
 
-{% block title %}Портфолио{% endblock %}
+{% block title %}
+    {% if current_category %}{{ current_category.name }} - {% endif %}Портфолио
+{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+.portfolio-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-image {
+    height: 220px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.portfolio-category-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.portfolio-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.portfolio-excerpt {
+    color: #6c757d;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.portfolio-meta {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.pagination {
+    margin-top: 2rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.pagination .page-link {
+    color: #007bff;
+    border-radius: 8px;
+    margin: 0 3px;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #0056b3;
+}
+
+.category-filter {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.category-btn {
+    text-align: center;
+    border-radius: 8px;
+    margin: 0.25rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid #dee2e6;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.category-btn:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    transform: translateY(-2px);
+}
+
+.category-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.badge-count {
+    font-size: 0.7rem;
+    margin-left: 0.3rem;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .category-btn {
+        width: calc(50% - 0.5rem);
+        margin: 0.25rem;
+    }
+    
+    .portfolio-title {
+        font-size: 1rem;
+    }
+    
+    .portfolio-image {
+        height: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .category-btn {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+    
+    .portfolio-card {
+        margin-bottom: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Портфолио</h1>
-    
-    {% if categories %}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="btn-group">
-                <a href="{% url 'news:list' %}" class="btn btn-outline-primary">Все</a>
-                {% for category in categories %}
-                <a href="{% url 'news:by_category' category.slug %}" class="btn btn-outline-primary">{{ category.name }}</a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    
+<div class="container py-4">
     <div class="row">
-        {% for news in news_list %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if news.image %}
-                <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+        <!-- Основной контент -->
+        <div class="col-12">
+            <div class="mb-4">
+                <h1 class="display-5 fw-bold text-primary mb-3">
+                    {% if current_category %}{{ current_category.name }}{% else %}Наше Портфолио{% endif %}
+                </h1>
+                
+                {% if current_category and current_category.content %}
+                <div class="alert alert-info border-0 rounded-3">
+                    <p class="mb-0">{{ current_category.content|safe }}</p>
+                </div>
                 {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ news.title }}</h5>
-                    <p class="card-text">{{ news.meta_description|truncatewords:20 }}</p>
-                    <a href="{% url 'news:detail' news.slug %}" class="btn btn-primary">Читать далее</a>
+            </div>
+
+            <!-- Категории -->
+            {% if categories %}
+            <div class="category-filter">
+                <h5 class="fw-semibold mb-12">Фильтр по категориям:</h5><hr>
+                <div class="d-flex flex-wrap">
+                    <a href="{% url 'portfolio:list' %}" 
+                       class="category-btn {% if not current_category %}active{% endif %}">
+                        Все проекты
+                    </a>
+                    {% for category in categories %}
+                    <a href="{% url 'portfolio:by_category' category.slug %}" 
+                       class="category-btn {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                        {{ category.name }}
+                        <span class="badge badge-count">{{ category.portfolio_count }}</span>
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
+            {% endif %}
+
+            <!-- Список проектов -->
+            <div class="row">
+                {% for portfolio in portfolio_list %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card portfolio-card h-100">
+                        {% if portfolio.image %}
+                        <img src="{{ portfolio.image.url }}" class="portfolio-image" alt="{{ portfolio.title }}">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge portfolio-category-badge bg-primary mb-2">{{ portfolio.category.name }}</span>
+                            <h5 class="portfolio-title">{{ portfolio.title }}</h5>
+                            <p class="portfolio-excerpt flex-grow-1">{{ portfolio.meta_description|truncatewords:15 }}</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <small class="portfolio-meta">{{ portfolio.created_at|date:"d.m.Y" }}</small>
+                                    <small class="portfolio-meta">👁️ {{ portfolio.views }}</small>
+                                </div>
+                                <a href="{% url 'portfolio:detail' portfolio.slug %}" class="btn btn-primary w-100">
+                                    Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="bi bi-folder-x text-warning"></i>
+                        <h4>Проекты пока отсутствуют</h4>
+                        <p class="text-muted">В этой категории еще нет добавленных проектов.</p>
+                        <a href="{% url 'portfolio:list' %}" class="btn btn-primary mt-2">
+                            Вернуться ко всем проектам
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Пагинация -->
+            {% if portfolio_list.has_other_pages %}
+            <nav aria-label="Page navigation" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if portfolio_list.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ portfolio_list.previous_page_number }}" aria-label="Previous">
+                            &laquo;
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in portfolio_list.paginator.page_range %}
+                        {% if portfolio_list.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if portfolio_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ portfolio_list.next_page_number }}" aria-label="Next">
+                            &raquo;
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
         </div>
-        {% empty %}
-        <div class="col-12">
-            <p>Новостей пока нет.</p>
-        </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

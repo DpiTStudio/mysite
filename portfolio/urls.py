@@ -11,5 +11,4 @@ urlpatterns = [
         name="by_category",
     ),
     path("<slug:slug>/", views.portfolio_detail, name="detail"),
-    path("order/<int:portfolio_id>/", views.order_portfolio, name="order"),
 ]
