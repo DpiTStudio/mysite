@@ -81,6 +81,26 @@ a.nav-link:hover {
     color: #ffc107;
 }
 
+.footer {
+    color: var(--color-text-2) !important;
+}
+.footer_content_op {
+    color: var(--color-text-2) !important;
+    margin: 20px;
+}
+.footer_copyrator {
+    background-color: var(--color-fon-1);
+    color: var(--color-text-2) !important;
+    padding: 20px 0;
+}
+a.footer_pr_link {
+    transition: all 0.3s ease;
+    color: var(--color-text-2) !important;
+}
+a.footer_pr_link:hover {
+    transition: all 0.7s ease;
+    color: var(--color-text-2) !important;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .news-grid {
