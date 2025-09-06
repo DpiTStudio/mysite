@@ -97,6 +97,39 @@
     font-size: 0.7rem;
     margin-left: 0.3rem;
 }
+
+.latest-portfolio-sidebar .portfolio-item-sidebar {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border-2);
+}
+
+.latest-portfolio-sidebar .portfolio-item-sidebar:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.latest-portfolio-sidebar h6 {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+}
+
+.latest-portfolio-sidebar h6 a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.latest-portfolio-sidebar h6 a:hover {
+    color: var(--color-text-3);
+}
+
+.portfolio-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
 </style>
 {% endblock %}
 
@@ -124,12 +157,12 @@
                     <span class="me-3 fw-semibold">Категории:</span>
                     <div class="d-flex flex-wrap">
                         <a href="{% url 'portfolio:list' %}" 
-                           class="btn btn-outline-primary category-btn {% if not current_category %}active{% endif %}">
+                        class="btn btn-outline-primary category-btn {% if not current_category %}active{% endif %}">
                             Все портфолио
                         </a>
                         {% for category in categories %}
                         <a href="{% url 'portfolio:by_category' category.slug %}" 
-                           class="btn btn-outline-primary category-btn {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+                        class="btn btn-outline-primary category-btn {% if current_category and current_category.slug == category.slug %}active{% endif %}">
                         <span class="badge bg-secondary badge-count">{{ category.portfolio_count }}</span> | {{ category.name }}
 
                         </a>
