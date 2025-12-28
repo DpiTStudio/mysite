@@ -13,6 +13,13 @@ class SiteSettings(models.Model):
     favicon = models.ImageField(upload_to="favicons/", verbose_name="Фавикон")
     is_active = models.BooleanField(default=True, verbose_name="Активно")
 
+    def __str__(self):
+        return self.site_title
+
+    def has_delete_permission(self, request, obj=None):
+        # Запрещаем удаление записей SiteSettings
+        return False
+
     class Meta:
         verbose_name = "Настройки сайта"
         verbose_name_plural = "Настройки сайта"
