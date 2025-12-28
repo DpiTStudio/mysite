@@ -4,8 +4,11 @@ from tinymce.models import HTMLField
 
 class SiteSettings(models.Model):
     site_title = models.CharField(max_length=200, verbose_name="Название сайта")
-    site_slogan = models.CharField(max_length=10, verbose_name="Слоган")
+    site_slogan = models.CharField(max_length=30, verbose_name="Слоган")
     site_description = models.TextField(verbose_name="Описание сайта")
+    site_email = models.EmailField(max_length=20,verbose_name="Электронная почта")
+    site_phone_1 = models.CharField(max_length=11, verbose_name="Телефон 1")
+    site_phone_2 = models.CharField(max_length=11,verbose_name="Телефон 2")
     meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
     meta_description = models.CharField(max_length=255, verbose_name="Мета описание")
     content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")

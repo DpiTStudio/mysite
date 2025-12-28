@@ -203,7 +203,6 @@ a.nav-link:hover {
 }
 /* Копирайт в подвале */
 .footer_copyrator {
-    background-color: var(--color-fon-1); /* Синий фон */
     color: var(--color-text-2) !important; /* Белый текст */
     padding: 20px 0; /* Внутренние отступы */
 }
