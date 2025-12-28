@@ -6,6 +6,7 @@
             {% else %}
                 {{ site_settings.site_title|default:"DPIT-CMS" }}
             {% endif %}
+            <strong class="domain multi-shadow">{{ request.META.HTTP_HOST }}</strong>
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

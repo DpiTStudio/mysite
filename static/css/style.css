@@ -4,15 +4,21 @@
     --color-fon-3: hwb(270 29% 36%);
     --color-fon-4: hwb(0 100% 0%);
     --color-fon-5: hsla(221, 87%, 62%, 0.132);
-
+    /*  */
     --color-text-1: hsl(0, 0%, 0%);
     --color-text-2: hsl(0, 0%, 100%);
     --color-text-3: hsl(221, 71%, 48%);
-
+    --color-text-4: hsl(0, 100%, 48%);
+    /*  */
     --color-border-1: hsl(221, 71%, 48%);
     --color-border-2: hsl(0, 0%, 100%);
-    
+    /*  */
     --color-box-shadow-1: hsla(0, 0%, 0%, 0.1);
+    /* */
+    --shadow-1: hsla(0, 0%, 99%, 0.1);
+    /* */
+    --size-text-1: 1.5rem;
+
 }
 
 * {
@@ -62,6 +68,17 @@ a.nav-link:hover {
     text-align: left;
     border-radius: 20px;
 }
+.domain {
+    color: var(--color-text-4);
+    font-size: var(--size-text-1);
+}
+.multi-shadow {
+  text-shadow:
+    1px 1px 2px black,
+    0 0 1em blue,
+    0 0 0.2em blue;
+}
+
 .site_content {
     padding-left: 5%;
     padding-right: 5%;
