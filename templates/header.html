@@ -15,9 +15,9 @@
         
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
+                {% comment %}<li class="nav-item">
                     <a class="nav-link" href="{% url 'main:home' %}">Главная</a>
-                </li>
+                </li>{% endcomment %}
                 {% for page in menu_pages %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'main:page_detail' page.slug %}">{{ page.title }}</a>
