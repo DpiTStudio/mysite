@@ -71,6 +71,7 @@ a.nav-link:hover {
 .domain {
     color: var(--color-text-4);
     font-size: var(--size-text-1);
+    text-transform: uppercase;
 }
 .multi-shadow {
   text-shadow:
