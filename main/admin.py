@@ -8,15 +8,12 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     list_editable = ["is_active"]
 
     fieldsets = (
-        ('Основная информация', {
-            'fields': ('site_title', 'site_slogan', 'site_description', 'is_active')
-        }),
-        ('SEO настройки', {
-            'fields': ('meta_keywords', 'meta_description')
-        }),
-        ('Контент и медиа', {
-            'fields': ('content', 'logo', 'favicon')
-        }),
+        (
+            "Основная информация",
+            {"fields": ("site_title", "site_slogan", "site_description", "is_active")},
+        ),
+        ("SEO настройки", {"fields": ("meta_keywords", "meta_description")}),
+        ("Контент и медиа", {"fields": ("content", "fon_haeders", "logo", "favicon")}),
     )
 
     def has_delete_permission(self, request, obj=None):
@@ -26,6 +23,38 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
+    list_display = [
+        "title",
+        "slug",
+        "show_in_menu",
+        "is_active",
+        "order",
+        "logo_preview",
+        "created_at",
+    ]
+    list_editable = ["show_in_menu", "is_active", "order"]
+    list_filter = ["show_in_menu", "is_active", "created_at"]
+    search_fields = ["title", "slug", "content"]
+    prepopulated_fields = {"slug": ("title",)}
+
+    fieldsets = (
+        (
+            "Основная информация",
+            {"fields": ("title", "slug", "content", "order", "is_active")},
+        ),
+        (
+            "Логотип страницы",
+            {
+                "fields": ("logo",),
+                "description": "Логотип, который будет отображаться на этой странице",
+            },
+        ),
+        ("Настройки меню", {"fields": ("show_in_menu",)}),
+        (
+            "SEO настройки",
+            {"fields": ("meta_title", "meta_keywords", "meta_description")},
+        ),
+    )
     list_display = ["title", "slug", "show_in_menu", "is_active", "order", "created_at"]
     list_editable = ["show_in_menu", "is_active", "order"]
     list_filter = ["show_in_menu", "is_active", "created_at"]
@@ -33,13 +62,13 @@ class PageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
     fieldsets = (
-        ('Основная информация', {
-            'fields': ('title', 'slug', 'content', 'order', 'is_active')
-        }),
-        ('Настройки меню', {
-            'fields': ('show_in_menu',)
-        }),
-        ('SEO настройки', {
-            'fields': ('meta_title', 'meta_keywords', 'meta_description')
-        }),
+        (
+            "Основная информация",
+            {"fields": ("title", "slug", "content", "order", "is_active")},
+        ),
+        ("Настройки меню", {"fields": ("show_in_menu",)}),
+        (
+            "SEO настройки",
+            {"fields": ("meta_title", "meta_keywords", "meta_description")},
+        ),
     )

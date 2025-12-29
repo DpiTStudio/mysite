@@ -174,14 +174,6 @@ JAZZMIN_SETTINGS = {
     ],
 }
 
-# TinyMCE конфигурация
-TINYMCE_DEFAULT_CONFIG = {
-    "height": 360,
-    "width": "100%",
-    "plugins": "advlist autolink lists link image charmap print preview anchor",
-    "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-}
-
 
 # Настройки CSRF
 CSRF_TRUSTED_ORIGINS = [
@@ -190,6 +182,17 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
+# TinyMCE конфигурация
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 360,
+    "width": "100%",
+    "cleanup_on_startup": True,
+    "custom_undo_redo_levels": 20,
+    "selector": "textarea",
+    "plugins": "advlist autolink lists link image charmap print preview anchor",
+    "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+    "menubar": "file edit view insert format tools table help",
+}
 
 # Если используете HTTPS
 CSRF_COOKIE_SECURE = True
