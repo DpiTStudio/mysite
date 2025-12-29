@@ -1,165 +1,272 @@
 :root {
-    --color-fon-1: hsl(221, 71%, 48%);
-    --color-fon-2: hsla(221, 71%, 48%, 0.175);
-    --color-fon-3: hwb(270 29% 36%);
-    --color-fon-4: hwb(0 100% 0%);
-    --color-fon-5: hsla(221, 87%, 62%, 0.132);
-
-    --color-text-1: hsl(0, 0%, 0%);
-    --color-text-2: hsl(0, 0%, 100%);
-    --color-text-3: hsl(221, 71%, 48%);
-
-    --color-border-1: hsl(221, 71%, 48%);
-    --color-border-2: hsl(0, 0%, 100%);
-    
-    --color-box-shadow-1: hsla(0, 0%, 0%, 0.1);
+    /* Цвета фона */
+    --color-fon-1: hsl(221, 71%, 48%); /* Основной синий фон */
+    --color-fon-2: hsla(221, 71%, 48%, 0.175); /* Полупрозрачный синий фон */
+    --color-fon-3: hwb(270 29% 36%); /* Фиолетовый фон в формате HWB */
+    --color-fon-4: hwb(0 100% 0%); /* Чисто белый фон */
+    --color-fon-5: hsla(221, 87%, 62%, 0.132); /* Светлый полупрозрачный синий */
+    /*  */
+    /* Цвета текста */
+    --color-text-1: hsl(0, 0%, 0%); /* Черный текст */
+    --color-text-2: hsl(0, 0%, 100%); /* Белый текст */
+    --color-text-3: hsl(221, 71%, 48%); /* Синий текст (совпадает с --color-fon-1) */
+    --color-text-4: hsl(0, 100%, 48%); /* Красный текст для акцентов */
+    /*  */
+    /* Цвета границ */
+    --color-border-1: hsl(221, 71%, 48%); /* Синяя граница */
+    --color-border-2: hsl(0, 0%, 100%); /* Белая граница */
+    /*  */
+    /* Цвета теней */
+    --color-box-shadow-1: hsla(0, 0%, 0%, 0.1); /* Полупрозрачная черная тень для блоков */
+    /* */
+    --shadow-1: hsla(0, 0%, 99%, 0.1); /* Светлая полупрозрачная тень */
+    /* */
+    /* Размеры текста */
+    --size-text-1: 1.5rem; /* Крупный размер шрифта (24px) */
 }
 
+/* Сброс отступов и полей для всех элементов */
 * {
     padding: 0px;
     margin: 0px
 }
 
+/* Основные стили для body */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 2;
+    font-family: Arial, sans-serif; /* Основной шрифт */
+    line-height: 2; /* Межстрочный интервал */
+    padding-top: 80px; /* Верхний отступ для фиксированной навигации */
 }
 
+/* Градиент с тонкими линиями под углом 45 градусов */
+.thin-lines-gradient {
+  background-color: #0071e7; /* Цвет фона */
+  background-image:
+    repeating-linear-gradient(
+      45deg, /* Угол наклона */
+      transparent, /* Прозрачный цвет */
+      transparent 2px, /* Прозрачная полоса */
+      #05509d 2px, /* Начало синей линии */
+      #032d5b 4px /* Конец синей линии */
+    );
+}
+
+/* Перекрестные линии под углом 45 и -45 градусов */
+.cross-lines {
+  background-color: #4f4f4f; /* Темно-серый фон */
+  background-image:
+    repeating-linear-gradient(
+      45deg, /* Первый набор линий */
+      rgba(0, 100, 255, 0.05) 0px,
+      rgba(0, 100, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      -45deg, /* Второй набор линий */
+      rgba(0, 100, 255, 0.05) 0px,
+      rgba(0, 100, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 10px
+    );
+}
+
+/* Стили для навигационной панели */
 .navbar {
-    background-color: var(--color-fon-1) !important;
-    padding: 10px;
-    color: var(--color-text-1) !important;
+    background-color: var(--color-fon-1) !important; /* Синий фон */
+    padding: 10px; /* Внутренние отступы */
+    color: var(--color-text-1) !important; /* Черный текст */
 }
+/* Логотип в навигации */
 .navbar-brand img {
-    max-height: 40px;
+    max-height: 40px; /* Максимальная высота логотипа */
 }
+/* Ссылки в навигации */
 a.nav-link {
-    color: var(--color-text-2) !important;
+    color: var(--color-text-2) !important; /* Белый текст */
 }
+/* Эффект при наведении на ссылки */
 a.nav-link:hover {
-    color: var(--color-text-1) !important;
+    color: var(--color-text-1) !important; /* Черный текст при наведении */
 }
 
+/* Контейнер для основного логотипа */
 .logo-container {
-    transition: transform 0.3s ease;
-    padding: 1%;
-    margin: 0px;
-    background-image: url('/static/images/logo_h.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-size: 100% 100%;
-    width: 100%;
-    height: 500px;
+    transition: transform 0.3s ease; /* Плавное изменение размера */
+    padding: 1%; /* Внутренние отступы */
+    margin: 0px; /* Внешние отступы */
+    background-image: url('/static/images/logo_h.png'); /* Фоновое изображение */
+    background-repeat: no-repeat; /* Запрет повторения */
+    background-size: contain; /* Масштабирование с сохранением пропорций */
+    background-size: 100% 100%; /* Растягивание на всю область */
+    width: 100%; /* Ширина 100% */
+    height: 500px; /* Фиксированная высота */
 }
+/* Эффект при наведении на логотип (закомментирован) */
 .logo-container:hover {
     /* transform: scale(1.1); */
 }
+/* Информационный блок под логотипом */
 .logo-inform-div {
-    background-color: var(--color-fon-2);
-    color: var(--color-text-1);
-    padding: 10px;
-    margin: 0px;
-    text-align: left;
-    border-radius: 20px;
+    background-color: var(--color-fon-2); /* Полупрозрачный синий фон */
+    color: var(--color-text-1); /* Черный текст */
+    padding: 10px; /* Внутренние отступы */
+    margin: 0px; /* Внешние отступы */
+    text-align: left; /* Выравнивание текста по левому краю */
+    border-radius: 20px; /* Закругленные углы */
 }
+/* Стиль для доменного имени */
+.domain {
+    color: var(--color-text-4); /* Красный текст */
+    font-size: var(--size-text-1); /* Крупный шрифт */
+    text-transform: uppercase; /* Верхний регистр */
+}
+/* Многослойная тень для текста */
+.multi-shadow {
+  text-shadow:
+    1px 1px 2px black, /* Черная тень */
+    0 0 1em blue, /* Синее свечение */
+    0 0 0.2em blue; /* Внутреннее синее свечение */
+}
+
+/* Основная область контента */
 .site_content {
-    padding-left: 5%;
-    padding-right: 5%;
-    font: 1em sans-serif;
-    line-height: 1.5;
+    padding-left: 5%; /* Левый отступ */
+    padding-right: 5%; /* Правый отступ */
+    font: 1em sans-serif; /* Шрифт */
+    line-height: 1.5; /* Межстрочный интервал */
 }
+/* Карточки */
 .card {
-    transition: transform 0.3s ease;
-    margin-bottom: 20px;
+    transition: transform 0.3s ease; /* Плавное перемещение */
+    margin-bottom: 20px; /* Отступ снизу */
 }
-
+/* Эффект при наведении на карточку */
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Подъем карточки */
 }
-
+/* Рейтинг (звезды) */
 .rating {
-    color: #ffc107;
+    color: #ffc107; /* Золотой цвет */
 }
-
+/* Подвал */
 .footer {
-    color: var(--color-text-2) !important;
+    background-color: var(--color-fon-1); /* Синий фон */
+    color: var(--color-text-2); /* Белый текст */
+    margin-top: auto; /* Автоматический верхний отступ */
 }
+/* Ссылки в подвале */
+.footer a {
+    transition: all 0.3s ease; /* Плавный переход всех свойств */
+}
+/* Эффект при наведении на ссылки в подвале */
+.footer a:hover {
+    color: #ffffff !important; /* Белый текст */
+    transform: translateX(5px); /* Сдвиг вправо */
+}
+/* Социальные кнопки */
+.social-links .btn {
+    width: 40px; /* Ширина */
+    height: 40px; /* Высота */
+    border-radius: 50%; /* Круглая форма */
+    display: inline-flex; /* Flex-контейнер */
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: center; /* Выравнивание по горизонтали */
+    transition: all 0.3s ease; /* Плавный переход */
+}
+/* Эффект при наведении на социальные кнопки */
+.social-links .btn:hover {
+    transform: translateY(-3px); /* Подъем кнопки */
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1); /* Тень */
+}
+/* Логотип/название в подвале */
+.footer-brand {
+    font-size: 1.5rem; /* Размер шрифта */
+}
+/* Адаптивность для подвала на мобильных устройствах */
+@media (max-width: 768px) {
+    .footer {
+        text-align: center; /* Центрирование текста */
+    }
+    .footer .row > div {
+        margin-bottom: 2rem; /* Отступ снизу для колонок */
+    }
+}
+/* Цвет текста в подвале */
+.footer {
+    color: var(--color-text-2) !important; /* Белый текст */
+}
+/* Контент в подвале */
 .footer_content_op {
-    color: var(--color-text-2) !important;
-    margin: 20px;
+    color: var(--color-text-2) !important; /* Белый текст */
+    margin: 20px; /* Внешние отступы */
 }
+/* Копирайт в подвале */
 .footer_copyrator {
-    background-color: var(--color-fon-1);
-    color: var(--color-text-2) !important;
-    padding: 20px 0;
+    color: var(--color-text-2) !important; /* Белый текст */
+    padding: 20px 0; /* Внутренние отступы */
 }
+/* Ссылки на политики в подвале */
 a.footer_pr_link {
-    transition: all 0.3s ease;
-    color: var(--color-text-2) !important;
+    transition: all 0.3s ease; /* Плавный переход */
+    color: var(--color-text-2) !important; /* Белый текст */
 }
+/* Эффект при наведении на ссылки политик */
 a.footer_pr_link:hover {
-    transition: all 0.7s ease;
-    color: var(--color-text-2) !important;
+    transition: all 0.7s ease; /* Более длительный переход */
+    color: var(--color-text-2) !important; /* Белый текст */
 }
-/* Responsive Design */
+/* Адаптивность для новостной сетки */
 @media (max-width: 768px) {
     .news-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: 1fr; /* Одна колонка */
+        gap: 1.5rem; /* Расстояние между элементами */
     }
-    
     .news-card {
-        margin-bottom: 1rem;
+        margin-bottom: 1rem; /* Отступ снизу */
     }
-    
     .news-content {
-        padding: 1rem;
+        padding: 1rem; /* Внутренние отступы */
     }
-    
     .news-title {
-        font-size: 1.1rem;
+        font-size: 1.1rem; /* Размер заголовка */
     }
 }
 
-/* Animation */
+/* Анимация появления снизу */
 @keyframes fadeInUp {
     from {
-        opacity: 0;
-        transform: translateY(30px);
+        opacity: 0; /* Непрозрачность */
+        transform: translateY(30px); /* Сдвиг вниз */
     }
     to {
-        opacity: 1;
-        transform: translateY(0);
+        opacity: 1; /* Полная видимость */
+        transform: translateY(0); /* Исходное положение */
     }
 }
 
-
-
-/* Loading Animation */
+/* Анимация загрузки (вращение) */
 .loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid var(--color-border-2);
-    border-top: 3px solid var(--color-border-1);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+    display: inline-block; /* Строчно-блочный элемент */
+    width: 20px; /* Ширина */
+    height: 20px; /* Высота */
+    border: 3px solid var(--color-border-2); /* Белая граница */
+    border-top: 3px solid var(--color-border-1); /* Синяя верхняя граница */
+    border-radius: 50%; /* Круглая форма */
+    animation: spin 1s linear infinite; /* Бесконечное вращение */
 }
-
+/* Ключевые кадры для вращения */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); } /* Начало */
+    100% { transform: rotate(360deg); } /* Конец (полный оборот) */
 }
 
-
-
-/* Адаптивность */
+/* Адаптивность для навигации и карточек */
 @media (max-width: 768px) {
     .navbar-nav {
-        text-align: center;
+        text-align: center; /* Центрирование пунктов меню */
     }
-    
     .card {
-        margin-bottom: 15px;
+        margin-bottom: 15px; /* Отступ снизу для карточек */
     }
 }
