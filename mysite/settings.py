@@ -191,7 +191,12 @@ TINYMCE_DEFAULT_CONFIG = {
     "selector": "textarea",
     "plugins": "advlist autolink lists link image charmap print preview anchor",
     "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-    "menubar": "file edit view insert format tools table help",
+    "menubar": "edit view insert format tools table",
+    "toolbar_mode": "floating",
+    "content_css": "static/css/tinymce.css",
+    "language": "ru",
+    "file_picker_types": "image",
+    "file_picker_callback": "customFilePicker",
 }
 
 # Если используете HTTPS
