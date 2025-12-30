@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from datetime import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -278,6 +277,12 @@ X_FRAME_OPTIONS = "DENY"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "filters": {
+        "skip_broken_pipe": {
+            "()": "django.utils.log.CallbackFilter",
+            "callback": lambda record: "Broken pipe" not in record.getMessage(),
+        },
+    },
     "formatters": {
         "verbose": {
             "format": "{levelname} {asctime} {module} {message}",
@@ -299,6 +304,7 @@ LOGGING = {
             "level": "DEBUG" if DEBUG else "INFO",
             "class": "logging.StreamHandler",
             "formatter": "simple",
+            "filters": ["skip_broken_pipe"],
         },
     },
     "root": {
@@ -308,6 +314,11 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["console"],
             "level": "INFO",
             "propagate": False,
         },
@@ -332,7 +343,6 @@ CACHES = {
 }
 
 # Создаем директорию для логов, если её нет
-import os
 logs_dir = BASE_DIR / "logs"
 if not logs_dir.exists():
     os.makedirs(logs_dir, exist_ok=True)

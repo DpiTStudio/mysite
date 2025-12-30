@@ -20,6 +20,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
 from main import views as main_views
 from main.sitemaps import (
     PageSitemap,
@@ -55,6 +56,11 @@ urlpatterns = [
         name="django.contrib.sitemaps.views.sitemap",
     ),
     path("robots.txt", main_views.robots_txt, name="robots"),
+    # Игнорировать запросы от Chrome DevToolsExtensions
+    path(
+        ".well-known/appspecific/com.chrome.devtools.json",
+        lambda r: HttpResponse(status=204),
+    ),
 ]
 
 if settings.DEBUG:
