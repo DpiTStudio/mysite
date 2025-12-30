@@ -4,7 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}{% endif %}{% endblock %}</title>
+    <title>{% block title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}{% endblock %}</title>
+    
+    <!-- Базовые мета-теги -->
+    <meta name="description" content="{% block meta_description %}{% if site_settings %}{{ site_settings.meta_description }}{% else %}DPIT-CMS - Современная система управления контентом{% endif %}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{% if site_settings %}{{ site_settings.meta_keywords }}{% endif %}{% endblock %}">
+    <meta name="author" content="{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{% if site_settings %}{{ site_settings.meta_description }}{% else %}DPIT-CMS - Современная система управления контентом{% endif %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% if site_settings and site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}{% endif %}{% endblock %}">
+    <meta property="og:site_name" content="{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}">
+    <meta property="og:locale" content="ru_RU">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:title" content="{% block twitter_title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{% if site_settings %}{{ site_settings.meta_description }}{% else %}DPIT-CMS - Современная система управления контентом{% endif %}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% if site_settings and site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}{% endif %}{% endblock %}">
     
     <!-- Фавикон -->
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
@@ -12,6 +33,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,8 +49,28 @@
     <!-- Block for extra CSS -->
     {% block extra_css %}{% endblock %}
     
-    <!-- Meta tags -->
+    <!-- Дополнительные мета-теги -->
     {% block meta %}{% endblock %}
+    
+    <!-- Структурированные данные (JSON-LD) -->
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "{% block schema_type %}WebSite{% endblock %}",
+        "name": "{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}",
+        "description": "{% if site_settings %}{{ site_settings.meta_description }}{% else %}DPIT-CMS - Современная система управления контентом{% endif %}",
+        "url": "{{ request.scheme }}://{{ request.get_host }}",
+        {% if site_settings and site_settings.logo %}
+        "logo": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}",
+        {% endif %}
+        "publisher": {
+            "@type": "Organization",
+            "name": "{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}"
+        }
+    }
+    </script>
+    {% endblock %}
 </head>
 <body>
     <!-- Шапка + меню -->
@@ -50,6 +94,8 @@
             <!--Основной контет -->
             <div class="col-12 col-lg-9">
                 <main class="py-3">
+                    {% load breadcrumbs %}
+                    {% breadcrumbs %}
                     {% block content %}
                     {% endblock %}
                 </main>            
@@ -68,6 +114,7 @@
     
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
     
     <!-- Block for extra JavaScript -->
     {% block extra_js %}{% endblock %}

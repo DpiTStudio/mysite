@@ -180,10 +180,28 @@
         <div class="col-12">
             <div class="mb-4">
                 <h1 class="display-5 fw-bold text-primary mb-3">
-                    {% if current_category %}{{ current_category.name }}{% else %}Новости{% endif %}
+                    {% if search_query %}
+                        Результаты поиска: "{{ search_query }}"
+                    {% elif current_category %}
+                        {{ current_category.name }}
+                    {% else %}
+                        Новости
+                    {% endif %}
                 </h1>
                 
-                {% if current_category and current_category.content %}
+                {% if search_query %}
+                <div class="alert alert-info border-0 rounded-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-search me-2"></i>
+                        <p class="mb-0">
+                            Найдено новостей: <strong>{{ news_list.paginator.count }}</strong>
+                            {% if news_list.paginator.count == 0 %}
+                                <br><small>Попробуйте изменить запрос или <a href="{% url 'news:list' %}">вернуться ко всем новостям</a></small>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                {% elif current_category and current_category.content %}
                 <div class="alert alert-info border-0 rounded-3">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-info-circle me-2"></i>

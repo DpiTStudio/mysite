@@ -1,8 +1,11 @@
 from django import forms
+from captcha.fields import CaptchaField
 from .models import Review
 
 
 class ReviewForm(forms.ModelForm):
+    captcha = CaptchaField(label="Капча")
+    
     class Meta:
         model = Review
         fields = ["full_name", "phone", "email", "content"]

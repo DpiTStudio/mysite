@@ -76,6 +76,17 @@ class SiteSettings(models.Model):
     Фон шапки. Загружается в папку 'fon_haeders/'. Отображается в шапке сайта.
     """
 
+    site_domain = models.CharField(
+        max_length=200,
+        verbose_name="Домен сайта",
+        blank=True,
+        null=True,
+        help_text="Домен сайта для отображения в шапке (например, dpit-cms.ru). Если не указан, будет использоваться текущий хост.",
+    )
+    """
+    Домен сайта для отображения в шапке. Если не указан, используется текущий хост.
+    """
+
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     """
     Флаг активности записи. Позволяет временно отключать настройки,

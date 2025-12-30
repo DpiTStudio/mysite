@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /staticfiles/
+Disallow: /media/
+
+Sitemap: {{ scheme }}://{{ host }}/sitemap.xml
+

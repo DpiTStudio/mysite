@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block title %}Подтверждение очистки лога | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+&rsaquo; <a href="{% url 'admin:logfiles_logfile_changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+&rsaquo; Подтверждение очистки
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Подтверждение очистки лог-файла</h1>
+
+<div class="module">
+    <h2>Информация о файле</h2>
+    <table>
+        <tr>
+            <th>Название:</th>
+            <td>{{ log_file.name }}</td>
+        </tr>
+        <tr>
+            <th>Путь:</th>
+            <td><code>{{ log_file.file_path }}</code></td>
+        </tr>
+        <tr>
+            <th>Размер:</th>
+            <td>{{ log_file.get_file_size_display }}</td>
+        </tr>
+        <tr>
+            <th>Последнее изменение:</th>
+            <td>{{ log_file.last_modified }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="alert alert-warning" style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>Внимание!</strong> Вы собираетесь очистить содержимое лог-файла. 
+    Перед очисткой будет автоматически создана резервная копия.
+</div>
+
+<form method="post" action="{% url 'admin:logfiles_logfile_clear_log' log_file.pk %}">
+    {% csrf_token %}
+    <div class="submit-row">
+        <input type="submit" value="Да, очистить файл" class="default" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+        <a href="{% url 'admin:logfiles_logfile_changelist' %}" class="button" style="padding: 10px 20px; text-decoration: none; display: inline-block; background-color: #6c757d; color: white; border-radius: 4px; margin-left: 10px;">Отмена</a>
+    </div>
+</form>
+{% endblock %}
+

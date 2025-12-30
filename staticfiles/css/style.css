@@ -1,54 +1,113 @@
 :root {
-    /* Цвета фона */
+    /* Современная цветовая палитра - улучшенная */
     --color-fon-1: hsl(221, 71%, 48%); /* Основной синий фон */
     --color-fon-2: hsla(221, 71%, 48%, 0.175); /* Полупрозрачный синий фон */
     --color-fon-3: hwb(270 29% 36%); /* Фиолетовый фон в формате HWB */
     --color-fon-4: hwb(0 100% 0%); /* Чисто белый фон */
     --color-fon-5: hsla(221, 87%, 62%, 0.132); /* Светлый полупрозрачный синий */
-    /*  */
+    
+    /* Новые градиентные цвета */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-purple: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    
     /* Цвета текста */
     --color-text-1: hsl(0, 0%, 0%); /* Черный текст */
     --color-text-2: hsl(0, 0%, 100%); /* Белый текст */
-    --color-text-3: hsl(221, 71%, 48%); /* Синий текст (совпадает с --color-fon-1) */
+    --color-text-3: hsl(221, 71%, 48%); /* Синий текст */
     --color-text-4: hsl(0, 100%, 48%); /* Красный текст для акцентов */
-    /*  */
+    --color-text-muted: hsl(0, 0%, 60%); /* Приглушенный текст */
+    
     /* Цвета границ */
     --color-border-1: hsl(221, 71%, 48%); /* Синяя граница */
     --color-border-2: hsl(0, 0%, 100%); /* Белая граница */
-    /*  */
-    /* Цвета теней */
-    --color-box-shadow-1: hsla(0, 0%, 0%, 0.1); /* Полупрозрачная черная тень для блоков */
-    /* */
+    --color-border-light: rgba(255, 255, 255, 0.2); /* Светлая граница */
+    
+    /* Цвета теней - улучшенные */
+    --color-box-shadow-1: hsla(0, 0%, 0%, 0.1); /* Полупрозрачная черная тень */
     --shadow-1: hsla(0, 0%, 99%, 0.1); /* Светлая полупрозрачная тень */
-    /* */
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-navbar: 0 2px 20px rgba(0, 0, 0, 0.1);
+    --shadow-text: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
     /* Размеры текста */
     --size-text-1: 1.5rem; /* Крупный размер шрифта (24px) */
+    
+    /* Переходы */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
 }
 
 /* Сброс отступов и полей для всех элементов */
 * {
     padding: 0px;
-    margin: 0px
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+/* Плавная прокрутка */
+html {
+    scroll-behavior: smooth;
 }
 
 /* Основные стили для body */
 body {
-    font-family: Arial, sans-serif; /* Основной шрифт */
-    line-height: 2; /* Межстрочный интервал */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Улучшенный шрифт */
+    line-height: 1.8; /* Межстрочный интервал */
     padding-top: 80px; /* Верхний отступ для фиксированной навигации */
+    background-color: #f8f9fa; /* Светлый фон */
+    color: #333; /* Цвет текста */
+    animation: fadeIn 0.5s ease-in;
 }
 
-/* Градиент с тонкими линиями под углом 45 градусов */
+/* Анимация появления страницы */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Градиент с тонкими линиями под углом 45 градусов - улучшенный */
 .thin-lines-gradient {
-  background-color: #0071e7; /* Цвет фона */
-  background-image:
-    repeating-linear-gradient(
-      45deg, /* Угол наклона */
-      transparent, /* Прозрачный цвет */
-      transparent 2px, /* Прозрачная полоса */
-      #05509d 2px, /* Начало синей линии */
-      #032d5b 4px /* Конец синей линии */
-    );
+    background: var(--gradient-primary);
+    background-image:
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.1) 2px,
+            rgba(255, 255, 255, 0.1) 4px
+        );
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффект свечения для градиентного фона */
+.thin-lines-gradient::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Перекрестные линии под углом 45 и -45 градусов */
@@ -71,23 +130,86 @@ body {
     );
 }
 
-/* Стили для навигационной панели */
+/* Стили для навигационной панели - улучшенные */
 .navbar {
-    background-color: var(--color-fon-1) !important; /* Синий фон */
-    padding: 10px; /* Внутренние отступы */
-    color: var(--color-text-1) !important; /* Черный текст */
+    background: var(--gradient-primary) !important;
+    padding: 12px 0;
+    color: var(--color-text-2) !important;
+    box-shadow: var(--shadow-navbar);
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-normal);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.navbar.scrolled {
+    padding: 8px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+}
+
 /* Логотип в навигации */
-.navbar-brand img {
-    max-height: 40px; /* Максимальная высота логотипа */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    transition: transform var(--transition-normal);
 }
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.navbar-brand img {
+    max-height: 45px;
+    transition: transform var(--transition-normal);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.navbar-brand:hover img {
+    transform: rotate(5deg) scale(1.1);
+}
+
 /* Ссылки в навигации */
 a.nav-link {
-    color: var(--color-text-2) !important; /* Белый текст */
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500;
+    padding: 8px 16px !important;
+    margin: 0 4px;
+    border-radius: 8px;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
 }
-/* Эффект при наведении на ссылки */
+
+a.nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left var(--transition-normal);
+    z-index: -1;
+}
+
+a.nav-link:hover::before {
+    left: 0;
+}
+
 a.nav-link:hover {
-    color: var(--color-text-1) !important; /* Черный текст при наведении */
+    color: #fff !important;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Активная ссылка */
+a.nav-link.active {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff !important;
+    font-weight: 600;
 }
 
 /* Контейнер для основного логотипа */
@@ -95,7 +217,7 @@ a.nav-link:hover {
     transition: transform 0.3s ease; /* Плавное изменение размера */
     padding: 1%; /* Внутренние отступы */
     margin: 0px; /* Внешние отступы */
-    background-image: url('/static/images/logo_h.png'); /* Фоновое изображение */
+    /* background-image: url('/static/images/logo_h.png'); Фоновое изображение */
     background-repeat: no-repeat; /* Запрет повторения */
     background-size: contain; /* Масштабирование с сохранением пропорций */
     background-size: 100% 100%; /* Растягивание на всю область */
@@ -115,18 +237,39 @@ a.nav-link:hover {
     text-align: left; /* Выравнивание текста по левому краю */
     border-radius: 20px; /* Закругленные углы */
 }
+.sl_1 {
+    color: var(--color-text-4) !important; /* Красный текст */
+}
 /* Стиль для доменного имени */
 .domain {
     color: var(--color-text-4); /* Красный текст */
     font-size: var(--size-text-1); /* Крупный шрифт */
     text-transform: uppercase; /* Верхний регистр */
 }
-/* Многослойная тень для текста */
+/* Многослойная тень для текста - улучшенная */
 .multi-shadow {
-  text-shadow:
-    1px 1px 2px black, /* Черная тень */
-    0 0 1em blue, /* Синее свечение */
-    0 0 0.2em blue; /* Внутреннее синее свечение */
+    text-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(99, 102, 241, 0.5),
+        0 0 20px rgba(99, 102, 241, 0.3),
+        0 0 30px rgba(99, 102, 241, 0.2);
+    animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+    from {
+        text-shadow:
+            2px 2px 4px rgba(0, 0, 0, 0.5),
+            0 0 10px rgba(99, 102, 241, 0.5),
+            0 0 20px rgba(99, 102, 241, 0.3);
+    }
+    to {
+        text-shadow:
+            2px 2px 4px rgba(0, 0, 0, 0.5),
+            0 0 15px rgba(99, 102, 241, 0.7),
+            0 0 30px rgba(99, 102, 241, 0.5),
+            0 0 40px rgba(99, 102, 241, 0.3);
+    }
 }
 
 /* Основная область контента */
@@ -136,48 +279,167 @@ a.nav-link:hover {
     font: 1em sans-serif; /* Шрифт */
     line-height: 1.5; /* Межстрочный интервал */
 }
-/* Карточки */
+/* Карточки - улучшенные */
 .card {
-    transition: transform 0.3s ease; /* Плавное перемещение */
-    margin-bottom: 20px; /* Отступ снизу */
+    transition: all var(--transition-normal);
+    margin-bottom: 25px;
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+    animation: fadeInUp 0.6s ease-out;
 }
-/* Эффект при наведении на карточку */
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-normal);
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
 .card:hover {
-    transform: translateY(-5px); /* Подъем карточки */
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.card-img-top {
+    transition: transform var(--transition-slow);
+    border-radius: 16px 16px 0 0;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+    transition: color var(--transition-fast);
+}
+
+.card:hover .card-title {
+    color: #667eea;
 }
 /* Рейтинг (звезды) */
 .rating {
     color: #ffc107; /* Золотой цвет */
 }
-/* Подвал */
+/* Подвал - улучшенный */
 .footer {
-    background-color: var(--color-fon-1); /* Синий фон */
-    color: var(--color-text-2); /* Белый текст */
-    margin-top: auto; /* Автоматический верхний отступ */
+    background: var(--gradient-primary);
+    color: var(--color-text-2);
+    margin-top: auto;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
 }
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
 /* Ссылки в подвале */
 .footer a {
-    transition: all 0.3s ease; /* Плавный переход всех свойств */
+    transition: all var(--transition-normal);
+    position: relative;
+    display: inline-block;
 }
+
+.footer a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: width var(--transition-normal);
+}
+
+.footer a:hover::after {
+    width: 100%;
+}
+
 /* Эффект при наведении на ссылки в подвале */
 .footer a:hover {
-    color: #ffffff !important; /* Белый текст */
-    transform: translateX(5px); /* Сдвиг вправо */
+    color: #fff !important;
+    transform: translateX(5px);
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
 }
-/* Социальные кнопки */
+/* Социальные кнопки - улучшенные */
 .social-links .btn {
-    width: 40px; /* Ширина */
-    height: 40px; /* Высота */
-    border-radius: 50%; /* Круглая форма */
-    display: inline-flex; /* Flex-контейнер */
-    align-items: center; /* Выравнивание по вертикали */
-    justify-content: center; /* Выравнивание по горизонтали */
-    transition: all 0.3s ease; /* Плавный переход */
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    margin: 0 6px;
+    position: relative;
+    overflow: hidden;
 }
-/* Эффект при наведении на социальные кнопки */
+
+.social-links .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.social-links .btn:hover::before {
+    width: 100%;
+    height: 100%;
+}
+
 .social-links .btn:hover {
-    transform: translateY(-3px); /* Подъем кнопки */
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1); /* Тень */
+    transform: translateY(-5px) rotate(5deg) scale(1.1);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.social-links .btn i {
+    position: relative;
+    z-index: 1;
+    transition: transform var(--transition-normal);
+}
+
+.social-links .btn:hover i {
+    transform: scale(1.2);
 }
 /* Логотип/название в подвале */
 .footer-brand {
@@ -261,12 +523,155 @@ a.footer_pr_link:hover {
     100% { transform: rotate(360deg); } /* Конец (полный оборот) */
 }
 
+/* Дополнительные эффекты для кнопок */
+.btn {
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 500;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+/* Улучшение форм */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    padding: 10px 15px;
+    transition: all var(--transition-normal);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+/* Улучшение поисковой формы */
+.form-control:focus {
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Анимация появления элементов при скролле */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Эффект для списков */
+.list-group-item {
+    transition: all var(--transition-normal);
+    border-left: 3px solid transparent;
+}
+
+.list-group-item:hover {
+    background: #f8f9fa;
+    border-left-color: #667eea;
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Улучшение breadcrumbs */
+.breadcrumb {
+    background: transparent;
+    padding: 0.75rem 0;
+}
+
+.breadcrumb-item a {
+    color: #667eea;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.breadcrumb-item a:hover {
+    color: #5a67d8;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+
 /* Адаптивность для навигации и карточек */
 @media (max-width: 768px) {
     .navbar-nav {
-        text-align: center; /* Центрирование пунктов меню */
+        text-align: center;
+        padding: 1rem 0;
     }
+    
     .card {
-        margin-bottom: 15px; /* Отступ снизу для карточек */
+        margin-bottom: 15px;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .social-links .btn {
+        width: 40px;
+        height: 40px;
+        margin: 0 4px;
+    }
+    
+    body {
+        padding-top: 70px;
     }
 }

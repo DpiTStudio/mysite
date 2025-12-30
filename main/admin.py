@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import SiteSettings, Page
 
 
@@ -10,7 +11,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Основная информация",
-            {"fields": ("site_title", "site_slogan", "site_description", "is_active")},
+            {"fields": ("site_title", "site_slogan", "site_description", "site_domain", "is_active")},
         ),
         ("SEO настройки", {"fields": ("meta_keywords", "meta_description")}),
         ("Контент и медиа", {"fields": ("content", "fon_haeders", "logo", "favicon")}),
@@ -43,10 +44,10 @@ class PageAdmin(admin.ModelAdmin):
             {"fields": ("title", "slug", "content", "order", "is_active")},
         ),
         (
-            "Логотип страницы",
+            "Медиа и оформление",
             {
-                "fields": ("logo",),
-                "description": "Логотип, который будет отображаться на этой странице",
+                "fields": ("logo", "fon_headers"),
+                "description": "Логотип и фон шапки для этой страницы",
             },
         ),
         ("Настройки меню", {"fields": ("show_in_menu",)}),
@@ -55,20 +56,18 @@ class PageAdmin(admin.ModelAdmin):
             {"fields": ("meta_title", "meta_keywords", "meta_description")},
         ),
     )
-    list_display = ["title", "slug", "show_in_menu", "is_active", "order", "created_at"]
-    list_editable = ["show_in_menu", "is_active", "order"]
-    list_filter = ["show_in_menu", "is_active", "created_at"]
-    search_fields = ["title", "slug", "content"]
-    prepopulated_fields = {"slug": ("title",)}
 
-    fieldsets = (
-        (
-            "Основная информация",
-            {"fields": ("title", "slug", "content", "order", "is_active")},
-        ),
-        ("Настройки меню", {"fields": ("show_in_menu",)}),
-        (
-            "SEO настройки",
-            {"fields": ("meta_title", "meta_keywords", "meta_description")},
-        ),
-    )
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html(
+                '<img src="{}" style="width: 50px; height: auto;" />', obj.logo.url
+            )
+        return "Нет логотипа"
+
+    logo_preview.short_description = "Превью лого"
+
+    class Media:
+        css = {
+            "all": ("css/pages.css",),
+        }
+

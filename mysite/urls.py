@@ -16,9 +16,28 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from main import views as main_views
+from main.sitemaps import (
+    PageSitemap,
+    NewsSitemap,
+    NewsCategorySitemap,
+    PortfolioSitemap,
+    PortfolioCategorySitemap,
+    StaticViewSitemap,
+)
+
+sitemaps = {
+    "pages": PageSitemap,
+    "news": NewsSitemap,
+    "news_categories": NewsCategorySitemap,
+    "portfolio": PortfolioSitemap,
+    "portfolio_categories": PortfolioCategorySitemap,
+    "static": StaticViewSitemap,
+}
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,8 +45,22 @@ urlpatterns = [
     path("news/", include("news.urls")),
     path("portfolio/", include("portfolio.urls")),
     path("reviews/", include("reviews.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("tickets/", include("tickets.urls")),
+    path("captcha/", include("captcha.urls")),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
+    path("robots.txt", main_views.robots_txt, name="robots"),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Обработчики ошибок (работают только когда DEBUG=False)
+handler404 = "main.views.page_not_found"
+handler500 = "main.views.server_error"

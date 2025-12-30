@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top thin-lines-gradient">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top thin-lines-gradient" style="z-index: 1030;">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'main:home' %}">
             {% if site_settings and site_settings.logo %}
@@ -6,7 +6,13 @@
             {% else %}
                 {{ site_settings.site_title|default:"DPIT-CMS" }}
             {% endif %}
-            <strong class="domain multi-shadow">{{ request.META.HTTP_HOST }}</strong>
+            <strong class="domain multi-shadow">
+                {% if site_settings and site_settings.site_domain %}
+                    {{ site_settings.site_domain }}
+                {% else %}
+                    {{ request.get_host|cut:":4234"|cut:":8000" }}
+                {% endif %}
+            </strong>
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -32,6 +38,43 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
                 </li>
+            </ul>
+            
+            <!-- Форма поиска -->
+            <form class="d-flex me-2" action="{% url 'news:search' %}" method="get">
+                <input class="form-control me-2" type="search" name="q" placeholder="Поиск новостей..." aria-label="Search" value="{{ request.GET.q|default:'' }}">
+                <button class="btn btn-outline-light" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+            
+            <!-- Пользовательское меню -->
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i> Личный кабинет</a></li>
+                            <li><a class="dropdown-item" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-perforated"></i> Мои тикеты</a></li>
+                            <li><a class="dropdown-item" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle"></i> Создать тикет</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Выход</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}">
+                            <i class="bi bi-box-arrow-in-right"></i> Вход
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:register' %}">
+                            <i class="bi bi-person-plus"></i> Регистрация
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

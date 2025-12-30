@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Мои тикеты{% endblock %}
+
+{% block extra_css %}
+<style>
+    .ticket-status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        font-weight: bold;
+    }
+    .status-open { background: #d4edda; color: #155724; }
+    .status-in_progress { background: #fff3cd; color: #856404; }
+    .status-resolved { background: #cce5ff; color: #004085; }
+    .status-closed { background: #f8d7da; color: #721c24; }
+    
+    .priority-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 3px;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+    .priority-low { background: #e7f3ff; color: #0066cc; }
+    .priority-medium { background: #fff4e6; color: #cc6600; }
+    .priority-high { background: #ffe6e6; color: #cc0000; }
+    .priority-urgent { background: #ffcccc; color: #990000; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="bi bi-ticket-perforated"></i> Мои тикеты</h2>
+                <a href="{% url 'tickets:create' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Создать тикет
+                </a>
+            </div>
+            
+            <!-- Фильтр по статусу -->
+            <div class="mb-3">
+                <div class="btn-group" role="group">
+                    <a href="{% url 'tickets:list' %}" class="btn btn-outline-secondary {% if not current_status %}active{% endif %}">
+                        Все
+                    </a>
+                    {% for status_value, status_label in status_choices %}
+                        <a href="{% url 'tickets:list' %}?status={{ status_value }}" 
+                           class="btn btn-outline-secondary {% if current_status == status_value %}active{% endif %}">
+                            {{ status_label }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            {% if tickets %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Тема</th>
+                                <th>Статус</th>
+                                <th>Приоритет</th>
+                                <th>Создан</th>
+                                <th>Обновлен</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in tickets %}
+                                <tr>
+                                    <td>#{{ ticket.id }}</td>
+                                    <td>
+                                        <a href="{% url 'tickets:detail' ticket.id %}">{{ ticket.subject }}</a>
+                                    </td>
+                                    <td>
+                                        <span class="ticket-status status-{{ ticket.status }}">
+                                            {{ ticket.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="priority-badge priority-{{ ticket.priority }}">
+                                            {{ ticket.get_priority_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ ticket.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ ticket.updated_at|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                        <a href="{% url 'tickets:detail' ticket.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> Открыть
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Пагинация -->
+                {% if tickets.has_other_pages %}
+                    <nav aria-label="Навигация по страницам">
+                        <ul class="pagination justify-content-center">
+                            {% if tickets.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ tickets.previous_page_number }}">Предыдущая</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in tickets.paginator.page_range %}
+                                {% if tickets.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if tickets.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ tickets.next_page_number }}">Следующая</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> У вас пока нет тикетов. 
+                    <a href="{% url 'tickets:create' %}">Создайте первый тикет</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

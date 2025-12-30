@@ -22,10 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-tigran-quk)3wy#imok*1%@9f^5n63gh0=j&b66jw_3*(-awet65656fgdfgp4da_vi@2$l"
+# Используем переменные окружения для безопасности
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-tigran-quk)3wy#imok*1%@9f^5n63gh0=j&b66jw_3*(-awet65656fgdfgp4da_vi@2$l"  # fallback для разработки
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG должен быть False в production!
+DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
 # ALLOWED_HOSTS = ["*"]
 # Добавьте ваш домен/IP в ALLOWED_HOSTS
@@ -48,10 +53,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",  # Для sitemap.xml
+    "captcha",  # Капча
     "main",
     "news",
     "portfolio",
     "reviews",
+    "logfiles",
+    "accounts",  # Регистрация и авторизация
+    "tickets",  # Система тикетов
     "tinymce",
 ]
 
@@ -144,6 +154,14 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Настройка модели пользователя
+AUTH_USER_MODEL = "accounts.User"
+
+# Настройки капчи
+CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.random_char_challenge"
+CAPTCHA_LENGTH = 5
+CAPTCHA_TIMEOUT = 5
 # Разрешите доступ к статическим файлам
 SECURE_CONTENT_TYPE_NOSNIFF = False
 
@@ -152,12 +170,12 @@ JAZZMIN_SETTINGS = {
     "site_title": "DPIT-CMS Admin",
     "site_header": "DPIT-CMS",
     "site_brand": "DPIT-CMS",
-    "site_brand_small": "DPIT-CMS",
+    "site_brand_small": "DPIT",
     "site_logo_classes": "img-circle",
     "site_logo": "images/logo.png",
     "site_footer": "DPIT-CMS",
     "menu_open_first_child": True,
-    "welcome_sign": "Добро пожаловать в админ-панель",
+    "welcome_sign": "Добро пожаловать в админ-панель DPIT-CMS",
     "copyright": "DPIT-CMS",
     "show_ui_builder": True,
     "changeform_format": "horizontal_tabs",
@@ -166,11 +184,58 @@ JAZZMIN_SETTINGS = {
         "auth.group": "vertical_tabs",
         "admin.logentry": "vertical_tabs",
     },
+    # Дополнительные настройки UI
+    "use_google_fonts_cdn": True,
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["main", "news", "portfolio", "reviews", "accounts", "tickets"],
+    "custom_links": {
+        "main": [{
+            "name": "Вернуться на сайт",
+            "url": "/",
+            "icon": "fas fa-home",
+            "new_window": True,
+        }]
+    },
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "main.SiteSettings": "fas fa-cog",
+        "main.Page": "fas fa-file-alt",
+        "news.NewsCategory": "fas fa-folder",
+        "news.News": "fas fa-newspaper",
+        "news.Comment": "fas fa-comments",
+        "portfolio.PortfolioCategory": "fas fa-folder-open",
+        "portfolio.Portfolio": "fas fa-images",
+        "reviews.Review": "fas fa-star",
+        "logfiles.LogFile": "fas fa-file-alt",
+        "logfiles.LogBackup": "fas fa-archive",
+        "accounts.User": "fas fa-user-circle",
+        "tickets.Ticket": "fas fa-ticket-alt",
+        "tickets.TicketMessage": "fas fa-comment-dots",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": False,
+    "custom_css": "css/admin_custom.css",
+    "custom_js": None,
     "menu": [
-        {"app": "main"},
-        {"app": "news"},
-        {"app": "portfolio"},
-        {"app": "reviews"},
+        {
+            "name": "Главная",
+            "icon": "fas fa-home",
+            "url": "/",
+            "new_window": True,
+        },
+        {"app": "main", "icon": "fas fa-cogs"},
+        {"app": "news", "icon": "fas fa-newspaper"},
+        {"app": "portfolio", "icon": "fas fa-images"},
+        {"app": "reviews", "icon": "fas fa-star"},
+        {"app": "accounts", "icon": "fas fa-users"},
+        {"app": "tickets", "icon": "fas fa-ticket-alt"},
+        {"app": "logfiles", "icon": "fas fa-file-alt"},
     ],
 }
 
@@ -199,9 +264,78 @@ TINYMCE_DEFAULT_CONFIG = {
     "file_picker_callback": "customFilePicker",
 }
 
-# Если используете HTTPS
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# Если используете HTTPS (только в production)
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = "DENY"
+
+# Настройки логирования
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": BASE_DIR / "logs" / "django.log",
+            "formatter": "verbose",
+        },
+        "console": {
+            "level": "DEBUG" if DEBUG else "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "root": {
+        "handlers": ["console", "file"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "news": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG" if DEBUG else "INFO",
+            "propagate": False,
+        },
+    },
+}
+
+# Кеширование
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+        "TIMEOUT": 300,  # 5 минут
+        "OPTIONS": {
+            "MAX_ENTRIES": 1000,
+        },
+    }
+}
+
+# Создаем директорию для логов, если её нет
+import os
+logs_dir = BASE_DIR / "logs"
+if not logs_dir.exists():
+    os.makedirs(logs_dir, exist_ok=True)
 
 # CSRF_COOKIE_DOMAIN = 'dpit-cms.ru'
 # SESSION_COOKIE_DOMAIN = 'dpit-cms.ru'
