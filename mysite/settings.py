@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "captcha",  # Капча
     "main.apps.MainConfig",
     "news.apps.NewsConfig",
-    "portfolio.apps.PortfolioConfig",
+    'portfolio.apps.PortfolioConfig',
     "reviews.apps.ReviewsConfig",
     "logfiles.apps.LogfilesConfig",
     "accounts.apps.AccountsConfig",  # Регистрация и авторизация
