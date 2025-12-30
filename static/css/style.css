@@ -116,7 +116,7 @@ a.nav-link:hover {
     border-radius: 20px; /* Закругленные углы */
 }
 .sl_1 {
-    color: var(--color-text-4); /* Красный текст */
+    color: var(--color-text-4) !important; /* Красный текст */
 }
 /* Стиль для доменного имени */
 .domain {
