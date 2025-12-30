@@ -54,13 +54,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",  # Для sitemap.xml
     "captcha",  # Капча
-    "main",
-    "news",
-    "portfolio",
-    "reviews",
-    "logfiles",
-    "accounts",  # Регистрация и авторизация
-    "tickets",  # Система тикетов
+    "main.apps.MainConfig",
+    "news.apps.NewsConfig",
+    "portfolio.apps.PortfolioConfig",
+    "reviews.apps.ReviewsConfig",
+    "logfiles.apps.LogfilesConfig",
+    "accounts.apps.AccountsConfig",  # Регистрация и авторизация
+    "tickets.apps.TicketsConfig",  # Система тикетов
     "tinymce",
 ]
 
