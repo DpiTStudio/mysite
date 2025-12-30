@@ -104,7 +104,7 @@ a.nav-link:hover {
 }
 /* Эффект при наведении на логотип (закомментирован) */
 .logo-container:hover {
-    /* transform: scale(1.1); */
+    transform: scale(1.1);
 }
 /* Информационный блок под логотипом */
 .logo-inform-div {
@@ -114,6 +114,9 @@ a.nav-link:hover {
     margin: 0px; /* Внешние отступы */
     text-align: left; /* Выравнивание текста по левому краю */
     border-radius: 20px; /* Закругленные углы */
+}
+.sl_1 {
+    color: var(--color-text-4); /* Красный текст */
 }
 /* Стиль для доменного имени */
 .domain {

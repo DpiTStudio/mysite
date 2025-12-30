@@ -3,9 +3,9 @@
             <div class="logo-inform-div">
                 <h1 class="display-4 mb-4">Добро пожаловать на сайт</h1>
                 {% if site_settings and site_settings.site_description %}
-                <p class="lead">{{ site_settings.site_description }}</p>
+                  <p class="sl_1">{{ site_settings.site_description|safe }}</p>
                 {% else %}
-                <p class="lead">Это главная страница вашего сайта.</p>
+                  Это главная страница вашего сайта.
                 {% endif %}
             </div>
         </div>
