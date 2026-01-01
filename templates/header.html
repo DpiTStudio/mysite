@@ -59,6 +59,9 @@
                             <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i> Личный кабинет</a></li>
                             <li><a class="dropdown-item" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-perforated"></i> Мои тикеты</a></li>
                             <li><a class="dropdown-item" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle"></i> Создать тикет</a></li>
+                            {% if user.is_staff %}
+                            <li><a class="dropdown-item text-primary fw-bold" href="/admin/"><i class="bi bi-cpu-fill"></i> Админ-панель</a></li>
+                            {% endif %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Выход</a></li>
                         </ul>
