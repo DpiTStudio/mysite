@@ -1,11 +1,9 @@
     <div class="row">
-        <div class="col-12 text-left logo-container">
+        <div class="col-12 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
             <div class="logo-inform-div">
-                <h1 class="display-4 mb-4">Добро пожаловать на сайт</h1>
-                {% if site_settings and site_settings.site_description %}
-                  <p class="sl_1">{{ site_settings.site_description|safe }}</p>
-                {% else %}
-                  Это главная страница вашего сайта.
+                <h1 class="display-4 mb-4">{{ header_data.title }}</h1>
+                {% if header_data.description %}
+                  <div class="sl_1">{{ header_data.description|safe }}</div>
                 {% endif %}
             </div>
         </div>

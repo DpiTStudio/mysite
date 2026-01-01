@@ -218,21 +218,26 @@ a.nav-link.active {
     transition: transform 0.3s ease; /* Плавное изменение размера */
     padding: 1%; /* Внутренние отступы */
     margin: 0px; /* Внешние отступы */
-    /* background-image: url('/static/images/logo_h.png'); Фоновое изображение */
     background-repeat: no-repeat; /* Запрет повторения */
-    background-size: contain; /* Масштабирование с сохранением пропорций */
-    background-size: 100% 100%; /* Растягивание на всю область */
+    background-position: center; /* Центрирование */
+    background-size: cover; /* Заполнение области */
     width: 100%; /* Ширина 100% */
-    height: 500px; /* Фиксированная высота */
+    min-height: 400px; /* Минимальная высота */
+    display: flex;
+    align-items: center;
 }
 /* Информационный блок под логотипом */
 .logo-inform-div {
-    background-color: var(--color-fon-2); /* Полупрозрачный синий фон */
+    background: rgba(255, 255, 255, 0.85); /* Полупрозрачный белый фон */
+    backdrop-filter: blur(10px); /* Эффект размытия */
     color: var(--color-text-1); /* Черный текст */
-    padding: 10px; /* Внутренние отступы */
-    margin: 0px; /* Внешние отступы */
+    padding: 2rem; /* Увеличенные отступы */
+    margin: 2rem; /* Внешние отступы */
     text-align: left; /* Выравнивание текста по левому краю */
     border-radius: 20px; /* Закругленные углы */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Тень */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Граница */
+    max-width: 800px;
 }
 .sl_1 {
     color: var(--color-text-4) !important; /* Красный текст */

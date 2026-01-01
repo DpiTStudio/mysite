@@ -12,6 +12,26 @@ class PortfolioCategory(models.Model):
     content = HTMLField(verbose_name="Описание на странице", default="<p>Описание</p>")
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     order = models.IntegerField(default=0, verbose_name="Порядок")
+    header_image = models.ImageField(
+        upload_to="portfolio/headers/",
+        verbose_name="Изображение шапки",
+        blank=True,
+        null=True,
+        help_text="Оставьте пустым, чтобы использовать изображение по умолчанию из настроек сайта.",
+    )
+    header_title = models.CharField(
+        max_length=200,
+        verbose_name="Заголовок шапки",
+        blank=True,
+        null=True,
+        help_text="Оставьте пустым, чтобы использовать название категории.",
+    )
+    header_description = models.TextField(
+        verbose_name="Описание шапки",
+        blank=True,
+        null=True,
+        help_text="Оставьте пустым, чтобы использовать описание категории.",
+    )
 
     class Meta:
         verbose_name = "Категория портфолио"

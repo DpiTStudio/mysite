@@ -14,6 +14,37 @@ class NewsCategoryAdmin(admin.ModelAdmin):
         "order",
         "is_active",
     ]
+    fieldsets = (
+        (
+            "Основная информация",
+            {
+                "fields": (
+                    "name",
+                    "slug",
+                    "logo",
+                    "description",
+                    "content",
+                    "order",
+                    "is_active",
+                )
+            },
+        ),
+        (
+            "Настройка шапки (Header)",
+            {
+                "fields": (
+                    "header_image",
+                    "header_title",
+                    "header_description",
+                ),
+                "description": "Эти настройки позволяют переопределить шапку сайта для данной категории.",
+            },
+        ),
+        (
+            "SEO настройки",
+            {"fields": ("meta_title", "meta_keywords"), "classes": ("collapse",)},
+        ),
+    )
     prepopulated_fields = {"slug": ("name",)}
     list_filter = ["is_active"]
     search_fields = ["name"]
