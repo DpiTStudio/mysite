@@ -159,7 +159,7 @@ AUTH_USER_MODEL = "accounts.User"
 
 # Настройки капчи
 CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.random_char_challenge"
-CAPTCHA_LENGTH = 5
+CAPTCHA_LENGTH = 3
 CAPTCHA_TIMEOUT = 5
 # Разрешите доступ к статическим файлам
 SECURE_CONTENT_TYPE_NOSNIFF = False
