@@ -1,26 +1,17 @@
 from django import template
 from django.db.models import Sum
 from django.contrib.auth import get_user_model
+from news.models import News, NewsCategory
+from portfolio.models import Portfolio, PortfolioCategory
+from reviews.models import Review
+from tickets.models import Ticket
+from main.models import Page
 
 register = template.Library()
-
-
-@register.filter
-def sum_news_count(categories):
-    """Суммирует количество новостей во всех категориях"""
-    return categories.aggregate(total=Sum("news_count"))["total"] or 0
-
+User = get_user_model()
 
 @register.simple_tag
 def get_admin_stats():
-    from news.models import News, NewsCategory
-    from portfolio.models import Portfolio, PortfolioCategory
-    from reviews.models import Review
-    from tickets.models import Ticket
-    from main.models import Page
-    
-    User = get_user_model()
-    
     stats = {
         'users_count': User.objects.count(),
         'news_count': News.objects.count(),
@@ -28,7 +19,7 @@ def get_admin_stats():
         'portfolio_count': Portfolio.objects.count(),
         'portfolio_categories_count': PortfolioCategory.objects.count(),
         'reviews_count': Review.objects.count(),
-        'reviews_pending_count': Review.objects.filter(status='pending').count(),
+        'reviews_pending_count': Review.objects.filter(is_active=False).count(),
         'tickets_count': Ticket.objects.count(),
         'tickets_open_count': Ticket.objects.exclude(status='closed').count(),
         'pages_count': Page.objects.count(),

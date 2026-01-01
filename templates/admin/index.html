@@ -1,0 +1,243 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static news_extras %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    {% get_admin_stats as stats %}
+    
+    <!-- Статистика (Инфо-боксы) -->
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ stats.news_count }}</h3>
+                    <p>Новости ({{ stats.total_news_views }} просм.)</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <a href="{% url 'admin:news_news_changelist' %}" class="small-box-footer">
+                    Подробнее <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ stats.portfolio_count }}</h3>
+                    <p>Проекты ({{ stats.total_portfolio_views }} просм.)</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <a href="{% url 'admin:portfolio_portfolio_changelist' %}" class="small-box-footer">
+                    Подробнее <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ stats.users_count }}</h3>
+                    <p>Пользователи</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <a href="{% url 'admin:accounts_user_changelist' %}" class="small-box-footer">
+                    Подробнее <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ stats.reviews_count }}</h3>
+                    <p>Отзывы ({{ stats.reviews_pending_count }} нов.)</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <a href="{% url 'admin:reviews_review_changelist' %}" class="small-box-footer">
+                    Подробнее <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Тикеты -->
+        <div class="col-md-4">
+            <div class="card card-outline card-primary shadow-sm" style="transition: transform .2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div class="card-header">
+                    <h3 class="card-title text-primary"><i class="fas fa-ticket-alt mr-2"></i>Поддержка</h3>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Всего тикетов:</span>
+                        <span class="badge badge-primary">{{ stats.tickets_count }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Открытых тикетов:</span>
+                        <span class="badge badge-danger">{{ stats.tickets_open_count }}</span>
+                    </div>
+                    <a href="{% url 'admin:tickets_ticket_changelist' %}" class="btn btn-primary btn-block">Перейти к тикетам</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Быстрое управление -->
+        <div class="col-md-4">
+            <div class="card card-outline card-success shadow-sm" style="transition: transform .2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div class="card-header">
+                    <h3 class="card-title text-success"><i class="fas fa-bolt mr-2"></i>Быстрые действия</h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'admin:news_news_add' %}" class="list-group-item list-group-item-action py-2">
+                            <i class="fas fa-plus-circle text-info mr-2"></i> Добавить новость
+                        </a>
+                        <a href="{% url 'admin:portfolio_portfolio_add' %}" class="list-group-item list-group-item-action py-2">
+                            <i class="fas fa-plus-circle text-success mr-2"></i> Новый проект
+                        </a>
+                        <a href="{% url 'admin:main_page_changelist' %}" class="list-group-item list-group-item-action py-2">
+                            <i class="fas fa-file-alt text-primary mr-2"></i> Страницы сайта
+                        </a>
+                        <a href="{% url 'admin:main_sitesettings_changelist' %}" class="list-group-item list-group-item-action py-2">
+                            <i class="fas fa-cogs text-secondary mr-2"></i> Настройки сайта
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Системные инструменты -->
+        <div class="col-md-4">
+            <div class="card card-outline card-warning shadow-sm" style="transition: transform .2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div class="card-header">
+                    <h3 class="card-title text-warning"><i class="fas fa-tools mr-2"></i>Система</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">Управление логами, бэкапами и мониторинг состояния системы.</p>
+                    <div class="mb-3">
+                        <span class="badge badge-outline-warning w-100 p-2 border border-warning">
+                            <i class="fas fa-shield-alt mr-1"></i> Система активна
+                        </span>
+                    </div>
+                    <a href="{% url 'admin:logfiles_logfile_changelist' %}" class="btn btn-warning btn-block text-white">Открыть логи системы</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Полный обзор управления -->
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card card-indigo card-outline shadow-sm">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-columns mr-2"></i>Панель управления разделами</h3>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Раздел</th>
+                                <th>Модели</th>
+                                <th class="text-right">Управление</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in app_list %}
+                                <tr>
+                                    <td>
+                                        <h6 class="mb-0 font-weight-bold">{{ app.name }}</h6>
+                                    </td>
+                                    <td>
+                                        {% for model in app.models %}
+                                            <a href="{{ model.admin_url }}" class="badge badge-pill badge-light border px-3 py-2 mb-1 mr-1">
+                                                {{ model.name }}
+                                            </a>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="text-right">
+                                        <a href="{{ app.app_url }}" class="btn btn-sm btn-outline-indigo">
+                                            <i class="fas fa-folder-open"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-dark card-outline shadow-sm">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-history mr-2"></i>Ваша активность</h3>
+                </div>
+                <div class="card-body p-0">
+                    <div class="timeline timeline-inverse m-0 p-3" style="max-height: 500px; overflow-y: auto;">
+                        {% load log %}
+                        {% get_admin_log 15 as admin_log for_user user %}
+                        {% if not admin_log %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-ghost fa-3x text-muted mb-2"></i>
+                                <p class="text-muted">Активности пока нет</p>
+                            </div>
+                        {% else %}
+                            {% for entry in admin_log %}
+                                <div>
+                                    {% if entry.is_addition %}<i class="fas fa-plus bg-success"></i>{% endif %}
+                                    {% if entry.is_change %}<i class="fas fa-edit bg-info"></i>{% endif %}
+                                    {% if entry.is_deletion %}<i class="fas fa-trash bg-danger"></i>{% endif %}
+                                    <div class="timeline-item shadow-none border-bottom mb-2">
+                                        <span class="time"><i class="far fa-clock"></i> {{ entry.action_time|date:"H:i" }}</span>
+                                        <h3 class="timeline-header no-border" style="font-size: 0.9rem;">
+                                            {{ entry.object_repr|truncatechars:30 }}
+                                        </h3>
+                                        <div class="timeline-body py-1 small text-muted">
+                                            {{ entry.content_type }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'admin:admin_logentry_changelist' %}" class="small-box-footer text-dark">
+                        Вся история <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .small-box { border-radius: 10px; overflow: hidden; margin-bottom: 20px; transition: all 0.3s; }
+    .small-box:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    .small-box > .inner { padding: 20px; }
+    .small-box h3 { font-size: 2.2rem; font-weight: 700; margin: 0 0 10px 0; white-space: nowrap; padding: 0; }
+    .small-box p { font-size: 1rem; }
+    .small-box .icon { color: rgba(0,0,0,.15); z-index: 0; }
+    .small-box .icon > i { font-size: 70px; position: absolute; right: 15px; top: 15px; transition: all .3s linear; }
+    .small-box:hover .icon > i { font-size: 80px; transform: rotate(-10deg); }
+    .small-box > .small-box-footer { background-color: rgba(0,0,0,.1); color: rgba(255,255,255,.8); display: block; padding: 8px 0; position: relative; text-align: center; text-decoration: none; z-index: 10; }
+    
+    .card { border-radius: 10px; border: none; }
+    .card-outline { border-top: 3px solid; }
+    .badge-outline-warning { border: 1px solid #ffc107; color: #856404; background: #fff3cd; }
+    
+    .timeline::before { border-radius: 0.25rem; background-color: #dee2e6; bottom: 0; content: ""; left: 31px; margin: 0; position: absolute; top: 0; width: 4px; }
+    .timeline > div > .timeline-item { background-color: #fff; border-radius: 0.25rem; color: #495057; margin-left: 60px; margin-right: 15px; margin-top: 0; padding: 0; position: relative; }
+    .timeline > div > i { background-color: #adb5bd; border-radius: 50%; font-size: 16px; height: 30px; left: 18px; line-height: 30px; position: absolute; text-align: center; top: 0; width: 30px; color: #fff; }
+</style>
+{% endblock %}
