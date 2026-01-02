@@ -58,7 +58,7 @@ html {
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Улучшенный шрифт */
     line-height: 1.8; /* Межстрочный интервал */
-    padding-top: 80px; /* Верхний отступ для фиксированной навигации */
+    padding-top: 110px; /* Увеличено для фиксированной навигации и топ-бара */
     background-color: #f8f9fa; /* Светлый фон */
     color: #333; /* Цвет текста */
     animation: fadeIn 0.5s ease-in;
@@ -129,6 +129,38 @@ body {
     );
 }
 
+/* Верхняя панель пользователя - всегда видна */
+.user-top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 34px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10005 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.user-top-bar .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 0.8rem;
+    padding: 0 12px !important;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.user-top-bar .nav-link:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.user-top-bar .active-user {
+    color: var(--color-text-4) !important;
+}
+
 /* Стили для навигационной панели - улучшенные */
 .navbar {
     background: var(--gradient-primary) !important;
@@ -138,8 +170,22 @@ body {
     backdrop-filter: blur(10px);
     transition: all var(--transition-normal);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    top: 0;
+    top: 34px !important; /* Смещаем под топ-бар */
     width: 100%;
+    z-index: 9999 !important; /* Обеспечиваем нахождение поверх всех элементов */
+}
+
+/* Все элементы меню и блоки навигации всегда поверх других объектов */
+.navbar-nav, 
+.navbar-collapse,
+.navbar-toggler,
+.nav-item {
+    position: relative;
+    z-index: 10000 !important;
+}
+
+.dropdown-menu {
+    z-index: 10001 !important;
 }
 
 .navbar.scrolled {
@@ -674,6 +720,6 @@ a.footer_pr_link:hover {
     }
     
     body {
-        padding-top: 70px;
+        padding-top: 100px;
     }
 }
