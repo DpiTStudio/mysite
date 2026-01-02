@@ -54,6 +54,7 @@
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
+    text-shadow: 1px 1px 3px rgba(144, 144, 144, 0.2);
 }
 
 /* Плавная прокрутка */
@@ -801,6 +802,17 @@ a.footer_pr_link:hover {
 }
 .text-footer-title {
     color: var(--color-text-2) !important;
-    font-size: var(--size-text-0);
+    text-shadow: 2px 2px 4px #000;
     font-weight: 500;
+}
+.footer-text-contacts {
+    color: var(--color-text-2);
+    text-shadow: 2px 2px 4px #000;
+    font-weight: 500;
+}
+.footer-text-contacts a {
+    color: var(--color-text-5);
+}
+.footer-text-contacts a:hover {
+    color: var(--color-text-6);
 }

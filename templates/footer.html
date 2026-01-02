@@ -58,37 +58,37 @@
             <!-- Контакты -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <h5 class="text-primary mb-3 text-footer-title">Контакты</h5>
-                <ul class="list-unstyled">
+                <ul class="list-unstyled footer-text-contacts">
                     {% if site_settings.site_address %}
-                        <li class="mb-3">
+                        <li class="mb-3 footer-text-contacts">
                             <i class="bi bi-geo-alt me-2"></i>
                             <span class="footer-text-contacts">{{ site_settings.site_address }}</span>
                         </li>
                     {% endif %}
                     
                     {% if site_settings.site_phone_1 %}
-                        <li class="mb-3">
+                        <li class="mb-3 footer-text-contacts">
                             <i class="bi bi-phone me-2"></i>
                             <a href="tel:{{ site_settings.site_phone_1 }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_phone_1 }}</a>
                         </li>
                     {% endif %}
                     
                     {% if site_settings.site_phone_2 %}
-                        <li class="mb-3">
+                        <li class="mb-3 footer-text-contacts">
                             <i class="bi bi-phone me-2"></i>
                             <a href="tel:{{ site_settings.site_phone_2 }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_phone_2 }}</a>
                         </li>
                     {% endif %}
                     
                     {% if site_settings.site_email %}
-                        <li class="mb-3">
+                        <li class="mb-3 footer-text-contacts">
                             <i class="bi bi-envelope me-2"></i>
                             <a href="mailto:{{ site_settings.site_email|safe }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_email|safe }}</a>
                         </li>
                     {% endif %}
                     
                     {% if site_settings.site_work_time %}
-                        <li class="mb-3">
+                        <li class="mb-3 footer-text-contacts">
                             <i class="bi bi-clock text-primary me-2"></i>
                             <span class="footer-text-contacts">{{ site_settings.site_work_time }}</span>
                         </li>

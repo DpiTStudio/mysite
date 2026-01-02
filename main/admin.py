@@ -66,7 +66,10 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         # Запрещаем удаление записей SiteSettings
         return False
-
+    
+    def has_add_permission(self, request):
+        # Запрещаем добавление записей SiteSettings
+        return False
 
 
 @admin.register(Page)
