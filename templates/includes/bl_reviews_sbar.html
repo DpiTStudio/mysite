@@ -1,0 +1,29 @@
+<!-- Последние отзывы -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-1"><i class="bi bi-chat-left-quote me-2"></i>Последние отзывы</h5>
+    </div>
+    <div class="card-body">
+        {% for review in latest_reviews %}
+        <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+            <h6 class="fw-semibold mb-1">
+                <a href="{% url 'reviews:list' %}" class="text-decoration-none text-dark">
+                    {{ review.full_name }}
+                </a>
+            </h6>
+            <div class="mb-2">
+                <small class="text-muted fst-italic">
+                    "{{ review.content|truncatewords:10 }}"
+                </small>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                    <i class="bi bi-calendar3 me-1"></i>{{ review.created_at|date:"d.m.Y" }}
+                </small>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted mb-0"><i class="bi bi-info-circle me-1"></i>Отзывов пока нет</p>
+        {% endfor %}
+    </div>
+</div>
