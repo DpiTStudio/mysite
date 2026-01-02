@@ -112,6 +112,11 @@ class SiteSettings(ActiveModel, SEOModel):
     """
     Второй контактный телефон (дополнительный или альтернативный номер).
     """
+    
+    site_address = models.CharField(max_length=200, verbose_name="Адрес")
+    """
+    Адрес сайта, отображаемый в контактах.
+    """
 
     content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
     """

@@ -18,6 +18,8 @@
     --color-text-2: hsl(0, 0%, 100%); /* Белый текст */
     --color-text-3: hsl(221, 71%, 48%); /* Синий текст */
     --color-text-4: hsl(0, 100%, 48%); /* Красный текст для акцентов */
+    --color-text-5: lab(48.5% 0.41 -1.11); /* Серый текст */
+    --color-text-6: hsl(0, 66%, 49%); /* Красный приглушенный текст */
     --color-text-muted: hsl(0, 0%, 60%); /* Приглушенный текст */
     
     /* Цвета границ */
@@ -788,4 +790,7 @@ a.footer_pr_link:hover {
 
 .standard-category-btn.active .badge-count {
     background: rgba(255, 255, 255, 0.2);
+}
+.footer-links {
+    color: var(--color-text-6);
 }
