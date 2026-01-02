@@ -43,7 +43,7 @@
 
             <!-- Категории -->
             <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="text-primary mb-3 footer_pr_link">Категории</h5>
+                <h5 class="text-primary mb-3 text-footer-title">Категории</h5>
                 <ul class="list-unstyled">
                     {% for category in categories|slice:":5" %}
                     <li class="mb-2">
@@ -57,27 +57,44 @@
 
             <!-- Контакты -->
             <div class="col-lg-4 col-md-6 mb-4">
-                <h5 class="text-primary mb-3">Контакты</h5>
+                <h5 class="text-primary mb-3 text-footer-title">Контакты</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <i class="bi bi-geo-alt text-primary me-2"></i>
-                        <span class="footer-text-contacts">{{ site_settings.site_address }}</span>
-                    </li>
-                    <li class="mb-3">
-                        <i class="bi bi-phone text-primary me-2"></i>
-                        <a href="tel:{{ site_settings.site_phone_1 }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_phone_1 }}</a>
-                    </li>
-                    <li class="mb-3">
-                        <i class="bi bi-envelope text-primary me-2"></i>
-                        <a href="mailto:{{ site_settings.site_email|safe }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_email|safe }}</a>
-                    </li>
-                    <li class="mb-3">
-                        <i class="bi bi-clock text-primary me-2"></i>
-                        <span class="footer-text-contacts">Пн-Пт: 9:00-18:00</span>
-                    </li>
+                    {% if site_settings.site_address %}
+                        <li class="mb-3">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            <span class="footer-text-contacts">{{ site_settings.site_address }}</span>
+                        </li>
+                    {% endif %}
+                    
+                    {% if site_settings.site_phone_1 %}
+                        <li class="mb-3">
+                            <i class="bi bi-phone me-2"></i>
+                            <a href="tel:{{ site_settings.site_phone_1 }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_phone_1 }}</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% if site_settings.site_phone_2 %}
+                        <li class="mb-3">
+                            <i class="bi bi-phone me-2"></i>
+                            <a href="tel:{{ site_settings.site_phone_2 }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_phone_2 }}</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% if site_settings.site_email %}
+                        <li class="mb-3">
+                            <i class="bi bi-envelope me-2"></i>
+                            <a href="mailto:{{ site_settings.site_email|safe }}" class="footer-text-contacts text-decoration-none">{{ site_settings.site_email|safe }}</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% if site_settings.site_work_time %}
+                        <li class="mb-3">
+                            <i class="bi bi-clock text-primary me-2"></i>
+                            <span class="footer-text-contacts">{{ site_settings.site_work_time }}</span>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
-        </div>
 
         <hr class="my-4 bg-secondary">
 
