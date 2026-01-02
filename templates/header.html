@@ -25,6 +25,11 @@
                 </li>
                 {% if user.is_staff %}
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mail:index' %}">
+                        <i class="bi bi-envelope"></i> <span class="d-none d-sm-inline">Почта</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-primary fw-bold" href="/admin/">
                         <i class="bi bi-cpu-fill"></i> <span class="d-none d-sm-inline">Админ</span>
                     </a>

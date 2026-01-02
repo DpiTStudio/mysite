@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "logfiles.apps.LogfilesConfig",
     "accounts.apps.AccountsConfig",  # Регистрация и авторизация
     "tickets.apps.TicketsConfig",  # Система тикетов
+    "mail.apps.MailConfig",  # Управление почтой
     "tinymce",
 ]
 
@@ -354,3 +355,18 @@ if not logs_dir.exists():
 
 # CSRF_COOKIE_SAMESITE = 'None'
 # SESSION_COOKIE_SAMESITE = 'None'
+# Настройки почты (Timeweb)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.timeweb.ru"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "admin@dpit-cms.ru")  # Замените на ваш email
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "V2Jy*qKeb/j?L6")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
+# Настройки IMAP (Timeweb)
+IMAP_HOST = "imap.timeweb.ru"
+IMAP_PORT = 993
+IMAP_USER = EMAIL_HOST_USER
+IMAP_PASSWORD = EMAIL_HOST_PASSWORD
