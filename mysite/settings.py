@@ -91,7 +91,7 @@ TEMPLATES = [
                 "main.context_processors.main_context",
                 "news.context_processors.latest_news",
                 "portfolio.context_processors.latest_portfolio",
-                # "main.context_processors.latest_news",
+                "reviews.context_processors.latest_reviews",
             ],
         },
     },
