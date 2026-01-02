@@ -1,7 +1,7 @@
 from django.db import models
 from tinymce.models import HTMLField
-from django.utils.translation import gettext_lazy as _
-from django.utils.html import format_html
+
+from .utils import RenameUploadTo
 
 
 class SiteSettings(models.Model):
@@ -60,18 +60,18 @@ class SiteSettings(models.Model):
     или в других общих блоках. По умолчанию содержит заглушку.
     """
 
-    logo = models.ImageField(upload_to="logos/", verbose_name="Логотип")
+    logo = models.ImageField(upload_to=RenameUploadTo("logos/"), verbose_name="Логотип")
     """
     Логотип сайта. Загружается в папку 'logos/'. Отображается в шапке сайта.
     """
 
-    favicon = models.ImageField(upload_to="favicons/", verbose_name="Фавикон")
+    favicon = models.ImageField(upload_to=RenameUploadTo("favicons/"), verbose_name="Фавикон")
     """
     Фавикон сайта — маленькая иконка, отображаемая в браузерной вкладке.
     Загружается в папку 'favicons/'.
     """
 
-    fon_haeders = models.ImageField(upload_to="fon_haeders/", verbose_name="Фон шапки")
+    fon_haeders = models.ImageField(upload_to=RenameUploadTo("fon_haeders/"), verbose_name="Фон шапки")
     """
     Фон шапки. Загружается в папку 'fon_haeders/'. Отображается в шапке сайта.
     """
@@ -235,7 +235,7 @@ class Page(models.Model):
     """
 
     logo = models.ImageField(
-        upload_to="page_logos/",
+        upload_to=RenameUploadTo("page_logos/"),
         verbose_name="Логотип страницы",
         blank=True,
         null=True,
@@ -247,7 +247,7 @@ class Page(models.Model):
     """
 
     fon_headers = models.ImageField(
-        upload_to="fon_headers/",
+        upload_to=RenameUploadTo("fon_headers/"),
         verbose_name="Фон шапки страницы",
         blank=True,
         null=True,

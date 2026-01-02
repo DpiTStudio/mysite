@@ -1,4 +1,57 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top thin-lines-gradient" style="z-index: 1030;">
+<!-- Верхняя панель: Пользовательское меню всегда на виду -->
+<div class="user-top-bar">
+    <div class="container-fluid d-flex justify-content-end align-items-center">
+        <ul class="nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item d-none d-md-block">
+                    <span class="nav-link disabled text-white-50">
+                        <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }}
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:profile' %}">
+                        <i class="bi bi-person"></i> <span class="d-none d-sm-inline">Кабинет</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tickets:list' %}">
+                        <i class="bi bi-ticket-perforated"></i> <span class="d-none d-sm-inline">Тикеты</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tickets:create' %}">
+                        <i class="bi bi-plus-circle"></i> <span class="d-none d-sm-inline">Новый тикет</span>
+                    </a>
+                </li>
+                {% if user.is_staff %}
+                <li class="nav-item">
+                    <a class="nav-link text-primary fw-bold" href="/admin/">
+                        <i class="bi bi-cpu-fill"></i> <span class="d-none d-sm-inline">Админ</span>
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:logout' %}">
+                        <i class="bi bi-box-arrow-right"></i> <span class="d-none d-sm-inline">Выход</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:login' %}">
+                        <i class="bi bi-box-arrow-in-right"></i> Вход
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:register' %}">
+                        <i class="bi bi-person-plus"></i> Регистрация
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top thin-lines-gradient">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'main:home' %}">
             {% if site_settings and site_settings.logo %}
@@ -21,9 +74,6 @@
         
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                {% comment %}<li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:home' %}">Главная</a>
-                </li>{% endcomment %}
                 {% for page in menu_pages %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'main:page_detail' page.slug %}">{{ page.title }}</a>
@@ -41,44 +91,12 @@
             </ul>
             
             <!-- Форма поиска -->
-            <form class="d-flex me-2" action="{% url 'news:search' %}" method="get">
+            <form class="d-flex" action="{% url 'news:search' %}" method="get">
                 <input class="form-control me-2" type="search" name="q" placeholder="Поиск новостей..." aria-label="Search" value="{{ request.GET.q|default:'' }}">
                 <button class="btn btn-outline-light" type="submit">
                     <i class="bi bi-search"></i>
                 </button>
             </form>
-            
-            <!-- Пользовательское меню -->
-            <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i> Личный кабинет</a></li>
-                            <li><a class="dropdown-item" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-perforated"></i> Мои тикеты</a></li>
-                            <li><a class="dropdown-item" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle"></i> Создать тикет</a></li>
-                            {% if user.is_staff %}
-                            <li><a class="dropdown-item text-primary fw-bold" href="/admin/"><i class="bi bi-cpu-fill"></i> Админ-панель</a></li>
-                            {% endif %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Выход</a></li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:login' %}">
-                            <i class="bi bi-box-arrow-in-right"></i> Вход
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:register' %}">
-                            <i class="bi bi-person-plus"></i> Регистрация
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
         </div>
     </div>
 </nav>

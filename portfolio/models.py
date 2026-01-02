@@ -1,11 +1,12 @@
 from django.db import models
 from tinymce.models import HTMLField
+from main.utils import RenameUploadTo
 
 
 class PortfolioCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="URL")
-    logo = models.ImageField(upload_to="portfolio/categories/", verbose_name="Логотип")
+    logo = models.ImageField(upload_to=RenameUploadTo("portfolio/categories/"), verbose_name="Логотип")
     meta_title = models.CharField(max_length=200, verbose_name="Мета заголовок")
     meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
     description = models.TextField(verbose_name="Описание")
@@ -13,7 +14,7 @@ class PortfolioCategory(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     order = models.IntegerField(default=0, verbose_name="Порядок")
     header_image = models.ImageField(
-        upload_to="portfolio/headers/",
+        upload_to=RenameUploadTo("portfolio/headers/"),
         verbose_name="Изображение шапки",
         blank=True,
         null=True,
@@ -48,7 +49,7 @@ class Portfolio(models.Model):
     category = models.ForeignKey(
         PortfolioCategory, on_delete=models.CASCADE, verbose_name="Категория"
     )
-    image = models.ImageField(upload_to="portfolio/images/", verbose_name="Изображение")
+    image = models.ImageField(upload_to=RenameUploadTo("portfolio/images/"), verbose_name="Изображение")
     meta_title = models.CharField(max_length=200, verbose_name="Мета заголовок")
     meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
     meta_description = models.CharField(max_length=255, verbose_name="Мета описание")
