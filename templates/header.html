@@ -81,19 +81,38 @@
         
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'main:home' %}">
+                        <i class="bi bi-house-door"></i> Главная
+                    </a>
+                </li>
                 {% for page in menu_pages %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:page_detail' page.slug %}">{{ page.title }}</a>
+                    <a class="nav-link" href="{% url 'main:page_detail' page.slug %}">
+                        {% if page.slug == 'o-nas' %}
+                            <i class="bi bi-info-circle"></i> О нас
+                        {% elif page.slug == 'page' %}
+                            <i class="bi bi-file-earmark-text"></i> Страница
+                        {% else %}
+                            <i class="bi bi-file-earmark"></i> {{ page.title }}
+                        {% endif %}
+                    </a>
                 </li>
                 {% endfor %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'news:list' %}">Новости</a>
+                    <a class="nav-link" href="{% url 'news:list' %}">
+                        <i class="bi bi-newspaper"></i> Новости
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'portfolio:list' %}">Портфолио</a>
+                    <a class="nav-link" href="{% url 'portfolio:list' %}">
+                        <i class="bi bi-briefcase"></i> Портфолио
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
+                    <a class="nav-link" href="{% url 'reviews:list' %}">
+                        <i class="bi bi-chat-left-quote"></i> Отзывы
+                    </a>
                 </li>
             </ul>
             
