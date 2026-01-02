@@ -54,7 +54,6 @@
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
-    text-shadow: 1px 1px 3px rgba(144, 144, 144, 0.2);
 }
 
 /* Плавная прокрутка */
@@ -70,6 +69,7 @@ body {
     background-color: #f8f9fa; /* Светлый фон */
     color: #333; /* Цвет текста */
     animation: fadeIn 0.5s ease-in;
+    text-shadow: 2px 2px 4px rgba(144, 144, 144, 0.274);
 }
 
 /* Анимация появления страницы */
@@ -212,7 +212,7 @@ body {
 }
 
 .navbar-brand:hover {
-    transform: scale(1.05);
+    transform: scale(1.25);
 }
 
 .navbar-brand img {
@@ -222,7 +222,7 @@ body {
 }
 
 .navbar-brand:hover img {
-    transform: rotate(5deg) scale(1.1);
+    transform: rotate(10deg) scale(1.2);
 }
 
 /* Ссылки в навигации */
