@@ -18,6 +18,8 @@
     --color-text-2: hsl(0, 0%, 100%); /* Белый текст */
     --color-text-3: hsl(221, 71%, 48%); /* Синий текст */
     --color-text-4: hsl(0, 100%, 48%); /* Красный текст для акцентов */
+    --color-text-5: lab(48.5% 0.41 -1.11); /* Серый текст */
+    --color-text-6: hsl(0, 66%, 49%); /* Красный приглушенный текст */
     --color-text-muted: hsl(0, 0%, 60%); /* Приглушенный текст */
     
     /* Цвета границ */
@@ -34,7 +36,12 @@
     --shadow-text: 0 2px 4px rgba(0, 0, 0, 0.1);
     
     /* Размеры текста */
+    --size-text-0: 2rem; /* Крупный размер шрифта (32px) */
     --size-text-1: 1.5rem; /* Крупный размер шрифта (24px) */
+    --size-text-2: 1rem; /* Средний размер шрифта (16px) */
+    --size-text-3: 0.875rem; /* Маленький размер шрифта (14px) */
+    --size-text-4: 0.75rem; /* Очень маленький размер шрифта (12px) */
+    --size-text-5: 0.625rem; /* Очень маленький размер шрифта (10px) */
     
     /* Переходы */
     --transition-fast: 0.2s ease;
@@ -788,4 +795,12 @@ a.footer_pr_link:hover {
 
 .standard-category-btn.active .badge-count {
     background: rgba(255, 255, 255, 0.2);
+}
+.footer-links {
+    color: var(--color-text-6);
+}
+.text-footer-title {
+    color: var(--color-text-2) !important;
+    font-size: var(--size-text-0);
+    font-weight: 500;
 }

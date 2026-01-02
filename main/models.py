@@ -93,22 +93,22 @@ class SiteSettings(ActiveModel, SEOModel):
     Краткий слоган сайта, может использоваться в шапке или рекламных блоках.
     """
 
-    site_description = models.TextField(verbose_name="Описание сайта")
+    site_description = models.TextField(max_length=255, verbose_name="Описание сайта")
     """
     Полное текстовое описание сайта, применяемое в мета-тегах и на страницах.
     """
 
-    site_email = models.EmailField(max_length=20, verbose_name="Электронная почта")
+    site_email = models.EmailField(max_length=30, verbose_name="Электронная почта")
     """
     Основной email для связи с администраторами сайта.
     """
 
-    site_phone_1 = models.CharField(max_length=11, verbose_name="Телефон 1")
+    site_phone_1 = models.CharField(max_length=20, verbose_name="Телефон 1")
     """
     Первый контактный телефон (например, основной номер поддержки).
     """
 
-    site_phone_2 = models.CharField(max_length=11, verbose_name="Телефон 2")
+    site_phone_2 = models.CharField(max_length=20, verbose_name="Телефон 2")
     """
     Второй контактный телефон (дополнительный или альтернативный номер).
     """
@@ -150,6 +150,14 @@ class SiteSettings(ActiveModel, SEOModel):
     """
     Домен сайта для отображения в шапке. Если не указан, используется текущий хост.
     """
+    
+    site_work_time = models.CharField(
+        max_length=200, 
+        verbose_name="Время работы",
+        blank=True,
+        null=True,
+        help_text="Время работы компании (например: Пн-Пт: 9:00-18:00)"
+    )
 
     def __str__(self):
         """
