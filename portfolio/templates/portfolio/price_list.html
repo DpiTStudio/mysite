@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Прайс-лист услуг{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Наши услуги и цены</h1>
+        <p class="lead text-muted">Выберите подходящую услугу и оставьте заявку — мы свяжемся с вами в ближайшее время.</p>
+    </div>
+
+    {% if messages %}
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-3">
+            <!-- Боковая навигация по категориям -->
+            <div class="sticky-top" style="top: 100px;">
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3 border-bottom pb-2">Категории</h5>
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                            {% for category in categories %}
+                            <a class="nav-link mb-2 rounded-3 {% if forloop.first %}active{% endif %}" 
+                               id="cat-tab-{{ category.id }}" 
+                               data-bs-toggle="pill" 
+                               href="#cat-{{ category.id }}" 
+                               role="tab">
+                                {{ category.name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card border-0 bg-primary text-white shadow-sm rounded-4">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-headset display-4 mb-3"></i>
+                        <h5>Нужна помощь?</h5>
+                        <p class="small mb-0">Свяжитесь с нами для бесплатной консультации</p>
+                        <a href="/contacts/" class="btn btn-light btn-sm mt-3 px-4">Контакты</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                {% for category in categories %}
+                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" 
+                     id="cat-{{ category.id }}" 
+                     role="tabpanel">
+                    
+                    <div class="mb-4">
+                        <h2 class="fw-bold">{{ category.name }}</h2>
+                        {% if category.description %}
+                        <p class="text-muted">{{ category.description|striptags }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="row g-4">
+                        {% for service in services %}
+                        {% if service.category_id == category.id %}
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden service-card">
+                                {% if service.image %}
+                                <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.title }}" style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body p-4 d-flex flex-column">
+                                    <h5 class="card-title fw-bold mb-3">{{ service.title }}</h5>
+                                    <div class="card-text text-muted small mb-4 flex-grow-1">
+                                        {{ service.content|safe|truncatewords_html:30 }}
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-auto border-top pt-3">
+                                        <div class="price-tag text-primary h4 fw-bold mb-0">
+                                            {% if service.price %}
+                                            {{ service.price|floatformat:0 }} ₽
+                                            {% else %}
+                                            Цена по запросу
+                                            {% endif %}
+                                        </div>
+                                        <button class="btn btn-primary rounded-pill px-4 order-btn" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#orderModal" 
+                                                data-service-id="{{ service.id }}" 
+                                                data-service-name="{{ service.title }}">
+                                            Заказать
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно заказа -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="orderModalLabel">Заказ услуги</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="text-muted mb-4">Вы заказываете: <strong id="selected-service-name" class="text-primary"></strong></p>
+                <form method="post" id="order-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_id" id="service-id-input">
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">ФИО *</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Email *</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Телефон *</label>
+                            {{ form.phone }}
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">Сообщение</label>
+                        {{ form.message }}
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill">Отправить заявку</button>
+                    </div>
+                    <p class="text-center text-muted small mt-3">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .service-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+    .nav-pills .nav-link {
+        color: #495057;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+    .nav-pills .nav-link.active {
+        background-color: var(--bs-primary);
+        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+    }
+    .nav-link:hover:not(.active) {
+        background-color: #f8f9fa;
+    }
+    .price-tag {
+        font-family: 'Montserrat', sans-serif;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const orderModal = document.getElementById('orderModal');
+    if (orderModal) {
+        orderModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const serviceId = button.getAttribute('data-service-id');
+            const serviceName = button.getAttribute('data-service-name');
+            
+            const serviceIdInput = orderModal.querySelector('#service-id-input');
+            const selectedServiceName = orderModal.querySelector('#selected-service-name');
+            
+            serviceIdInput.value = serviceId;
+            selectedServiceName.textContent = serviceName;
+        });
+    }
+});
+</script>
+{% endblock %}
