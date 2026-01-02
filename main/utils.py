@@ -46,10 +46,21 @@ class RenameUploadTo:
                     title = str(val)
                     break
         
-        # Если это профиль, берем имя пользователя
-        if not title and hasattr(instance, 'user') and hasattr(instance.user, 'username'):
-            title = instance.user.username
-            
+        # Если не нашли, проверяем связанные объекты (например, для резервных копий или профилей)
+        if not title:
+            for rel_attr in ['user', 'log_file', 'news', 'portfolio']:
+                if hasattr(instance, rel_attr):
+                    related = getattr(instance, rel_attr)
+                    if related:
+                        for attr in ['username', 'title', 'name']:
+                            if hasattr(related, attr):
+                                val = getattr(related, attr)
+                                if val:
+                                    title = str(val)
+                                    break
+                    if title:
+                        break
+
         if not title:
             title = "file"
             

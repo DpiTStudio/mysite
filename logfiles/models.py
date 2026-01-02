@@ -1,10 +1,6 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+from main.utils import RenameUploadTo
 import os
-from pathlib import Path
-from django.conf import settings
 
 
 class LogFile(models.Model):
@@ -78,7 +74,7 @@ class LogBackup(models.Model):
         verbose_name="Файл лога"
     )
     backup_file = models.FileField(
-        upload_to="logs/backups/",
+        upload_to=RenameUploadTo("logs/backups/"),
         verbose_name="Резервная копия",
         help_text="Файл резервной копии"
     )

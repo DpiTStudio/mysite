@@ -2,12 +2,14 @@ from .models import Page, SiteSettings
 
 
 def main_context(request):
+    """
+    Глобальный контекст-процессор для передачи общих данных во все шаблоны.
+    Обеспечивает единую логику для заголовков, настроек сайта и меню.
+    """
     settings = SiteSettings.objects.filter(is_active=True).first()
-    menu_pages = Page.objects.filter(show_in_menu=True, is_active=True).order_by(
-        "order"
-    )
+    menu_pages = Page.objects.filter(show_in_menu=True, is_active=True).order_by("order")
 
-    # Определяем текущую страницу или категорию для шапки
+    # Значения по умолчанию для шапки
     header_data = {
         "title": settings.site_title if settings else "DPIT-CMS",
         "description": settings.site_description if settings else "",
@@ -21,51 +23,63 @@ def main_context(request):
     found_header = False
 
     if path_parts:
-        # Пытаемся определить, находимся ли мы в новостях или портфолио
-        if path_parts[0] == "news":
-            from news.models import NewsCategory, News
-            if len(path_parts) > 2 and path_parts[1] == "category":
-                category = NewsCategory.objects.filter(slug=path_parts[2], is_active=True).first()
-                if category:
-                    header_data["title"] = category.header_title or category.name
-                    header_data["description"] = category.header_description or category.description
-                    if category.header_image:
-                        header_data["image"] = category.header_image.url
-                    found_header = True
-            elif len(path_parts) > 1: # Это может быть новость
-                news = News.objects.filter(slug=path_parts[1], is_active=True).first()
-                if news and news.category:
-                    header_data["title"] = news.category.header_title or news.category.name
-                    header_data["description"] = news.category.header_description or news.category.description
-                    if news.category.header_image:
-                        header_data["image"] = news.category.header_image.url
-                    found_header = True
-
-        elif path_parts[0] == "portfolio":
-            from portfolio.models import PortfolioCategory, Portfolio
-            if len(path_parts) > 2 and path_parts[1] == "category":
-                category = PortfolioCategory.objects.filter(slug=path_parts[2], is_active=True).first()
-                if category:
-                    header_data["title"] = category.header_title or category.name
-                    header_data["description"] = category.header_description or category.description
-                    if category.header_image:
-                        header_data["image"] = category.header_image.url
-                    found_header = True
-            elif len(path_parts) > 1: # Это может быть портфолио
-                portfolio = Portfolio.objects.filter(slug=path_parts[1], is_active=True).first()
-                if portfolio and portfolio.category:
-                    header_data["title"] = portfolio.category.header_title or portfolio.category.name
-                    header_data["description"] = portfolio.category.header_description or portfolio.category.description
-                    if portfolio.category.header_image:
-                        header_data["image"] = portfolio.category.header_image.url
-                    found_header = True
+        app_name = path_parts[0]
         
-        # Если хидер еще не найден, проверяем обычные страницы
+        # 1. Логика для Новостей
+        if app_name == "news":
+            from news.models import NewsCategory, News
+            if "category" in path_parts and len(path_parts) > path_parts.index("category") + 1:
+                slug = path_parts[path_parts.index("category") + 1]
+                obj = NewsCategory.objects.filter(slug=slug, is_active=True).first()
+            elif len(path_parts) > 1:
+                news = News.objects.filter(slug=path_parts[1], is_active=True).first()
+                obj = news.category if news else None
+            else:
+                obj = None # Можно добавить дефолтный хидер для списка новостей
+            
+            if obj:
+                header_data["title"] = obj.header_title or obj.name
+                header_data["description"] = obj.header_description or obj.description
+                if obj.header_image:
+                    header_data["image"] = obj.header_image.url
+                found_header = True
+
+        # 2. Логика для Портфолио
+        elif app_name == "portfolio":
+            from portfolio.models import PortfolioCategory, Portfolio
+            if "category" in path_parts and len(path_parts) > path_parts.index("category") + 1:
+                slug = path_parts[path_parts.index("category") + 1]
+                obj = PortfolioCategory.objects.filter(slug=slug, is_active=True).first()
+            elif len(path_parts) > 1:
+                portfolio = Portfolio.objects.filter(slug=path_parts[1], is_active=True).first()
+                obj = portfolio.category if portfolio else None
+            else:
+                obj = None
+            
+            if obj:
+                header_data["title"] = obj.header_title or obj.name
+                header_data["description"] = obj.header_description or obj.description
+                if obj.header_image:
+                    header_data["image"] = obj.header_image.url
+                found_header = True
+        
+        # 3. Логика для других приложений (отзывы, тикеты)
+        elif app_name == "reviews":
+            header_data["title"] = "Отзывы наших клиентов"
+            header_data["description"] = "Мы ценим ваше мнение о нашей работе"
+            found_header = True
+            
+        elif app_name == "tickets":
+            header_data["title"] = "Техническая поддержка"
+            header_data["description"] = "Мы всегда готовы помочь вам"
+            found_header = True
+
+        # 4. Логика для обычных страниц
         if not found_header:
             slug = path_parts[-1]
             current_page = Page.objects.filter(slug=slug, is_active=True).first()
             if current_page:
-                header_data["title"] = current_page.title
+                header_data["title"] = current_page.meta_title or current_page.title
                 header_data["description"] = current_page.meta_description
                 if current_page.fon_headers:
                     header_data["image"] = current_page.fon_headers.url

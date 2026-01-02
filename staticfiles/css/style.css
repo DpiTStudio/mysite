@@ -723,3 +723,69 @@ a.footer_pr_link:hover {
         padding-top: 100px;
     }
 }
+
+/* Стандартизированные стили для карточек и фильтров */
+.standard-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.standard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.standard-card-image {
+    height: 220px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.category-filter-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+}
+
+.standard-category-btn {
+    text-align: center;
+    border-radius: 8px;
+    margin: 0.25rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid #dee2e6;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    color: #495057;
+    background: white;
+    font-weight: 500;
+}
+
+.standard-category-btn:hover, .standard-category-btn.active {
+    background-color: var(--color-fon-1);
+    color: white !important;
+    border-color: var(--color-fon-1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.badge-count {
+    font-size: 0.7rem;
+    margin-left: 0.3rem;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+}
+
+.standard-category-btn.active .badge-count {
+    background: rgba(255, 255, 255, 0.2);
+}

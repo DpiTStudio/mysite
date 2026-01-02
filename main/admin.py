@@ -57,7 +57,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             "Основная информация",
             {"fields": ("site_title", "site_slogan", "site_description", "site_domain", "is_active")},
         ),
-        ("SEO настройки", {"fields": ("meta_keywords", "meta_description")}),
+        ("SEO настройки", {"fields": ("meta_title", "meta_keywords", "meta_description")}),
         ("Контент и медиа", {"fields": ("content", "fon_haeders", "logo", "favicon")}),
     )
 

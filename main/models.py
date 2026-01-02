@@ -1,10 +1,79 @@
 from django.db import models
 from tinymce.models import HTMLField
-
 from .utils import RenameUploadTo
 
 
-class SiteSettings(models.Model):
+class ActiveModel(models.Model):
+    """Абстрактная модель для управления активностью записи."""
+    is_active = models.BooleanField(default=True, verbose_name="Активно")
+
+    class Meta:
+        abstract = True
+
+
+class TimestampModel(models.Model):
+    """Абстрактная модель для хранения меток времени."""
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    class Meta:
+        abstract = True
+
+
+class SEOModel(models.Model):
+    """Абстрактная модель для SEO настроек."""
+    meta_title = models.CharField(
+        max_length=200, 
+        verbose_name="Мета заголовок", 
+        blank=True,
+        help_text="Заголовок страницы для поисковых систем."
+    )
+    meta_keywords = models.CharField(
+        max_length=200, 
+        verbose_name="Ключевые слова", 
+        blank=True,
+        help_text="Ключевые слова через запятую."
+    )
+    meta_description = models.CharField(
+        max_length=255, 
+        verbose_name="Мета описание", 
+        blank=True,
+        help_text="Краткое описание для поисковых систем."
+    )
+
+    class Meta:
+        abstract = True
+
+
+class HeaderModel(models.Model):
+    """Абстрактная модель для настройки шапки страницы."""
+    header_image = models.ImageField(
+        upload_to=RenameUploadTo("headers/"),
+        verbose_name="Изображение шапки",
+        blank=True,
+        null=True,
+        help_text="Фоновое изображение для заголовка страницы."
+    )
+    header_title = models.CharField(
+        max_length=200, 
+        verbose_name="Заголовок шапки", 
+        blank=True, 
+        null=True,
+        help_text="Оставьте пустым для использования стандартного названия."
+    )
+    header_description = models.TextField(
+        verbose_name="Описание шапки", 
+        blank=True, 
+        null=True,
+        help_text="Дополнительный текст под заголовком."
+    )
+
+    class Meta:
+        abstract = True
+
+
+
+class SiteSettings(ActiveModel, SEOModel):
     """
     Модель для хранения глобальных настроек сайта.
 
@@ -44,16 +113,6 @@ class SiteSettings(models.Model):
     Второй контактный телефон (дополнительный или альтернативный номер).
     """
 
-    meta_keywords = models.CharField(max_length=200, verbose_name="Ключевые слова")
-    """
-    Ключевые слова для SEO, используются в мета-теге keywords.
-    """
-
-    meta_description = models.CharField(max_length=255, verbose_name="Мета описание")
-    """
-    Краткое описание сайта для отображения в поисковых системах.
-    """
-
     content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
     """
     Основной HTML-контент сайта, может использоваться на главной странице
@@ -85,12 +144,6 @@ class SiteSettings(models.Model):
     )
     """
     Домен сайта для отображения в шапке. Если не указан, используется текущий хост.
-    """
-
-    is_active = models.BooleanField(default=True, verbose_name="Активно")
-    """
-    Флаг активности записи. Позволяет временно отключать настройки,
-    не удаляя их из базы данных.
     """
 
     def __str__(self):
@@ -131,7 +184,7 @@ class SiteSettings(models.Model):
         verbose_name_plural = "Настройки сайта"
 
 
-class Page(models.Model):
+class Page(ActiveModel, TimestampModel, SEOModel):
     """
     Модель для представления страницы сайта.
 
@@ -159,34 +212,6 @@ class Page(models.Model):
     Должен быть уникальным по всей системе.
     """
 
-    meta_title = models.CharField(
-        max_length=200,
-        verbose_name="Мета заголовок",
-        help_text="Заголовок страницы для поисковых систем и социальных сетей.",
-    )
-    """
-    Мета-тег заголовка, используемый в SEO и при отображении ссылки в поиске.
-    """
-
-    meta_keywords = models.CharField(
-        max_length=200,
-        verbose_name="Ключевые слова",
-        help_text="Список ключевых слов через запятую для SEO.",
-    )
-    """
-    Ключевые слова для SEO. Указываются через запятую.
-    """
-
-    meta_description = models.CharField(
-        max_length=255,
-        verbose_name="Мета описание",
-        help_text="Краткое описание страницы для поисковых систем.",
-    )
-    """
-    Описание страницы, отображаемое в результатах поиска.
-    Рекомендуемая длина — до 255 символов.
-    """
-
     content = HTMLField(
         verbose_name="Контент",
         default="<p>Контент сайта</p>",
@@ -206,15 +231,6 @@ class Page(models.Model):
     Флаг отображения страницы в навигационном меню.
     """
 
-    is_active = models.BooleanField(
-        default=True,
-        verbose_name="Активно",
-        help_text="Если снята галочка, страница будет скрыта с сайта.",
-    )
-    """
-    Статус активности страницы. Неактивные страницы не отображаются на сайте.
-    """
-
     order = models.IntegerField(
         default=0,
         verbose_name="Порядок",
@@ -222,16 +238,6 @@ class Page(models.Model):
     )
     """
     Порядковый номер для сортировки страниц. Чем меньше значение — тем выше в списке.
-    """
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    """
-    Дата и время создания записи. Устанавливается автоматически при создании.
-    """
-
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
-    """
-    Дата и время последнего обновления записи. Обновляется автоматически при каждом сохранении.
     """
 
     logo = models.ImageField(

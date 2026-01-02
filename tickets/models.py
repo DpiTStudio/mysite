@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from main.models import TimestampModel
 
 User = get_user_model()
 
@@ -19,7 +20,7 @@ class TicketPriority(models.TextChoices):
     URGENT = "urgent", _("Срочный")
 
 
-class Ticket(models.Model):
+class Ticket(TimestampModel):
     """Модель тикета"""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tickets", verbose_name="Пользователь")
     subject = models.CharField(max_length=200, verbose_name="Тема")
@@ -36,8 +37,6 @@ class Ticket(models.Model):
         default=TicketPriority.MEDIUM,
         verbose_name="Приоритет"
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
     closed_at = models.DateTimeField(null=True, blank=True, verbose_name="Закрыт")
     
     class Meta:
@@ -49,12 +48,11 @@ class Ticket(models.Model):
         return f"{self.subject} ({self.get_status_display()})"
 
 
-class TicketMessage(models.Model):
+class TicketMessage(TimestampModel):
     """Модель сообщения в тикете"""
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Тикет")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор")
     message = models.TextField(verbose_name="Сообщение")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создано")
     is_internal = models.BooleanField(default=False, verbose_name="Внутреннее сообщение")
     
     class Meta:

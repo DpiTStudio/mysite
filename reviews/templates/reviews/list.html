@@ -4,11 +4,13 @@
 {% block title %}Отзывы клиентов{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container py-4">
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1><i class="bi bi-star"></i> Отзывы клиентов</h1>
+                <h1 class="display-5 fw-bold text-primary mb-0">
+                    <i class="bi bi-star-fill text-warning"></i> Отзывы
+                </h1>
                 <a href="{% url 'reviews:create' %}" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> Оставить отзыв
                 </a>
@@ -17,37 +19,44 @@
             <div class="row">
                 {% for review in reviews %}
                 <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
+                    <div class="card standard-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
-                                    <h5 class="card-title mb-1">{{ review.full_name }}</h5>
-                                    <small class="text-muted">
-                                        <i class="bi bi-envelope"></i> {{ review.email }}
+                                    <h5 class="card-title mb-1 text-primary">{{ review.full_name }}</h5>
+                                    <div class="small text-muted d-flex flex-wrap gap-2">
+                                        <span><i class="bi bi-envelope"></i> {{ review.email }}</span>
                                         {% if review.phone %}
-                                            | <i class="bi bi-telephone"></i> {{ review.phone }}
+                                            <span>| <i class="bi bi-telephone"></i> {{ review.phone }}</span>
                                         {% endif %}
-                                    </small>
+                                    </div>
                                 </div>
                                 <div class="text-end">
-                                    <small class="text-muted">{{ review.created_at|date:"d.m.Y" }}</small>
+                                    <small class="text-muted"><i class="bi bi-calendar3"></i> {{ review.created_at|date:"d.m.Y" }}</small>
                                 </div>
                             </div>
-                            <p class="card-text">{{ review.content|linebreaks }}</p>
-                            {% if review.status == 'pending' %}
-                                <span class="badge bg-warning">На модерации</span>
-                            {% elif review.status == 'approved' %}
-                                <span class="badge bg-success">Одобрен</span>
-                            {% endif %}
+                            <div class="card-text mb-3">
+                                <i class="bi bi-quote fs-4 text-muted opacity-25"></i>
+                                <span class="ms-2">{{ review.content|linebreaksbr }}</span>
+                            </div>
+                            <div class="mt-auto border-top pt-2">
+                                {% if review.status == 'pending' %}
+                                    <span class="badge bg-warning"><i class="bi bi-clock"></i> На модерации</span>
+                                {% elif review.status == 'approved' %}
+                                    <span class="badge bg-success"><i class="bi bi-check-circle"></i> Одобрен</span>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% empty %}
-                <div class="col-12">
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle"></i> Пока нет отзывов. 
-                        <a href="{% url 'reviews:create' %}">Станьте первым!</a>
-                    </div>
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-star display-1 text-muted opacity-25 mb-4"></i>
+                    <h4>Отзывов пока нет</h4>
+                    <p class="text-muted">Будьте первым, кто оставит свой отзыв о нашей работе!</p>
+                    <a href="{% url 'reviews:create' %}" class="btn btn-primary mt-3">
+                        Написать отзыв
+                    </a>
                 </div>
                 {% endfor %}
             </div>

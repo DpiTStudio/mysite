@@ -1,7 +1,8 @@
 from django.db import models
+from main.models import TimestampModel
 
 
-class Review(models.Model):
+class Review(TimestampModel):
     STATUS_CHOICES = (
         ("pending", "На модерации"),
         ("approved", "Одобрено"),
@@ -15,8 +16,6 @@ class Review(models.Model):
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default="pending", verbose_name="Статус"
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Отзыв"
