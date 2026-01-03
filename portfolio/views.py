@@ -128,6 +128,10 @@ def portfolio_detail(request, slug):
     portfolio = get_object_or_404(Portfolio, slug=slug, is_active=True)
     portfolio.increment_views()
 
+    categories = PortfolioCategory.objects.filter(is_active=True).annotate(
+        portfolio_count=Count("portfolio")
+    )
+
     # Получаем похожие портфолио из той же категории
     related_portfolio = (
         Portfolio.objects.filter(category=portfolio.category, is_active=True, is_service=portfolio.is_service)
@@ -142,6 +146,7 @@ def portfolio_detail(request, slug):
             "portfolio": portfolio,
             "related_portfolio": related_portfolio,
             "latest_portfolio": get_latest_portfolio(),
+            "categories": categories,
         },
     )
 
