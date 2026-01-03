@@ -4,14 +4,129 @@
 {% block title %}{{ page.meta_title }}{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container my-5">
     <div class="row">
         <div class="col-12">
-            <h1>{{ page.title }}</h1>
-            <div class="ckeditor-content">
+            <h1 class="mb-4">{{ page.title }}</h1>
+            <div class="ckeditor-content mb-5">
                 {{ page.content|safe }}
             </div>
         </div>
     </div>
+
+    {% if page.slug == 'kontakty' %}
+    <div class="row mt-4">
+        <div class="col-md-5 mb-4">
+            <div class="card h-100 shadow-sm border-0 bg-light">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-4 fw-bold">Наши контакты</h3>
+                    
+                    {% if site_settings.site_address %}
+                    <div class="mb-4 d-flex">
+                        <div class="me-3 text-primary"><i class="fas fa-map-marker-alt fa-lg"></i></div>
+                        <div>
+                            <strong class="d-block text-dark">Адрес:</strong>
+                            <span class="text-muted">{{ site_settings.site_address }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if site_settings.site_phone_1 %}
+                    <div class="mb-4 d-flex">
+                        <div class="me-3 text-primary"><i class="fas fa-phone fa-lg"></i></div>
+                        <div>
+                            <strong class="d-block text-dark">Телефон:</strong>
+                            <a href="tel:{{ site_settings.site_phone_1 }}" class="text-decoration-none text-muted d-block">{{ site_settings.site_phone_1 }}</a>
+                            {% if site_settings.site_phone_2 %}
+                            <a href="tel:{{ site_settings.site_phone_2 }}" class="text-decoration-none text-muted d-block">{{ site_settings.site_phone_2 }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if site_settings.site_email %}
+                    <div class="mb-4 d-flex">
+                        <div class="me-3 text-primary"><i class="fas fa-envelope fa-lg"></i></div>
+                        <div>
+                            <strong class="d-block text-dark">Email:</strong>
+                            <a href="mailto:{{ site_settings.site_email }}" class="text-decoration-none text-muted">{{ site_settings.site_email }}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if site_settings.site_work_time %}
+                    <div class="mb-4 d-flex">
+                        <div class="me-3 text-primary"><i class="fas fa-clock fa-lg"></i></div>
+                        <div>
+                            <strong class="d-block text-dark">Время работы:</strong>
+                            <span class="text-muted">{{ site_settings.site_work_time }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-4 fw-bold">Напишите нам</h3>
+                    <form method="post" class="needs-validation">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label text-secondary">{{ form.name.label }}</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                            <div class="text-danger small">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.phone.id_for_label }}" class="form-label text-secondary">{{ form.phone.label }}</label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                <div class="text-danger small">{{ form.phone.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label text-secondary">{{ form.email.label }}</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                <div class="text-danger small">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.message.id_for_label }}" class="form-label text-secondary">{{ form.message.label }}</label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                            <div class="text-danger small">{{ form.message.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4 captcha-container">
+                            <label class="form-label text-secondary">{{ form.captcha.label }}</label>
+                            {{ form.captcha }}
+                            {% if form.captcha.errors %}
+                            <div class="text-danger small">{{ form.captcha.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary px-4 py-2">Отправить сообщение</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

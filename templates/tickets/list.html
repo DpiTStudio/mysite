@@ -4,31 +4,7 @@
 {% block title %}Мои тикеты{% endblock %}
 
 {% block extra_css %}
-<style>
-    .ticket-status {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 0.85rem;
-        font-weight: bold;
-    }
-    .status-open { background: #d4edda; color: #155724; }
-    .status-in_progress { background: #fff3cd; color: #856404; }
-    .status-resolved { background: #cce5ff; color: #004085; }
-    .status-closed { background: #f8d7da; color: #721c24; }
-    
-    .priority-badge {
-        display: inline-block;
-        padding: 3px 8px;
-        border-radius: 3px;
-        font-size: 0.75rem;
-        font-weight: bold;
-    }
-    .priority-low { background: #e7f3ff; color: #0066cc; }
-    .priority-medium { background: #fff4e6; color: #cc6600; }
-    .priority-high { background: #ffe6e6; color: #cc0000; }
-    .priority-urgent { background: #ffcccc; color: #990000; }
-</style>
+<link href="{% static 'css/tickets.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}

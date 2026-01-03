@@ -4,32 +4,7 @@
 {% block title %}Личный кабинет{% endblock %}
 
 {% block extra_css %}
-<style>
-    .profile-sidebar {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-    }
-    .profile-nav {
-        list-style: none;
-        padding: 0;
-    }
-    .profile-nav li {
-        margin-bottom: 10px;
-    }
-    .profile-nav a {
-        display: block;
-        padding: 10px 15px;
-        color: #333;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: all 0.3s;
-    }
-    .profile-nav a:hover, .profile-nav a.active {
-        background: #007bff;
-        color: white;
-    }
-</style>
+<link href="{% static 'css/accounts.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}

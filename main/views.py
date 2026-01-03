@@ -1,5 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Page
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Page, SiteSettings
+from .forms import ContactForm
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 from news.models import News, NewsCategory
 from portfolio.models import Portfolio, PortfolioCategory
 from reviews.models import Review
@@ -33,7 +37,40 @@ def home(request):
 
 def page_detail(request, slug):
     page = get_object_or_404(Page, slug=slug, is_active=True)
-    return render(request, "main/page_detail.html", {"page": page})
+    form = None
+
+    if slug == "kontakty":
+        if request.method == "POST":
+            form = ContactForm(request.POST)
+            if form.is_valid():
+                site_settings = SiteSettings.objects.filter(is_active=True).first()
+                recipient = site_settings.site_email if site_settings and site_settings.site_email else settings.EMAIL_HOST_USER
+                
+                subject = f"Сообщение с сайта: {form.cleaned_data['name']}"
+                message = f"""
+                Имя: {form.cleaned_data['name']}
+                Email: {form.cleaned_data['email']}
+                Телефон: {form.cleaned_data['phone']}
+                
+                Сообщение:
+                {form.cleaned_data['message']}
+                """
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [recipient],
+                        fail_silently=False,
+                    )
+                    messages.success(request, "Ваше сообщение успешно отправлено!")
+                    return redirect("main:page_detail", slug=slug)
+                except Exception as e:
+                    messages.error(request, f"Ошибка при отправке: {e}")
+        else:
+            form = ContactForm()
+
+    return render(request, "main/page_detail.html", {"page": page, "form": form})
 
 
 def page_not_found(request, exception):

@@ -1,0 +1,59 @@
+/* Mail Styles */
+.mail-card {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: none;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+}
+.mail-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 20px;
+}
+.mail-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+.mail-item {
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.mail-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+.mail-item.unread {
+    border-left: 4px solid #1e3c72;
+    background-color: #fff;
+}
+.mail-subject {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+.mail-from {
+    font-size: 0.85rem;
+    color: #666;
+}
+.mail-date {
+    font-size: 0.8rem;
+    color: #999;
+    float: right;
+}
+.settings-badge {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    margin-right: 10px;
+}
+.test-mail-form {
+    background: #f1f3f5;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}

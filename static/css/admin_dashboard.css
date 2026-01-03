@@ -1,0 +1,18 @@
+/* Admin Dashboard Styles */
+.small-box { border-radius: 10px; overflow: hidden; margin-bottom: 20px; transition: all 0.3s; }
+.small-box:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.small-box > .inner { padding: 20px; }
+.small-box h3 { font-size: 2.2rem; font-weight: 700; margin: 0 0 10px 0; white-space: nowrap; padding: 0; }
+.small-box p { font-size: 1rem; }
+.small-box .icon { color: rgba(0,0,0,.15); z-index: 0; }
+.small-box .icon > i { font-size: 70px; position: absolute; right: 15px; top: 15px; transition: all .3s linear; }
+.small-box:hover .icon > i { font-size: 80px; transform: rotate(-10deg); }
+.small-box > .small-box-footer { background-color: rgba(0,0,0,.1); color: rgba(255,255,255,.8); display: block; padding: 8px 0; position: relative; text-align: center; text-decoration: none; z-index: 10; }
+
+.card { border-radius: 10px; border: none; }
+.card-outline { border-top: 3px solid; }
+.badge-outline-warning { border: 1px solid #ffc107; color: #856404; background: #fff3cd; }
+
+.timeline::before { border-radius: 0.25rem; background-color: #dee2e6; bottom: 0; content: ""; left: 31px; margin: 0; position: absolute; top: 0; width: 4px; }
+.timeline > div > .timeline-item { background-color: #fff; border-radius: 0.25rem; color: #495057; margin-left: 60px; margin-right: 15px; margin-top: 0; padding: 0; position: relative; }
+.timeline > div > i { background-color: #adb5bd; border-radius: 50%; font-size: 16px; height: 30px; left: 18px; line-height: 30px; position: absolute; text-align: center; top: 0; width: 30px; color: #fff; }

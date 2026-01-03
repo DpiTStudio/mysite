@@ -3,6 +3,10 @@
 
 {% block title %}Прайс-лист услуг{% endblock %}
 
+{% block extra_css %}
+<link href="{% static 'css/portfolio.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="container py-5">
     <div class="text-center mb-5">
@@ -161,30 +165,7 @@
     </div>
 </div>
 
-<style>
-    .service-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .service-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-    }
-    .nav-pills .nav-link {
-        color: #495057;
-        font-weight: 500;
-        transition: all 0.2s;
-    }
-    .nav-pills .nav-link.active {
-        background-color: var(--bs-primary);
-        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
-    }
-    .nav-link:hover:not(.active) {
-        background-color: #f8f9fa;
-    }
-    .price-tag {
-        font-family: 'Montserrat', sans-serif;
-    }
-</style>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

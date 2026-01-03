@@ -1,47 +1,47 @@
 :root {
-    /* Современная цветовая палитра - улучшенная */
-    --color-fon-1: hsl(221, 71%, 48%); /* Основной синий фон */
-    --color-fon-2: hsla(221, 71%, 48%, 0.175); /* Полупрозрачный синий фон */
-    --color-fon-3: hwb(270 29% 36%); /* Фиолетовый фон в формате HWB */
-    --color-fon-4: hwb(0 100% 0%); /* Чисто белый фон */
-    --color-fon-5: hsla(221, 87%, 62%, 0.132); /* Светлый полупрозрачный синий */
+    /* Современная цветовая палитра - улучшенная (менее яркая) */
+    --color-fon-1: hsl(221, 50%, 40%); /* Более темный и спокойный синий */
+    --color-fon-2: hsla(221, 50%, 40%, 0.15); /* Полупрозрачный синий */
+    --color-fon-3: hwb(270 35% 40%); /* Более приглушенный фиолетовый */
+    --color-fon-4: hwb(0 100% 0%); /* Белый */
+    --color-fon-5: hsla(221, 60%, 55%, 0.15); /* Светлый серо-синий */
     
-    /* Новые градиентные цвета */
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --gradient-purple: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-    --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    /* Новые градиентные цвета - более спокойные */
+    --gradient-primary: linear-gradient(135deg, #4b5c96 0%, #5d4875 100%); /* Приглушенный сине-фиолетовый */
+    --gradient-secondary: linear-gradient(135deg, #c48bb5 0%, #bf6372 100%); /* Приглушенный розово-красный */
+    --gradient-blue: linear-gradient(135deg, #5b8db5 0%, #3a9cb0 100%); /* Спокойный голубой */
+    --gradient-purple: linear-gradient(135deg, #b8dcdb 0%, #dcc2cb 100%); /* Пастельный */
+    --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Темный остается темным */
     
     /* Цвета текста */
-    --color-text-1: hsl(0, 0%, 0%); /* Черный текст */
-    --color-text-2: hsl(0, 0%, 100%); /* Белый текст */
-    --color-text-3: hsl(221, 71%, 48%); /* Синий текст */
-    --color-text-4: hsl(0, 100%, 48%); /* Красный текст для акцентов */
+    --color-text-1: hsl(0, 0%, 15%); /* Темно-серый, не чисто черный */
+    --color-text-2: hsl(0, 0%, 98%); /* Почти белый */
+    --color-text-3: hsl(221, 50%, 40%); /* Синий текст в тон фона */
+    --color-text-4: hsl(0, 60%, 45%); /* Приглушенный красный */
     --color-text-5: lab(48.5% 0.41 -1.11); /* Серый текст */
-    --color-text-6: hsl(0, 66%, 49%); /* Красный приглушенный текст */
-    --color-text-muted: hsl(0, 0%, 60%); /* Приглушенный текст */
+    --color-text-6: hsl(0, 50%, 45%); /* Темно-красный */
+    --color-text-muted: hsl(0, 0%, 50%); /* Приглушенный текст */
     
     /* Цвета границ */
-    --color-border-1: hsl(221, 71%, 48%); /* Синяя граница */
-    --color-border-2: hsl(0, 0%, 100%); /* Белая граница */
-    --color-border-light: rgba(255, 255, 255, 0.2); /* Светлая граница */
+    --color-border-1: hsl(221, 50%, 40%);
+    --color-border-2: hsl(0, 0%, 100%);
+    --color-border-light: rgba(255, 255, 255, 0.2);
     
-    /* Цвета теней - улучшенные */
-    --color-box-shadow-1: hsla(0, 0%, 0%, 0.1); /* Полупрозрачная черная тень */
-    --shadow-1: hsla(0, 0%, 99%, 0.1); /* Светлая полупрозрачная тень */
-    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
-    --shadow-card-hover: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
-    --shadow-navbar: 0 2px 20px rgba(0, 0, 0, 0.1);
-    --shadow-text: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Цвета теней - мягче */
+    --color-box-shadow-1: hsla(0, 0%, 0%, 0.08);
+    --shadow-1: hsla(0, 0%, 99%, 0.1);
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow-card-hover: 0 10px 20px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.06);
+    --shadow-navbar: 0 2px 15px rgba(0, 0, 0, 0.08);
+    --shadow-text: 0 2px 4px rgba(0, 0, 0, 0.08);
     
     /* Размеры текста */
-    --size-text-0: 2rem; /* Крупный размер шрифта (32px) */
-    --size-text-1: 1.5rem; /* Крупный размер шрифта (24px) */
-    --size-text-2: 1rem; /* Средний размер шрифта (16px) */
-    --size-text-3: 0.875rem; /* Маленький размер шрифта (14px) */
-    --size-text-4: 0.75rem; /* Очень маленький размер шрифта (12px) */
-    --size-text-5: 0.625rem; /* Очень маленький размер шрифта (10px) */
+    --size-text-0: 2rem;
+    --size-text-1: 1.5rem;
+    --size-text-2: 1rem;
+    --size-text-3: 0.875rem;
+    --size-text-4: 0.75rem;
+    --size-text-5: 0.625rem;
     
     /* Переходы */
     --transition-fast: 0.2s ease;
