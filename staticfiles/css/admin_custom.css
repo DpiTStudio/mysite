@@ -296,13 +296,16 @@
     border-color: var(--admin-primary);
     color: #fff;
 }
-
+.title-admin-block {
+    color: wheat;
+}
 /* Улучшение модальных окон */
 .modal-content {
     border-radius: 12px;
     border: none;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-out;
+    z-index: 1013;
 }
 
 .modal-header {

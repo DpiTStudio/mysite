@@ -400,6 +400,31 @@ a.nav-link.active {
     color: #ffc107; /* Золотой цвет */
 }
 /* Подвал - улучшенный */
+/* Цвет текста в подвале */
+.footer {
+    color: var(--color-text-2) !important; /* Белый текст */
+}
+/* Контент в подвале */
+.footer_content_op {
+    color: var(--color-text-2) !important; /* Белый текст */
+    margin: 20px; /* Внешние отступы */
+}
+/* Копирайт в подвале */
+.footer_copyrator {
+    color: var(--color-text-2) !important; /* Белый текст */
+    padding: 20px 0; /* Внутренние отступы */
+}
+/* Ссылки на политики в подвале */
+a.footer_pr_link {
+    transition: all 0.3s ease; /* Плавный переход */
+    color: var(--color-text-2) !important; /* Белый текст */
+}
+/* Эффект при наведении на ссылки политик */
+a.footer_pr_link:hover {
+    transition: all 0.7s ease; /* Более длительный переход */
+    color: var(--color-text-2) !important; /* Белый текст */
+}
+
 .footer {
     background: var(--gradient-primary);
     color: var(--color-text-2);
@@ -421,6 +446,10 @@ a.nav-link.active {
 }
 
 /* Ссылки в подвале */
+.footer-brand {
+    font-size: 1.5rem; /* Размер шрифта */
+}
+
 .footer a {
     transition: all var(--transition-normal);
     position: relative;
@@ -438,6 +467,17 @@ a.nav-link.active {
     transition: width var(--transition-normal);
 }
 
+.footer-link {
+    color: var(--color-text-2);
+    transition: color var(--transition-normal);
+}
+
+.footer-link:hover {
+    color: #fff !important;
+    transform: translateX(5px);
+    text-shadow: 2px 2px 4px rgba(230, 23, 23, 0.086);
+}
+
 .footer a:hover::after {
     width: 100%;
 }
@@ -448,6 +488,33 @@ a.nav-link.active {
     transform: translateX(5px);
     text-shadow: 2px 2px 4px rgba(230, 23, 23, 0.086);
 }
+
+.footer-links {
+    /* color: var(--color-text-6); */
+    color: var(--color-text-2) !important;
+}
+.text-footer-title {
+    color: var(--color-text-2) !important;
+    text-shadow: 2px 2px 4px #000;
+    font-weight: 500;
+}
+.footer-text-contacts {
+    color: var(--color-text-2);
+    text-shadow: 2px 2px 4px #000;
+    font-weight: 500;
+}
+.footer-text-contacts a {
+    color: var(--color-text-2);
+    text-shadow: 2px 2px 4px #000;
+    font-weight: 500;
+}
+.footer-text-contacts a:hover {
+    color: var(--color-text-2);
+    text-shadow: 2px 2px 4px #000;
+    font-weight: 500;
+}
+
+
 /* Социальные кнопки - улучшенные */
 .social-links .btn {
     width: 45px;
@@ -500,9 +567,7 @@ a.nav-link.active {
     transform: scale(1.2);
 }
 /* Логотип/название в подвале */
-.footer-brand {
-    font-size: 1.5rem; /* Размер шрифта */
-}
+
 /* Адаптивность для подвала на мобильных устройствах */
 @media (max-width: 768px) {
     .footer {
@@ -511,30 +576,6 @@ a.nav-link.active {
     .footer .row > div {
         margin-bottom: 2rem; /* Отступ снизу для колонок */
     }
-}
-/* Цвет текста в подвале */
-.footer {
-    color: var(--color-text-2) !important; /* Белый текст */
-}
-/* Контент в подвале */
-.footer_content_op {
-    color: var(--color-text-2) !important; /* Белый текст */
-    margin: 20px; /* Внешние отступы */
-}
-/* Копирайт в подвале */
-.footer_copyrator {
-    color: var(--color-text-2) !important; /* Белый текст */
-    padding: 20px 0; /* Внутренние отступы */
-}
-/* Ссылки на политики в подвале */
-a.footer_pr_link {
-    transition: all 0.3s ease; /* Плавный переход */
-    color: var(--color-text-2) !important; /* Белый текст */
-}
-/* Эффект при наведении на ссылки политик */
-a.footer_pr_link:hover {
-    transition: all 0.7s ease; /* Более длительный переход */
-    color: var(--color-text-2) !important; /* Белый текст */
 }
 /* Адаптивность для новостной сетки */
 @media (max-width: 768px) {
@@ -798,23 +839,4 @@ a.footer_pr_link:hover {
 
 .standard-category-btn.active .badge-count {
     background: rgba(255, 255, 255, 0.2);
-}
-.footer-links {
-    color: var(--color-text-6);
-}
-.text-footer-title {
-    color: var(--color-text-2) !important;
-    text-shadow: 2px 2px 4px #000;
-    font-weight: 500;
-}
-.footer-text-contacts {
-    color: var(--color-text-2);
-    text-shadow: 2px 2px 4px #000;
-    font-weight: 500;
-}
-.footer-text-contacts a {
-    color: var(--color-text-5);
-}
-.footer-text-contacts a:hover {
-    color: var(--color-text-6);
 }
