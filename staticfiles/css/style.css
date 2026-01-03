@@ -800,6 +800,16 @@ a.footer_pr_link:hover {
 .footer-links {
     color: var(--color-text-6);
 }
+.footer_pr_link {
+    color: var(--color-text-6);
+}
+.text-footer {
+    color: var(--color-text-2) !important;
+}
+.text-app {
+    text-transform: uppercase;
+    font-weight: 900;
+}
 .text-footer-title {
     color: var(--color-text-2) !important;
     text-shadow: 2px 2px 4px #000;
@@ -811,8 +821,8 @@ a.footer_pr_link:hover {
     font-weight: 500;
 }
 .footer-text-contacts a {
-    color: var(--color-text-5);
+    color: var(--color-text-2);
 }
 .footer-text-contacts a:hover {
-    color: var(--color-text-6);
+    color: var(--color-text-5);
 }

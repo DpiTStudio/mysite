@@ -1,0 +1,43 @@
+<div class="col-lg-5 col-md-6 mb-4">
+    <div class="footer-brand mb-3">
+        <h3 class="text-primary fw-bold">
+            <a class="navbar-brand footer_pr_link fs-1 text-app" href="{% url 'main:home' %}">
+                {% if site_settings and site_settings.logo %}
+                    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_title }}" height="40">
+                    {% if site_settings.site_domain %}
+                        {{ site_settings.site_domain }}
+                    {% else %}
+                        {{ request.get_host|cut:":4234"|cut:":8000" }}
+                    {% endif %}
+                {% else %}
+                    {{ site_settings.site_title|default:"DPIT-CMS" }}
+                {% endif %}
+            </a>
+        </h3>
+    </div>
+    <p class="footer_content_op text-muted mb-4">
+        {{ site_settings.meta_description|safe }}
+    </p>
+    {% if site_settings and site_settings.meta_keywords %}
+    <p class="footer_content_op text-muted mb-4">
+        {{ site_settings.meta_keywords }}
+    </p>
+    {% endif %}
+    <div class="social-links">
+        <a href="#" class="btn btn-outline-light btn-sm me-2 mb-2">
+            <i class="bi bi-facebook"></i>
+        </a>
+        <a href="#" class="btn btn-outline-light btn-sm me-2 mb-2">
+            <i class="bi bi-twitter"></i>
+        </a>
+        <a href="#" class="btn btn-outline-light btn-sm me-2 mb-2">
+            <i class="bi bi-instagram"></i>
+        </a>
+        <a href="#" class="btn btn-outline-light btn-sm me-2 mb-2">
+            <i class="bi bi-linkedin"></i>
+        </a>
+        <a href="#" class="btn btn-outline-light btn-sm me-2 mb-2">
+            <i class="bi bi-youtube"></i>
+        </a>
+    </div>
+</div>
