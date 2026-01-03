@@ -83,11 +83,18 @@
                                         {{ service.content|safe|truncatewords_html:30 }}
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-auto border-top pt-3">
-                                        <div class="price-tag text-primary h4 fw-bold mb-0">
-                                            {% if service.price %}
-                                            {{ service.price|floatformat:0 }} ₽
+                                        <div class="price-tag text-primary h5 fw-bold mb-0">
+                                            {% if service.min_price or service.max_price %}
+                                                <div class="small text-muted fw-normal mb-1">Диапазон цен:</div>
+                                                {% if service.min_price %}от {{ service.min_price|floatformat:0 }} ₽{% endif %}
+                                                {% if service.max_price %} до {{ service.max_price|floatformat:0 }} ₽{% endif %}
+                                                {% if service.price %}
+                                                <div class="text-secondary small mt-1">Обычная: {{ service.price|floatformat:0 }} ₽</div>
+                                                {% endif %}
+                                            {% elif service.price %}
+                                                {{ service.price|floatformat:0 }} ₽
                                             {% else %}
-                                            Цена по запросу
+                                                <span class="text-muted">Цена по запросу</span>
                                             {% endif %}
                                         </div>
                                         <button class="btn btn-primary rounded-pill px-4 order-btn" 

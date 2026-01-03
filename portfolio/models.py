@@ -32,7 +32,9 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
     views = models.IntegerField(default=0, verbose_name="Просмотры")
     
     # New fields for service functionality
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Цена")
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Цена (обычная)")
+    min_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Цена (минимальная)")
+    max_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Цена (максимальная)")
     is_service = models.BooleanField(default=False, verbose_name="Это услуга")
 
     class Meta:
