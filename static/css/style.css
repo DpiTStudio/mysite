@@ -189,6 +189,8 @@ body {
 .navbar-toggler,
 .nav-item {
     position: relative;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.445);
+    transition: all var(--transition-normal);
     z-index: 10000 !important;
 }
 
