@@ -1,9 +1,9 @@
 /* Portfolio Styles */
 .portfolio-detail-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 3rem 0;
-    margin-bottom: 2rem;
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    color: rgb(0, 0, 0);
+    /* padding: 3rem 0;
+    margin-bottom: 2rem; */
 }
 
 .portfolio-image-detail {

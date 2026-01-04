@@ -393,3 +393,348 @@ html {
     text-decoration: underline;
 }
 
+
+/* --- Additional Improvements for Forms & Tables (Enhanced) --- */
+
+/* Form Rows & Fieldsets overrides */
+fieldset.module {
+    background: #fff !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+fieldset.module h2 {
+    background: var(--admin-gradient-secondary) !important;
+    color: white !important;
+    padding: 12px 20px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-size: 1.1rem;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.form-row {
+    padding: 15px 20px !important;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.form-row:last-child {
+    border-bottom: none;
+}
+
+.form-row:hover {
+    background-color: #f8fafc;
+}
+
+.form-row .fieldBox {
+    margin-right: 20px;
+}
+
+/* Labels */
+.form-row label {
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 5px;
+}
+
+.form-row label.required:after {
+    color: var(--admin-danger);
+    content: '*';
+    margin-left: 4px;
+}
+
+/* Help text */
+.help, p.help {
+    font-size: 0.8rem !important;
+    color: #94a3b8 !important;
+    margin-top: 6px !important;
+    margin-bottom: 0 !important;
+    font-style: italic;
+    padding-left: 0 !important;
+}
+
+/* Checkboxes in forms */
+.form-row input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    accent-color: var(--admin-primary);
+}
+
+/* Date/Time Widgets */
+.datetimeshortcuts .now a, .datetimeshortcuts .clock-icon {
+    opacity: 0.6;
+}
+.datetimeshortcuts a:hover {
+    opacity: 1;
+    color: var(--admin-primary);
+}
+
+/* Change List Filters (Right Sidebar) */
+#changelist-filter {
+    background: #fff !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#changelist-filter h2 {
+    background: var(--admin-gradient) !important;
+    color: white !important;
+    padding: 15px 20px !important;
+    margin: 0;
+    font-size: 1rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#changelist-filter h3 {
+    padding: 12px 20px !important;
+    margin: 0;
+    font-size: 0.9rem !important;
+    font-weight: 700;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+    text-transform: uppercase;
+}
+
+#changelist-filter ul {
+    padding: 10px 0;
+    margin: 0;
+}
+
+#changelist-filter li {
+    list-style: none;
+    padding: 6px 20px;
+}
+
+#changelist-filter li.selected {
+    border-left: 3px solid var(--admin-secondary);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+#changelist-filter li.selected a {
+    color: var(--admin-secondary) !important;
+    font-weight: 700;
+}
+
+#changelist-filter a {
+    color: #64748b !important;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: block;
+}
+
+#changelist-filter a:hover {
+    color: var(--admin-primary) !important;
+    transform: translateX(3px);
+}
+
+/* Result List Tables Enhanced */
+#result_list {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#result_list thead th {
+    background: var(--admin-gradient) !important;
+    color: white !important;
+    border: none !important;
+    padding: 15px !important;
+    vertical-align: middle !important;
+}
+
+#result_list thead th.sortable:hover {
+    background: var(--admin-primary-dark) !important;
+}
+
+#result_list tbody td {
+    padding: 15px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+#result_list tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#result_list tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+#result_list tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.05) !important;
+}
+
+/* Action Checkbox */
+.action-checkbox-column {
+    width: 40px;
+    text-align: center;
+}
+
+/* Submit Row (Save Buttons) */
+.submit-row {
+    background: #fff !important;
+    padding: 20px !important;
+    border-radius: 12px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: flex-end; /* Align right */
+    gap: 15px;
+    margin-top: 30px !important;
+    border: 1px solid #e2e8f0;
+    align-items: center;
+}
+
+.submit-row p.deletelink-box {
+    margin-right: auto; /* Push delete to left */
+}
+
+.submit-row input {
+    margin: 0 !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.5px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    height: auto !important;
+    padding: 12px 25px !important;
+}
+
+.submit-row input.default {
+    background: var(--admin-gradient) !important;
+    border: none;
+    color: white;
+}
+
+.submit-row input:not(.default) {
+    background: #fff !important;
+    border: 2px solid #e2e8f0 !important;
+    color: #475569 !important;
+}
+
+.submit-row input:not(.default):hover {
+    border-color: var(--admin-primary) !important;
+    color: var(--admin-primary) !important;
+}
+
+.deletelink {
+    color: var(--admin-danger) !important;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.deletelink:hover {
+    background: #fee2e2;
+    text-decoration: none;
+}
+
+/* Related Widget Wrapper (spacing for + add icons) */
+.related-widget-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.related-widget-wrapper-link {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 5px;
+    border-radius: 4px;
+}
+.related-widget-wrapper-link:hover {
+    opacity: 1;
+    background: #e0e7ff;
+}
+
+/* Search Toolbar */
+#changelist-search {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+}
+
+#changelist-search input[type=text] {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    margin-right: 15px;
+    font-size: 1rem;
+}
+
+#changelist-search input[type=submit] {
+    background: var(--admin-secondary) !important;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#changelist-search input[type=submit]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Inline Group styling */
+.inline-group {
+    background: transparent;
+    border: none;
+}
+.inline-group .tabular td.original p {
+    left: 0;
+}
+.inline-group .tabular tr.add-row td {
+    padding: 15px !important;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+}
+.inline-group .tabular tr.add-row a {
+    color: var(--admin-secondary);
+    font-weight: 600;
+}
+
+/* Select2 container override (if used) */
+.select2-container .select2-selection--single {
+    height: 45px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Улучшение футера и скрытие версии Jazzmin */
+.main-footer {
+    background: #fff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    font-size: 0.9rem;
+    padding: 15px 20px !important;
+}
+
+.main-footer .float-right {
+    display: none !important;
+}
