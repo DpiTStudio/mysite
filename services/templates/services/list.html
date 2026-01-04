@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Наши услуги | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold">Наши Услуги</h1>
+            <p class="lead text-muted">Профессиональные решения для вашего бизнеса</p>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for service in services %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0 service-card hover-lift">
+                <div class="card-body text-center p-4">
+                    {% if service.icon %}
+                        <div class="mb-4">
+                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 80px; height: 80px; object-fit: contain;">
+                        </div>
+                    {% else %}
+                         <div class="mb-4 text-primary">
+                            <i class="fas fa-cubes fa-3x"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <h3 class="h4 card-title fw-bold mb-3">{{ service.title }}</h3>
+                    <p class="card-text text-muted mb-4">{{ service.short_description|truncatewords:20 }}</p>
+                    
+                    <div class="service-price mb-4">
+                        {% if service.price_type == 'fixed' %}
+                            <span class="h4 fw-bold text-primary">{{ service.price_fixed|floatformat:0 }} {{ service.currency }}</span>
+                        {% else %}
+                             <span class="text-muted">от</span> <span class="h4 fw-bold text-primary">{{ service.price_min|floatformat:0 }}</span>
+                             <span class="text-muted">до</span> <span class="h4 fw-bold text-primary">{{ service.price_max|floatformat:0 }} {{ service.currency }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-primary rounded-pill px-4">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <div class="alert alert-info">
+                В данный момент услуги не добавлены. Пожалуйста, зайдите позже.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+</style>
+{% endblock %}

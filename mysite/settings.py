@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",  # Регистрация и авторизация
     "tickets.apps.TicketsConfig",  # Система тикетов
     "mail.apps.MailConfig",  # Управление почтой
+    "services.apps.ServicesConfig",  # Услуги
     "tinymce",
 ]
 

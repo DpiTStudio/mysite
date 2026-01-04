@@ -104,6 +104,62 @@
                     </form>
                 </div>
             </div>
+
+             <!-- История заказов услуг -->
+            <div class="card shadow mt-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="fas fa-handshake"></i> Мои заказы услуг</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Услуга</th>
+                                    <th>Дата</th>
+                                    <th>Статус</th>
+                                    <th>Цена</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in user.service_orders.all %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'services:detail' order.service.slug %}">{{ order.service.title }}</a>
+                                    </td>
+                                    <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                        {% if order.status == 'new' %}
+                                            <span class="badge bg-primary">Новый</span>
+                                        {% elif order.status == 'processing' %}
+                                            <span class="badge bg-warning text-dark">В обработке</span>
+                                        {% elif order.status == 'completed' %}
+                                            <span class="badge bg-success">Выполнен</span>
+                                        {% elif order.status == 'cancelled' %}
+                                            <span class="badge bg-danger">Отменен</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ order.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                     <td>
+                                        {% if order.service.price_type == 'fixed' %}
+                                            {{ order.service.price_fixed|floatformat:0 }} {{ order.service.currency }}
+                                        {% else %}
+                                            От {{ order.service.price_min|floatformat:0 }}
+                                        {% endif %}
+                                     </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">Вы пока не заказывали услуг.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
