@@ -395,11 +395,6 @@ a.nav-link.active {
 .card:hover .card-title {
     color: #667eea;
 }
-
-.block-title-primary {
-    background: var(--gradient-primary);
-    color: #fff;
-}
 /* Рейтинг (звезды) */
 .rating {
     color: #ffc107; /* Золотой цвет */
