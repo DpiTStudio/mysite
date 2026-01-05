@@ -1,6 +1,6 @@
 <div class="col-lg-5 col-md-6 mb-4">
     <div class="footer-brand mb-3">
-        <h3 class="text-primary fw-bold">
+        <h3 class="text-primary fw-bold domain">
             <a class="navbar-brand footer_pr_link fs-1 text-app" href="{% url 'main:home' %}">
                 {% if site_settings and site_settings.logo %}
                 <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_title }}" height="40">
@@ -10,7 +10,7 @@
                 {{ request.get_host|cut:":4234"|cut:":8000" }}
                 {% endif %}
                 {% else %}
-                {{ site_settings.site_title|default:"DPIT-CMS" }}
+                {{ site_settings.site_title|default:"DPIT-CMS.RU" }}
                 {% endif %}
             </a>
         </h3>

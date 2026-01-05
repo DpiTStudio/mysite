@@ -300,7 +300,7 @@ a.nav-link.active {
 }
 /* Стиль для доменного имени */
 .domain {
-    color: var(--color-text-4); /* Красный текст */
+    color: var(--color-text-2); /* Красный текст */
     font-size: var(--size-text-1); /* Крупный шрифт */
     text-transform: uppercase; /* Верхний регистр */
 }
