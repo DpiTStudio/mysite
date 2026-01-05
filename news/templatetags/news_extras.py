@@ -18,6 +18,7 @@ def get_admin_stats():
     from reviews.models import Review
     from tickets.models import Ticket
     from main.models import Page
+    from services.models import Service, ServiceOrder
     
     User = get_user_model()
     
@@ -27,6 +28,9 @@ def get_admin_stats():
         'news_categories_count': NewsCategory.objects.count(),
         'portfolio_count': Portfolio.objects.count(),
         'portfolio_categories_count': PortfolioCategory.objects.count(),
+        'services_count': Service.objects.count(),
+        'service_orders_count': ServiceOrder.objects.count(),
+        'service_orders_new_count': ServiceOrder.objects.filter(status='new').count(),
         'reviews_count': Review.objects.count(),
         'reviews_pending_count': Review.objects.filter(status='pending').count(),
         'tickets_count': Ticket.objects.count(),

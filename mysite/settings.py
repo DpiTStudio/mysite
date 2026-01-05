@@ -191,7 +191,17 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
-    "order_with_respect_to": ["main", "news", "portfolio", "reviews", "accounts", "tickets"],
+    "order_with_respect_to": [
+        "main", 
+        "news", 
+        "portfolio", 
+        "services", 
+        "reviews", 
+        "tickets", 
+        "mail", 
+        "accounts", 
+        "logfiles"
+    ],
     "custom_links": {
         "main": [{
             "name": "Вернуться на сайт",
@@ -211,12 +221,15 @@ JAZZMIN_SETTINGS = {
         "news.Comment": "fas fa-comments",
         "portfolio.PortfolioCategory": "fas fa-folder-open",
         "portfolio.Portfolio": "fas fa-images",
+        "services.Service": "fas fa-concierge-bell",
+        "services.ServiceOrder": "fas fa-file-invoice-dollar",
         "reviews.Review": "fas fa-star",
+        "tickets.Ticket": "fas fa-ticket-alt",
+        "tickets.TicketMessage": "fas fa-comment-dots",
+        "mail.Mail": "fas fa-envelope",
         "logfiles.LogFile": "fas fa-file-alt",
         "logfiles.LogBackup": "fas fa-archive",
         "accounts.User": "fas fa-user-circle",
-        "tickets.Ticket": "fas fa-ticket-alt",
-        "tickets.TicketMessage": "fas fa-comment-dots",
         "admin.LogEntry": "fas fa-history",
     },
     "default_icon_parents": "fas fa-chevron-circle-right",
@@ -232,13 +245,15 @@ JAZZMIN_SETTINGS = {
             "new_window": True,
         },
         {"app": "main", "icon": "fas fa-cogs"},
-        {"model": "admin.LogEntry", "label": "История действий", "icon": "fas fa-history"},
         {"app": "news", "icon": "fas fa-newspaper"},
         {"app": "portfolio", "icon": "fas fa-images"},
+        {"app": "services", "icon": "fas fa-concierge-bell"},
         {"app": "reviews", "icon": "fas fa-star"},
-        {"app": "accounts", "icon": "fas fa-users"},
         {"app": "tickets", "icon": "fas fa-ticket-alt"},
+        {"app": "mail", "icon": "fas fa-envelope"},
+        {"app": "accounts", "icon": "fas fa-users"},
         {"app": "logfiles", "icon": "fas fa-file-alt"},
+        {"model": "admin.LogEntry", "label": "История действий", "icon": "fas fa-history"},
     ],
 }
 
@@ -356,12 +371,12 @@ if not logs_dir.exists():
 
 # CSRF_COOKIE_SAMESITE = 'None'
 # SESSION_COOKIE_SAMESITE = 'None'
-# Настройки почты (Timeweb)
+# Настройки почты ()
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.timeweb.ru"
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "admin@dpit-cms.ru")  # Замените на ваш email
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "admin@dpit-cms.ru") 
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "V2Jy*qKeb/j?L6")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
