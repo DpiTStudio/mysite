@@ -180,6 +180,7 @@ def auto_create_news_event(sender, instance, created, **kwargs):
     from portfolio.models import Portfolio
     from reviews.models import Review
     from main.models import Page
+    from services.models import Service, ServiceOrder  # Добавлено
     
     # Получаем текущую дату
     today = timezone.now().date()
@@ -248,7 +249,8 @@ def auto_create_news_event(sender, instance, created, **kwargs):
                 description=event_description,
                 related_obj=instance
             )
-            
+
+        # БЛОК ДЛЯ СТРАНИЦ
         elif sender == Page and instance.is_active:
             # Получаем или создаем категорию для страниц
             news_category, _ = NewsCategory.objects.get_or_create(
@@ -280,6 +282,89 @@ def auto_create_news_event(sender, instance, created, **kwargs):
                 description=event_description,
                 related_obj=instance,
                 image=instance.logo if hasattr(instance, 'logo') and instance.logo else None
+            )
+        
+        # БЛОК ДЛЯ УСЛУГ
+        elif sender == Service and instance.is_active:
+            # Получаем или создаем категорию для услуг
+            news_category, _ = NewsCategory.objects.get_or_create(
+                name="Услуги",
+                defaults={
+                    'slug': 'services',
+                    'description': 'Новости об услугах и сервисах',
+                    'header_title': 'Новости об услугах',
+                    'header_description': 'Последние обновления в разделе услуг'
+                }
+            )
+            
+            # Получаем или создаем дневную новость
+            daily_news = get_or_create_daily_news(news_category, today)
+            
+            # Определяем тип события и заголовок
+            if created:
+                event_type = 'service_added'
+                event_title = f"Добавлена новая услуга: {instance.title}"
+                event_description = f"<p>Добавлена новая услуга <strong>{instance.title}</strong>.</p>"
+            else:
+                event_type = 'service_updated'
+                event_title = f"Обновлена услуга: {instance.title}"
+                event_description = f"<p>Обновлена информация об услуге <strong>{instance.title}</strong>.</p>"
+            
+            # Добавляем описание услуги
+            if instance.short_description:
+                event_description += f"<p><strong>Краткое описание:</strong> {instance.short_description}</p>"
+            
+            # Добавляем информацию о цене
+            if instance.price_type == 'fixed' and instance.price_fixed:
+                event_description += f"<p><strong>Цена:</strong> {instance.price_fixed} {instance.currency}</p>"
+            elif instance.price_type == 'range' and instance.price_min and instance.price_max:
+                event_description += f"<p><strong>Цена:</strong> от {instance.price_min} до {instance.price_max} {instance.currency}</p>"
+            
+            # Добавляем событие к дневной новости
+            add_event_to_daily_news(
+                news=daily_news,
+                event_type=event_type,
+                title=event_title,
+                description=event_description,
+                related_obj=instance,
+                image=instance.icon if hasattr(instance, 'icon') and instance.icon else None
+            )
+        
+        # БЛОК ДЛЯ ЗАКАЗОВ УСЛУГ
+        elif sender == ServiceOrder and instance.status == 'new':
+            # Получаем или создаем категорию для заказов услуг
+            news_category, _ = NewsCategory.objects.get_or_create(
+                name="Заказы услуг",
+                defaults={
+                    'slug': 'service-orders',
+                    'description': 'Новые заказы услуг от клиентов',
+                    'header_title': 'Заказы услуг',
+                    'header_description': 'Новые заявки на оказание услуг'
+                }
+            )
+            
+            # Получаем или создаем дневную новость
+            daily_news = get_or_create_daily_news(news_category, today)
+            
+            # Формируем заголовок и описание события
+            event_title = f"Новый заказ услуги: {instance.service.title}"
+            
+            event_description = f"""
+            <p>Получен новый заказ на услугу <strong>{instance.service.title}</strong>.</p>
+            <p><strong>Клиент:</strong> {instance.full_name}</p>
+            <p><strong>Контакты:</strong> {instance.phone}, {instance.email}</p>
+            """
+            
+            if instance.message:
+                event_description += f"<p><strong>Комментарий клиента:</strong><br>{instance.message}</p>"
+            
+            # Добавляем событие
+            add_event_to_daily_news(
+                news=daily_news,
+                event_type='other',  # Используем 'other', так как нет специального типа для заказов услуг
+                title=event_title,
+                description=event_description,
+                related_obj=instance
             )
     
     except Exception as e:

@@ -86,8 +86,9 @@ class DailyEvent(TimestampModel):
             ('review_approved', 'Одобрен отзыв'),
             ('page_created', 'Создана страница'),
             ('page_updated', 'Обновлена страница'),
-            ('service_added', 'Добавлена услуга'),
+            ('service_added', 'Добавлена услуга'), 
             ('service_updated', 'Обновлена услуга'),
+            ('service_order_new', 'Новый заказ услуги'),
             ('other', 'Другое событие'),
         ]
     )
