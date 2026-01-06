@@ -72,7 +72,6 @@ class HeaderModel(models.Model):
         abstract = True
 
 
-
 class SiteSettings(ActiveModel, SEOModel):
     site_title = models.CharField(max_length=200, verbose_name="Название сайта")
     site_slogan = models.CharField(max_length=30, verbose_name="Слоган")
@@ -99,76 +98,132 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Время работы компании (например: Пн-Пт: 9:00-18:00)"
     )
+
+    # Социальные сети (ссылки и иконки)
     site_vk = models.CharField(
         max_length=200,
         verbose_name="VK",
         blank=True,
-        null=False,
         help_text="Ссылка на социальную сеть ВК"
+    )
+    site_vk_img = models.ImageField(
+        upload_to=RenameUploadTo("social/vk/"),
+        verbose_name="VK иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети ВКонтакте"
     )
     
     site_ok = models.CharField(
         max_length=200,
         verbose_name="OK",
         blank=True,
-        null=False,
         help_text="Ссылка на социальную сеть OK"
+    )
+    site_ok_img = models.ImageField(
+        upload_to=RenameUploadTo("social/ok/"),
+        verbose_name="OK иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети Одноклассники"
     )
 
     site_facebook = models.CharField(
         max_length=200,
         verbose_name="FaceBook",
         blank=True,
-        null=False,
         help_text="Ссылка на социальную сеть FaceBook"
-    )  
+    )
+    site_facebook_img = models.ImageField(
+        upload_to=RenameUploadTo("social/facebook/"),
+        verbose_name="FaceBook иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети Facebook"
+    )
 
     site_linkedin = models.CharField(
         max_length=200,
         verbose_name="Linkedin",
         blank=True,
-        null=False,
-        help_text="Ссылка на социальную сеть linkedin"
+        help_text="Ссылка на социальную сеть Linkedin"
+    )
+    site_linkedin_img = models.ImageField(
+        upload_to=RenameUploadTo("social/linkedin/"),
+        verbose_name="Linkedin иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети LinkedIn"
     )
 
     site_instagram = models.CharField(
         max_length=200,
         verbose_name="Instagram",
         blank=True,
-        null=False,
-        help_text="Ссылка на социальную сеть instagram"
+        help_text="Ссылка на социальную сеть Instagram"
+    )
+    site_instagram_img = models.ImageField(
+        upload_to=RenameUploadTo("social/instagram/"),
+        verbose_name="Instagram иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети Instagram"
     )
 
     site_twitter = models.CharField(
         max_length=200,
         verbose_name="Twitter",
         blank=True,
-        null=False,
-        help_text="Ссылка на социальную сеть twitter"
+        help_text="Ссылка на социальную сеть Twitter"
+    )
+    site_twitter_img = models.ImageField(
+        upload_to=RenameUploadTo("social/twitter/"),
+        verbose_name="Twitter иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети Twitter"
     )
 
     site_telegram = models.CharField(
         max_length=200,
         verbose_name="Telegram",
         blank=True,
-        null=False,
-        help_text="Ссылка на социальную сеть telegram"
+        help_text="Ссылка на социальную сеть Telegram"
+    )
+    site_telegram_img = models.ImageField(
+        upload_to=RenameUploadTo("social/telegram/"),
+        verbose_name="Telegram иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети Telegram"
     )
 
     site_whatsapp = models.CharField(
         max_length=200,
         verbose_name="Whatsapp",
         blank=True,
-        null=False,
-        help_text="Ссылка на социальную сеть whatsapp"
+        help_text="Ссылка на социальную сеть Whatsapp"
+    )
+    site_whatsapp_img = models.ImageField(
+        upload_to=RenameUploadTo("social/whatsapp/"),
+        verbose_name="Whatsapp иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети WhatsApp"
     )
 
     site_youtube = models.CharField(
         max_length=200,
         verbose_name="Youtube",
         blank=True,
-        null=False,
-        help_text="Ссылка на социальную сеть youtube"
+        help_text="Ссылка на социальную сеть Youtube"
+    )
+    site_youtube_img = models.ImageField(
+        upload_to=RenameUploadTo("social/youtube/"),
+        verbose_name="Youtube иконка",
+        blank=True,
+        null=True,
+        help_text="Изображение иконки для социальной сети YouTube"
     )
 
     def __str__(self):
