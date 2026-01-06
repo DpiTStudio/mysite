@@ -17,6 +17,12 @@
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100 shadow-sm border-0 service-card hover-lift">
                 <div class="card-body text-center p-4">
+                    <div class="card-title-p">
+                        <a href="{% url 'services:detail' service.slug %}" class="px-4 services-link">    
+                            <h3 class="h4 card-title fw-bold mb-3">{{ service.title }}</h3>
+                        </a>
+                    </div>
+                    <hr class="mb-3">
                     {% if service.icon %}
                         <div class="mb-4">
                             <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 80px; height: 80px; object-fit: contain;">
@@ -27,15 +33,23 @@
                         </div>
                     {% endif %}
                     
-                    <h3 class="h4 card-title fw-bold mb-3">{{ service.title }}</h3>
-                    <p class="card-text text-muted mb-4">{{ service.short_description|truncatewords:20 }}</p>
+                    
+                    <p class="card-text text-muted mb-4">{{ service.short_description|truncatewords:20|safe }}</p>
                     
                     <div class="service-price mb-4">
                         {% if service.price_type == 'fixed' %}
-                            <span class="h4 fw-bold text-primary">{{ service.price_fixed|floatformat:0 }} {{ service.currency }}</span>
+                            <span class="h4 fw-bold text-primary">
+                                {{ service.price_fixed|floatformat:0 }} {{ service.currency }}
+                            </span>
                         {% else %}
-                             <span class="text-muted">от</span> <span class="h4 fw-bold text-primary">{{ service.price_min|floatformat:0 }}</span>
-                             <span class="text-muted">до</span> <span class="h4 fw-bold text-primary">{{ service.price_max|floatformat:0 }} {{ service.currency }}</span>
+                            <span class="text-muted">от</span> 
+                            <span class="h4 fw-bold text-primary">
+                                {{ service.price_min|floatformat:0 }}
+                            </span>
+                            <span class="text-muted">до</span> 
+                            <span class="h4 fw-bold text-primary">
+                                {{ service.price_max|floatformat:0 }} {{ service.currency }}
+                            </span>
                         {% endif %}
                     </div>
                     
