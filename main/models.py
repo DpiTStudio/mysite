@@ -98,7 +98,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Время работы компании (например: Пн-Пт: 9:00-18:00)"
     )
-
     # Социальные сети (ссылки и иконки)
     site_vk = models.CharField(
         max_length=200,
@@ -113,7 +112,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети ВКонтакте"
     )
-    
     site_ok = models.CharField(
         max_length=200,
         verbose_name="OK",
@@ -127,7 +125,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети Одноклассники"
     )
-
     site_facebook = models.CharField(
         max_length=200,
         verbose_name="FaceBook",
@@ -141,7 +138,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети Facebook"
     )
-
     site_linkedin = models.CharField(
         max_length=200,
         verbose_name="Linkedin",
@@ -155,7 +151,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети LinkedIn"
     )
-
     site_instagram = models.CharField(
         max_length=200,
         verbose_name="Instagram",
@@ -169,7 +164,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети Instagram"
     )
-
     site_twitter = models.CharField(
         max_length=200,
         verbose_name="Twitter",
@@ -183,7 +177,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети Twitter"
     )
-
     site_telegram = models.CharField(
         max_length=200,
         verbose_name="Telegram",
@@ -197,7 +190,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети Telegram"
     )
-
     site_whatsapp = models.CharField(
         max_length=200,
         verbose_name="Whatsapp",
@@ -211,7 +203,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Изображение иконки для социальной сети WhatsApp"
     )
-
     site_youtube = models.CharField(
         max_length=200,
         verbose_name="Youtube",

@@ -7,10 +7,14 @@ from accounts.models import User
 class Service(ActiveModel, SEOModel, TimestampModel):
     title = models.CharField(max_length=200, verbose_name="Название услуги")
     slug = models.SlugField(unique=True, verbose_name="URL")
-    icon = models.FileField(upload_to=RenameUploadTo("services/icons/"), verbose_name="Иконка (SVG/PNG)", blank=True, null=True)
+    icon = models.FileField(upload_to=RenameUploadTo("services/icons/"), verbose_name="Иконка (JPG/GIF/PNG)", blank=True, null=True)
     
     short_description = models.TextField(verbose_name="Краткое описание", blank=True)
     description = HTMLField(verbose_name="Полное описание", default="<p>Описание услуги</p>")
+
+    
+
+
     technical_requirements = HTMLField(verbose_name="Технические условия", blank=True, help_text="Языки, особенности и т.д.")
     
     PRICE_TYPE_CHOICES = [
