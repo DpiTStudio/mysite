@@ -1,5 +1,36 @@
 from django import forms
-from .models import ServiceOrder
+from .models import ServiceOrder, Service, TECH_CHOICES
+
+class ServiceAdminForm(forms.ModelForm):
+    technical_requirements = forms.MultipleChoiceField(
+        choices=TECH_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Технические условия",
+        help_text="Языки, особенности и т.д."
+    )
+    
+    class Meta:
+        model = Service
+        fields = '__all__'
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Устанавливаем начальные значения для чекбоксов
+        if self.instance and self.instance.technical_requirements:
+            self.initial['technical_requirements'] = self.instance.get_tech_requirements_list()
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        
+        # Сохраняем выбранные значения как строку через запятую
+        tech_requirements = self.cleaned_data.get('technical_requirements', [])
+        instance.technical_requirements = ','.join(tech_requirements)
+        
+        if commit:
+            instance.save()
+        return instance
+
 
 class ServiceOrderForm(forms.ModelForm):
     class Meta:
