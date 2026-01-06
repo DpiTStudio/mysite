@@ -55,12 +55,48 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Основная информация",
-            {"fields": ("site_title", "site_slogan", "site_description", "site_domain", "is_active")},
+            {"fields": ("site_title", 
+                        "site_slogan", 
+                        "site_description", 
+                        "site_domain", 
+                        "is_active")
+            },
         ),
-        ("SEO настройки", {"fields": ("meta_title", "meta_keywords", "meta_description")}),
-        ("Контент и медиа", {"fields": ("content", "fon_haeders", "logo", "favicon")}),
-        ("Соц-сети", {"fields": ("site_ss_vk", "site_ss_ok", "site_ss_fb",)}),
-        ("Контакты", {"fields": ("site_address", "site_phone_1", "site_phone_2", "site_email")}),
+        (
+            "SEO настройки", 
+            {"fields": ("meta_title", 
+                        "meta_keywords", 
+                        "meta_description")
+            }
+        ),
+        (
+            "Контент и медиа", 
+            {"fields": ("content", 
+                        "fon_haeders", 
+                        "logo", 
+                        "favicon")
+            }
+        ),
+        (
+            "Соц-сети", 
+            {"fields": ("site_vk", 
+                        "site_ok", 
+                        "site_facebook", 
+                        "site_linkedin",
+                        "site_instagram",
+                        "site_twitter",
+                        "site_telegram",
+                        "site_whatsapp",
+                        "site_youtube",)
+            }
+        ),
+        (
+            "Контакты", {"fields": ("site_address", 
+                                    "site_phone_1", 
+                                    "site_phone_2", 
+                                    "site_email")
+                        }
+        ),
         ("Время работы", {"fields": ("site_work_time",)}),
     )
 

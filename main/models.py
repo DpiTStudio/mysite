@@ -99,29 +99,77 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Время работы компании (например: Пн-Пт: 9:00-18:00)"
     )
-    site_ss_vk = models.CharField(
+    site_vk = models.CharField(
         max_length=200,
-        verbose_name="Социальная сеть VK",
+        verbose_name="VK",
         blank=True,
         null=False,
         help_text="Ссылка на социальную сеть ВК"
     )
     
-    site_ss_ok = models.CharField(
+    site_ok = models.CharField(
         max_length=200,
-        verbose_name="Социальная сеть OK",
+        verbose_name="OK",
         blank=True,
         null=False,
         help_text="Ссылка на социальную сеть OK"
     )
 
-    site_ss_fb = models.CharField(
+    site_facebook = models.CharField(
         max_length=200,
-        verbose_name="Социальная сеть FB",
+        verbose_name="FaceBook",
         blank=True,
         null=False,
         help_text="Ссылка на социальную сеть FaceBook"
-    )     
+    )  
+
+    site_linkedin = models.CharField(
+        max_length=200,
+        verbose_name="Linkedin",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть linkedin"
+    )
+
+    site_instagram = models.CharField(
+        max_length=200,
+        verbose_name="Instagram",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть instagram"
+    )
+
+    site_twitter = models.CharField(
+        max_length=200,
+        verbose_name="Twitter",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть twitter"
+    )
+
+    site_telegram = models.CharField(
+        max_length=200,
+        verbose_name="Telegram",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть telegram"
+    )
+
+    site_whatsapp = models.CharField(
+        max_length=200,
+        verbose_name="Whatsapp",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть whatsapp"
+    )
+
+    site_youtube = models.CharField(
+        max_length=200,
+        verbose_name="Youtube",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть youtube"
+    )
 
     def __str__(self):
         """
