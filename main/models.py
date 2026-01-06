@@ -74,72 +74,17 @@ class HeaderModel(models.Model):
 
 
 class SiteSettings(ActiveModel, SEOModel):
-    """
-    Модель для хранения глобальных настроек сайта.
-
-    Содержит основные параметры, такие как название, слоган, контактная информация,
-    SEO-настройки, логотип и фавикон. Предназначена для управления общей конфигурацией
-    сайта через административную панель. Позволяет иметь только одну активную запись
-    (логически — настройки одного сайта), удаление которой запрещено.
-    """
-
     site_title = models.CharField(max_length=200, verbose_name="Название сайта")
-    """
-    Название сайта, отображаемое в заголовках страниц и интерфейсе.
-    """
-
     site_slogan = models.CharField(max_length=30, verbose_name="Слоган")
-    """
-    Краткий слоган сайта, может использоваться в шапке или рекламных блоках.
-    """
-
     site_description = models.TextField(max_length=255, verbose_name="Описание сайта")
-    """
-    Полное текстовое описание сайта, применяемое в мета-тегах и на страницах.
-    """
-
     site_email = models.EmailField(max_length=30, verbose_name="Электронная почта")
-    """
-    Основной email для связи с администраторами сайта.
-    """
-
     site_phone_1 = models.CharField(max_length=20, verbose_name="Телефон 1")
-    """
-    Первый контактный телефон (например, основной номер поддержки).
-    """
-
     site_phone_2 = models.CharField(max_length=20, verbose_name="Телефон 2")
-    """
-    Второй контактный телефон (дополнительный или альтернативный номер).
-    """
-    
     site_address = models.CharField(max_length=200, verbose_name="Адрес")
-    """
-    Адрес сайта, отображаемый в контактах.
-    """
-
     content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
-    """
-    Основной HTML-контент сайта, может использоваться на главной странице
-    или в других общих блоках. По умолчанию содержит заглушку.
-    """
-
     logo = models.ImageField(upload_to=RenameUploadTo("logos/"), verbose_name="Логотип")
-    """
-    Логотип сайта. Загружается в папку 'logos/'. Отображается в шапке сайта.
-    """
-
     favicon = models.ImageField(upload_to=RenameUploadTo("favicons/"), verbose_name="Фавикон")
-    """
-    Фавикон сайта — маленькая иконка, отображаемая в браузерной вкладке.
-    Загружается в папку 'favicons/'.
-    """
-
     fon_haeders = models.ImageField(upload_to=RenameUploadTo("fon_haeders/"), verbose_name="Фон шапки")
-    """
-    Фон шапки. Загружается в папку 'fon_haeders/'. Отображается в шапке сайта.
-    """
-
     site_domain = models.CharField(
         max_length=200,
         verbose_name="Домен сайта",
@@ -147,10 +92,6 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Домен сайта для отображения в шапке (например, dpit-cms.ru). Если не указан, будет использоваться текущий хост.",
     )
-    """
-    Домен сайта для отображения в шапке. Если не указан, используется текущий хост.
-    """
-    
     site_work_time = models.CharField(
         max_length=200, 
         verbose_name="Время работы",
@@ -158,6 +99,21 @@ class SiteSettings(ActiveModel, SEOModel):
         null=True,
         help_text="Время работы компании (например: Пн-Пт: 9:00-18:00)"
     )
+    site_ss_vk = models.CharField(
+        max_length=200,
+        verbose_name="Социальная сеть VK",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть ВК"
+    )
+    
+    site_ss_ok = models.CharField(
+        max_length=200,
+        verbose_name="Социальная сеть OK",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть OK"
+    )     
 
     def __str__(self):
         """
@@ -187,12 +143,6 @@ class SiteSettings(ActiveModel, SEOModel):
         return False
 
     class Meta:
-        """
-        Метакласс для настройки отображения модели в Django.
-
-        Задаёт читаемые названия для модели в интерфейсе админки.
-        """
-
         verbose_name = "Настройки сайта"
         verbose_name_plural = "Настройки сайта"
 

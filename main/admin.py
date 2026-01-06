@@ -59,8 +59,9 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         ),
         ("SEO настройки", {"fields": ("meta_title", "meta_keywords", "meta_description")}),
         ("Контент и медиа", {"fields": ("content", "fon_haeders", "logo", "favicon")}),
+        ("Соц-сети", {"fields": ("site_ss_vk","site_ss_ok",)}),
         ("Контакты", {"fields": ("site_address", "site_phone_1", "site_phone_2", "site_email")}),
-       ("Время работы", {"fields": ("site_work_time",)}),
+        ("Время работы", {"fields": ("site_work_time",)}),
     )
 
     def has_delete_permission(self, request, obj=None):
