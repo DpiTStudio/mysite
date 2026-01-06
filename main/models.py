@@ -113,6 +113,14 @@ class SiteSettings(ActiveModel, SEOModel):
         blank=True,
         null=False,
         help_text="Ссылка на социальную сеть OK"
+    )
+
+    site_ss_fb = models.CharField(
+        max_length=200,
+        verbose_name="Социальная сеть FB",
+        blank=True,
+        null=False,
+        help_text="Ссылка на социальную сеть FaceBook"
     )     
 
     def __str__(self):
