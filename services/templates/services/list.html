@@ -3,6 +3,10 @@
 
 {% block title %}Наши услуги | {{ block.super }}{% endblock %}
 
+{% block extra_css %}
+<link href="{% static 'css/services.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="container py-5">
     <div class="row mb-5">
@@ -25,7 +29,7 @@
                     <hr class="mb-3">
                     {% if service.icon %}
                         <div class="mb-4">
-                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 80px; height: 80px; object-fit: contain;">
+                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 100%; height: 100px; object-fit: contain;">
                         </div>
                     {% else %}
                          <div class="mb-4 text-primary">

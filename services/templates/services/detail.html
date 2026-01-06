@@ -3,6 +3,10 @@
 
 {% block title %}{{ service.title }} | {{ block.super }}{% endblock %}
 
+{% block extra_css %}
+<link href="{% static 'css/services.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="container py-5">
     <nav aria-label="breadcrumb" class="mb-4">
