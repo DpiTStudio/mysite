@@ -5,18 +5,21 @@ from .forms import ServiceAdminForm
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     form = ServiceAdminForm
-    list_display = ('title', 'price_type', 'is_active', 'order')
+    list_display = ('title', 'price_fixed', 'price_min', 'price_max','is_active', 'order')
     list_filter = ('is_active', 'price_type')
-    search_fields = ('title', 'description')
+    # search_fields = ('title', 'description')
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ('order', 'is_active')
+    list_editable = ('price_fixed', 'price_min', 'price_max', 'is_active', 'order')
+    save_on_top = True
     
     fieldsets = (
         ('Основная информация', {
             'fields': ('title', 'slug', 'icon', 'short_description', 'description', 'technical_requirements')
+    
         }),
         ('Цена', {
-            'fields': ('price_type', 'price_fixed', 'price_min', 'price_max', 'currency')
+            'fields': ('price_type', 'price_fixed', 'price_min', 'price_max', 'currency'),
+            'classes': ('wide',)
         }),
         ('Настройки', {
             'fields': ('order', 'is_active')
