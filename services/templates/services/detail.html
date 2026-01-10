@@ -37,15 +37,18 @@
                            {{ service.description|safe }}
                        </div>
                     </div>
-
-                    {% if service.technical_requirements %}
-                    <div class="mb-4 bg-light p-4 rounded-3 border-start border-4 border-info">
-                        <h4 class="fw-bold mb-3 text-info"><i class="fas fa-cogs me-2"></i>Технические условия</h4>
-                        <div class="content-body">
-                            {{ service.technical_requirements|safe }}
+                        {% if service.technical_requirements %}
+                        <div class="mb-4 bg-light p-4 rounded-3 border-start border-4 border-info">
+                            <h4 class="fw-bold mb-3 text-info">
+                                <i class="fas fa-cogs me-2"></i>Технические условия
+                            </h4>
+                            <div class="">
+                                <div class="">
+                                    {{ service.technical_requirements|safe }}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    {% endif %}
+                        {% endif %}
                 </div>
             </div>
         </div>
