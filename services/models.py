@@ -1,3 +1,4 @@
+# models.py - Улучшенная версия
 from django.db import models
 from django.core.exceptions import ValidationError
 from tinymce.models import HTMLField
@@ -7,16 +8,79 @@ from accounts.models import User
 from django.utils.translation import gettext_lazy as _
 import re
 
-
-# Константы для выбора технологий
+# Расширенные константы для технологий (фронтенд, бэкенд, дизайн, CMS и др.)
 TECH_CHOICES = [
+    # Фронтенд технологии
     ('html', 'HTML/CSS'),
-    ('js', 'JavaScript'),
+    ('html5', 'HTML5'),
+    ('css3', 'CSS3'),
+    ('sass', 'SASS/SCSS'),
+    ('less', 'LESS'),
+    ('javascript', 'JavaScript'),
+    ('typescript', 'TypeScript'),
+    ('jquery', 'jQuery'),
+    
+    # Бэкенд технологии
     ('python', 'Python'),
+    ('django', 'Django'),
+    ('flask', 'Flask'),
+    ('fastapi', 'FastAPI'),
+    ('nodejs', 'Node.js'),
     ('php', 'PHP'),
-    ('mobile', 'Мобильная версия'),
-    ('adaptive', 'Адаптивная верстка'),
-    ('seo', 'SEO-оптимизация'),
+    ('laravel', 'Laravel'),
+    
+    # Базы данных
+    ('postgresql', 'PostgreSQL'),
+    ('mysql', 'MySQL'),
+    ('mongodb', 'MongoDB'),
+    ('redis', 'Redis'),
+    ('sqlite', 'SQLite'),
+    ('oracle', 'Oracle'),
+    
+    # Дизайн и UI/UX
+    ('figma', 'Figma'),
+    ('photoshop', 'Adobe Photoshop'),
+    ('illustrator', 'Adobe Illustrator'),
+    ('indesign', 'Adobe InDesign'),
+    ('ui_design', 'UI Design'),
+    ('ux_design', 'UX Design'),
+    ('material_design', 'Material Design'),
+    ('bootstrap', 'Bootstrap'),
+    ('responsive', 'Responsive Design'),
+    ('mobile_first', 'Mobile First'),
+    
+    # DevOps и инфраструктура
+    ('docker', 'Docker'),
+    ('kubernetes', 'Kubernetes'),
+    ('aws', 'Amazon AWS'),
+    ('azure', 'Microsoft Azure'),
+    ('gcp', 'Google Cloud'),
+    ('nginx', 'Nginx'),
+    ('apache', 'Apache'),
+    ('ci_cd', 'CI/CD'),
+    ('git', 'Git'),
+    ('github', 'GitHub'),
+    ('gitlab', 'GitLab'),
+    
+    # SEO и маркетинг
+    ('seo', 'SEO Optimization'),
+    ('sem', 'SEM/PPC'),
+    ('smm', 'Social Media Marketing'),
+    ('analytics', 'Google Analytics'),
+    ('gtm', 'Google Tag Manager'),
+    ('yandex_metrika', 'Yandex.Metrika'),
+    
+    # Прочее
+    ('api', 'API Development'),
+    ('rest', 'REST API'),
+    ('graphql', 'GraphQL'),
+    ('websocket', 'WebSocket'),
+    ('pwa', 'Progressive Web App'),
+    ('spa', 'Single Page Application'),
+    ('ssr', 'Server Side Rendering'),
+    ('microservices', 'Microservices'),
+    ('blockchain', 'Blockchain'),
+    ('ai_ml', 'AI/ML Integration'),
 ]
 
 
@@ -133,6 +197,37 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         help_text=_("Например: 3-5 дней, 2 недели и т.д.")
     )
 
+    views = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_("Просмотры"),
+        editable=False
+    )
+
+    category = models.CharField(
+        max_length=100,
+        verbose_name=_("Категория услуги"),
+        blank=True,
+        help_text=_("Например: Веб-разработка, Дизайн, SEO и т.д.")
+    )
+    
+    complexity_level = models.CharField(
+        max_length=50,
+        verbose_name=_("Уровень сложности"),
+        choices=[
+            ('simple', _('Простой')),
+            ('medium', _('Средний')),
+            ('complex', _('Сложный')),
+            ('expert', _('Экспертный')),
+        ],
+        default='medium',
+    )
+    
+    deliverables = HTMLField(
+        verbose_name=_("Что вы получите"),
+        blank=True,
+        help_text=_("Список результатов/документов которые получит клиент")
+    )
+    
     class Meta:
         verbose_name = _("Услуга")
         verbose_name_plural = _("Услуги")
@@ -140,6 +235,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         indexes = [
             models.Index(fields=['order', 'is_active']),
             models.Index(fields=['is_popular', 'is_active']),
+            models.Index(fields=['category', 'is_active']),
         ]
 
     def __str__(self):

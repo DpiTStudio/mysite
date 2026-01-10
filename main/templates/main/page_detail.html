@@ -3,8 +3,16 @@
 
 {% block title %}{{ page.meta_title }}{% endblock %}
 
+{% block breadcrumbs_block %}{% endblock %}
+
 {% block content %}
 <div class="container my-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ page.title }}</li>
+        </ol>
+    </nav>
     <div class="row">
         <div class="col-12">
             <h1 class="mb-4">{{ page.title }}</h1>

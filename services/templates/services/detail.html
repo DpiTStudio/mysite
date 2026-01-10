@@ -7,6 +7,8 @@
 <link href="{% static 'css/services.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block breadcrumbs_block %}{% endblock %}
+
 {% block content %}
 <div class="container py-5">
     <nav aria-label="breadcrumb" class="mb-4">
@@ -56,15 +58,12 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="price-box text-center mb-4">
-                         {% if service.price_type == 'fixed' %}
-                            <div class="display-6 fw-bold text-primary">{{ service.price_fixed|floatformat:0 }} {{ service.currency }}</div>
-                            <small class="text-muted">Фиксированная стоимость</small>
-                        {% else %}
-                             <div class="h3 fw-bold text-primary">
-                                 {{ service.price_min|floatformat:0 }} - {{ service.price_max|floatformat:0 }} {{ service.currency }}
-                             </div>
-                             <small class="text-muted">Диапазон цен</small>
-                        {% endif %}
+                        <div class="display-6 fw-bold text-primary">{{ service.get_price_display }}</div>
+                        <small class="text-muted">
+                            {% if service.price_type == 'fixed' %}Фиксированная стоимость{% endif %}
+                            {% if service.price_type == 'range' %}Диапазон цен{% endif %}
+                            {% if service.price_type == 'contact' %}Цена по запросу{% endif %}
+                        </small>
                     </div>
                     
                     <form action="{% url 'services:order' service.slug %}" method="post">

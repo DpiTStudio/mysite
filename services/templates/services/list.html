@@ -41,20 +41,9 @@
                     <p class="card-text text-muted mb-4">{{ service.short_description|truncatewords:20|safe }}</p>
                     
                     <div class="service-price mb-4">
-                        {% if service.price_type == 'fixed' %}
-                            <span class="h4 fw-bold text-primary">
-                                {{ service.price_fixed|floatformat:0 }} {{ service.currency }}
-                            </span>
-                        {% else %}
-                            <span class="text-muted">от</span> 
-                            <span class="h4 fw-bold text-primary">
-                                {{ service.price_min|floatformat:0 }}
-                            </span>
-                            <span class="text-muted">до</span> 
-                            <span class="h4 fw-bold text-primary">
-                                {{ service.price_max|floatformat:0 }} {{ service.currency }}
-                            </span>
-                        {% endif %}
+                        <span class="h4 fw-bold text-primary">
+                            {{ service.get_price_display }}
+                        </span>
                     </div>
                     
                     <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-primary rounded-pill px-4">Подробнее</a>
