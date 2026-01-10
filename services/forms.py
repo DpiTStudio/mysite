@@ -57,11 +57,11 @@ class ServiceAdminForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'vTextField',
-                'style': 'width: 600px; font-size: 14px; padding: 8px;'
+                'style': 'width: 300px; height: 20px; font-size: 14px; padding: 8px;'
             }),
             'slug': forms.TextInput(attrs={
                 'class': 'vTextField',
-                'style': 'width: 400px; font-size: 14px; padding: 8px;'
+                'style': 'width: 300px; height: 20px; font-size: 14px; padding: 8px;'
             }),
             # TinyMCE для HTML полей
             'short_description': TinyMCE(
@@ -83,12 +83,12 @@ class ServiceAdminForm(forms.ModelForm):
             ),
             'meta_keywords': forms.Textarea(attrs={
                 'rows': 3,
-                'style': 'width: 800px; font-family: monospace;',
+                'style': 'width: 300px; height: 20px; font-family: monospace;',
                 'placeholder': 'Ключевые слова через запятую'
             }),
             'technical_requirements': forms.Textarea(attrs={
                 'rows': 6,
-                'style': 'width: 800px; font-family: monospace;',
+                'style': 'width: 300px; height: 20px; font-family: monospace;',
                 'placeholder': 'Или введите вручную через запятую'
             }),
             'icon': forms.FileInput(attrs={
@@ -104,16 +104,16 @@ class ServiceAdminForm(forms.ModelForm):
                 'style': 'padding: 8px;'
             }),
             'price_min': forms.NumberInput(attrs={
-                'style': 'width: 120px; text-align: right; padding: 6px;'
+                'style': 'width: 100px; height: 20px; text-align: left; padding: 1px;'
             }),
             'price_max': forms.NumberInput(attrs={
-                'style': 'width: 120px; text-align: right; padding: 6px;'
+                'style': 'width: 100px; height: 20px; text-align: left; padding: 1px;'
             }),
             'price_fixed': forms.NumberInput(attrs={
-                'style': 'width: 120px; text-align: right; padding: 6px;'
+                'style': 'width: 100px; height: 20px; text-align: left; padding: 1px;'
             }),
             'order': forms.NumberInput(attrs={
-                'style': 'width: 80px; text-align: center; padding: 6px;'
+                'style': 'width: 80px; height: 20px; text-align: center; padding: 1px;'
             }),
         }
     
