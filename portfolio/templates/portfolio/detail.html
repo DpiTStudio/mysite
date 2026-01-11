@@ -61,20 +61,7 @@
                             <li class="mb-2"><strong>Категория:</strong> {{ portfolio.category.name }}</li>
                             <li class="mb-2"><strong>Опубликовано:</strong> {{ portfolio.created_at|date:"d.m.Y" }}</li>
                             <li class="mb-2"><strong>Просмотров:</strong> {{ portfolio.views }}</li>
-                            {% if portfolio.price or portfolio.min_price or portfolio.max_price %}
-                            <li class="mt-3 pt-3 border-top">
-                                <h5 class="text-primary fw-bold mb-2">Стоимость:</h5>
-                                {% if portfolio.min_price or portfolio.max_price %}
-                                    {% if portfolio.min_price %}от {{ portfolio.min_price|floatformat:0 }} ₽{% endif %}
-                                    {% if portfolio.max_price %} до {{ portfolio.max_price|floatformat:0 }} ₽{% endif %}
-                                    {% if portfolio.price %}
-                                    <div class="small text-muted mt-1">(Обычная цена: {{ portfolio.price|floatformat:0 }} ₽)</div>
-                                    {% endif %}
-                                {% else %}
-                                    {{ portfolio.price|floatformat:0 }} ₽
-                                {% endif %}
-                            </li>
-                            {% endif %}
+
                         </ul>
                     </div>
                     <div class="col-md-6">

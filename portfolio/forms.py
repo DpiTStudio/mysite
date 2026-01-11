@@ -1,6 +1,6 @@
 from django import forms
 from tinymce.widgets import TinyMCE
-from .models import Portfolio, PortfolioCategory, ServiceOrder
+from .models import Portfolio, PortfolioCategory
 
 
 class PortfolioCategoryForm(forms.ModelForm):
@@ -22,14 +22,5 @@ class PortfolioForm(forms.ModelForm):
         }
 
 
-class ServiceOrderForm(forms.ModelForm):
-    class Meta:
-        model = ServiceOrder
-        fields = ["full_name", "email", "phone", "message"]
-        widgets = {
-            "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ваше ФИО"}),
-            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email"}),
-            "phone": forms.TextInput(attrs={"class": "form-control", "placeholder": "Телефон"}),
-            "message": forms.Textarea(attrs={"class": "form-control", "placeholder": "Ваше сообщение", "rows": 4}),
-        }
+
 

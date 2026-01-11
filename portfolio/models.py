@@ -31,15 +31,11 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
     content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
     views = models.IntegerField(default=0, verbose_name="Просмотры")
     
-    # New fields for service functionality
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Цена (обычная)")
-    min_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Цена (минимальная)")
-    max_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Цена (максимальная)")
-    is_service = models.BooleanField(default=False, verbose_name="Это услуга")
+
 
     class Meta:
-        verbose_name = "Портфолио/Услуга"
-        verbose_name_plural = "Портфолио/Услуги"
+        verbose_name = "Портфолио"
+        verbose_name_plural = "Портфолио"
         ordering = ["-created_at"]
 
     def __str__(self):
@@ -50,29 +46,5 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
         Portfolio.objects.filter(pk=self.pk).update(views=self.views)
 
 
-class ServiceOrder(TimestampModel):
-    service = models.ForeignKey(Portfolio, on_delete=models.CASCADE, verbose_name="Услуга", limit_choices_to={'is_service': True})
-    full_name = models.CharField(max_length=255, verbose_name="ФИО")
-    email = models.EmailField(verbose_name="Email")
-    phone = models.CharField(max_length=20, verbose_name="Телефон")
-    message = models.TextField(verbose_name="Сообщение", blank=True, null=True)
-    status = models.CharField(
-        max_length=20,
-        default="pending",
-        choices=[
-            ("pending", "Ожидает"),
-            ("processing", "В обработке"),
-            ("completed", "Завершено"),
-            ("cancelled", "Отменено"),
-        ],
-        verbose_name="Статус"
-    )
 
-    class Meta:
-        verbose_name = "Заказ услуги"
-        verbose_name_plural = "Заказы услуг"
-        ordering = ["-created_at"]
-
-    def __str__(self):
-        return f"Заказ {self.service.title} от {self.full_name}"
 

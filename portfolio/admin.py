@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Portfolio, PortfolioCategory, ServiceOrder
+from .models import Portfolio, PortfolioCategory
 from .forms import PortfolioCategoryForm, PortfolioForm
 
 
@@ -55,18 +55,13 @@ class PortfolioAdmin(admin.ModelAdmin):
     list_display = [
         "title",
         "category",
-        "price",
-        "min_price",
-        "max_price",
-        "is_service",
         "is_active",
         "created_at",
         "views",
     ]
-    list_editable = ["is_active", "price", "min_price", "max_price", "is_service"]
+    list_editable = ["is_active"]
     prepopulated_fields = {"slug": ("title",)}
     list_filter = [
-        "is_service",
         "category",
         "is_active",
         "created_at",
@@ -88,10 +83,6 @@ class PortfolioAdmin(admin.ModelAdmin):
                     "category",
                     "image",
                     "content",
-                    "price",
-                    "min_price",
-                    "max_price",
-                    "is_service",
                     "views",
                 )
             },
@@ -117,20 +108,5 @@ class PortfolioAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(ServiceOrder)
-class ServiceOrderAdmin(admin.ModelAdmin):
-    list_display = ["service", "full_name", "email", "phone", "status", "created_at"]
-    list_filter = ["status", "created_at", "service"]
-    search_fields = ["full_name", "email", "phone", "message"]
-    list_editable = ["status"]
-    readonly_fields = ["created_at", "updated_at"]
-    fieldsets = (
-        ("Информация о заказе", {"fields": ("service", "status")}),
-        ("Контактные данные", {"fields": ("full_name", "email", "phone", "message")}),
-        ("Системная информация", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
-    )
-
-
 admin.site.register(PortfolioCategory, PortfolioCategoryAdmin)
 admin.site.register(Portfolio, PortfolioAdmin)
-
