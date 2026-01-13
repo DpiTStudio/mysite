@@ -189,7 +189,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         return self.social_img_preview(obj, 'site_youtube_img')
 
     # Опционально: добавляем в list_display превью иконок
-    # list_display = ["site_title", "is_active", "vk_img_preview", "telegram_img_preview"]
+    list_display = ["site_title", "is_active", "vk_img_preview", "telegram_img_preview"]
 
 
 @admin.register(Page)
