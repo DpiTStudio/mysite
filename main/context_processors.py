@@ -1,4 +1,4 @@
-from .models import Page, SiteSettings
+from .models import Page, SiteSettings, AnalyticsScript
 
 
 def main_context(request):
@@ -8,6 +8,7 @@ def main_context(request):
     """
     settings = SiteSettings.objects.filter(is_active=True).first()
     menu_pages = Page.objects.filter(show_in_menu=True, is_active=True).order_by("order")
+    analytics_scripts = AnalyticsScript.objects.filter(is_active=True).order_by("position")
 
     # Значения по умолчанию для шапки
     header_data = {
@@ -89,4 +90,5 @@ def main_context(request):
         "menu_pages": menu_pages,
         "current_page": current_page,
         "header_data": header_data,
+        "analytics_scripts": analytics_scripts,
     }

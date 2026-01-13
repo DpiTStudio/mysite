@@ -36,5 +36,19 @@
                 </div>
             </div>
         </div>
+
+        {% if analytics_scripts %}
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    {% for script in analytics_scripts %}
+                        <div class="analytics-item">
+                            {{ script.script_code|safe }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </footer>

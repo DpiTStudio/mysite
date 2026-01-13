@@ -1,7 +1,17 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib.admin.models import LogEntry
-from .models import SiteSettings, Page
+from .models import SiteSettings, Page, AnalyticsScript
+
+
+# ... (LogEntryAdmin)
+
+@admin.register(AnalyticsScript)
+class AnalyticsScriptAdmin(admin.ModelAdmin):
+    list_display = ["name", "position", "is_active"]
+    list_editable = ["position", "is_active"]
+    list_filter = ["is_active"]
+    search_fields = ["name", "script_code"]
 
 
 @admin.register(LogEntry)

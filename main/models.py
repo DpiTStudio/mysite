@@ -357,3 +357,21 @@ class Page(ActiveModel, TimestampModel, SEOModel):
         Возвращает канонический URL для объекта.
         """
         return reverse("main:page_detail", kwargs={"slug": self.slug})
+
+
+class AnalyticsScript(ActiveModel):
+    """
+    Модель для хранения кодов аналитики и счетчиков (Яндекс.Метрика, Google Analytics и др.).
+    Позволяет управлять скриптами через админку и выводить их в футере сайта.
+    """
+    name = models.CharField(max_length=100, verbose_name="Название скрипта", help_text="Например: Яндекс.Метрика")
+    script_code = models.TextField(verbose_name="HTML/JS код", help_text="Вставьте полный код счетчика или скрипта")
+    position = models.IntegerField(default=0, verbose_name="Порядок вывода", help_text="Чем меньше число, тем раньше выводится скрипт")
+
+    class Meta:
+        verbose_name = "Скрипт аналитики"
+        verbose_name_plural = "Скрипты аналитики"
+        ordering = ["position", "name"]
+
+    def __str__(self):
+        return self.name
