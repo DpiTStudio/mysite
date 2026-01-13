@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from tinymce.models import HTMLField
 from main.utils import RenameUploadTo
@@ -20,6 +21,10 @@ class NewsCategory(ActiveModel, SEOModel, HeaderModel):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("news:by_category", kwargs={"category_slug": self.slug})
+
 
 
 class News(ActiveModel, SEOModel, TimestampModel):
@@ -55,6 +60,10 @@ class News(ActiveModel, SEOModel, TimestampModel):
 
     def __str__(self):
         return f"{self.title} ({self.news_date.strftime('%d.%m.%Y')})"
+
+    def get_absolute_url(self):
+        return reverse("news:detail", kwargs={"slug": self.slug})
+
 
     def increment_views(self):
         self.views += 1

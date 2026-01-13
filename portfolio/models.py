@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from tinymce.models import HTMLField
 from main.utils import RenameUploadTo
 from main.models import ActiveModel, SEOModel, HeaderModel, TimestampModel
@@ -20,6 +21,10 @@ class PortfolioCategory(ActiveModel, SEOModel, HeaderModel):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("portfolio:by_category", kwargs={"category_slug": self.slug})
+
+
 
 class Portfolio(ActiveModel, SEOModel, TimestampModel):
     title = models.CharField(max_length=200, verbose_name="Заголовок")
@@ -40,6 +45,10 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("portfolio:detail", kwargs={"slug": self.slug})
+
 
     def increment_views(self):
         self.views += 1

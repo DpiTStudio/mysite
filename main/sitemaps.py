@@ -59,6 +59,10 @@ class PageSitemap(Sitemap):
         """
         return obj.updated_at
 
+    def location(self, item):
+        return reverse("main:page_detail", kwargs={"slug": item.slug})
+
+
 
 class NewsSitemap(Sitemap):
     """
@@ -94,6 +98,10 @@ class NewsSitemap(Sitemap):
         """
         return obj.updated_at
 
+    def location(self, item):
+        return reverse("news:detail", kwargs={"slug": item.slug})
+
+
 
 class NewsCategorySitemap(Sitemap):
     """
@@ -116,6 +124,10 @@ class NewsCategorySitemap(Sitemap):
             QuerySet: Список активных категорий новостей
         """
         return NewsCategory.objects.filter(is_active=True)
+
+    def location(self, item):
+        return reverse("news:by_category", kwargs={"category_slug": item.slug})
+
 
 
 class PortfolioSitemap(Sitemap):
@@ -152,6 +164,10 @@ class PortfolioSitemap(Sitemap):
         """
         return obj.updated_at
 
+    def location(self, item):
+        return reverse("portfolio:detail", kwargs={"slug": item.slug})
+
+
 
 class PortfolioCategorySitemap(Sitemap):
     """
@@ -173,6 +189,10 @@ class PortfolioCategorySitemap(Sitemap):
             QuerySet: Список активных категорий портфолио
         """
         return PortfolioCategory.objects.filter(is_active=True)
+
+    def location(self, item):
+        return reverse("portfolio:by_category", kwargs={"category_slug": item.slug})
+
 
 
 class StaticViewSitemap(Sitemap):

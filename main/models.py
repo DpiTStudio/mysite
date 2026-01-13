@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from tinymce.models import HTMLField
 from .utils import RenameUploadTo
 
@@ -350,3 +351,9 @@ class Page(ActiveModel, TimestampModel, SEOModel):
             str: Заголовок страницы.
         """
         return self.title
+
+    def get_absolute_url(self):
+        """
+        Возвращает канонический URL для объекта.
+        """
+        return reverse("main:page_detail", kwargs={"slug": self.slug})
