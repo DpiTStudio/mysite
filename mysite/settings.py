@@ -293,8 +293,12 @@ JAZZMIN_UI_TWEAKS = {
 CSRF_TRUSTED_ORIGINS = [
     "https://dpit-cms.ru",
     "http://dpit-cms.ru",
+    "https://www.dpit-cms.ru",
+    "http://www.dpit-cms.ru",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "http://213.171.7.204",
+    "https://213.171.7.204",
 ]
 # TinyMCE конфигурация
 TINYMCE_DEFAULT_CONFIG = {
@@ -321,6 +325,8 @@ SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
 SECURE_HSTS_PRELOAD = not DEBUG
 SECURE_BROWSER_XSS_FILTER = True
+# Поддержка реверс-прокси (например, Nginx)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 X_FRAME_OPTIONS = "DENY"
 
 # Настройки логирования
@@ -397,11 +403,14 @@ logs_dir = BASE_DIR / "logs"
 if not logs_dir.exists():
     os.makedirs(logs_dir, exist_ok=True)
 
-# CSRF_COOKIE_DOMAIN = 'dpit-cms.ru'
-# SESSION_COOKIE_DOMAIN = 'dpit-cms.ru'
+# Настройки домена для куки
+# Раскомментируйте, если используете поддомены
+# CSRF_COOKIE_DOMAIN = '.dpit-cms.ru'
+# SESSION_COOKIE_DOMAIN = '.dpit-cms.ru'
 
-# CSRF_COOKIE_SAMESITE = 'None'
-# SESSION_COOKIE_SAMESITE = 'None'
+# Дополнительные настройки для стабильности CSRF
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
 # Настройки почты ()
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.timeweb.ru"
