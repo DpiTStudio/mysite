@@ -295,8 +295,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://dpit-cms.ru",
     "https://www.dpit-cms.ru",
     "http://www.dpit-cms.ru",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "http://localhost:4234",
+    "http://127.0.0.1:4234",
     "http://213.171.7.204",
     "https://213.171.7.204",
 ]
