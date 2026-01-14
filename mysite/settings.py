@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get(
 
 # ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: не запускайте с включенным debug в продакшене!
 # DEBUG должен быть False в production!
-DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
+DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes") 
 
 # ALLOWED_HOSTS = ["*"]
 # Добавьте ваш домен/IP в ALLOWED_HOSTS
@@ -43,7 +43,6 @@ ALLOWED_HOSTS = [
 
 
 # Определение приложений
-
 INSTALLED_APPS = [
     "jazzmin",
     "django.contrib.admin",
