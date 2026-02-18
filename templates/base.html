@@ -80,49 +80,53 @@
         {% include 'header.html' %}
     </section>
 
-    <!-- Шапка + лого -->
-    <section class="bl-logo container-fluid">
+    <!-- Шапка + лого (Герой-секция) -->
+    <section class="bl-logo container-fluid p-0">
         {% include 'logo_p.html' %}
     </section>
 
     <!-- Содержимое -->
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Категории -->
-            <div class="col-12">
-                {% include 'category-bl.html' %}
+    <main class="container-fluid py-0 px-lg-5">
+        <div class="container-fluid">
+            <!-- Секция категорий/быстрых ссылок -->
+            <div class="row pt-2 mb-5">
+                <div class="col-12">
+                    {% include 'category-bl.html' %}
+                </div>
             </div>
             
-            <!--Основной контет -->
-            <div class="col-12 col-lg-9">
-                <main class="py-3">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    {% load breadcrumbs %}
-                    {% block breadcrumbs_block %}
-                    {% breadcrumbs %}
-                    {% endblock %}
-                    {% block content %}
-                    {% endblock %}
-                </main>            
-            </div>
+            <div class="row g-4">
+                <!-- Основной контент -->
+                <div class="col-12 col-lg-9">
+                    <div class="content-wrapper animate-up">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        
+                        <div class="main-content-area">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
 
-            <div class="col-12 col-lg-3">
                 <!-- Боковая панель -->
-                {% include 'includes/bl_news_sbar.html' %}
-                {% include 'includes/bl_portfolio_sbar.html' %}
-                {% include 'includes/bl_reviews_sbar.html' %}
+                <aside class="col-12 col-lg-3">
+                    <div class="sidebar-wrapper sticky-lg-top" style="top: 130px; z-index: 10;">
+                        {% include 'includes/bl_news_sbar.html' %}
+                        {% include 'includes/bl_portfolio_sbar.html' %}
+                        {% include 'includes/bl_reviews_sbar.html' %}
+                    </div>
+                </aside>
             </div>
-            
         </div>
-    </div>
+    </main>
 
     <!-- Футер -->
     {% include 'footer.html' %}

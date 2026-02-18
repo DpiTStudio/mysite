@@ -1,10 +1,14 @@
-    <div class="row">
-        <div class="col-12 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
-            <div class="logo-inform-div">
-                <h1 class="display-4 mb-4">{{ header_data.title }}</h1>
-                {% if header_data.description %}
-                  <div class="sl_1">{{ header_data.description|safe }}</div>
-                {% endif %}
-            </div>
+<div class="row">
+    <div class="col-12 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
+        <div class="logo-inform-div">
+            {% load breadcrumbs %}
+            <nav aria-label="breadcrumb" class="mb-3 hero-breadcrumbs">
+                {% breadcrumbs %}
+            </nav>
+            <h1 class="display-4 mb-4 title-hero animate-fade">{{ header_data.title }}</h1>
+            {% if header_data.description %}
+              <div class="sl_1 animate-up">{{ header_data.description|safe|truncatewords_html:30 }}</div>
+            {% endif %}
         </div>
     </div>
+</div>

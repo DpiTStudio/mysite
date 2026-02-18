@@ -1,59 +1,70 @@
 /* Mail Styles */
 .mail-card {
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    border: none;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-glass-border);
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
+    background: var(--color-glass);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-lg);
 }
+
 .mail-header {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    padding: 20px;
+    background: var(--color-dark-subtle);
+    border-bottom: 1px solid var(--color-glass-border);
+    padding: 1.5rem;
 }
+
 .mail-list {
-    max-height: 500px;
+    max-height: 600px;
     overflow-y: auto;
 }
+
 .mail-item {
-    border-bottom: 1px solid #eee;
-    padding: 15px;
-    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--color-glass-border);
+    padding: 1.25rem;
+    transition: var(--transition-normal);
     cursor: pointer;
+    background: rgba(255, 255, 255, 0.01);
 }
+
 .mail-item:hover {
-    background-color: #f8f9fa;
+    background: var(--color-glass-hover);
     transform: translateX(5px);
 }
+
 .mail-item.unread {
-    border-left: 4px solid #1e3c72;
-    background-color: #fff;
+    border-left: 4px solid var(--color-primary);
+    background: rgba(58, 123, 213, 0.05);
 }
+
 .mail-subject {
     font-weight: 600;
-    color: #333;
-    margin-bottom: 5px;
+    color: var(--color-text-main);
+    margin-bottom: 0.25rem;
 }
+
 .mail-from {
     font-size: 0.85rem;
-    color: #666;
+    color: var(--color-text-muted);
 }
+
 .mail-date {
     font-size: 0.8rem;
-    color: #999;
-    float: right;
+    color: var(--color-text-dim);
 }
+
 .settings-badge {
     font-size: 0.75rem;
-    padding: 5px 10px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.2);
-    margin-right: 10px;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
 }
+
 .test-mail-form {
-    background: #f1f3f5;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    margin-top: 1.5rem;
 }

@@ -1,8 +1,5 @@
-<footer class="footer text-white pt-5 pb-4 thin-lines-gradient">
-    <div class="container">
-        
-        <hr class="my-4 bg-secondary">
-
+<footer class="footer thin-lines-gradient">
+    <div class="container-fluid px-5">
         <div class="row">
             <!-- Лого и описание -->
             {% include 'includes/footer_logo_inform.html' %}
@@ -12,35 +9,31 @@
 
             <!-- Контакты -->
             {% include 'includes/footer_contacts.html' %}
+        </div>
 
-        <hr class="my-4 bg-secondary">
-
-        <!-- Нижняя часть -->
-        <div class="row align-items-center">
+        <div class="row mt-5 align-items-center pt-4 border-top border-secondary">
             <div class="col-md-6 text-center text-md-start">
-                <p class="text-muted mb-0 footer_copyrator">
+                <p class="small footer_copyrator">
                     &copy; {% now "Y" %}. Все права защищены. <br>
                     {{ site_settings.site_title|default:"DPIT-CMS" }}
                 </p>
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <div class="footer-links">
-                    <hr>
-                    <a href="#" class="footer-link text-decoration-none me-3 small">
+                    <a href="#" class="footer-link d-inline-block me-3 small">
                         Политика конфиденциальности
-                    </a><br>
-                    <a href="#" class="footer-link text-decoration-none me-3 small">
+                    </a>
+                    <a href="#" class="footer-link d-inline-block small">
                         Условия использования
                     </a>
-                    <hr>
                 </div>
             </div>
         </div>
 
         {% if analytics_scripts %}
-        <div class="row mt-3">
+        <div class="row mt-4">
             <div class="col-12 text-center">
-                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
                     {% for script in analytics_scripts %}
                         <div class="analytics-item">
                             {{ script.script_code|safe }}

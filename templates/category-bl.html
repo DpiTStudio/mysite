@@ -1,30 +1,31 @@
-<div class="container-fluid">
-    <div class="row mt-5">
-        <div class="col-md-4 text-center">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Новости</h5>
-                    <p class="card-text">Последние новости и события</p>
-                    <a href="{% url 'news:list' %}" class="btn btn-primary">Читать новости</a>
-                </div>
+<div class="row g-4 mt-2">
+    <div class="col-md-4 text-center">
+        <div class="card glass-card">
+            <div class="card-body">
+                <i class="bi bi-newspaper fs-2 text-primary mb-3"></i>
+                <h5 class="card-title">Новости</h5>
+                <p class="card-text small text-muted">Последние новости и события нашей компании</p>
+                <a href="{% url 'news:list' %}" class="btn btn-primary btn-sm">Читать новости</a>
             </div>
         </div>
-        <div class="col-md-4 text-center">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Портфолио</h5>
-                    <p class="card-text">Наши работы и проекты</p>
-                    <a href="{% url 'portfolio:list' %}" class="btn btn-primary">Смотреть работы</a>
-                </div>
+    </div>
+    <div class="col-md-4 text-center">
+        <div class="card glass-card">
+            <div class="card-body">
+                <i class="bi bi-briefcase fs-2 text-primary mb-3"></i>
+                <h5 class="card-title">Портфолио</h5>
+                <p class="card-text small text-muted">Наши лучшие работы и успешно завершенные проекты</p>
+                <a href="{% url 'portfolio:list' %}" class="btn btn-primary btn-sm">Смотреть работы</a>
             </div>
         </div>
-        <div class="col-md-4 text-center">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Отзывы</h5>
-                    <p class="card-text">Что говорят наши клиенты</p>
-                    <a href="{% url 'reviews:list' %}" class="btn btn-primary">Читать отзывы</a>
-                </div>
+    </div>
+    <div class="col-md-4 text-center">
+        <div class="card glass-card">
+            <div class="card-body">
+                <i class="bi bi-chat-left-quote fs-2 text-primary mb-3"></i>
+                <h5 class="card-title">Отзывы</h5>
+                <p class="card-text small text-muted">Честные отзывы наших клиентов о сотрудничестве</p>
+                <a href="{% url 'reviews:list' %}" class="btn btn-primary btn-sm">Читать отзывы</a>
             </div>
         </div>
     </div>

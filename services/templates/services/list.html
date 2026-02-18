@@ -8,73 +8,58 @@
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h1 class="display-4 fw-bold">Наши Услуги</h1>
-            <p class="lead text-muted">Профессиональные решения для вашего бизнеса</p>
-        </div>
+<div class="row">
+    <div class="col-12 text-center mb-5">
+        <h1 class="display-4 fw-bold text-white mb-3">Наши Услуги</h1>
+        <p class="lead text-muted">Профессиональные решения для вашего бизнеса</p>
     </div>
 
-    <div class="row">
+    <div class="row g-4">
         {% for service in services %}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm border-0 service-card hover-lift">
-                <div class="card-body text-center p-4">
-                    <div class="card-title-p">
-                        <a href="{% url 'services:detail' service.slug %}" class="px-4 services-link">    
-                            <h3 class="h4 card-title fw-bold mb-3">{{ service.title }}</h3>
-                        </a>
+        <div class="col-lg-4 col-md-6">
+            <div class="card glass-card h-100">
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <div class="service-icon mb-4">
+                        {% if service.icon %}
+                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 80px; height: 80px; object-fit: contain;">
+                        {% else %}
+                             <div class="text-primary">
+                                <i class="bi bi-cpu fs-1"></i>
+                            </div>
+                        {% endif %}
                     </div>
-                    <hr class="mb-3">
-                    {% if service.icon %}
-                        <div class="mb-4">
-                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 100%; height: 100px; object-fit: contain;">
-                        </div>
-                    {% else %}
-                         <div class="mb-4 text-primary">
-                            <i class="fas fa-cubes fa-3x"></i>
-                        </div>
-                    {% endif %}
+
+                    <h3 class="h4 fw-bold mb-3 text-white">{{ service.title }}</h3>
                     
+                    <p class="card-text text-muted small mb-4 flex-grow-1">
+                        {{ service.short_description|striptags|truncatewords:15 }}
+                    </p>
                     
-                    <p class="card-text text-muted mb-4">{{ service.short_description|truncatewords:20|safe }}</p>
-                    
-                    <div class="service-price mb-4">
-                        <span class="h4 fw-bold text-primary">
-                            {{ service.get_price_display }}
-                        </span>
+                    <div class="price-tag mb-4 fs-4 text-secondary">
+                        {{ service.get_price_display }}
                     </div>
                     
-                    <div class="d-flex justify-content-center gap-2">
-                        <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-primary rounded-pill px-3">Подробнее</a>
-                        <form action="{% url 'cart:cart_add' service.id %}" method="post">
+                    <div class="d-flex flex-column gap-2">
+                        <form action="{% url 'cart:cart_add' service.id %}" method="post" class="w-100">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary rounded-pill px-3">
-                                <i class="bi bi-cart-plus"></i> В корзину
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-cart-plus me-2"></i> В корзину
                             </button>
                         </form>
+                        <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-light btn-sm w-100">Подробнее</a>
                     </div>
                 </div>
             </div>
         </div>
         {% empty %}
-        <div class="col-12 text-center">
-            <div class="alert alert-info">
-                В данный момент услуги не добавлены. Пожалуйста, зайдите позже.
+        <div class="col-12">
+            <div class="glass-card p-5 text-center">
+                <i class="bi bi-info-circle display-4 text-muted mb-4"></i>
+                <h4 class="text-white">Услуги временно отсутствуют</h4>
+                <p class="text-muted">Пожалуйста, загляните позже.</p>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
-
-<style>
-.hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-}
-</style>
 {% endblock %}
