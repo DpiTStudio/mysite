@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Корзина | {{ site_settings.site_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:home' %}">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'services:list' %}">Услуги</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Корзина</li>
+        </ol>
+    </nav>
+
+    <div class="glass-card p-4 p-md-5">
+        <h1 class="mb-4 text-gradient">Ваша корзина</h1>
+
+        {% if cart %}
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Услуга</th>
+                            <th scope="col">Цена</th>
+                            <th scope="col" class="text-center">Кол-во</th>
+                            <th scope="col">Итого</th>
+                            <th scope="col" class="text-end">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                            {% with service=item.service %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if service.icon %}
+                                                <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="me-3 rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                            {% else %}
+                                                <div class="me-3 bg-secondary rounded d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px;">
+                                                    <i class="bi bi-gear text-white"></i>
+                                                </div>
+                                            {% endif %}
+                                            <div>
+                                                <h5 class="mb-0">{{ service.title }}</h5>
+                                                <small class="text-muted">{{ service.category }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ item.price }} ₽</td>
+                                    <td class="text-center">{{ item.quantity }}</td>
+                                    <td class="fw-bold">{{ item.total_price }} ₽</td>
+                                    <td class="text-end">
+                                        <a href="{% url 'cart:cart_remove' service.id %}" class="btn btn-outline-danger btn-sm rounded-pill">
+                                            <i class="bi bi-trash"></i> Удалить
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="fs-4">
+                            <td colspan="3" class="text-end border-0">Всего к оплате:</td>
+                            <td colspan="2" class="text-gradient border-0 fw-bold">{{ cart.get_total_price }} ₽</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-5 gap-3">
+                <a href="{% url 'services:list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                    <i class="bi bi-arrow-left me-2"></i> Продолжить выбор
+                </a>
+                <a href="#" class="btn btn-primary btn-lg rounded-pill px-5 shadow-glow shine-effect">
+                    Оформить заказ <i class="bi bi-check-circle ms-2"></i>
+                </a>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="display-1 text-muted mb-4">
+                    <i class="bi bi-cart-x"></i>
+                </div>
+                <h3>Ваша корзина пуста</h3>
+                <p class="text-muted mb-5">Самое время добавить в неё услуги для вашего бизнеса!</p>
+                <a href="{% url 'services:list' %}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-glow">
+                    Перейти к услугам
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    
+    .text-gradient {
+        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+    }
+    
+    .custom-table {
+        background: transparent !important;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+    
+    .custom-table thead th {
+        border-bottom: 2px solid rgba(255,255,255,0.1);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        padding-bottom: 20px;
+    }
+    
+    .custom-table tbody tr {
+        background: rgba(255,255,255,0.03);
+        transition: all 0.3s ease;
+    }
+    
+    .custom-table tbody tr:hover {
+        background: rgba(255,255,255,0.08);
+        transform: scale(1.01);
+    }
+    
+    .custom-table td, .custom-table th {
+        padding: 1.5rem 1rem;
+        border: none;
+    }
+    
+    .shadow-glow {
+        box-shadow: 0 0 20px rgba(58, 123, 213, 0.5);
+    }
+    
+    .shine-effect {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .shine-effect::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        transition: 0.5s;
+    }
+    
+    .shine-effect:hover::after {
+        left: 100%;
+    }
+</style>
+{% endblock %}

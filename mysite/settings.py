@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "tickets.apps.TicketsConfig",  # Система тикетов
     "mail.apps.MailConfig",  # Управление почтой
     "services.apps.ServicesConfig",  # Услуги
+    "cart.apps.CartConfig",  # Корзина
     "tinymce",
 ]
 
@@ -92,6 +93,7 @@ TEMPLATES = [
                 "news.context_processors.latest_news",
                 "portfolio.context_processors.latest_portfolio",
                 "reviews.context_processors.latest_reviews",
+                "cart.context_processors.cart",
             ],
         },
     },
@@ -426,3 +428,6 @@ IMAP_HOST = "imap.timeweb.ru"
 IMAP_PORT = 993
 IMAP_USER = EMAIL_HOST_USER
 IMAP_PASSWORD = EMAIL_HOST_PASSWORD
+
+# Идентификатор корзины в сессии
+CART_SESSION_ID = 'cart'

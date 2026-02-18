@@ -63,6 +63,12 @@ def main_context(request):
                 if obj.header_image:
                     header_data["image"] = obj.header_image.url
                 found_header = True
+
+        # 3. Логика для Услуг
+        elif app_name == "services":
+            header_data["title"] = "Профессиональные услуги"
+            header_data["description"] = "Решения для развития вашего бизнеса"
+            found_header = True
         
         # 3. Логика для других приложений (отзывы, тикеты)
         elif app_name == "reviews":

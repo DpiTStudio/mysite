@@ -121,6 +121,21 @@
                 </li>
             </ul>
             
+            <!-- Корзина -->
+            <ul class="navbar-nav me-3">
+                <li class="nav-item">
+                    <a class="nav-link position-relative" href="{% url 'cart:cart_detail' %}">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        {% if cart|length > 0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ cart|length }}
+                                <span class="visually-hidden">товаров в корзине</span>
+                            </span>
+                        {% endif %}
+                    </a>
+                </li>
+            </ul>
+
             <!-- Форма поиска -->
             <form class="d-flex" action="{% url 'news:search' %}" method="get">
                 <input class="form-control me-2" type="search" name="q" placeholder="Поиск новостей..." aria-label="Search" value="{{ request.GET.q|default:'' }}">

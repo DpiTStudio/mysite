@@ -50,6 +50,7 @@ urlpatterns = [
     path("tickets/", include("tickets.urls")),
     path("mail/", include("mail.urls")),
     path("services/", include("services.urls")),
+    path("cart/", include("cart.urls")),
     path("captcha/", include("captcha.urls")),
     path(
         "sitemap.xml",

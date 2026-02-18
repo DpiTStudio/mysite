@@ -1,85 +1,78 @@
 :root {
-    /* Современная цветовая палитра - улучшенная (менее яркая) */
-    --color-fon-1: hsl(221, 50%, 40%); /* Более темный и спокойный синий */
-    --color-fon-2: hsla(221, 50%, 40%, 0.15); /* Полупрозрачный синий */
-    --color-fon-3: hwb(270 35% 40%); /* Более приглушенный фиолетовый */
-    --color-fon-4: hwb(0 100% 0%); /* Белый */
-    --color-fon-5: hsla(221, 60%, 55%, 0.15); /* Светлый серо-синий */
+    /* Premium Color Palette */
+    --color-primary: #3a7bd5;
+    --color-secondary: #00d2ff;
+    --color-accent: #6366f1;
+    --color-dark-bg: #0f172a;
+    --color-dark-surface: #1e293b;
+    --color-glass: rgba(255, 255, 255, 0.05);
+    --color-glass-border: rgba(255, 255, 255, 0.1);
     
-    /* Новые градиентные цвета - более спокойные */
-    --gradient-primary: linear-gradient(135deg, #4b5c96 0%, #5d4875 100%); /* Приглушенный сине-фиолетовый */
-    --gradient-secondary: linear-gradient(135deg, #c48bb5 0%, #bf6372 100%); /* Приглушенный розово-красный */
-    --gradient-blue: linear-gradient(135deg, #5b8db5 0%, #3a9cb0 100%); /* Спокойный голубой */
-    --gradient-purple: linear-gradient(135deg, #b8dcdb 0%, #dcc2cb 100%); /* Пастельный */
-    --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Темный остается темным */
+    /* Text Colors */
+    --color-text-main: #f8fafc;
+    --color-text-muted: #94a3b8;
     
-    /* Цвета текста */
-    --color-text-1: hsl(0, 0%, 15%); /* Темно-серый, не чисто черный */
-    --color-text-2: hsl(0, 0%, 98%); /* Почти белый */
-    --color-text-3: hsl(221, 50%, 40%); /* Синий текст в тон фона */
-    --color-text-4: hsl(0, 60%, 45%); /* Приглушенный красный */
-    --color-text-5: lab(48.5% 0.41 -1.11); /* Серый текст */
-    --color-text-6: hsl(0, 50%, 45%); /* Темно-красный */
-    --color-text-muted: hsl(0, 0%, 50%); /* Приглушенный текст */
+    /* Gradients */
+    --gradient-premium: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+    --gradient-dark: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
     
-    /* Цвета границ */
-    --color-border-1: hsl(221, 50%, 40%);
-    --color-border-2: hsl(0, 0%, 100%);
-    --color-border-light: rgba(255, 255, 255, 0.2);
-    
-    /* Цвета теней - мягче */
-    --color-box-shadow-1: hsla(0, 0%, 0%, 0.08);
-    --shadow-1: hsla(0, 0%, 99%, 0.1);
-    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.04);
-    --shadow-card-hover: 0 10px 20px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.06);
-    --shadow-navbar: 0 2px 15px rgba(0, 0, 0, 0.08);
-    --shadow-text: 0 2px 4px rgba(0, 0, 0, 0.08);
-    
-    /* Размеры текста */
-    --size-text-0: 2rem;
-    --size-text-1: 1.5rem;
-    --size-text-2: 1rem;
-    --size-text-3: 0.875rem;
-    --size-text-4: 0.75rem;
-    --size-text-5: 0.625rem;
-    
-    /* Переходы */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Сброс отступов и полей для всех элементов */
 * {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
 }
 
-/* Плавная прокрутка */
 html {
     scroll-behavior: smooth;
 }
 
-/* Основные стили для body */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Улучшенный шрифт */
-    line-height: 1.8; /* Межстрочный интервал */
-    padding-top: 110px; /* Увеличено для фиксированной навигации и топ-бара */
-    background-color: #f8f9fa; /* Светлый фон */
-    color: #333; /* Цвет текста */
-    animation: fadeIn 0.5s ease-in;
-    text-shadow: 2px 2px 4px rgba(144, 144, 144, 0.445);
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-main);
+    line-height: 1.6;
+    padding-top: 110px;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(58, 123, 213, 0.15) 0, transparent 50%), 
+        radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(0, 210, 255, 0.1) 0, transparent 50%);
 }
 
-/* Анимация появления страницы */
+h1, h2, h3, h4, h5, h6, .display-4, .display-5 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-dark-surface);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
+
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
 }
 
 /* Градиент с тонкими линиями под углом 45 градусов - улучшенный */
@@ -171,16 +164,16 @@ body {
 
 /* Стили для навигационной панели - улучшенные */
 .navbar {
-    background: var(--gradient-primary) !important;
+    background: rgba(30, 41, 59, 0.8) !important;
     padding: 12px 0;
-    color: var(--color-text-2) !important;
-    box-shadow: var(--shadow-navbar);
-    backdrop-filter: blur(10px);
-    transition: all var(--transition-normal);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    top: 34px !important; /* Смещаем под топ-бар */
+    color: var(--color-text-main) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(12px);
+    transition: all var(--transition-smooth);
+    border-bottom: 1px solid var(--color-glass-border);
+    top: 34px !important;
     width: 100%;
-    z-index: 9999 !important; /* Обеспечиваем нахождение поверх всех элементов */
+    z-index: 9999 !important;
 }
 
 /* Все элементы меню и блоки навигации всегда поверх других объектов */
@@ -284,16 +277,17 @@ a.nav-link.active {
 }
 /* Информационный блок под логотипом */
 .logo-inform-div {
-    background: rgba(255, 255, 255, 0.85); /* Полупрозрачный белый фон */
-    backdrop-filter: blur(10px); /* Эффект размытия */
-    color: var(--color-text-1); /* Черный текст */
-    padding: 2rem; /* Увеличенные отступы */
-    margin: 2rem; /* Внешние отступы */
-    text-align: left; /* Выравнивание текста по левому краю */
-    border-radius: 20px; /* Закругленные углы */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Тень */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Граница */
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(15px);
+    color: var(--color-text-main);
+    padding: 3rem;
+    margin: 2rem;
+    text-align: left;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--color-glass-border);
     max-width: 800px;
+    animation: fadeInUp 1s ease-out;
 }
 .sl_1 {
     color: var(--color-text-4) !important; /* Красный текст */
@@ -339,46 +333,23 @@ a.nav-link.active {
 }
 /* Карточки - улучшенные */
 .card {
-    transition: all var(--transition-normal);
+    transition: var(--transition-smooth);
     margin-bottom: 25px;
-    border: none;
-    border-radius: 16px;
-    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    background: #fff;
+    background: var(--color-glass);
+    backdrop-filter: blur(10px);
     position: relative;
     animation: fadeInUp 0.6s ease-out;
 }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--gradient-primary);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--transition-normal);
-}
-
-.card:hover::before {
-    transform: scaleX(1);
-}
-
 .card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: var(--shadow-card-hover);
-}
-
-.card-img-top {
-    transition: transform var(--transition-slow);
-    border-radius: 16px 16px 0 0;
-}
-
-.card:hover .card-img-top {
-    transform: scale(1.1);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(58, 123, 213, 0.3);
+    border-color: rgba(58, 123, 213, 0.5);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .card-body {
@@ -389,9 +360,9 @@ a.nav-link.active {
 }
 .card-title {
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--color-text-main);
     margin-bottom: 0.75rem;
-    transition: color var(--transition-fast);
+    transition: var(--transition-smooth);
 }
 
 .card:hover .card-title {
@@ -433,13 +404,14 @@ a.footer_pr_link:hover {
 }
 
 .footer {
-    background: var(--gradient-primary);
-    color: var(--color-text-2);
+    background: var(--gradient-dark);
+    color: var(--color-text-main);
     margin-top: auto;
     padding-top: 3rem;
     padding-bottom: 2rem;
     position: relative;
     overflow: hidden;
+    border-top: 1px solid var(--color-glass-border);
 }
 
 .footer::before {
@@ -631,54 +603,49 @@ a.footer_pr_link:hover {
 
 /* Дополнительные эффекты для кнопок */
 .btn {
-    border-radius: 8px;
-    padding: 10px 24px;
-    font-weight: 500;
-    transition: all var(--transition-normal);
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-weight: 600;
+    transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
     border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover::before {
-    width: 300px;
-    height: 300px;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .btn-primary {
-    background: var(--gradient-primary);
-    color: #fff;
+    background: var(--gradient-premium);
+    color: white;
+    box-shadow: 0 4px 15px rgba(58, 123, 213, 0.4);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(58, 123, 213, 0.5);
+    background: linear-gradient(135deg, #4b8df0 0%, #3a7bd5 100%);
 }
 
-/* Улучшение форм */
-.form-control, .form-select {
-    border-radius: 8px;
-    border: 2px solid #e2e8f0;
-    padding: 10px 15px;
-    transition: all var(--transition-normal);
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-glass-border);
+    color: white !important;
+    border-radius: 12px;
+    padding: 12px 16px;
+    transition: var(--transition-smooth);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(58, 123, 213, 0.2);
+    outline: none;
 }
 
 .form-control:focus, .form-select:focus {

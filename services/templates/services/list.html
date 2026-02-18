@@ -46,7 +46,15 @@
                         </span>
                     </div>
                     
-                    <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-primary rounded-pill px-4">Подробнее</a>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-primary rounded-pill px-3">Подробнее</a>
+                        <form action="{% url 'cart:cart_add' service.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary rounded-pill px-3">
+                                <i class="bi bi-cart-plus"></i> В корзину
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
