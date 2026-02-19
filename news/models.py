@@ -7,6 +7,10 @@ from main.models import ActiveModel, SEOModel, HeaderModel, TimestampModel
 
 
 class NewsCategory(ActiveModel, SEOModel, HeaderModel):
+    """
+    Модель категории новостей.
+    Позволяет группировать новости по темам (например, 'Обновления', 'Акции').
+    """
     name = models.CharField(max_length=100, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="URL")
     logo = models.ImageField(upload_to=RenameUploadTo("news/categories/"), verbose_name="Логотип")
@@ -23,6 +27,7 @@ class NewsCategory(ActiveModel, SEOModel, HeaderModel):
         return self.name
 
     def get_absolute_url(self):
+        """Возвращает URL страницы категории новостей"""
         return reverse("news:by_category", kwargs={"category_slug": self.slug})
 
 
@@ -62,10 +67,12 @@ class News(ActiveModel, SEOModel, TimestampModel):
         return f"{self.title} ({self.news_date.strftime('%d.%m.%Y')})"
 
     def get_absolute_url(self):
+        """Возвращает URL детальной страницы новости"""
         return reverse("news:detail", kwargs={"slug": self.slug})
 
 
     def increment_views(self):
+        """Увеличивает счетчик просмотров новости"""
         self.views += 1
         # Используем update для избежания лишних вызовов save() и сигналов
         News.objects.filter(pk=self.pk).update(views=self.views)
@@ -132,6 +139,10 @@ class DailyEvent(TimestampModel):
 
 
 class Comment(TimestampModel):
+    """
+    Модель комментария к новости.
+    Позволяет пользователям оставлять отзывы и ставить оценку новости.
+    """
     news = models.ForeignKey(
         News,
         on_delete=models.CASCADE,

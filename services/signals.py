@@ -1,4 +1,8 @@
 # signals.py
+"""
+Модуль сигналов приложения services.
+Отвечает за автоматическую отправку уведомлений при создании заказов.
+"""
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
@@ -7,6 +11,12 @@ from .models import ServiceOrder
 
 @receiver(post_save, sender=ServiceOrder)
 def send_order_notification(sender, instance, created, **kwargs):
+    """
+    Сигнал, срабатывающий после сохранения заказа услуги.
+    Если заказ только что создан (created=True), отправляет email-уведомления:
+    1. Администратору сайта о новом заказе.
+    2. Клиенту как подтверждение получения заказа.
+    """
     if created:
         site_name = getattr(settings, 'SITE_NAME', 'DPIT CMS')
         admin_email = getattr(settings, 'ADMIN_EMAIL', None)

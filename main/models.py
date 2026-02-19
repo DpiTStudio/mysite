@@ -74,6 +74,11 @@ class HeaderModel(models.Model):
 
 
 class SiteSettings(ActiveModel, SEOModel):
+    """
+    Модель глобальных настроек сайта.
+    Хранит информацию, которая отображается на всех страницах (логотип, контакты, соцсети).
+    Данная модель предполагает наличие только одной активной записи.
+    """
     site_title = models.CharField(max_length=200, verbose_name="Название сайта")
     site_slogan = models.CharField(max_length=30, verbose_name="Слоган")
     site_description = models.TextField(max_length=255, verbose_name="Описание сайта")

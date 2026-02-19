@@ -5,16 +5,21 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db import models
 from django.core.paginator import Paginator
-from .models import Service, ServiceOrder
+from .models import Service
 from .forms import ServiceOrderForm
 
 class ServiceListView(ListView):
+    """
+    Отображает список всех доступных услуг с фильтрацией по категории,
+    сложности и используемым технологиям.
+    """
     model = Service
     template_name = 'services/list.html'
     context_object_name = 'services'
     paginate_by = 12
     
     def get_queryset(self):
+        """Возвращает отфильтрованный набор данных услуг"""
         queryset = Service.objects.filter(is_active=True).order_by('order')
         
         # Фильтрация по категории
@@ -35,6 +40,7 @@ class ServiceListView(ListView):
         return queryset
     
     def get_context_data(self, **kwargs):
+        """Добавляет в контекст уникальные категории и популярные услуги"""
         context = super().get_context_data(**kwargs)
         
         # Получаем уникальные категории для фильтра
@@ -52,17 +58,22 @@ class ServiceListView(ListView):
 
 
 class ServiceDetailView(DetailView):
+    """
+    Отображает детальную информацию об услуге, включая форму заказа
+    и похожие услуги.
+    """
     model = Service
     template_name = 'services/detail.html'
     context_object_name = 'service'
     
     def get_context_data(self, **kwargs):
+        """Подготавливает контекст, включая форму заказа с предзаполненными данными пользователя"""
         context = super().get_context_data(**kwargs)
         
-        # Pre-fill form if user is authenticated
+        # Предзаполнение формы, если пользователь авторизован
         initial = {}
         if self.request.user.is_authenticated:
-            # Try to get full name, fallback to username
+            # Пытаемся получить полное имя, иначе используем username
             full_name = f"{self.request.user.first_name} {self.request.user.last_name}".strip()
             if not full_name:
                 full_name = self.request.user.username
@@ -79,15 +90,16 @@ class ServiceDetailView(DetailView):
             category=self.object.category
         ).exclude(pk=self.object.pk)[:4]
         
-        # Преобразуем технические требования в список
+        # Преобразуем технические требования в список для отображения
         context['tech_list'] = self.object.get_tech_requirements_display()
         
         return context
     
     def get(self, request, *args, **kwargs):
+        """Обрабатывает GET запрос и увеличивает счетчик просмотров"""
         self.object = self.get_object()
         
-        # Увеличиваем счетчик просмотров
+        # Увеличиваем счетчик просмотров атомарно
         self.object.views = models.F('views') + 1
         self.object.save(update_fields=['views'])
         
@@ -96,6 +108,9 @@ class ServiceDetailView(DetailView):
 
 
 class ServiceOrderView(View):
+    """
+    Обрабатывает отправку формы заказа услуги.
+    """
     def post(self, request, slug):
         service = get_object_or_404(Service, slug=slug)
         form = ServiceOrderForm(request.POST)
@@ -109,7 +124,7 @@ class ServiceOrderView(View):
             
             order.save()
             
-            # Отправка уведомлений (если настроена система уведомлений)
+            # Отправка уведомлений
             self.send_notifications(order)
             
             messages.success(
@@ -132,22 +147,26 @@ class ServiceOrderView(View):
             )
     
     def send_notifications(self, order):
-        """Отправка уведомлений о новом заказе"""
-        # Здесь можно добавить отправку email или уведомлений
-        # Например, через Django signals или Celery
+        """Отправка уведомлений о новом заказе администратору и/или клиенту"""
+        # Логика отправки вынесена в сигналы, здесь можно добавить дополнительные действия
         pass
 
 
 class ServiceSearchView(TemplateView):
+    """
+    Представление для поиска по каталогу услуг.
+    """
     template_name = 'services/search.html'
     
     def get_context_data(self, **kwargs):
+        """Выполняет поиск на основе GET-параметра 'q'"""
         context = super().get_context_data(**kwargs)
         
         query = self.request.GET.get('q', '')
         services = Service.objects.filter(is_active=True)
         
         if query:
+            # Поиск по различным полям услуги
             services = services.filter(
                 Q(title__icontains=query) |
                 Q(description__icontains=query) |
@@ -156,7 +175,7 @@ class ServiceSearchView(TemplateView):
                 Q(category__icontains=query)
             )
         
-        # Пагинация
+        # Пагинация результатов поиска
         paginator = Paginator(services, 12)
         page = self.request.GET.get('page')
         context['services'] = paginator.get_page(page)

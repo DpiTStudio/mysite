@@ -6,6 +6,9 @@ from django.contrib import messages
 
 @require_POST
 def cart_add(request, service_id):
+    """
+    Добавляет выбранную услугу в корзину пользователя.
+    """
     cart = Cart(request)
     service = get_object_or_404(Service, id=service_id)
     cart.add(service=service)
@@ -13,6 +16,9 @@ def cart_add(request, service_id):
     return redirect('cart:cart_detail')
 
 def cart_remove(request, service_id):
+    """
+    Удаляет услугу из корзины.
+    """
     cart = Cart(request)
     service = get_object_or_404(Service, id=service_id)
     cart.remove(service)
@@ -20,5 +26,8 @@ def cart_remove(request, service_id):
     return redirect('cart:cart_detail')
 
 def cart_detail(request):
+    """
+    Отображает страницу с деталями корзины и списком выбранных услуг.
+    """
     cart = Cart(request)
     return render(request, 'cart/detail.html', {'cart': cart})

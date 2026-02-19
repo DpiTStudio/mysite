@@ -85,6 +85,10 @@ TECH_CHOICES = [
 
 
 class Service(ActiveModel, SEOModel, TimestampModel):
+    """
+    Модель услуги.
+    Описывает предлагаемую услугу, её стоимость, характеристики и технические требования.
+    """
     title = models.CharField(
         max_length=200,
         verbose_name=_("Название услуги"),

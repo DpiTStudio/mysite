@@ -43,6 +43,11 @@ tiny_config_seo = {
 }
 
 class ServiceAdminForm(forms.ModelForm):
+    """
+    Форма для управления услугами в административной панели.
+    Включает расширенные поля выбора технологий и интеграцию с TinyMCE
+    для визуального редактирования описаний.
+    """
     technical_requirements = forms.MultipleChoiceField(
         choices=TECH_CHOICES,
         widget=forms.CheckboxSelectMultiple,
@@ -118,6 +123,7 @@ class ServiceAdminForm(forms.ModelForm):
         }
     
     def __init__(self, *args, **kwargs):
+        """Инициализация формы с загрузкой списка технологий"""
         super().__init__(*args, **kwargs)
         
         # Устанавливаем начальные значения для чекбоксов
@@ -131,6 +137,7 @@ class ServiceAdminForm(forms.ModelForm):
                     field.widget.attrs['class'] = 'form-control'
     
     def save(self, commit=True):
+        """Сохранение формы с преобразованием списка технологий в строку"""
         instance = super().save(commit=False)
         
         # Сохраняем выбранные значения как строку через запятую
@@ -146,6 +153,10 @@ class ServiceAdminForm(forms.ModelForm):
 
 
 class ServiceOrderForm(forms.ModelForm):
+    """
+    Форма для оформления заказа на услугу клиентом.
+    Включает контактную информацию и текст сообщения.
+    """
     class Meta:
         model = ServiceOrder
         fields = ['full_name', 'phone', 'email', 'message']

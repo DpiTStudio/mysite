@@ -3,8 +3,6 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Count, Avg, Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
-from django.views.decorators.cache import cache_page
-from django.views.decorators.vary import vary_on_headers
 from .models import News, NewsCategory
 
 logger = logging.getLogger(__name__)
@@ -30,7 +28,7 @@ def get_latest_news():
 
 def news_list(request):
     """
-    Список всех новостей с пагинацией
+    Отображает список всех активных новостей с пагинацией.
     """
     news_queryset = (
         News.objects.filter(is_active=True)
@@ -65,7 +63,7 @@ def news_list(request):
 
 def news_by_category(request, category_slug):
     """
-    Новости по категории с пагинацией
+    Отображает новости, отфильтрованные по определенной категории.
     """
     category = get_object_or_404(NewsCategory, slug=category_slug, is_active=True)
     news_queryset = (
@@ -103,7 +101,7 @@ def news_by_category(request, category_slug):
 
 def news_search(request):
     """
-    Поиск новостей по запросу
+    Выполняет поиск новостей по текстовому запросу.
     """
     query = request.GET.get("q", "").strip()
     news_queryset = News.objects.none()
@@ -149,6 +147,9 @@ def news_search(request):
 
 
 def news_detail(request, slug):
+    """
+    Отображает детальную страницу конкретной новости.
+    """
     try:
         news = News.objects.annotate(
             total_comments=Count("comments"), avg_rating=Avg("comments__rating")

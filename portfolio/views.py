@@ -6,7 +6,7 @@ from .models import Portfolio, PortfolioCategory
 
 
 def get_latest_portfolio():
-    """Функция для получения последних 3 активных портфолио"""
+    """Возвращает последние 3 активные работы для отображения в блоках 'Последние работы'"""
     return (
         Portfolio.objects.filter(is_active=True)
         .select_related("category")
@@ -16,7 +16,7 @@ def get_latest_portfolio():
 
 def portfolio_list(request):
     """
-    Список всех портфолио с пагинацией
+    Отображает полный список работ портфолио с поддержкой пагинации.
     """
     portfolio_queryset = (
         Portfolio.objects.filter(is_active=True)
@@ -27,7 +27,7 @@ def portfolio_list(request):
         portfolio_count=Count("portfolio")
     )
 
-    # Пагинация - 9 на страницу
+    # Пагинация - 9 работ на страницу
     paginator = Paginator(portfolio_queryset, 9)
     page = request.GET.get("page")
 
@@ -49,12 +49,9 @@ def portfolio_list(request):
     )
 
 
-
-
-
 def portfolio_by_category(request, category_slug):
     """
-    Портфоли по категории с пагинацией
+    Отображает список работ портфолио, отфильтрованных по категории.
     """
     category = get_object_or_404(PortfolioCategory, slug=category_slug, is_active=True)
     portfolio_queryset = (
@@ -67,7 +64,7 @@ def portfolio_by_category(request, category_slug):
         portfolio_count=Count("portfolio")
     )
 
-    # Пагинация - 9 новостей на страницу
+    # Пагинация - 9 работ на страницу
     paginator = Paginator(portfolio_queryset, 9)
     page = request.GET.get("page")
 
@@ -92,7 +89,8 @@ def portfolio_by_category(request, category_slug):
 
 def portfolio_detail(request, slug):
     """
-    Детальная страница
+    Отображает детальную страницу конкретной работы портфолио.
+    Включает похожие работы из той же категории.
     """
     portfolio = get_object_or_404(Portfolio, slug=slug, is_active=True)
     portfolio.increment_views()

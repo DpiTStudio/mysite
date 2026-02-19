@@ -3,6 +3,10 @@ from main.models import TimestampModel
 
 
 class Review(TimestampModel):
+    """
+    Модель отзыва клиента.
+    Все отзывы проходят обязательную модерацию перед публикацией.
+    """
     STATUS_CHOICES = (
         ("pending", "На модерации"),
         ("approved", "Одобрено"),

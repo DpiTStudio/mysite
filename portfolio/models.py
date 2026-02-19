@@ -6,6 +6,10 @@ from main.models import ActiveModel, SEOModel, HeaderModel, TimestampModel
 
 
 class PortfolioCategory(ActiveModel, SEOModel, HeaderModel):
+    """
+    Модель категории портфолио.
+    Позволяет группировать работы по типам (например, 'Веб-сайты', 'Дизайн').
+    """
     name = models.CharField(max_length=100, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="URL")
     logo = models.ImageField(upload_to=RenameUploadTo("portfolio/categories/"), verbose_name="Логотип")
@@ -22,11 +26,15 @@ class PortfolioCategory(ActiveModel, SEOModel, HeaderModel):
         return self.name
 
     def get_absolute_url(self):
+        """Возвращает URL страницы категории"""
         return reverse("portfolio:by_category", kwargs={"category_slug": self.slug})
 
 
-
 class Portfolio(ActiveModel, SEOModel, TimestampModel):
+    """
+    Модель работы (кейса) в портфолио.
+    Представляет выполненный проект с описанием, изображениями и SEO данными.
+    """
     title = models.CharField(max_length=200, verbose_name="Заголовок")
     slug = models.SlugField(unique=True, verbose_name="URL")
     category = models.ForeignKey(
@@ -35,8 +43,6 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
     image = models.ImageField(upload_to=RenameUploadTo("portfolio/images/"), verbose_name="Изображение")
     content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
     views = models.IntegerField(default=0, verbose_name="Просмотры")
-    
-
 
     class Meta:
         verbose_name = "Портфолио"
@@ -47,10 +53,11 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
         return self.title
 
     def get_absolute_url(self):
+        """Возвращает URL детальной страницы работы"""
         return reverse("portfolio:detail", kwargs={"slug": self.slug})
 
-
     def increment_views(self):
+        """Увеличивает счетчик просмотров работы"""
         self.views += 1
         Portfolio.objects.filter(pk=self.pk).update(views=self.views)
 
