@@ -75,6 +75,16 @@
     {% endblock %}
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-dark-bg); z-index: 99999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress" style="position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gradient-premium); z-index: 100000; transition: width 0.1s ease;"></div>
+
     <!-- Шапка + меню -->
     <section class="bl-nav">
         {% include 'header.html' %}
@@ -88,16 +98,18 @@
     <!-- Содержимое -->
     <main class="container-fluid py-0 px-lg-5">
         <div class="container-fluid">
-            <!-- Секция категорий/быстрых ссылок -->
-            <div class="row pt-2 mb-5">
+            {% if request.path != '/' %}
+            <!-- Секция категорий (только не на главной) -->
+            <div class="row pt-2 mb-4">
                 <div class="col-12">
                     {% include 'category-bl.html' %}
                 </div>
             </div>
+            {% endif %}
             
             <div class="row g-4">
                 <!-- Основной контент -->
-                <div class="col-12 col-lg-9">
+                <div class="col-12 {% if request.path == '/' %}col-lg-12{% else %}col-lg-9{% endif %}">
                     <div class="content-wrapper animate-up">
                         {% if messages %}
                             {% for message in messages %}
@@ -108,7 +120,6 @@
                             {% endfor %}
                         {% endif %}
                         
-                        
                         <div class="main-content-area">
                             {% block content %}
                             {% endblock %}
@@ -116,7 +127,8 @@
                     </div>
                 </div>
 
-                <!-- Боковая панель -->
+                {% if request.path != '/' %}
+                <!-- Боковая панель (скрыта на главной для чистоты) -->
                 <aside class="col-12 col-lg-3">
                     <div class="sidebar-wrapper sticky-lg-top" style="top: 130px; z-index: 10;">
                         {% include 'includes/bl_news_sbar.html' %}
@@ -124,6 +136,7 @@
                         {% include 'includes/bl_reviews_sbar.html' %}
                     </div>
                 </aside>
+                {% endif %}
             </div>
         </div>
     </main>

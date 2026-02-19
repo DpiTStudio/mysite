@@ -7,23 +7,20 @@ from services.models import Service
 def main_context(request):
     """
     Глобальный контекст-процессор для передачи общих данных во все шаблоны.
-    Обеспечивает единую логику для заголовков, настроек сайта и меню.
     """
     settings = SiteSettings.objects.filter(is_active=True).first()
     menu_pages = Page.objects.filter(show_in_menu=True, is_active=True).order_by("order")
     analytics_scripts = AnalyticsScript.objects.filter(is_active=True).order_by("position")
 
-    # Значения по умолчанию для шапки
+    # Значения по умолчанию для шапки (Главная страница)
     header_data = {
         "title": settings.site_title if settings else "DPIT-CMS",
         "description": settings.site_description if settings else "",
         "image": settings.fon_haeders.url if settings and settings.fon_haeders else None,
     }
 
-    current_page = None
     path = request.path.strip("/")
     path_parts = [p for p in path.split("/") if p]
-
     found_header = False
 
     if path_parts:
@@ -39,13 +36,17 @@ def main_context(request):
                 news = News.objects.filter(slug=path_parts[1], is_active=True).first()
                 obj = news.category if news else None
             else:
-                obj = None # Можно добавить дефолтный хидер для списка новостей
+                obj = None
             
             if obj:
                 header_data["title"] = obj.header_title or obj.name
                 header_data["description"] = obj.header_description or obj.description
                 if obj.header_image:
                     header_data["image"] = obj.header_image.url
+                found_header = True
+            else:
+                header_data["title"] = "Новости компании"
+                header_data["description"] = "Актуальные события и обновления"
                 found_header = True
 
         # 2. Логика для Портфолио
@@ -66,6 +67,10 @@ def main_context(request):
                 if obj.header_image:
                     header_data["image"] = obj.header_image.url
                 found_header = True
+            else:
+                header_data["title"] = "Наше Портфолио"
+                header_data["description"] = "Лучшие работы нашей команды"
+                found_header = True
 
         # 3. Логика для Услуг
         elif app_name == "services":
@@ -73,7 +78,7 @@ def main_context(request):
             header_data["description"] = "Решения для развития вашего бизнеса"
             found_header = True
         
-        # 3. Логика для других приложений (отзывы, тикеты)
+        # 4. Логика для других приложений
         elif app_name == "reviews":
             header_data["title"] = "Отзывы наших клиентов"
             header_data["description"] = "Мы ценим ваше мнение о нашей работе"
@@ -84,7 +89,12 @@ def main_context(request):
             header_data["description"] = "Мы всегда готовы помочь вам"
             found_header = True
 
-        # 4. Логика для обычных страниц
+        elif app_name == "search":
+            header_data["title"] = "Поиск по сайту"
+            header_data["description"] = "Результаты поиска по вашему запросу"
+            found_header = True
+
+        # 5. Логика для обычных страниц
         if not found_header:
             slug = path_parts[-1]
             current_page = Page.objects.filter(slug=slug, is_active=True).first()
@@ -97,7 +107,6 @@ def main_context(request):
     return {
         "site_settings": settings,
         "menu_pages": menu_pages,
-        "current_page": current_page,
         "header_data": header_data,
         "analytics_scripts": analytics_scripts,
         "nav_categories": {

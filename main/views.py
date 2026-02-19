@@ -25,7 +25,7 @@ from tickets.models import Ticket
 # Импорт функции для получения модели пользователя
 from django.contrib.auth import get_user_model
 # Импорт функции агрегации Sum для подсчета сумм
-from django.db.models import Sum
+from django.db.models import Sum, Q
 
 # Получение модели пользователя (может быть кастомная модель)
 User = get_user_model()
@@ -35,25 +35,12 @@ def home(request):
     """
     Представление главной страницы сайта.
     
-    Отображает главную страницу с различным контентом в зависимости от прав пользователя.
-    Для персонала (is_staff) собирает и отображает статистику по всему сайту.
-    
-    Логика работы:
-    1. Проверяет, является ли пользователь персоналом
-    2. Если да - собирает статистику:
-       - Количество новостей и категорий новостей
-       - Количество работ портфолио и категорий
-       - Количество отзывов (всего и на модерации)
-       - Количество тикетов (всего и открытых)
-       - Количество пользователей
-       - Общее количество просмотров новостей и портфолио
-    3. Рендерит шаблон главной страницы с собранной статистикой
-    
-    Args:
-        request: HTTP-запрос от клиента
-    
-    Returns:
-        HttpResponse: HTML-страница главной страницы
+    Отображает главную страницу с различным контентом:
+    - Герой-секция (через context processor или в шаблоне)
+    - Популярные услуги
+    - Последние работы портфолио
+    - Свежие новости
+    - Статистика для персонала
     """
     # Инициализация словаря статистики (пустой для обычных пользователей)
     stats = {}
@@ -61,30 +48,83 @@ def home(request):
     # Проверка, является ли пользователь персоналом (имеет доступ к админке)
     if request.user.is_staff:
         # Подсчет общего количества просмотров новостей
-        # aggregate(Sum("views")) суммирует все значения поля views
-        # ["total"] - получение результата агрегации
-        # or 0 - если результат None (нет новостей), используем 0
         news_views = News.objects.aggregate(total=Sum("views"))["total"] or 0
-        
         # Подсчет общего количества просмотров портфолио
         portfolio_views = Portfolio.objects.aggregate(total=Sum("views"))["total"] or 0
         
-        # Формирование словаря со статистикой для отображения на главной странице
+        # Формирование словаря со статистикой
         stats = {
-            "news_count": News.objects.count(),  # Общее количество новостей
-            "news_categories_count": NewsCategory.objects.count(),  # Количество категорий новостей
-            "portfolio_count": Portfolio.objects.count(),  # Общее количество работ портфолио
-            "portfolio_categories_count": PortfolioCategory.objects.count(),  # Количество категорий портфолио
-            "reviews_count": Review.objects.count(),  # Общее количество отзывов
-            "pending_reviews_count": Review.objects.filter(status="pending").count(),  # Отзывы на модерации
-            "tickets_count": Ticket.objects.count(),  # Общее количество тикетов
-            "open_tickets_count": Ticket.objects.filter(status="open").count(),  # Открытые тикеты
-            "users_count": User.objects.count(),  # Общее количество пользователей
-            "total_views": news_views + portfolio_views,  # Суммарное количество просмотров
+            "news_count": News.objects.count(),
+            "news_categories_count": NewsCategory.objects.count(),
+            "portfolio_count": Portfolio.objects.count(),
+            "portfolio_categories_count": PortfolioCategory.objects.count(),
+            "reviews_count": Review.objects.count(),
+            "pending_reviews_count": Review.objects.filter(status="pending").count(),
+            "tickets_count": Ticket.objects.count(),
+            "open_tickets_count": Ticket.objects.filter(status="open").count(),
+            "users_count": User.objects.count(),
+            "total_views": news_views + portfolio_views,
         }
+
+    # Получаем данные для динамических блоков
+    from services.models import Service
     
-    # Рендеринг шаблона главной страницы с передачей статистики в контекст
-    return render(request, "main/home.html", {"stats": stats})
+    context = {
+        "stats": stats,
+        "popular_services": Service.objects.filter(is_active=True, is_popular=True)[:4],
+        "latest_portfolio": Portfolio.objects.filter(is_active=True).order_by("-created_at")[:3],
+        "recent_news": News.objects.filter(is_active=True).order_by("-created_at")[:3],
+        "recent_reviews": Review.objects.filter(status="approved").order_by("-created_at")[:3],
+    }
+    
+    return render(request, "main/home.html", context)
+
+
+def global_search(request):
+    """
+    Универсальный поиск по всему сайту (Новости, Портфолио, Услуги).
+    """
+    query = request.GET.get("q", "").strip()
+    results = {
+        'news': [],
+        'portfolio': [],
+        'services': [],
+        'total_count': 0
+    }
+    
+    if query:
+        from news.models import News
+        from portfolio.models import Portfolio
+        from services.models import Service
+        
+        results['news'] = News.objects.filter(
+            is_active=True
+        ).filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        ).select_related('category')[:5]
+        
+        results['portfolio'] = Portfolio.objects.filter(
+            is_active=True
+        ).filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        ).select_related('category')[:5]
+        
+        results['services'] = Service.objects.filter(
+            is_active=True
+        ).filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        )[:5]
+        
+        results['total_count'] = (
+            len(results['news']) + 
+            len(results['portfolio']) + 
+            len(results['services'])
+        )
+
+    return render(request, "main/search_results.html", {
+        "query": query,
+        "results": results
+    })
 
 
 def page_detail(request, slug):

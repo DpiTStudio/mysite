@@ -1,105 +1,82 @@
 // Улучшенные эффекты для сайта
 document.addEventListener('DOMContentLoaded', function() {
-    // Эффект скролла для навигации
+    // 1. Preloader
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            }, 500);
+        });
+    }
+
+    // 2. Scroll Progress Bar
+    const progressBar = document.getElementById('scroll-progress');
+    if (progressBar) {
+        window.addEventListener('scroll', () => {
+            const windowScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (windowScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+    }
+
+    // 3. Эффект скролла для навигации
     const navbar = document.querySelector('.navbar');
     if (navbar) {
-        let lastScroll = 0;
-        
         window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
+            if (window.pageYOffset > 50) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
-            
-            lastScroll = currentScroll;
         });
     }
     
-    // Увеличение изображений при клике с улучшенной анимацией
-    const images = document.querySelectorAll('.gallery img, .img-thumbnail, .card-img-top');
+    // 4. Анимация появления элементов при скролле
+    const animateOnScroll = function() {
+        const elements = document.querySelectorAll('.animate-up, .glass-card, .card');
+        elements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const isVisible = rect.top < (window.innerHeight - 50);
+            if (isVisible) {
+                el.classList.add('animate-active');
+                if (el.classList.contains('animate-up')) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
+            }
+        });
+    };
     
+    // Начальные стили для анимации
+    document.querySelectorAll('.animate-up').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    });
+
+    window.addEventListener('scroll', animateOnScroll);
+    animateOnScroll(); // Запуск при загрузке
+
+    // 5. Увеличение изображений
+    const images = document.querySelectorAll('.gallery img, .img-thumbnail, .card-img-top');
     images.forEach(img => {
-        img.style.transition = 'transform 0.3s ease, z-index 0.3s ease';
-        img.style.cursor = 'pointer';
-        
         img.addEventListener('click', function(e) {
             e.stopPropagation();
             this.classList.toggle('enlarged');
             if (this.classList.contains('enlarged')) {
-                this.style.transform = 'scale(1.5)';
-                this.style.zIndex = '1000';
-                this.style.position = 'relative';
+                this.style.transform = 'scale(1.1)';
+                this.style.zIndex = '100';
             } else {
                 this.style.transform = 'scale(1)';
                 this.style.zIndex = '1';
             }
         });
-        
-        // Закрытие при клике вне изображения
-        document.addEventListener('click', function(e) {
-            if (!img.contains(e.target) && img.classList.contains('enlarged')) {
-                img.classList.remove('enlarged');
-                img.style.transform = 'scale(1)';
-                img.style.zIndex = '1';
-            }
-        });
     });
     
-    // Ленивая загрузка изображений с fade-in эффектом
-    if ('IntersectionObserver' in window) {
-        const lazyImages = document.querySelectorAll('img[data-src]');
-        
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.style.opacity = '0';
-                    img.style.transition = 'opacity 0.5s ease';
-                    
-                    img.onload = function() {
-                        this.style.opacity = '1';
-                    };
-                    
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    imageObserver.unobserve(img);
-                }
-            });
-        }, {
-            rootMargin: '50px'
-        });
-        
-        lazyImages.forEach(img => {
-            img.style.opacity = '0';
-            imageObserver.observe(img);
-        });
-    }
-    
-    // Анимация появления элементов при скролле
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const fadeInObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
-                fadeInObserver.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // Применяем анимацию к карточкам
-    document.querySelectorAll('.card, .news-card, .portfolio-item').forEach(el => {
-        el.style.opacity = '0';
-        fadeInObserver.observe(el);
-    });
-    
-    // Плавная прокрутка для якорных ссылок
+    // 6. Плавная прокрутка
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -108,17 +85,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (target) {
                     e.preventDefault();
                     target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                        behavior: 'smooth'
                     });
                 }
             }
         });
     });
     
-    // Эффект ripple для кнопок
-    document.querySelectorAll('.btn, .nav-link:not(.dropdown-toggle)').forEach(button => {
-        button.addEventListener('click', function(e) {
+    // 7. Ripple эффект
+    document.querySelectorAll('.btn, .nav-link').forEach(button => {
+        button.addEventListener('mousedown', function(e) {
             const ripple = document.createElement('span');
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
@@ -131,36 +107,27 @@ document.addEventListener('DOMContentLoaded', function() {
             ripple.classList.add('ripple');
             
             this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
+            setTimeout(() => ripple.remove(), 600);
         });
     });
-    
-    // Добавляем стили для ripple эффекта
-    if (!document.getElementById('ripple-styles')) {
+
+    // 8. Стили для Ripple (если не добавлены)
+    if (!document.getElementById('extra-styles')) {
         const style = document.createElement('style');
-        style.id = 'ripple-styles';
+        style.id = 'extra-styles';
         style.textContent = `
-            .btn, .nav-link {
-                position: relative;
-                overflow: hidden;
-            }
             .ripple {
                 position: absolute;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.6);
+                background: rgba(255, 255, 255, 0.3);
                 transform: scale(0);
-                animation: ripple-animation 0.6s ease-out;
+                animation: ripple-animation 0.6s linear;
                 pointer-events: none;
             }
             @keyframes ripple-animation {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
+                to { transform: scale(4); opacity: 0; }
             }
+            .animate-active { opacity: 1 !important; transform: translateY(0) !important; }
         `;
         document.head.appendChild(style);
     }

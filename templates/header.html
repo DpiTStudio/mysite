@@ -158,8 +158,8 @@
             </ul>
 
             <!-- Форма поиска -->
-            <form class="d-flex" action="{% url 'news:search' %}" method="get">
-                <input class="form-control me-2" type="search" name="q" placeholder="Поиск новостей..." aria-label="Search" value="{{ request.GET.q|default:'' }}">
+            <form class="d-flex" action="{% url 'main:search' %}" method="get">
+                <input class="form-control me-2" type="search" name="q" placeholder="Поиск по сайту..." aria-label="Search" value="{{ request.GET.q|default:'' }}">
                 <button class="btn btn-outline-light" type="submit">
                     <i class="bi bi-search"></i>
                 </button>

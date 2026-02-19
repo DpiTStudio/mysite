@@ -165,11 +165,15 @@ a:hover {
 }
 
 /* --- Header & Navigation --- */
+.main-header {
+    z-index: 11000 !important; /* Extremely high to stay above all normal sections */
+}
+
 .user-top-bar {
     height: 34px;
     background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(10px);
-    z-index: 10005;
+    z-index: 11002;
     border-bottom: 1px solid var(--color-glass-border);
     display: flex;
     align-items: center;
@@ -193,7 +197,7 @@ a:hover {
     border-bottom: 1px solid var(--color-glass-border);
     padding: 0.75rem 0;
     box-shadow: var(--shadow-md);
-    z-index: 10004 !important;
+    z-index: 11001 !important;
     transition: var(--transition-normal);
 }
 
@@ -251,7 +255,7 @@ a:hover {
     box-shadow: var(--shadow-lg);
     padding: 0.75rem;
     margin-top: 0 !important;
-    z-index: 10006;
+    z-index: 11005 !important;
 }
 
 .dropdown-item {
