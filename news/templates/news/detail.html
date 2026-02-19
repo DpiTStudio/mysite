@@ -30,10 +30,28 @@
         </div>
         {% endif %}
 
-        <div class="d-flex align-items-center gap-3 mb-4 text-muted small">
-            <span class="badge bg-primary px-3 py-2">{{ news.category.name }}</span>
-            <span><i class="bi bi-calendar3 me-1"></i> {{ news.created_at|date:"d.m.Y в H:i" }}</span>
-            <span><i class="bi bi-eye me-1"></i> {{ news.views }} просмотров</span>
+        <!-- Мета-информация -->
+        <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+            <a href="{% url 'news:by_category' news.category.slug %}" class="badge bg-primary px-3 py-2 text-decoration-none">
+                <i class="bi bi-tag me-1"></i>{{ news.category.name }}
+            </a>
+            <span class="text-muted small">
+                <i class="bi bi-calendar-event me-1"></i>{{ news.news_date|date:"d.m.Y" }}
+            </span>
+            <span class="text-muted small">
+                <i class="bi bi-clock me-1"></i>{{ news.created_at|date:"H:i" }}
+            </span>
+            <span class="text-muted small">
+                <i class="bi bi-eye me-1"></i>{{ news.views }} просмотров
+            </span>
+            {% if events_count > 0 %}
+            <span class="badge bg-success bg-opacity-25 text-success px-3 py-2">
+                <i class="bi bi-calendar-check me-1"></i>{{ events_count }} событий за день
+            </span>
+            {% endif %}
+            <a href="{% url 'news:by_date' news.news_date.year news.news_date.month news.news_date.day %}" class="text-primary small ms-auto">
+                <i class="bi bi-link-45deg me-1"></i>Все новости за {{ news.news_date|date:"d.m.Y" }}
+            </a>
         </div>
 
         <!-- Содержание новости -->
@@ -41,21 +59,117 @@
             {{ news.content|safe }}
         </article>
 
+        <!-- События дня (если есть) -->
+        {% if events %}
+        <div class="events-timeline mb-5">
+            <div class="glass-card p-4 p-md-5">
+                <h3 class="h4 text-white mb-4">
+                    <i class="bi bi-clock-history me-2 text-primary"></i>
+                    Хронология событий за {{ news.news_date|date:"d.m.Y" }}
+                </h3>
+                <div class="timeline">
+                    {% for event in events %}
+                    <div class="timeline-item mb-4 pb-4 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="timeline-marker">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle" 
+                                     style="width: 40px; height: 40px; background: var(--gradient-premium); flex-shrink: 0;">
+                                    <span class="text-white fw-bold small">{{ forloop.counter }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                                    <h5 class="h6 text-white mb-0">{{ event.title }}</h5>
+                                    <div class="d-flex gap-2">
+                                        <span class="badge bg-dark border border-secondary small">
+                                            {{ event.get_event_type_display }}
+                                        </span>
+                                        <span class="text-muted small">
+                                            <i class="bi bi-clock me-1"></i>{{ event.created_at|date:"H:i" }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% if event.image %}
+                                <div class="mb-3 mt-2">
+                                    <img src="{{ event.image.url }}" alt="{{ event.title }}" 
+                                         class="rounded" style="max-height: 200px; object-fit: cover;">
+                                </div>
+                                {% endif %}
+                                <div class="text-muted small event-description">
+                                    {{ event.description|safe }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Связанные новости -->
+        {% if related_news %}
+        <div class="related-news mb-5">
+            <h3 class="h4 text-white mb-4">
+                <i class="bi bi-collection me-2 text-primary"></i>
+                Связанные новости
+            </h3>
+            <div class="row g-3">
+                {% for related in related_news %}
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card-premium p-3 h-100">
+                        {% if related.image %}
+                        <div class="overflow-hidden rounded mb-3" style="height: 120px;">
+                            <img src="{{ related.image.url }}" class="w-100 h-100" alt="{{ related.title }}" style="object-fit: cover;">
+                        </div>
+                        {% endif %}
+                        <span class="badge bg-primary bg-opacity-25 text-primary small mb-2">{{ related.category.name }}</span>
+                        <h6 class="small mb-2">
+                            <a href="{% url 'news:detail' related.slug %}" class="text-white hover-primary">{{ related.title|truncatewords:10 }}</a>
+                        </h6>
+                        <small class="text-muted">
+                            <i class="bi bi-calendar3 me-1"></i>{{ related.news_date|date:"d.m.Y" }}
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Мета-информация и соцсети -->
         <div class="news-meta-detail glass-card p-4 mb-5">
             <div class="row align-items-center">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <h6 class="text-white-50 mb-3 text-uppercase small letter-spacing-1">Поделиться новостью</h6>
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="#" class="social-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-btn" title="Twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="social-btn" title="VK"><i class="bi bi-vk"></i></a>
-                        <a href="#" class="social-btn" title="Telegram"><i class="bi bi-telegram"></i></a>
+                        <a href="https://vk.com/share.php?url={{ request.build_absolute_uri }}&title={{ news.title }}" 
+                           target="_blank" class="social-btn" title="VKontakte">
+                            <i class="bi bi-vk"></i>
+                        </a>
+                        <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ news.title }}" 
+                           target="_blank" class="social-btn" title="Telegram">
+                            <i class="bi bi-telegram"></i>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?text={{ news.title }}%20{{ request.build_absolute_uri }}" 
+                           target="_blank" class="social-btn" title="WhatsApp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        <a href="mailto:?subject={{ news.title }}&body={{ request.build_absolute_uri }}" 
+                           class="social-btn" title="Email">
+                            <i class="bi bi-envelope"></i>
+                        </a>
+                        <button class="social-btn" title="Копировать ссылку" onclick="navigator.clipboard.writeText(window.location.href).then(()=>this.innerHTML='<i class=\'bi bi-check2\'></i>')">
+                            <i class="bi bi-link-45deg"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <a href="{% url 'news:list' %}" class="btn btn-outline-light btn-sm">
+                    <a href="{% url 'news:list' %}" class="btn btn-outline-light btn-sm me-2">
                         <i class="bi bi-arrow-left me-2"></i>Все новости
+                    </a>
+                    <a href="{% url 'news:by_category' news.category.slug %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-tag me-1"></i>{{ news.category.name }}
                     </a>
                 </div>
             </div>

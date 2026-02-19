@@ -100,19 +100,19 @@ def global_search(request):
         results['news'] = News.objects.filter(
             is_active=True
         ).filter(
-            Q(title__icontains=query) | Q(content__icontains=query)
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(meta_description__icontains=query)
         ).select_related('category')[:5]
         
         results['portfolio'] = Portfolio.objects.filter(
             is_active=True
         ).filter(
-            Q(title__icontains=query) | Q(description__icontains=query)
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(meta_description__icontains=query)
         ).select_related('category')[:5]
         
         results['services'] = Service.objects.filter(
             is_active=True
         ).filter(
-            Q(title__icontains=query) | Q(description__icontains=query)
+            Q(title__icontains=query) | Q(description__icontains=query) | Q(short_description__icontains=query)
         )[:5]
         
         results['total_count'] = (
