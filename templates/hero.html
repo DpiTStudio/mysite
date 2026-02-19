@@ -1,4 +1,4 @@
-<div class="row">
+<div class="container-fluid hero-section">
     <div class="col-12 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
         <div class="logo-inform-div">
             {% load breadcrumbs %}
@@ -6,8 +6,11 @@
                 {% breadcrumbs %}
             </nav>
             <h1 class="display-4 mb-4 title-hero animate-fade">{{ header_data.title }}</h1>
+            {% if header_data.tags %}
+                <div class="sl_1 animate-up">{{ header_data.tags|safe|truncatewords_html:30 }}</div>
+            {% endif %}
             {% if header_data.description %}
-              <div class="sl_1 animate-up">{{ header_data.description|safe|truncatewords_html:30 }}</div>
+                <div class="sl_1 animate-up">{{ header_data.description|safe|truncatewords_html:30 }}</div>
             {% endif %}
         </div>
     </div>

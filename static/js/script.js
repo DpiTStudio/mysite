@@ -36,29 +36,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 4. Анимация появления элементов при скролле
     const animateOnScroll = function() {
-        const elements = document.querySelectorAll('.animate-up, .glass-card, .card');
+        const elements = document.querySelectorAll('.animate-up, .animate-left, .animate-right, .animate-scale, .glass-card, .card, .glass-card-premium');
         elements.forEach(el => {
             const rect = el.getBoundingClientRect();
-            const isVisible = rect.top < (window.innerHeight - 50);
+            // Порог появления: 10% элемента должно быть видно
+            const isVisible = rect.top < (window.innerHeight - 100) && rect.bottom > 0;
             if (isVisible) {
                 el.classList.add('animate-active');
-                if (el.classList.contains('animate-up')) {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }
             }
         });
     };
     
-    // Начальные стили для анимации
-    document.querySelectorAll('.animate-up').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-    });
-
+    // Начальные стили для анимаций заданы в CSS, но для надежности:
     window.addEventListener('scroll', animateOnScroll);
-    animateOnScroll(); // Запуск при загрузке
+    // Небольшая задержка для плавного старта
+    setTimeout(animateOnScroll, 100);
 
     // 5. Увеличение изображений
     const images = document.querySelectorAll('.gallery img, .img-thumbnail, .card-img-top');

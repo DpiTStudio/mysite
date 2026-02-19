@@ -78,7 +78,7 @@
     <!-- Preloader -->
     <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-dark-bg); z-index: 99999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease;">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">Загрузка...</span>
         </div>
     </div>
 
@@ -92,7 +92,7 @@
 
     <!-- Шапка + лого (Герой-секция) -->
     <section class="bl-logo container-fluid p-0">
-        {% include 'logo_p.html' %}
+        {% include 'hero.html' %}
     </section>
 
     <!-- Содержимое -->
@@ -109,8 +109,15 @@
             
             <div class="row g-4">
                 <!-- Основной контент -->
-                <div class="col-12 {% if request.path == '/' %}col-lg-12{% else %}col-lg-9{% endif %}">
-                    <div class="content-wrapper animate-up">
+                <div class="col-12 col-lg-9">
+                    <div class="content-wrapper animate-up animate-active">
+                        {% if '/news/' in request.path %}
+                        <div class="section-title-wrapper mb-4 animate-fade">
+                            <h1 class="h2 text-white fw-bold border-start border-4 border-primary ps-3">
+                                Новости и Статьи
+                            </h1>
+                        </div>
+                        {% endif %}
                         {% if messages %}
                             {% for message in messages %}
                                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -127,8 +134,7 @@
                     </div>
                 </div>
 
-                {% if request.path != '/' %}
-                <!-- Боковая панель (скрыта на главной для чистоты) -->
+                <!-- Боковая панель -->
                 <aside class="col-12 col-lg-3">
                     <div class="sidebar-wrapper sticky-lg-top" style="top: 130px; z-index: 10;">
                         {% include 'includes/bl_news_sbar.html' %}
@@ -136,7 +142,6 @@
                         {% include 'includes/bl_reviews_sbar.html' %}
                     </div>
                 </aside>
-                {% endif %}
             </div>
         </div>
     </main>

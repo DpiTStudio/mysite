@@ -142,26 +142,89 @@ a:hover {
 
 /* --- Animations --- */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes glow {
-    from { box-shadow: 0 0 5px rgba(58, 123, 213, 0.2); }
-    to { box-shadow: 0 0 20px rgba(58, 123, 213, 0.5); }
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-.animate-up {
-    animation: fadeInUp 0.6s ease-out forwards;
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
+
+@keyframes float {
+	0% { transform: translateY(0px); }
+	50% { transform: translateY(-10px); }
+	100% { transform: translateY(0px); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.animate-up { opacity: 0; }
+.animate-left { opacity: 0; }
+.animate-right { opacity: 0; }
+.animate-scale { opacity: 0; }
+
+.animate-active.animate-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-active.animate-left { animation: fadeInLeft 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-active.animate-right { animation: fadeInRight 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-active.animate-scale { animation: scaleIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
 
 .animate-fade {
-    animation: fadeIn 1s ease-out forwards;
+    animation: fadeIn 1.2s ease-out forwards;
+}
+
+.float-animation {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Staggered Delays */
+.delay-100 { animation-delay: 0.1s !important; }
+.delay-200 { animation-delay: 0.2s !important; }
+.delay-300 { animation-delay: 0.3s !important; }
+.delay-400 { animation-delay: 0.4s !important; }
+.delay-500 { animation-delay: 0.5s !important; }
+
+/* --- Advanced Glassmorphism --- */
+.glass-card-premium {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card-premium::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.glass-card-premium:hover::before {
+    left: 100%;
 }
 
 /* --- Header & Navigation --- */
@@ -583,6 +646,17 @@ a:hover {
     font-size: 0.7rem;
 }
 
+.bl-logo {
+    width: 100%;
+    height: 450px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.hero-section {
+    width: 100%;
+    height: 500px;
+}
 .hero-breadcrumbs .breadcrumb {
     padding: 0;
     margin-bottom: 0.5rem;
@@ -708,12 +782,39 @@ a:hover {
 .text-muted { color: var(--color-text-muted) !important; }
 .alert-info { background: rgba(58, 123, 213, 0.15); border: 1px solid rgba(58, 123, 213, 0.2); color: #fff; }
 
-.glass-hover {
-    transition: var(--transition-normal);
+.section-title-wrapper {
+    position: relative;
+    padding-bottom: 0.5rem;
 }
 
-.glass-hover:hover {
-    background: var(--color-glass-hover);
-    backdrop-filter: blur(15px);
-    border-color: var(--color-glass-border-bright);
+.content-wrapper {
+    transition: var(--transition-smooth);
+    min-height: 60vh;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 991px) {
+    .content-wrapper {
+        padding: 1.5rem;
+    }
+}
+
+.text-gradient {
+    background: var(--gradient-premium);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hover-primary:hover {
+    color: var(--color-primary) !important;
+}
+
+.letter-spacing-1 {
+    letter-spacing: 0.1em;
+}
+
+.animate-active {
+    opacity: 1 !important;
+    transform: translate(0) !important;
 }

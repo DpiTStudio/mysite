@@ -45,7 +45,7 @@ def main_context(request):
                     header_data["image"] = obj.header_image.url
                 found_header = True
             else:
-                header_data["title"] = "Новости компании"
+                header_data["title"] = "Новости и Статьи"
                 header_data["description"] = "Актуальные события и обновления"
                 found_header = True
 
