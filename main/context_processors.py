@@ -1,4 +1,7 @@
 from .models import Page, SiteSettings, AnalyticsScript
+from news.models import NewsCategory
+from portfolio.models import PortfolioCategory
+from services.models import Service
 
 
 def main_context(request):
@@ -28,7 +31,7 @@ def main_context(request):
         
         # 1. Логика для Новостей
         if app_name == "news":
-            from news.models import NewsCategory, News
+            from news.models import News
             if "category" in path_parts and len(path_parts) > path_parts.index("category") + 1:
                 slug = path_parts[path_parts.index("category") + 1]
                 obj = NewsCategory.objects.filter(slug=slug, is_active=True).first()
@@ -47,7 +50,7 @@ def main_context(request):
 
         # 2. Логика для Портфолио
         elif app_name == "portfolio":
-            from portfolio.models import PortfolioCategory, Portfolio
+            from portfolio.models import Portfolio
             if "category" in path_parts and len(path_parts) > path_parts.index("category") + 1:
                 slug = path_parts[path_parts.index("category") + 1]
                 obj = PortfolioCategory.objects.filter(slug=slug, is_active=True).first()
@@ -97,4 +100,9 @@ def main_context(request):
         "current_page": current_page,
         "header_data": header_data,
         "analytics_scripts": analytics_scripts,
+        "nav_categories": {
+            "news": NewsCategory.objects.filter(is_active=True),
+            "portfolio": PortfolioCategory.objects.filter(is_active=True),
+            "services": Service.objects.filter(is_active=True).values_list('category', flat=True).distinct(),
+        }
     }

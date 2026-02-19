@@ -9,39 +9,24 @@
                             <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }}
                         </span>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:profile' %}">
-                            <i class="bi bi-person"></i> <span class="d-none d-sm-inline">Кабинет</span>
+                    <li class="nav-item dropdown user-dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userTopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-gear"></i> Аккаунт
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tickets:list' %}">
-                            <i class="bi bi-ticket-perforated"></i> <span class="d-none d-sm-inline">Тикеты</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tickets:create' %}">
-                            <i class="bi bi-plus-circle"></i> <span class="d-none d-sm-inline">Новый тикет</span>
-                        </a>
-                    </li>
-                    {% if user.is_superuser %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mail:index' %}">
-                            <i class="bi bi-envelope"></i> <span class="d-none d-sm-inline">Почта</span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% if user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link text-primary fw-bold" href="/admin/">
-                            <i class="bi bi-cpu-fill"></i> <span class="d-none d-sm-inline">Админ</span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:logout' %}">
-                            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-sm-inline">Выход</span>
-                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userTopDropdown">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i> Кабинет</a></li>
+                            <li><a class="dropdown-item" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-perforated"></i> Тикеты</a></li>
+                            <li><a class="dropdown-item" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle"></i> Новый тикет</a></li>
+                            {% if user.is_superuser %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'mail:index' %}"><i class="bi bi-envelope"></i> Почта</a></li>
+                            {% endif %}
+                            {% if user.is_staff %}
+                            <li><a class="dropdown-item text-primary" href="/admin/"><i class="bi bi-cpu-fill"></i> Админ-панель</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Выход</a></li>
+                        </ul>
                     </li>
                 {% else %}
                     <li class="nav-item">
@@ -87,34 +72,69 @@
                         <i class="bi bi-house-door"></i> Главная
                     </a>
                 </li>{% endcomment %}
-                {% for page in menu_pages %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:page_detail' page.slug %}">
-                        {% if page.slug == 'o-nas' %}
-                            <i class="bi bi-info-circle"></i> О нас
-                        {% elif page.slug == 'page' %}
-                            <i class="bi bi-file-earmark-text"></i> Страница
-                        {% else %}
-                            <i class="bi bi-info-circle"></i> {{ page.title }}
-                        {% endif %}
+                {% if menu_pages %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-info-circle"></i> Компания
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="pagesDropdown">
+                        {% for page in menu_pages %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'main:page_detail' page.slug %}">
+                                {% if page.slug == 'o-nas' %}
+                                    <i class="bi bi-info-circle"></i> О нас
+                                {% else %}
+                                    <i class="bi bi-file-earmark-text"></i> {{ page.title }}
+                                {% endif %}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </li>
-                {% endfor %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'services:list' %}">
-                        <i class="bi bi-file-earmark-text"></i> Услуги
+                {% endif %}
+
+                <!-- Услуги Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url 'services:list' %}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear-wide-connected"></i> Услуги
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a class="dropdown-item" href="{% url 'services:list' %}"><i class="bi bi-grid"></i> Все услуги</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% for cat in nav_categories.services %}
+                        <li><a class="dropdown-item" href="{% url 'services:list' %}?category={{ cat }}">{{ cat }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'news:list' %}">
+
+                <!-- Новости Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url 'news:list' %}" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-newspaper"></i> Новости
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+                        <li><a class="dropdown-item" href="{% url 'news:list' %}"><i class="bi bi-collection"></i> Все новости</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% for cat in nav_categories.news %}
+                        <li><a class="dropdown-item" href="{% url 'news:by_category' cat.slug %}">{{ cat.name }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'portfolio:list' %}">
+
+                <!-- Портфолио Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url 'portfolio:list' %}" id="portfolioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-briefcase"></i> Портфолио
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="portfolioDropdown">
+                        <li><a class="dropdown-item" href="{% url 'portfolio:list' %}"><i class="bi bi-images"></i> Все работы</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% for cat in nav_categories.portfolio %}
+                        <li><a class="dropdown-item" href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'reviews:list' %}">
                         <i class="bi bi-chat-left-quote"></i> Отзывы
