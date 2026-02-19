@@ -242,14 +242,15 @@ a:hover {
 
 /* --- Dropdown Styling --- */
 .dropdown-menu {
+    display: none;
+    position: absolute;
     background: rgba(15, 23, 42, 0.98);
     backdrop-filter: blur(20px);
     border: 1px solid var(--color-glass-border);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-lg);
     padding: 0.75rem;
-    margin-top: 0.5rem !important;
-    animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 0 !important;
     z-index: 10006;
 }
 
@@ -282,23 +283,46 @@ a:hover {
     margin: 0.5rem 0;
 }
 
+/* Hover trigger for desktop */
+@media (min-width: 992px) {
+    .nav-item.dropdown:hover > .dropdown-menu {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    /* Let the parent link be clickable while using hover for the menu */
+    .nav-link.dropdown-toggle.clickable-parent {
+        pointer-events: auto !important;
+    }
+}
+
+/* Mobile fix for hover/active state and burger menu */
+@media (max-width: 991px) {
+    .navbar-collapse .dropdown-menu {
+        display: block !important;
+        position: static !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding-left: 1.5rem !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
 /* User Top Bar Dropdown Override */
 .user-top-bar .dropdown-menu {
-    background: #000;
+    background: #111 !important;
     font-size: 0.85rem;
     min-width: 180px;
     border-top: 2px solid var(--color-primary);
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
 }
 
 .user-top-bar .dropdown-item {
     padding: 0.5rem 1rem;
-}
-
-/* Hover trigger for desktop */
-@media (min-width: 992px) {
-    .nav-item.dropdown:hover > .dropdown-menu {
-        display: block;
-    }
 }
 
 /* --- Hero Section & Brand Styling --- */

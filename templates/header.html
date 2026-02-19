@@ -9,8 +9,8 @@
                             <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }}
                         </span>
                     </li>
-                    <li class="nav-item dropdown user-dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userTopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <li class="nav-item dropdown user-dropdown position-relative">
+                        <a class="nav-link dropdown-toggle" href="#" id="userTopDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-person-gear"></i> Аккаунт
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userTopDropdown">
@@ -74,7 +74,7 @@
                 </li>{% endcomment %}
                 {% if menu_pages %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown">
                         <i class="bi bi-info-circle"></i> Компания
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="pagesDropdown">
@@ -95,7 +95,7 @@
 
                 <!-- Услуги Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{% url 'services:list' %}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'services:list' %}" id="servicesDropdown">
                         <i class="bi bi-gear-wide-connected"></i> Услуги
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
@@ -109,7 +109,7 @@
 
                 <!-- Новости Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{% url 'news:list' %}" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'news:list' %}" id="newsDropdown">
                         <i class="bi bi-newspaper"></i> Новости
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="newsDropdown">
@@ -123,7 +123,7 @@
 
                 <!-- Портфолио Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{% url 'portfolio:list' %}" id="portfolioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'portfolio:list' %}" id="portfolioDropdown">
                         <i class="bi bi-briefcase"></i> Портфолио
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="portfolioDropdown">

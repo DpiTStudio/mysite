@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Эффект ripple для кнопок
-    document.querySelectorAll('.btn, .nav-link').forEach(button => {
+    document.querySelectorAll('.btn, .nav-link:not(.dropdown-toggle)').forEach(button => {
         button.addEventListener('click', function(e) {
             const ripple = document.createElement('span');
             const rect = this.getBoundingClientRect();
