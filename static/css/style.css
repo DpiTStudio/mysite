@@ -818,3 +818,104 @@ a:hover {
     opacity: 1 !important;
     transform: translate(0) !important;
 }
+
+/* --- Smart Header Hide Top Bar --- */
+.main-header {
+    transition: transform 0.4s ease, background 0.4s ease;
+}
+
+.main-header.hide-top-bar {
+    transform: translateY(-34px); /* Height of user-top-bar */
+}
+
+/* --- Theme Switcher Variables --- */
+body.light-mode {
+    --color-dark-bg: #f8fafc;
+    --color-dark-surface: #ffffff;
+    --color-dark-subtle: #e2e8f0;
+    --color-text-main: #0f172a;
+    --color-text-muted: #475569;
+    --color-text-dim: #64748b;
+    --color-glass: rgba(0, 0, 0, 0.03);
+    --color-glass-hover: rgba(0, 0, 0, 0.06);
+    --color-glass-border: rgba(0, 0, 0, 0.08);
+    --color-glass-border-bright: rgba(0, 0, 0, 0.15);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(58, 123, 213, 0.05) 0, transparent 40%), 
+        radial-gradient(at 100% 0%, rgba(0, 210, 255, 0.05) 0, transparent 40%);
+}
+
+body.light-mode .text-white {
+    color: var(--color-text-main) !important;
+}
+
+body.light-mode .bg-transparent.text-white {
+    color: var(--color-text-main) !important;
+    border-color: var(--color-glass-border) !important;
+}
+
+body.light-mode .navbar {
+    background: rgba(255, 255, 255, 0.85) !important;
+}
+
+body.light-mode .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+body.light-mode .nav-link, body.light-mode .dropdown-item {
+    color: var(--color-text-muted) !important;
+}
+
+body.light-mode .nav-link:hover, body.light-mode .dropdown-item:hover {
+    color: var(--color-primary) !important;
+}
+
+body.light-mode .dropdown-menu {
+    background: rgba(255, 255, 255, 0.98);
+}
+
+/* --- Fullscreen Modal Search --- */
+.glass-search-modal {
+    backdrop-filter: blur(25px);
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+body.light-mode .glass-search-modal {
+    background: rgba(255, 255, 255, 0.85) !important;
+}
+
+.search-input-huge {
+    box-shadow: none !important;
+}
+
+.search-input-huge::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+body.light-mode .search-input-huge::placeholder {
+    color: rgba(0,0,0,0.4);
+}
+
+/* --- Offcanvas Cart --- */
+.glass-offcanvas {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-left: 1px solid var(--color-glass-border);
+}
+
+body.light-mode .glass-offcanvas {
+    background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.glass-offcanvas-header {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode .glass-offcanvas-header {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+body.light-mode .btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}

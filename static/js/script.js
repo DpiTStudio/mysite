@@ -22,15 +22,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3. Эффект скролла для навигации
+    // 3. Эффект скролла для навигации и шапки
     const navbar = document.querySelector('.navbar');
+    const mainHeader = document.querySelector('.main-header');
+    let lastScroll = 0;
+    
     if (navbar) {
         window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 50) {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
                 navbar.classList.add('scrolled');
+                
+                // Smart header: hide top bar when scrolling down
+                if (mainHeader) {
+                    if (currentScroll > lastScroll && currentScroll > 150) {
+                        mainHeader.classList.add('hide-top-bar');
+                    } else if (currentScroll < lastScroll) {
+                        mainHeader.classList.remove('hide-top-bar');
+                    }
+                }
             } else {
                 navbar.classList.remove('scrolled');
+                if (mainHeader) mainHeader.classList.remove('hide-top-bar');
             }
+            lastScroll = currentScroll <= 0 ? 0 : currentScroll;
         });
     }
     
@@ -123,4 +139,46 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         document.head.appendChild(style);
     }
+
+    // 9. Theme Switcher
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    // Check saved theme or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    
+    if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+        document.body.classList.add('light-mode');
+        if (themeIcon) {
+            themeIcon.classList.remove('bi-moon-stars');
+            themeIcon.classList.add('bi-sun');
+        }
+    }
+    
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.classList.toggle('light-mode');
+            
+            if (document.body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.remove('bi-moon-stars');
+                themeIcon.classList.add('bi-sun');
+            } else {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.remove('bi-sun');
+                themeIcon.classList.add('bi-moon-stars');
+            }
+        });
+    }
+
+    // 10. Configure HTMX to send Django CSRF token
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        const csrfTokenMatch = document.cookie.match(/csrftoken=([^;]+)/);
+        if (csrfTokenMatch) {
+            event.detail.headers['X-CSRFToken'] = csrfTokenMatch[1];
+        }
+    });
+
 });
