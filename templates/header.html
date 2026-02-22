@@ -271,11 +271,11 @@
                     </li>
 
                     <li class="nav-item dropdown main-nav-item">
-                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'knowledge_base:home' %}" id="kbDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'knowledge_base:index' %}" id="kbDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             База знаний
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="kbDropdown">
-                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'knowledge_base:home' %}"><i class="bi bi-book-fill me-2"></i> Главная база</a></li>
+                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'knowledge_base:index' %}"><i class="bi bi-book-fill me-2"></i> Главная база</a></li>
                             {% if nav_categories.knowledge_base %}
                             <li><hr class="dropdown-divider opacity-25"></li>
                             {% for cat in nav_categories.knowledge_base %}
