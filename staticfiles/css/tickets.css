@@ -1,37 +1,50 @@
 /* Tickets Styles */
 .ticket-status {
     display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 0.85rem;
-    font-weight: bold;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
-.status-open { background: #d4edda; color: #155724; }
-.status-in_progress { background: #fff3cd; color: #856404; }
-.status-resolved { background: #cce5ff; color: #004085; }
-.status-closed { background: #f8d7da; color: #721c24; }
+
+.status-open { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.status-in_progress { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+.status-resolved { background: rgba(58, 123, 213, 0.2); color: #3a7bd5; border: 1px solid rgba(58, 123, 213, 0.3); }
+.status-closed { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }
 
 .priority-badge {
     display: inline-block;
-    padding: 3px 8px;
-    border-radius: 3px;
-    font-size: 0.75rem;
-    font-weight: bold;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
 }
-.priority-low { background: #e7f3ff; color: #0066cc; }
-.priority-medium { background: #fff4e6; color: #cc6600; }
-.priority-high { background: #ffe6e6; color: #cc0000; }
-.priority-urgent { background: #ffcccc; color: #990000; }
+
+.priority-low { background: rgba(100, 116, 139, 0.1); color: #94a3b8; }
+.priority-medium { background: rgba(58, 123, 213, 0.1); color: #3a7bd5; }
+.priority-high { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.priority-urgent { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
 
 .message {
-    border-left: 3px solid #007bff;
-    padding: 15px;
-    margin-bottom: 15px;
-    background: #f8f9fa;
-    border-radius: 5px;
+    border-left: 4px solid var(--color-primary);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: var(--color-glass);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
 }
+
 .message-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+}
+
+.message-author {
+    font-weight: 600;
+    color: var(--color-text-main);
 }

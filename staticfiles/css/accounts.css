@@ -1,25 +1,37 @@
 /* Accounts Styles */
 .profile-sidebar {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-md);
+    padding: 2rem;
 }
+
 .profile-nav {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
+
 .profile-nav li {
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
 }
+
 .profile-nav a {
-    display: block;
-    padding: 10px 15px;
-    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.25rem;
+    color: var(--color-text-muted);
     text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s;
+    border-radius: var(--radius-md);
+    transition: var(--transition-normal);
 }
+
 .profile-nav a:hover, .profile-nav a.active {
-    background: #007bff;
-    color: white;
+    background: rgba(58, 123, 213, 0.2);
+    color: #fff;
+}
+
+.profile-nav a i {
+    font-size: 1.1rem;
 }
