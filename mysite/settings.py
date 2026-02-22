@@ -29,7 +29,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # См. https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: держите секретный ключ подальше от посторонних!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m')
+
 
 # ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: не запускайте с включенным debug в продакшене!
 DEBUG = env('DEBUG')
