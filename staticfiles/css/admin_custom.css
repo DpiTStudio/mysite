@@ -27,26 +27,13 @@
     /* Тени */
     --admin-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     --admin-shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.4);
-
-    /* --- НАСТРОЙКИ ШРИФТОВ (TYPOGRAPHY) --- */
-    --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
-    
-    /* Размеры текста */
-    --font-size-base: 1rem;        /* Основной текст */
-    --font-size-sm: 0.875rem;      /* Мелкий текст */
-    --font-size-xs: 0.8rem;        /* Очень мелкий текст (заголовки таблиц и т.д.) */
-    --font-size-h1: 2.5rem;
-    --font-size-h2: 2rem;
-    --font-size-h3: 1.75rem;
-    --font-size-h4: 1.5rem;
 }
 
 /* Глобальные стили */
 body {
     background-color: var(--admin-bg) !important;
     color: var(--admin-text-main) !important;
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-base);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 a {
@@ -155,7 +142,7 @@ a:hover {
     border-bottom: 2px solid #444;
     border-top: none;
     text-transform: uppercase;
-    font-size: var(--font-size-xs);
+    font-size: 0.8rem;
     letter-spacing: 0.05em;
 }
 
