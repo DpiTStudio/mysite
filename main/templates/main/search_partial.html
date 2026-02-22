@@ -1,0 +1,57 @@
+{% if query %}
+    {% if results.total_count > 0 %}
+        <div class="row g-4 mt-4 w-100 text-start overflow-auto" style="max-height: 60vh;">
+            {% if results.news %}
+            <div class="col-md-4">
+                <h4 class="text-white border-bottom border-secondary pb-2 mb-3">Новости</h4>
+                <div class="list-group list-group-flush bg-transparent">
+                    {% for item in results.news %}
+                    <a href="{{ item.get_absolute_url }}" class="list-group-item list-group-item-action bg-transparent text-white border-secondary border-opacity-25 px-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 fw-bold">{{ item.title }}</h6>
+                        </div>
+                        <small class="text-muted">{{ item.news_date|date:"d M Y" }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if results.portfolio %}
+            <div class="col-md-4">
+                <h4 class="text-white border-bottom border-secondary pb-2 mb-3">Портфолио</h4>
+                <div class="list-group list-group-flush bg-transparent">
+                    {% for item in results.portfolio %}
+                    <a href="{{ item.get_absolute_url }}" class="list-group-item list-group-item-action bg-transparent text-white border-secondary border-opacity-25 px-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 fw-bold">{{ item.title }}</h6>
+                        </div>
+                        <small class="text-muted">{{ item.category }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if results.services %}
+            <div class="col-md-4">
+                <h4 class="text-white border-bottom border-secondary pb-2 mb-3">Услуги</h4>
+                <div class="list-group list-group-flush bg-transparent">
+                    {% for item in results.services %}
+                    <a href="{{ item.get_absolute_url }}" class="list-group-item list-group-item-action bg-transparent text-white border-secondary border-opacity-25 px-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 fw-bold">{{ item.title }}</h6>
+                        </div>
+                        <small class="text-primary">{{ item.price }} ₽</small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="w-100 text-center mt-5">
+            <h4 class="text-white opacity-50">Ничего не найдено по запросу "{{ query }}"</h4>
+        </div>
+    {% endif %}
+{% endif %}

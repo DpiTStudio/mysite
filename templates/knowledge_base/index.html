@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="mb-4">Категории базы знаний</h2>
+                <div class="row">
+                    {% for cat in categories %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                {% if cat.icon %}
+                                <i class="{{ cat.icon }} fa-2x text-primary mb-3"></i>
+                                {% endif %}
+                                <h4 class="card-title"><a href="{{ cat.get_absolute_url }}">{{ cat.title }}</a></h4>
+                                <p class="card-text text-muted">Статей: {{ cat.articles.count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <p>Категорий пока нет.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <h3 class="mb-4">Новые статьи</h3>
+                <ul class="list-group list-group-flush">
+                    {% for article in recent_articles %}
+                    <li class="list-group-item px-0">
+                        <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                        <small class="d-block text-muted">{{ article.created_at|date:"d.m.Y" }} | {{ article.category.title }}</small>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item px-0">Статей пока нет.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

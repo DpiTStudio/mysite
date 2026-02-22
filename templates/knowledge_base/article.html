@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ article.title|escapejs }}",
+  "author": {
+    "@type": "Organization",
+    "name": "{{ site_settings.site_title|default:'DPIT-CMS'|escapejs }}"
+  },
+  "datePublished": "{{ article.created_at|date:'c' }}",
+  "articleSection": "{{ article.category.title|escapejs }}"
+}
+</script>
+{% endblock %}
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ article.title }}</h1>
+                        <div class="mb-4 text-muted border-bottom pb-2">
+                            <span><i class="far fa-calendar-alt me-1"></i> {{ article.created_at|date:"d M Y" }}</span>
+                            <span class="ms-3"><i class="far fa-eye me-1"></i> {{ article.views }} Просмотров</span>
+                            <span class="ms-3"><i class="fas fa-folder me-1"></i> <a href="{{ article.category.get_absolute_url }}">{{ article.category.title }}</a></span>
+                        </div>
+                        <div class="article-content">
+                            {{ article.content|safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">О категории</h4>
+                        <p><strong>{{ article.category.title }}</strong></p>
+                        <a href="{{ article.category.get_absolute_url }}" class="btn btn-outline-primary btn-sm w-100">Все статьи категории</a>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title">Нужна помощь?</h4>
+                        <p class="card-text text-muted">Если вы не нашли ответ в статье, мы готовы помочь.</p>
+                        <a href="{% url 'tickets:create' %}" class="btn btn-primary w-100">Создать тикет</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

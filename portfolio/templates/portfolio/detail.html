@@ -8,6 +8,24 @@
 <meta name="description" content="{{ portfolio.meta_description }}">
 {% endblock %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "{{ portfolio.title|escapejs }}",
+  "image": [
+    {% if portfolio.image %}"{{ request.scheme }}://{{ request.get_host }}{{ portfolio.image.url }}"{% else %}"{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}"{% endif %}
+  ],
+  "author": {
+    "@type": "Organization",
+    "name": "{{ site_settings.site_title|default:'DPIT-CMS'|escapejs }}"
+  },
+  "datePublished": "{{ portfolio.created_at|date:'c' }}"
+}
+</script>
+{% endblock %}
+
 {% block extra_css %}
 <link href="{% static 'css/portfolio.css' %}" rel="stylesheet">
 {% endblock %}

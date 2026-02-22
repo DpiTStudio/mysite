@@ -9,6 +9,25 @@
 
 {% block breadcrumbs_block %}{% endblock %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "{{ service.title|escapejs }}",
+  "provider": {
+    "@type": "Organization",
+    "name": "{{ site_settings.site_title|default:'DPIT-CMS'|escapejs }}"
+  },
+  "description": "{{ service.short_description|escapejs }}",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ service.price }}",
+    "priceCurrency": "RUB"
+  }
+}
+</script>
+{% endblock %}
 {% block content %}
 <div class="container py-5">
 

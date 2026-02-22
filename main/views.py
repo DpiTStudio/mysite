@@ -121,11 +121,16 @@ def global_search(request):
             len(results['services'])
         )
 
+    if 'HX-Request' in request.headers:
+        return render(request, "main/search_partial.html", {
+            "query": query,
+            "results": results
+        })
+
     return render(request, "main/search_results.html", {
         "query": query,
         "results": results
     })
-
 
 def page_detail(request, slug):
     """

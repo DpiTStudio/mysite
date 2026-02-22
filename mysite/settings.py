@@ -12,34 +12,30 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import environ
 
 # Стройте пути внутри проекта следующим образом: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Инициализация django-environ
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# Чтение файла .env
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Настройки быстрого старта для разработки - не подходят для продакшена
 # См. https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: держите секретный ключ подальше от посторонних!
-# Используем переменные окружения для безопасности
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-tigran-quk)3wy#imok*1%@9f^5n63gh0=j&b66jw_3*(-awet65656fgdfgp4da_vi@2$l"  # fallback для разработки
-)
+SECRET_KEY = env('SECRET_KEY')
 
 # ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: не запускайте с включенным debug в продакшене!
-# DEBUG должен быть False в production!
-DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes") 
+DEBUG = env('DEBUG')
 
-# ALLOWED_HOSTS = ["*"]
 # Добавьте ваш домен/IP в ALLOWED_HOSTS
-ALLOWED_HOSTS = [
-    "*",
-    "dpit-cms.ru",
-    "213.171.7.204",
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 
 # Определение приложений
@@ -63,6 +59,7 @@ INSTALLED_APPS = [
     "mail.apps.MailConfig",  # Управление почтой
     "services.apps.ServicesConfig",  # Услуги
     "cart.apps.CartConfig",  # Корзина
+    "knowledge_base.apps.KnowledgeBaseConfig",  # База знаний
     "tinymce",
 ]
 
@@ -106,10 +103,7 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    'default': env.db('DATABASE_URL', default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
 }
 
 
@@ -194,6 +188,7 @@ JAZZMIN_SETTINGS = {
     "hide_models": [],
     "order_with_respect_to": [
         "main", 
+        "knowledge_base",
         "news", 
         "portfolio", 
         "services", 
@@ -217,6 +212,8 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         "main.SiteSettings": "fas fa-cog",
         "main.Page": "fas fa-file-alt",
+        "knowledge_base.Category": "fas fa-folder",
+        "knowledge_base.Article": "fas fa-book",
         "news.NewsCategory": "fas fa-folder",
         "news.News": "fas fa-newspaper",
         "news.Comment": "fas fa-comments",
@@ -246,6 +243,7 @@ JAZZMIN_SETTINGS = {
             "new_window": True,
         },
         {"app": "main", "icon": "fas fa-cogs"},
+        {"app": "knowledge_base", "icon": "fas fa-book"},
         {"app": "news", "icon": "fas fa-newspaper"},
         {"app": "portfolio", "icon": "fas fa-images"},
         {"app": "services", "icon": "fas fa-concierge-bell"},
@@ -390,14 +388,7 @@ LOGGING = {
 
 # Кеширование
 CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
-        "TIMEOUT": 300,  # 5 минут
-        "OPTIONS": {
-            "MAX_ENTRIES": 1000,
-        },
-    }
+    "default": env.cache('REDIS_URL', default='locmemcache://')
 }
 
 # Создаем директорию для логов, если её нет
@@ -418,8 +409,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.timeweb.ru"
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "admin@dpit-cms.ru") 
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "V2Jy*qKeb/j?L6")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="admin@dpit-cms.ru") 
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="V2Jy*qKeb/j?L6")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
@@ -428,6 +419,14 @@ IMAP_HOST = "imap.timeweb.ru"
 IMAP_PORT = 993
 IMAP_USER = EMAIL_HOST_USER
 IMAP_PASSWORD = EMAIL_HOST_PASSWORD
+
+# Celery настройки
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/2")
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
 
 # Идентификатор корзины в сессии
 CART_SESSION_ID = 'cart'

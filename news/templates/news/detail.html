@@ -8,6 +8,25 @@
 <meta name="description" content="{{ news.meta_description }}">
 {% endblock %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "{{ news.title|escapejs }}",
+  "image": [
+    {% if news.image %}"{{ request.scheme }}://{{ request.get_host }}{{ news.image.url }}"{% else %}"{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}"{% endif %}
+  ],
+  "datePublished": "{{ news.created_at|date:'c' }}",
+  "dateModified": "{{ news.updated_at|date:'c' }}",
+  "author": [{
+      "@type": "Organization",
+      "name": "{{ site_settings.site_title|default:'DPIT-CMS'|escapejs }}"
+  }]
+}
+</script>
+{% endblock %}
+
 {% block extra_css %}
 <link href="{% static 'css/news.css' %}" rel="stylesheet">
 {% endblock %}
