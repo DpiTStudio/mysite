@@ -36,13 +36,7 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4
 DEBUG = env('DEBUG')
 
 # Добавьте ваш домен/IP в ALLOWED_HOSTS
-ALLOWED_HOSTS = [
-    '*',
-    'localhost:4234',
-    'dpit-cms.ru:4234',
-    'www.dpit-cms.ru:4234',
-]
-# ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*', '127.0.0.1', 'localhost', 'dpit-cms.ru', 'www.dpit-cms.ru'])
 
 
 # Определение приложений
