@@ -36,7 +36,14 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4
 DEBUG = env('DEBUG')
 
 # Добавьте ваш домен/IP в ALLOWED_HOSTS
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*', '127.0.0.1', 'localhost', 'dpit-cms.ru', 'www.dpit-cms.ru'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
+    '*', 
+    '127.0.0.1', 
+    'localhost', 
+    'dpit-cms.ru', 
+    'www.dpit-cms.ru'
+    ])
+
 # Дополнительно разрешаем IP, если они переданы через переменные окружения
 if env('INTERNAL_IPS', default=None):
     ALLOWED_HOSTS.extend(env.list('INTERNAL_IPS'))
@@ -308,8 +315,6 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:4234",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "http://213.171.7.204",
-    "https://213.171.7.204",
 ]
 # TinyMCE конфигурация
 TINYMCE_DEFAULT_CONFIG = {
