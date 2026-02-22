@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 from django.http import HttpResponse
 from django.urls import re_path
 from django.views.static import serve
+from django.views.generic import RedirectView
 from main import views as main_views
 from main.sitemaps import (
     PageSitemap,
@@ -43,6 +44,7 @@ sitemaps = {
 }
 
 urlpatterns = [
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
     path("admin/", admin.site.urls),
     path("", include("main.urls")),
     path("news/", include("news.urls")),

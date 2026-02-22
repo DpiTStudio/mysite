@@ -189,6 +189,9 @@ if HAS_WHITENOISE:
     STORAGES["staticfiles"] = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     }
+    # Предотвращает ошибку "Missing staticfiles manifest entry"
+    # полезно при деплое, если некоторые файлы были пропущены или пути не совпадают
+    WHITENOISE_MANIFEST_STRICT = False
 
 # Настройка модели пользователя
 AUTH_USER_MODEL = "accounts.User"
