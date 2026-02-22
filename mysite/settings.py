@@ -39,10 +39,10 @@ DEBUG = env('DEBUG')
 # Добавьте ваш домен/IP в ALLOWED_HOSTS
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
     '*', 
-    '127.0.0.1', 
-    'localhost', 
-    'dpit-cms.ru', 
-    'www.dpit-cms.ru'
+    '127.0.0.1:4234', 
+    'localhost:4234', 
+    'dpit-cms.ru:4234', 
+    'www.dpit-cms.ru:4234'
     ])
 
 # Дополнительно разрешаем IP, если они переданы через переменные окружения
