@@ -32,4 +32,5 @@ urlpatterns = [
     # Имя маршрута: "page_detail" (используется как main:page_detail)
     path("page/<slug:slug>/", views.page_detail, name="page_detail"),
     path("search/", views.global_search, name="search"),
+    path("health/", views.health_check, name="health"),
 ]

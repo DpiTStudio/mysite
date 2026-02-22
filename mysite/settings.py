@@ -37,6 +37,9 @@ DEBUG = env('DEBUG')
 
 # Добавьте ваш домен/IP в ALLOWED_HOSTS
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*', '127.0.0.1', 'localhost', 'dpit-cms.ru', 'www.dpit-cms.ru'])
+# Дополнительно разрешаем IP, если они переданы через переменные окружения
+if env('INTERNAL_IPS', default=None):
+    ALLOWED_HOSTS.extend(env.list('INTERNAL_IPS'))
 
 
 # Определение приложений
@@ -303,6 +306,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://www.dpit-cms.ru",
     "http://localhost:4234",
     "http://127.0.0.1:4234",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
     "http://213.171.7.204",
     "https://213.171.7.204",
 ]
@@ -324,12 +329,14 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 
 # Если используете HTTPS (только в production)
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
-SECURE_SSL_REDIRECT = not DEBUG
-SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
-SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
-SECURE_HSTS_PRELOAD = not DEBUG
+# ВАЖНО: SECURE_SSL_REDIRECT может мешать проверкам работоспособности (Health Checks)
+# Поэтому по умолчанию отключаем, если не указано иное в .env
+CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', default=not DEBUG)
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=not DEBUG)
+SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False)
+SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', default=31536000 if not DEBUG and SECURE_SSL_REDIRECT else 0)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=not DEBUG and SECURE_SSL_REDIRECT)
+SECURE_HSTS_PRELOAD = env.bool('SECURE_HSTS_PRELOAD', default=not DEBUG and SECURE_SSL_REDIRECT)
 SECURE_BROWSER_XSS_FILTER = True
 # Поддержка реверс-прокси (например, Nginx)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

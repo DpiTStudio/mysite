@@ -293,3 +293,11 @@ def robots_txt(request):
         {"scheme": scheme, "host": host},  # Передача данных в шаблон
         content_type="text/plain",  # MIME-тип ответа
     )
+
+def health_check(request):
+    """
+    Простой эндпоинт для проверки работоспособности приложения.
+    Не использует базу данных для минимизации риска ошибок при деплое.
+    """
+    from django.http import HttpResponse
+    return HttpResponse("OK")
