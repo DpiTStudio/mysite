@@ -1,56 +1,48 @@
 """
-Настройки Django для проекта mysite.
-
-Сгенерировано 'django-admin startproject' с использованием Django 4.2.7.
-
-Для получения дополнительной информации по этому файлу см.
-https://docs.djangoproject.com/en/4.2/topics/settings/
-
-Полный список настроек и их значений см.
-https://docs.djangoproject.com/en/4.2/ref/settings/
+Настройки Django проекта DPIT-CMS.
+Этот файл содержит все основные конфигурации проекта, разделённые на логические секции
+для удобства чтения и поддержки. Все комментарии написаны на русском языке.
 """
 
+# ------------------------------------------------------------
+# Библиотеки и переменные окружения
+# ------------------------------------------------------------
 import os
 from pathlib import Path
 import environ
 import importlib.util
 
-# Стройте пути внутри проекта следующим образом: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Инициализация django-environ
 env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False)  # По умолчанию DEBUG выключен
 )
-# Чтение файла .env
+# Путь к корню проекта
+BASE_DIR = Path(__file__).resolve().parent.parent
+# Загрузка .env файла
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Настройки быстрого старта для разработки - не подходят для продакшена
-# См. https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: держите секретный ключ подальше от посторонних!
+# ------------------------------------------------------------
+# Безопасность
+# ------------------------------------------------------------
+# Секретный ключ – храните в .env, а не в репозитории
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m')
-
-
-# ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: не запускайте с включенным debug в продакшене!
+# Режим отладки – НЕ включать в продакшн!
 DEBUG = env('DEBUG')
-
-# Добавьте ваш домен/IP в ALLOWED_HOSTS
+# Доступные хосты
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
-    '*', 
-    '127.0.0.1:4234', 
-    'localhost:4234', 
-    'dpit-cms.ru:4234', 
-    'www.dpit-cms.ru:4234'
-    ])
-
-# Дополнительно разрешаем IP, если они переданы через переменные окружения
+    '*',
+    '127.0.0.1:4234',
+    'localhost:4234',
+    'dpit-cms.ru:4234',
+    'www.dpit-cms.ru:4234',
+])
+# Добавление IP‑адресов из переменных окружения (если заданы)
 if env('INTERNAL_IPS', default=None):
     ALLOWED_HOSTS.extend(env.list('INTERNAL_IPS'))
 
-
-# Определение приложений
+# ------------------------------------------------------------
+# Приложения (INSTALLED_APPS)
+# ------------------------------------------------------------
 INSTALLED_APPS = [
     "jazzmin",
     "django.contrib.admin",
@@ -63,18 +55,21 @@ INSTALLED_APPS = [
     "captcha",  # Капча
     "main.apps.MainConfig",
     "news.apps.NewsConfig",
-    'portfolio.apps.PortfolioConfig',
+    "portfolio.apps.PortfolioConfig",
     "reviews.apps.ReviewsConfig",
     "logfiles.apps.LogfilesConfig",
-    "accounts.apps.AccountsConfig",  # Регистрация и авторизация
-    "tickets.apps.TicketsConfig",  # Система тикетов
-    "mail.apps.MailConfig",  # Управление почтой
-    "services.apps.ServicesConfig",  # Услуги
-    "cart.apps.CartConfig",  # Корзина
-    "knowledge_base.apps.KnowledgeBaseConfig",  # База знаний
+    "accounts.apps.AccountsConfig",
+    "tickets.apps.TicketsConfig",
+    "mail.apps.MailConfig",
+    "services.apps.ServicesConfig",
+    "cart.apps.CartConfig",
+    "knowledge_base.apps.KnowledgeBaseConfig",
     "tinymce",
 ]
 
+# ------------------------------------------------------------
+# Middleware
+# ------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -84,13 +79,14 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-# Проверяем наличие WhiteNoise для обслуживания статики
+# Подключаем WhiteNoise, если он установлен (обслуживание статики)
 HAS_WHITENOISE = importlib.util.find_spec("whitenoise") is not None
-
 if HAS_WHITENOISE:
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
+# ------------------------------------------------------------
+# URL‑конфигурация и шаблоны
+# ------------------------------------------------------------
 ROOT_URLCONF = "mysite.urls"
 
 TEMPLATES = [
@@ -117,55 +113,40 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "mysite.wsgi.application"
 
-
+# ------------------------------------------------------------
 # База данных
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# ------------------------------------------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
+# При наличии DATABASE_URL в .env переопределяем настройки
 if env('DATABASE_URL', default=None):
     DATABASES['default'] = env.db('DATABASE_URL')
 
+# ------------------------------------------------------------
 # Валидация паролей
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
+# ------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
+# ------------------------------------------------------------
 # Интернационализация
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
+# ------------------------------------------------------------
 LANGUAGE_CODE = "ru-ru"
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
 
-
-# Статические файлы (CSS, JavaScript, изображения)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-# STATIC_URL = "static/"
-
-# Тип поля первичного ключа по умолчанию
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+# ------------------------------------------------------------
+# Статические и медиа‑файлы
+# ------------------------------------------------------------
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -173,38 +154,35 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Настройки хранилищ
+# Хранилища (по умолчанию и для staticfiles)
 STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
-    },
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"},
 }
-
-# Если WhiteNoise установлен, используем его для сжатия
+# Если установлен WhiteNoise – используем сжатый манифест
 if HAS_WHITENOISE:
     STORAGES["staticfiles"] = {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     }
-    # Предотвращает ошибку "Missing staticfiles manifest entry"
-    # полезно при деплое, если некоторые файлы были пропущены или пути не совпадают
+    # Отключаем строгую проверку манифеста (полезно при пропуске файлов)
     WHITENOISE_MANIFEST_STRICT = False
 
-# Настройка модели пользователя
+# ------------------------------------------------------------
+# Пользовательская модель
+# ------------------------------------------------------------
 AUTH_USER_MODEL = "accounts.User"
 
+# ------------------------------------------------------------
 # Настройки капчи
+# ------------------------------------------------------------
 CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.random_char_challenge"
 CAPTCHA_LENGTH = 3
 CAPTCHA_TIMEOUT = 5
-# Разрешите доступ к статическим файлам
 SECURE_CONTENT_TYPE_NOSNIFF = False
 
-# Jazzmin настройки
+# ------------------------------------------------------------
+# Jazzmin – админ‑панель
+# ------------------------------------------------------------
 JAZZMIN_SETTINGS = {
     "site_title": "DPIT-CMS Admin",
     "site_header": "DPIT-CMS",
@@ -223,23 +201,22 @@ JAZZMIN_SETTINGS = {
         "auth.group": "vertical_tabs",
         "admin.logentry": "vertical_tabs",
     },
-    # Дополнительные настройки UI
     "use_google_fonts_cdn": True,
     "show_sidebar": True,
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
     "order_with_respect_to": [
-        "main", 
+        "main",
         "knowledge_base",
-        "news", 
-        "portfolio", 
-        "services", 
-        "reviews", 
-        "tickets", 
-        "mail", 
-        "accounts", 
-        "logfiles"
+        "news",
+        "portfolio",
+        "services",
+        "reviews",
+        "tickets",
+        "mail",
+        "accounts",
+        "logfiles",
     ],
     "custom_links": {
         "main": [{
@@ -279,12 +256,7 @@ JAZZMIN_SETTINGS = {
     "custom_css": "css/admin_custom.css",
     "custom_js": None,
     "menu": [
-        {
-            "name": "Главная",
-            "icon": "fas fa-home",
-            "url": "/",
-            "new_window": True,
-        },
+        {"name": "Главная", "icon": "fas fa-home", "url": "/", "new_window": True},
         {"app": "main", "icon": "fas fa-cogs"},
         {"app": "knowledge_base", "icon": "fas fa-book"},
         {"app": "news", "icon": "fas fa-newspaper"},
@@ -327,12 +299,13 @@ JAZZMIN_UI_TWEAKS = {
         "info": "btn-info",
         "warning": "btn-warning",
         "danger": "btn-danger",
-        "success": "btn-success"
-    }
+        "success": "btn-success",
+    },
 }
 
-
-# Настройки CSRF
+# ------------------------------------------------------------
+# CSRF и безопасность
+# ------------------------------------------------------------
 CSRF_TRUSTED_ORIGINS = [
     "https://dpit-cms.ru",
     "http://dpit-cms.ru",
@@ -343,26 +316,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
-# TinyMCE конфигурация
-TINYMCE_DEFAULT_CONFIG = {
-    "height": 360,
-    "width": "100%",
-    "cleanup_on_startup": True,
-    "custom_undo_redo_levels": 20,
-    "selector": "textarea",
-    "plugins": "advlist autolink lists link image charmap print preview anchor",
-    "toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-    "menubar": "edit view insert format tools table",
-    "toolbar_mode": "floating",
-    "content_css": "static/css/tinymce.css",
-    "language": "ru",
-    "file_picker_types": "image",
-    "file_picker_callback": "customFilePicker",
-}
-
-# Если используете HTTPS (только в production)
-# ВАЖНО: SECURE_SSL_REDIRECT может мешать проверкам работоспособности (Health Checks)
-# Поэтому по умолчанию отключаем, если не указано иное в .env
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', default=not DEBUG)
 SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=not DEBUG)
 SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False)
@@ -370,11 +325,12 @@ SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', default=31536000 if not DEB
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=not DEBUG and SECURE_SSL_REDIRECT)
 SECURE_HSTS_PRELOAD = env.bool('SECURE_HSTS_PRELOAD', default=not DEBUG and SECURE_SSL_REDIRECT)
 SECURE_BROWSER_XSS_FILTER = True
-# Поддержка реверс-прокси (например, Nginx)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 X_FRAME_OPTIONS = "DENY"
 
-# Настройки логирования
+# ------------------------------------------------------------
+# Логирование
+# ------------------------------------------------------------
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -385,14 +341,8 @@ LOGGING = {
         },
     },
     "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {message}",
-            "style": "{",
-        },
-        "simple": {
-            "format": "{levelname} {message}",
-            "style": "{",
-        },
+        "verbose": {"format": "{levelname} {asctime} {module} {message}", "style": "{"},
+        "simple": {"format": "{levelname} {message}", "style": "{"},
     },
     "handlers": {
         "file": {
@@ -408,70 +358,61 @@ LOGGING = {
             "filters": ["skip_broken_pipe"],
         },
     },
-    "root": {
-        "handlers": ["console", "file"],
-        "level": "INFO",
-    },
+    "root": {"handlers": ["console", "file"], "level": "INFO"},
     "loggers": {
-        "django": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-            "propagate": False,
-        },
-        "django.server": {
-            "handlers": ["console"],
-            "level": "INFO",
-            "propagate": False,
-        },
-        "news": {
-            "handlers": ["console", "file"],
-            "level": "DEBUG" if DEBUG else "INFO",
-            "propagate": False,
-        },
+        "django": {"handlers": ["console", "file"], "level": "INFO", "propagate": False},
+        "django.server": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "news": {"handlers": ["console", "file"], "level": "DEBUG" if DEBUG else "INFO", "propagate": False},
     },
 }
 
+# ------------------------------------------------------------
 # Кеширование
-CACHES = {
-    "default": env.cache('REDIS_URL', default='locmemcache://')
-}
+# ------------------------------------------------------------
+CACHES = {"default": env.cache('REDIS_URL', default='locmemcache://')}
 
-# Создаем директорию для логов, если её нет
+# ------------------------------------------------------------
+# Создание директории для логов (если её нет)
+# ------------------------------------------------------------
 logs_dir = BASE_DIR / "logs"
 if not logs_dir.exists():
     os.makedirs(logs_dir, exist_ok=True)
 
-# Настройки домена для куки
-# Раскомментируйте, если используете поддомены
-# CSRF_COOKIE_DOMAIN = '.dpit-cms.ru'
-# SESSION_COOKIE_DOMAIN = '.dpit-cms.ru'
-
-# Дополнительные настройки для стабильности CSRF
-CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SAMESITE = 'Lax'
-# Настройки почты ()
+# ------------------------------------------------------------
+# Настройки почты
+# ------------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.timeweb.ru"
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="admin@dpit-cms.ru") 
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="admin@dpit-cms.ru")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="V2Jy*qKeb/j?L6")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
+# ------------------------------------------------------------
 # Настройки IMAP (Timeweb)
+# ------------------------------------------------------------
 IMAP_HOST = "imap.timeweb.ru"
 IMAP_PORT = 993
 IMAP_USER = EMAIL_HOST_USER
 IMAP_PASSWORD = EMAIL_HOST_PASSWORD
 
-# Celery настройки
+# ------------------------------------------------------------
+# Celery
+# ------------------------------------------------------------
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/2")
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 
+# ------------------------------------------------------------
 # Идентификатор корзины в сессии
-CART_SESSION_ID = 'cart'
+# ------------------------------------------------------------
+CART_SESSION_ID = "cart"
+
+# ------------------------------------------------------------
+# Конец файла settings.py
+# ------------------------------------------------------------
