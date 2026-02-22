@@ -1,0 +1,49 @@
+/* theme_seasons.css */
+/* Файл определяет стили для разных сезонов, переопределяя переменные цветов */
+.spring {
+    --color-primary: #ff7f50; /* Coral */
+    --color-secondary: #ffb347; /* Orange */
+    --color-accent: #ff6f61; /* Soft Red */
+    --color-background: #fff5e6; /* Light warm */
+    --color-text-main: #2c3e50; /* Dark text */
+    --color-dark-bg: #f0e5d8; /* Light background */
+}
+
+.summer {
+    --color-primary: #ffdd57; /* Sunflower */
+    --color-secondary: #ff9f1c; /* Bright Orange */
+    --color-accent: #ff6b6b; /* Coral Red */
+    --color-background: #fff9e6; /* Very light */
+    --color-text-main: #1a1a1a; /* Dark */
+    --color-dark-bg: #f2f2f2; /* Light gray */
+}
+
+.autumn {
+    --color-primary: #d35400; /* Pumpkin */
+    --color-secondary: #e67e22; /* Orange */
+    --color-accent: #c0392b; /* Red */
+    --color-background: #fdf2e9; /* Warm */
+    --color-text-main: #2c3e50; /* Dark */
+    --color-dark-bg: #f5e6d3; /* Light brown */
+}
+
+.winter {
+    --color-primary: #3498db; /* Ice Blue */
+    --color-secondary: #85c1e9; /* Light Blue */
+    --color-accent: #5dade2; /* Soft Blue */
+    --color-background: #e8f6ff; /* Very light blue */
+    --color-text-main: #1b2631; /* Dark */
+    --color-dark-bg: #d6eaf8; /* Light blue */
+}
+
+/* Ensure links have sufficient contrast in all seasons */
+a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    transition: var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-secondary);
+    text-decoration: none;
+}
