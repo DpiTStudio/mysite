@@ -2,6 +2,7 @@ from .models import Page, SiteSettings, AnalyticsScript
 from news.models import NewsCategory
 from portfolio.models import PortfolioCategory
 from services.models import Service
+from knowledge_base.models import Category as KBCategory
 
 
 def main_context(request):
@@ -94,6 +95,11 @@ def main_context(request):
             header_data["description"] = "Результаты поиска по вашему запросу"
             found_header = True
 
+        elif app_name == "knowledge-base":
+            header_data["title"] = "База знаний"
+            header_data["description"] = "Полезные статьи и инструкции"
+            found_header = True
+
         # 5. Логика для обычных страниц
         if not found_header:
             slug = path_parts[-1]
@@ -113,5 +119,6 @@ def main_context(request):
             "news": NewsCategory.objects.filter(is_active=True),
             "portfolio": PortfolioCategory.objects.filter(is_active=True),
             "services": Service.objects.filter(is_active=True).values_list('category', flat=True).distinct(),
+            "knowledge_base": KBCategory.objects.all(),
         }
     }
