@@ -21,6 +21,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
+from django.urls import re_path
+from django.views.static import serve
 from main import views as main_views
 from main.sitemaps import (
     PageSitemap,
@@ -60,14 +62,21 @@ urlpatterns = [
         name="django.contrib.sitemaps.views.sitemap",
     ),
     path("robots.txt", main_views.robots_txt, name="robots"),
-    # Игнорировать запросы от Chrome DevToolsExtensions
     path(
         ".well-known/appspecific/com.chrome.devtools.json",
         lambda r: HttpResponse(status=204),
     ),
 ]
 
+# Включение обслуживания медиа-файлов и статики даже в продакшене (DEBUG=False)
+# Полезно, если Nginx ещё не настроен для отдачи статики
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+]
+
 if settings.DEBUG:
+    # Эти строки можно оставить, но они теперь дублируются универсальным re_path выше
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
