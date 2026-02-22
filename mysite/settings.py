@@ -103,9 +103,14 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db('DATABASE_URL', default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
+if env('DATABASE_URL', default=None):
+    DATABASES['default'] = env.db('DATABASE_URL')
 
 # Валидация паролей
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
