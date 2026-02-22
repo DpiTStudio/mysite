@@ -1,12 +1,12 @@
 /* Premium Unified Header Styles */
-.site-domain {
-    font-weight: 900;
+.site_domain {
+    font-weight: 800;
     letter-spacing: -0.8px;
+    background: linear-gradient(45deg, var(--bs-primary), #6f42c1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: ;
+    font-size: 1.2rem !important;
 }
-
 .premium-header {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 1050;
@@ -76,11 +76,7 @@
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .brand-text {
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    background: linear-gradient(45deg, var(--bs-primary), #6f42c1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+
 }
 .dropdown-item {
     transition: all 0.2s ease;
@@ -91,9 +87,7 @@
     white-space: normal;
     line-height: 1.4;
 }
-.dropdown-item:last-child {
-    margin-bottom: 0;
-}
+.dropdown-item:last-child { margin-bottom: 0; }
 .dropdown-item:hover {
     background: rgba(var(--bs-primary-rgb), 0.08);
     color: var(--bs-primary);
