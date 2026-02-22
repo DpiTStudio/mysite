@@ -1,0 +1,90 @@
+/* Portfolio Styles */
+.portfolio-detail-header {
+    background: var(--gradient-dark);
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--color-glass-border);
+    margin-bottom: 3rem;
+}
+
+.portfolio-image-detail {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2rem;
+}
+
+.portfolio-content {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--color-text-main);
+}
+
+.portfolio-content p {
+    margin-bottom: 1.75rem;
+}
+
+.portfolio-meta-detail {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: var(--color-text-muted);
+}
+
+.related-portfolio-card {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: var(--transition-normal);
+    height: 100%;
+}
+
+.related-portfolio-card:hover {
+    transform: translateY(-5px);
+    background: var(--color-glass-hover);
+    border-color: var(--color-glass-border-bright);
+    box-shadow: var(--shadow-md);
+}
+
+.related-portfolio-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+    transition: var(--transition-smooth);
+}
+
+.related-portfolio-card:hover .related-portfolio-image {
+    transform: scale(1.05);
+}
+
+.price-tag {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+/* Service Info Card */
+.service-info-box {
+    background: var(--color-glass);
+    border-left: 4px solid var(--color-primary);
+    padding: 1.5rem;
+    border-radius: var(--radius-sm);
+    margin: 2rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .portfolio-image-detail {
+        max-height: 350px;
+    }
+    
+    .portfolio-content {
+        font-size: 1.05rem;
+    }
+}
+
