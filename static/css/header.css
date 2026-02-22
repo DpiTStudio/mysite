@@ -1,12 +1,14 @@
-/* Premium Unified Header Styles */
+/* Premium Header Styles */
 .site-domain {
     font-weight: 900;
     letter-spacing: -0.8px;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 1.6rem !important;
+    font-size: var(--font-size-2xl);
+    text-shadow: var(--shadow-red);
 }
 
+/* Premium Header */
 .premium-header {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 1050;
@@ -40,7 +42,8 @@
 .top-bar-custom {
     font-size: 0.9rem;
     font-weight: 500;
-    background: transparent; /* Unified */
+    background: rgba(var(--bs-body-bg-rgb), 0.95) !important;
+    /* background: transparent; Unified */
     border-bottom: 1px solid rgba(128, 128, 128, 0.1);
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
