@@ -23,10 +23,15 @@ from .models import Category, Article
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'order', 'icon')
+    list_display = ('title', 'order', 'get_icon_admin')
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title',)
     ordering = ('order',)
+    
+    # мета класс
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
     
 
 @admin.register(Article)
@@ -37,3 +42,14 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title', 'content')
     ordering = ('-created_at',)
+    readonly_fields = ('created_at', 'updated_at')
+    
+    # оптимизация запросов
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('category')
+
+    
+    # мета класс
+    class Meta:
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'
