@@ -18,6 +18,10 @@ def cart_add(request, item_type, item_id):
     else:
         item = get_object_or_404(Portfolio, id=item_id)
         
+    if not getattr(item, 'is_available_for_order', True):
+        messages.error(request, f'К сожалению, "{item.title}" временно недоступно для заказа.')
+        return redirect(request.META.get('HTTP_REFERER', 'main:home'))
+        
     cart.add(item=item, item_type=item_type)
     
     if 'HX-Request' in request.headers:

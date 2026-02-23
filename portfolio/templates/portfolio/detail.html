@@ -71,10 +71,24 @@
                     <div class="display-6 fw-bold text-success mb-3">{{ portfolio.price }} ₽</div>
                     <form hx-post="{% url 'cart:cart_add' 'portfolio' portfolio.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-success btn-lg px-4 rounded-pill">
+                        <button type="submit" class="btn btn-outline-success btn-lg px-4 rounded-pill shine-effect">
                             <i class="bi bi-cart-plus me-2"></i> В корзину
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="glass-card p-4 p-md-5 mb-5" style="border: 1px solid rgba(220, 53, 69, 0.3);">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="mb-4 mb-md-0 text-center text-md-start">
+                    <h3 class="fw-bold mb-2 text-danger"><i class="bi bi-exclamation-circle me-2"></i> Временно недоступно</h3>
+                    <p class="text-muted mb-0">К сожалению, в данный момент возможность заказа этой работы временно приостановлена.</p>
+                </div>
+                <div class="text-center text-md-end mt-3 mt-md-0">
+                    <button class="btn btn-secondary btn-lg px-4 rounded-pill" disabled style="opacity: 0.7;">
+                        <i class="bi bi-x-circle me-2"></i> Нет в наличии
+                    </button>
                 </div>
             </div>
         </div>

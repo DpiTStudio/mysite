@@ -14,11 +14,11 @@ class TechnologyAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'price_display', 'is_active', 'is_popular', 'order')
-    list_filter = ('is_active', 'is_popular', 'price_type', 'category', 'complexity_level', 'technologies')
+    list_display = ('title', 'category', 'price_display', 'is_active', 'is_popular', 'is_available_for_order', 'order')
+    list_filter = ('is_active', 'is_popular', 'is_available_for_order', 'price_type', 'category', 'complexity_level', 'technologies')
     search_fields = ('title', 'description', 'short_description', 'technologies__name')
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ('is_active', 'is_popular', 'order')
+    list_editable = ('is_active', 'is_popular', 'is_available_for_order', 'order')
     filter_horizontal = ('technologies',)
     save_on_top = True
     save_as = True
@@ -44,7 +44,7 @@ class ServiceAdmin(admin.ModelAdmin):
         }),
         ('Настройки и SEO', {
             'fields': (
-                'order', 'is_active', 'is_popular', 'complexity_level',
+                'order', 'is_active', 'is_popular', 'is_available_for_order', 'complexity_level',
                 'meta_title', 'meta_description', 'meta_keywords', 'views'
             ),
             'classes': ('wide',),

@@ -129,6 +129,11 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         verbose_name=_("Популярная услуга (Хит продаж)"),
         help_text=_("Вывод услуги в спец-блоках с тегом 'популярное'")
     )
+    is_available_for_order = models.BooleanField(
+        default=True,
+        verbose_name=_("Доступно для заказа"),
+        help_text=_("Если отключено, вместо кнопки заказа будет выведено сообщение о временной недоступности")
+    )
     estimated_time = models.CharField(
         max_length=100,
         blank=True,

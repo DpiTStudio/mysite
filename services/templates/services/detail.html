@@ -86,6 +86,7 @@
                         </small>
                     </div>
                     
+                    {% if service.is_available_for_order %}
                     <form action="{% url 'services:order' service.slug %}" method="post">
                         {% csrf_token %}
                         {% for field in form %}
@@ -108,11 +109,18 @@
                     <div class="d-grid mt-3">
                         <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-success btn-lg w-100">
+                            <button type="submit" class="btn btn-outline-success btn-lg w-100 shine-effect">
                                 <i class="bi bi-cart-plus"></i> В корзину
                             </button>
                         </form>
                     </div>
+                    {% else %}
+                    <div class="text-center p-4 rounded bg-danger bg-opacity-10 border border-danger border-opacity-25 mt-4">
+                        <i class="bi bi-calendar-x display-4 text-danger mb-3"></i>
+                        <h4 class="fw-bold text-danger mb-2">Временно недоступно</h4>
+                        <p class="text-muted mb-0">К сожалению, в данный момент нет возможности заказать эту услугу. Пожалуйста, зайдите позже.</p>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
