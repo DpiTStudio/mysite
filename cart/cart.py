@@ -70,7 +70,8 @@ class Cart:
         service_dict = {s.id: s for s in services}
         portfolio_dict = {p.id: p for p in portfolios}
 
-        cart = self.cart.copy()
+        import copy
+        cart = copy.deepcopy(self.cart)
         
         # Заполнение данными объекта из БД
         for key, item in cart.items():
