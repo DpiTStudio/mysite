@@ -82,7 +82,15 @@
                     <p class="small text-muted">{{ service.short_description|striptags|truncatewords:20 }}</p>
                     <div class="mt-auto">
                         <span class="badge bg-primary mb-3">{{ service.get_price_display }}</span>
-                        <a href="{% url 'services:list' %}" class="btn btn-sm btn-outline-primary w-100">Подробнее</a>
+                        <div class="d-flex gap-2">
+                             <a href="{% url 'services:list' %}" class="btn btn-sm btn-outline-primary w-100">Подробнее</a>
+                             <form hx-post="{% url 'cart:cart_add' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="w-100" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
+                                 {% csrf_token %}
+                                 <button type="submit" class="btn btn-sm btn-success w-100">
+                                     <i class="bi bi-cart-plus"></i> В корзину
+                                 </button>
+                             </form>
+                        </div>
                     </div>
                 </div>
             </div>

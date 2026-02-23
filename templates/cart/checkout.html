@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Оформление заказа | {{ site_settings.site_title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row gx-5">
+        <div class="col-lg-8 mb-5">
+            <div class="glass-card p-4 p-md-5">
+                <h2 class="mb-4 text-gradient">Данные для оформления</h2>
+                
+                <form method="post" class="needs-validation">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Имя <span class="text-danger">*</span></label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.first_name.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Фамилия</label>
+                            {{ form.last_name }}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Email <span class="text-danger">*</span></label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Телефон <span class="text-danger">*</span></label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <div class="text-danger small mt-1">{{ form.phone.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label text-light">Компания</label>
+                            {{ form.company }}
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label text-light">Комментарий к заказу (необязательно)</label>
+                            {{ form.comment }}
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg w-100 mt-4 shadow-glow" type="submit">
+                        Разместить заказ
+                    </button>
+                    <div class="text-muted small mt-3 text-center">
+                        Нажимая на кнопку "Разместить заказ", вы соглашаетесь с условиями обработки персональных данных.
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="glass-card p-4 sticky-top" style="top: 100px;">
+                <h4 class="mb-4">Ваш заказ</h4>
+                <ul class="list-group mb-3 border-0 bg-transparent">
+                    {% for item in cart %}
+                    <li class="list-group-item d-flex justify-content-between lh-sm bg-transparent border-bottom border-light border-opacity-10 text-light py-3 px-0">
+                        <div>
+                            <h6 class="my-0">{{ item.service.title }}</h6>
+                            <small class="text-muted text-opacity-75">Кол-во: {{ item.quantity }}</small>
+                        </div>
+                        <span class="text-muted">{{ item.total_price }} ₽</span>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-light py-3 px-0 fs-5 mt-2">
+                        <span>Итого (RUR)</span>
+                        <strong class="text-gradient fw-bold">{{ cart.get_total_price }} ₽</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    
+    .text-gradient {
+        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .shadow-glow {
+        box-shadow: 0 0 15px rgba(58, 123, 213, 0.4);
+        transition: all 0.3s ease;
+    }
+    
+    .shadow-glow:hover {
+        box-shadow: 0 0 25px rgba(58, 123, 213, 0.6);
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}

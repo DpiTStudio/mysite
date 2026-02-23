@@ -26,7 +26,7 @@
     --color-text-on-primary: #ffffff; /* Текст на ярких элементах */
     
     /* --- Градиенты (Gradients) --- */
-    --gradient-premium: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    --gradient-premium: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); 
     --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, #8b5cf6 100%);
     --gradient-dark: linear-gradient(180deg, var(--color-dark-bg) 0%, var(--color-dark-surface) 100%);
     --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
@@ -52,7 +52,10 @@
     --radius-xl: 30px;    /* Максимальные скругления */
     
     /* --- Анимации и переходы (Transitions) --- */
-    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);    /* Быстрые (ховеры кнопок) */
-    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);  /* Нормальные (появление элементов) */
-    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);  /* Плавные (раскрытие меню) */
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);    
+    /* Быстрые (ховеры кнопок) */
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);  
+    /* Нормальные (появление элементов) */
+    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);  
+    /* Плавные (раскрытие меню) */
 }
