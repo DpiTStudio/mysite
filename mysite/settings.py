@@ -161,16 +161,11 @@ STORAGES = {
 }
 # В продакшене используем манифесты для кеширования
 if not DEBUG:
+    # В продакшене используем CompressedManifestStaticFilesStorage без дополнительных опций,
+    # чтобы избежать ошибки "unexpected keyword argument 'manifest_strict'".
     STORAGES["staticfiles"] = {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
-        "OPTIONS": {"manifest_strict": False}
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     }
-    # Если установлен WhiteNoise – используем сжатый манифест
-    if HAS_WHITENOISE:
-        STORAGES["staticfiles"] = {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-            "OPTIONS": {"manifest_strict": False}
-        }
 
 # ------------------------------------------------------------
 # Пользовательская модель
