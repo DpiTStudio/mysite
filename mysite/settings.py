@@ -157,15 +157,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Хранилища (по умолчанию и для staticfiles)
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 }
-# Если установлен WhiteNoise – используем сжатый манифест
-if HAS_WHITENOISE:
+# В продакшене используем манифесты для кеширования
+if not DEBUG:
     STORAGES["staticfiles"] = {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
     }
-    # Отключаем строгую проверку манифеста (полезно при пропуске файлов)
-    WHITENOISE_MANIFEST_STRICT = False
+    # Если установлен WhiteNoise – используем сжатый манифест
+    if HAS_WHITENOISE:
+        STORAGES["staticfiles"] = {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        }
+        # Отключаем строгую проверку манифеста (полезно при пропуске файлов)
+        WHITENOISE_MANIFEST_STRICT = False
 
 # ------------------------------------------------------------
 # Пользовательская модель
