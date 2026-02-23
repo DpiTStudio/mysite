@@ -162,15 +162,15 @@ STORAGES = {
 # В продакшене используем манифесты для кеширования
 if not DEBUG:
     STORAGES["staticfiles"] = {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+        "OPTIONS": {"manifest_strict": False}
     }
     # Если установлен WhiteNoise – используем сжатый манифест
     if HAS_WHITENOISE:
         STORAGES["staticfiles"] = {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            "OPTIONS": {"manifest_strict": False}
         }
-        # Отключаем строгую проверку манифеста (полезно при пропуске файлов)
-        WHITENOISE_MANIFEST_STRICT = False
 
 # ------------------------------------------------------------
 # Пользовательская модель

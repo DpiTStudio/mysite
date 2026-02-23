@@ -1,0 +1,36 @@
+.title-hero {
+  text-shadow: 2px 2px 4px #000;
+  color: #fff !important;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo-container-hero {
+    background: var(--gradient-dark);
+    min-height: 250px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2rem;
+    background-image: url('../media/fon_haeders/fon1.jpg');
+}
+
+.sl_1 {
+  color: #fff !important;
+  font-size: 1.9rem;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.sl_2 {
+  color: #e6e6e6 !important;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
