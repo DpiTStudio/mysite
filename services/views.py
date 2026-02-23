@@ -1,17 +1,17 @@
-# views.py - Улучшенная версия
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, View, TemplateView
+from django.views.generic import ListView, DetailView, View
 from django.contrib import messages
-from django.db.models import Q
-from django.db import models
-from django.core.paginator import Paginator
+from django.db.models import Q, F
+
+
 from .models import Service
 from .forms import ServiceOrderForm
 
+
 class ServiceListView(ListView):
     """
-    Отображает список всех доступных услуг с фильтрацией по категории,
-    сложности и используемым технологиям.
+    Отображает список всех доступных услуг с возможностью фильтрации
+    по категории, сложности и используемым технологиям.
     """
     model = Service
     template_name = 'services/list.html'
@@ -22,86 +22,84 @@ class ServiceListView(ListView):
         """Возвращает отфильтрованный набор данных услуг"""
         queryset = Service.objects.filter(is_active=True).order_by('order')
         
-        # Фильтрация по категории
-        category = self.request.GET.get('category')
-        if category:
-            queryset = queryset.filter(category__icontains=category)
+        filters = {
+            'category__icontains': self.request.GET.get('category'),
+            'complexity_level': self.request.GET.get('complexity'),
+            'technologies__name__icontains': self.request.GET.get('tech'),
+        }
         
-        # Фильтрация по уровню сложности
-        complexity = self.request.GET.get('complexity')
-        if complexity:
-            queryset = queryset.filter(complexity_level=complexity)
-        
-        # Поиск по технологиям
-        tech = self.request.GET.get('tech')
-        if tech:
-            queryset = queryset.filter(technical_requirements__icontains=tech)
-        
+        # Применяем только те фильтры, значения которых были переданы
+        active_filters = {k: v for k, v in filters.items() if v}
+        if active_filters:
+            queryset = queryset.filter(**active_filters)
+            
         return queryset
     
     def get_context_data(self, **kwargs):
-        """Добавляет в контекст уникальные категории и популярные услуги"""
+        """Добавляет в контекст категории и блок популярных услуг для правой панели/фильтров"""
         context = super().get_context_data(**kwargs)
         
-        # Получаем уникальные категории для фильтра
-        context['service_categories'] = Service.objects.filter(
-            is_active=True
-        ).values_list('category', flat=True).distinct()
+        context['service_categories'] = (
+            Service.objects
+            .filter(is_active=True)
+            .exclude(category='')
+            .values_list('category', flat=True)
+            .distinct()
+        )
         
-        # Считаем популярные услуги
         context['popular_services'] = Service.objects.filter(
             is_active=True, 
             is_popular=True
-        )[:6]
+        ).order_by('order')[:6]
         
         return context
 
 
 class ServiceDetailView(DetailView):
     """
-    Отображает детальную информацию об услуге, включая форму заказа
-    и похожие услуги.
+    Отображает развернутую информацию об услуге, 
+    предоставляет форму заказа и выводит похожие услуги.
     """
     model = Service
     template_name = 'services/detail.html'
     context_object_name = 'service'
     
     def get_context_data(self, **kwargs):
-        """Подготавливает контекст, включая форму заказа с предзаполненными данными пользователя"""
+        """Подготавливает контекст: форма заказа и похожие услуги"""
         context = super().get_context_data(**kwargs)
+        user = self.request.user
+        initial_data = {}
         
-        # Предзаполнение формы, если пользователь авторизован
-        initial = {}
-        if self.request.user.is_authenticated:
-            # Пытаемся получить полное имя, иначе используем username
-            full_name = f"{self.request.user.first_name} {self.request.user.last_name}".strip()
-            if not full_name:
-                full_name = self.request.user.username
-            
-            initial['full_name'] = full_name
-            initial['email'] = self.request.user.email
-            initial['phone'] = getattr(self.request.user, 'phone', '')
+        # Предзаполняем поля, если пользователь авторизован
+        if user.is_authenticated:
+            full_name = f"{user.first_name} {user.last_name}".strip() or user.username
+            initial_data.update({
+                'full_name': full_name,
+                'email': user.email,
+                'phone': getattr(user, 'phone', ''),
+            })
         
-        context['form'] = ServiceOrderForm(initial=initial)
+        context['form'] = ServiceOrderForm(initial=initial_data)
         
-        # Получаем похожие услуги
-        context['related_services'] = Service.objects.filter(
-            is_active=True,
-            category=self.object.category
-        ).exclude(pk=self.object.pk)[:4]
+        # Похожие услуги из той же категории
+        if self.object.category:
+            context['related_services'] = Service.objects.filter(
+                is_active=True,
+                category=self.object.category
+            ).exclude(pk=self.object.pk).order_by('?')[:4]
+        else:
+            context['related_services'] = Service.objects.none()
         
-        # Преобразуем технические требования в список для отображения
         context['tech_list'] = self.object.get_tech_requirements_display()
-        
         return context
     
     def get(self, request, *args, **kwargs):
-        """Обрабатывает GET запрос и увеличивает счетчик просмотров"""
+        """Увеличиваем счетчик просмотров при каждом GET-запросе"""
         self.object = self.get_object()
         
-        # Увеличиваем счетчик просмотров атомарно
-        self.object.views = models.F('views') + 1
-        self.object.save(update_fields=['views'])
+        # Используем F() для атомарного обновления счетчика минуя состояние гонки
+        Service.objects.filter(pk=self.object.pk).update(views=F('views') + 1)
+        self.object.refresh_from_db(fields=['views'])
         
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
@@ -109,7 +107,7 @@ class ServiceDetailView(DetailView):
 
 class ServiceOrderView(View):
     """
-    Обрабатывает отправку формы заказа услуги.
+    Обрабатывает POST запрос формы заказа услуги.
     """
     def post(self, request, slug):
         service = get_object_or_404(Service, slug=slug)
@@ -118,68 +116,67 @@ class ServiceOrderView(View):
         if form.is_valid():
             order = form.save(commit=False)
             order.service = service
-            
             if request.user.is_authenticated:
                 order.user = request.user
-            
             order.save()
-            
-            # Отправка уведомлений
-            self.send_notifications(order)
             
             messages.success(
                 request, 
-                f"✅ Ваш заказ на услугу '{service.title}' успешно оформлен! "
-                f"Номер заказа: {order.short_id}. "
-                "С вами свяжутся в ближайшее время."
+                f"✅ Заказ на «{service.title}» успешно оформлен! "
+                f"Ваш номер заказа: {order.short_id}. Ожидайте звонка менеджера."
             )
-            
             return redirect('services:detail', slug=slug)
-        else:
-            messages.error(
-                request, 
-                "❌ Ошибка при оформлении заказа. Пожалуйста, проверьте введенные данные."
-            )
-            return render(
-                request, 
-                'services/detail.html', 
-                {'service': service, 'form': form}
-            )
-    
-    def send_notifications(self, order):
-        """Отправка уведомлений о новом заказе администратору и/или клиенту"""
-        # Логика отправки вынесена в сигналы, здесь можно добавить дополнительные действия
-        pass
+            
+        messages.error(
+            request, 
+            "❌ Возникла ошибка при оформлении заказа. Пожалуйста, проверьте корректность данных."
+        )
+        
+        related_services = Service.objects.none()
+        if service.category:
+            related_services = Service.objects.filter(
+                is_active=True, category=service.category
+            ).exclude(pk=service.pk).order_by('?')[:4]
+            
+        return render(request, 'services/detail.html', {
+            'service': service, 
+            'form': form,
+            'related_services': related_services,
+            'tech_list': service.get_tech_requirements_display()
+        })
 
 
-class ServiceSearchView(TemplateView):
+class ServiceSearchView(ListView):
     """
     Представление для поиска по каталогу услуг.
+    Использует ListView для встроенной пагинации.
     """
+    model = Service
     template_name = 'services/search.html'
+    context_object_name = 'services'
+    paginate_by = 12
     
-    def get_context_data(self, **kwargs):
-        """Выполняет поиск на основе GET-параметра 'q'"""
-        context = super().get_context_data(**kwargs)
-        
-        query = self.request.GET.get('q', '')
-        services = Service.objects.filter(is_active=True)
+    def get_queryset(self):
+        query = self.request.GET.get('q', '').strip()
+        queryset = Service.objects.filter(is_active=True)
         
         if query:
-            # Поиск по различным полям услуги
-            services = services.filter(
+            queryset = queryset.filter(
                 Q(title__icontains=query) |
-                Q(description__icontains=query) |
                 Q(short_description__icontains=query) |
-                Q(technical_requirements__icontains=query) |
+                Q(description__icontains=query) |
+                Q(technologies__name__icontains=query) |
                 Q(category__icontains=query)
-            )
+            ).distinct()
+            
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('q', '').strip()
         
-        # Пагинация результатов поиска
-        paginator = Paginator(services, 12)
-        page = self.request.GET.get('page')
-        context['services'] = paginator.get_page(page)
         context['query'] = query
-        context['results_count'] = services.count()
+        context['results_count'] = self.get_queryset().count()
         
         return context
+

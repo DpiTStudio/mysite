@@ -1,107 +1,51 @@
-# models.py - Улучшенная версия
+import re
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
 from tinymce.models import HTMLField
+
 from main.utils import RenameUploadTo
 from main.models import ActiveModel, SEOModel, TimestampModel
 from accounts.models import User
-from django.utils.translation import gettext_lazy as _
-import re
 
-# Расширенные константы для технологий (фронтенд, бэкенд, дизайн, CMS и др.)
-TECH_CHOICES = [
-    # Фронтенд технологии
-    ('html', 'HTML/CSS'),
-    ('html5', 'HTML5'),
-    ('css3', 'CSS3'),
-    ('sass', 'SASS/SCSS'),
-    ('less', 'LESS'),
-    ('javascript', 'JavaScript'),
-    ('typescript', 'TypeScript'),
-    ('jquery', 'jQuery'),
-    
-    # Бэкенд технологии
-    ('python', 'Python'),
-    ('django', 'Django'),
-    ('flask', 'Flask'),
-    ('fastapi', 'FastAPI'),
-    ('nodejs', 'Node.js'),
-    ('php', 'PHP'),
-    ('laravel', 'Laravel'),
-    
-    # Базы данных
-    ('postgresql', 'PostgreSQL'),
-    ('mysql', 'MySQL'),
-    ('mongodb', 'MongoDB'),
-    ('redis', 'Redis'),
-    ('sqlite', 'SQLite'),
-    ('oracle', 'Oracle'),
-    
-    # Дизайн и UI/UX
-    ('figma', 'Figma'),
-    ('photoshop', 'Adobe Photoshop'),
-    ('illustrator', 'Adobe Illustrator'),
-    ('indesign', 'Adobe InDesign'),
-    ('ui_design', 'UI Design'),
-    ('ux_design', 'UX Design'),
-    ('material_design', 'Material Design'),
-    ('bootstrap', 'Bootstrap'),
-    ('responsive', 'Responsive Design'),
-    ('mobile_first', 'Mobile First'),
-    
-    # DevOps и инфраструктура
-    ('docker', 'Docker'),
-    ('kubernetes', 'Kubernetes'),
-    ('aws', 'Amazon AWS'),
-    ('azure', 'Microsoft Azure'),
-    ('gcp', 'Google Cloud'),
-    ('nginx', 'Nginx'),
-    ('apache', 'Apache'),
-    ('ci_cd', 'CI/CD'),
-    ('git', 'Git'),
-    ('github', 'GitHub'),
-    ('gitlab', 'GitLab'),
-    
-    # SEO и маркетинг
-    ('seo', 'SEO Optimization'),
-    ('sem', 'SEM/PPC'),
-    ('smm', 'Social Media Marketing'),
-    ('analytics', 'Google Analytics'),
-    ('gtm', 'Google Tag Manager'),
-    ('yandex_metrika', 'Yandex.Metrika'),
-    
-    # Прочее
-    ('api', 'API Development'),
-    ('rest', 'REST API'),
-    ('graphql', 'GraphQL'),
-    ('websocket', 'WebSocket'),
-    ('pwa', 'Progressive Web App'),
-    ('spa', 'Single Page Application'),
-    ('ssr', 'Server Side Rendering'),
-    ('microservices', 'Microservices'),
-    ('blockchain', 'Blockchain'),
-    ('ai_ml', 'AI/ML Integration'),
-]
+# Регулярное выражение для контактных телефонов вынесено на уровень модуля
+PHONE_PATTERN = re.compile(r'^\+?[1-9][\d\-\(\)\.]{9,15}$')
 
+class Technology(models.Model):
+    """Модель для хранения неограниченного стека технологий (веб-разработка, графика и т.д.)."""
+    name = models.CharField(
+        max_length=100, 
+        unique=True,
+        verbose_name=_("Название технологии/инструмента"),
+        help_text=_("Например: Python, UI/UX Design, Docker, Figma")
+    )
+    
+    class Meta:
+        verbose_name = _("Технология")
+        verbose_name_plural = _("Технологии")
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
 
 class Service(ActiveModel, SEOModel, TimestampModel):
     """
-    Модель услуги.
-    Описывает предлагаемую услугу, её стоимость, характеристики и технические требования.
+    Модель услуги для предложения клиентам компании.
+    Услуга включает развернутое описание, тарифы, 
+    и указание стека технологий для предоставления результата.
     """
     title = models.CharField(
         max_length=200,
         verbose_name=_("Название услуги"),
         help_text=_("Максимальная длина - 200 символов")
     )
-    
     slug = models.SlugField(
         unique=True,
         verbose_name=_("URL"),
         max_length=200,
         help_text=_("Уникальный идентификатор для URL")
     )
-    
     icon = models.FileField(
         upload_to=RenameUploadTo("services/icons/"),
         verbose_name=_("Иконка (JPG/GIF/PNG/SVG)"),
@@ -109,23 +53,22 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         null=True,
         help_text=_("Рекомендуемый размер: 64x64 или 128x128 пикселей")
     )
-    
     short_description = HTMLField(
         verbose_name=_("Краткое описание"),
         blank=True,
-        help_text=_("Краткое описание для превью")
+        help_text=_("Краткое описание для отображения в списках/карточках")
     )
-    
     description = HTMLField(
         verbose_name=_("Полное описание"),
         default=_("<p>Описание услуги</p>"),
-        help_text=_("Подробное описание услуги с возможностью форматирования")
+        help_text=_("Подробное описание профиля услуги с использованием форматирования")
     )
-    
-    technical_requirements = models.TextField(
-        verbose_name=_("Технические требования"),
+    technologies = models.ManyToManyField(
+        Technology,
+        verbose_name=_("Стек технологий"),
         blank=True,
-        help_text=_("Перечислите технологии через запятую")
+        related_name="services",
+        help_text=_("Выберите неограниченное число технологий (веб-разработка, дизайн и др.)")
     )
     
     PRICE_TYPE_CHOICES = [
@@ -133,39 +76,35 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         ('range', _('От и До')),
         ('contact', _('По договоренности')),
     ]
-    
     price_type = models.CharField(
         max_length=10,
         choices=PRICE_TYPE_CHOICES,
         default='fixed',
-        verbose_name=_("Тип цены")
+        verbose_name=_("Тип ценообразования")
     )
-    
     price_fixed = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         null=True,
         blank=True,
         verbose_name=_("Фиксированная цена"),
-        help_text=_("Цена в указанной валюте")
+        help_text=_("Итоговая цена (при фиксированной оплате)")
     )
-    
     price_min = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         null=True,
         blank=True,
-        verbose_name=_("Цена ОТ"),
-        help_text=_("Минимальная цена диапазона")
+        verbose_name=_("Начальная цена (ОТ)"),
+        help_text=_("Нижняя граница диапазона")
     )
-    
     price_max = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         null=True,
         blank=True,
-        verbose_name=_("Цена ДО"),
-        help_text=_("Максимальная цена диапазона")
+        verbose_name=_("Конечная цена (ДО)"),
+        help_text=_("Верхняя граница диапазона")
     )
     
     CURRENCY_CHOICES = [
@@ -174,62 +113,56 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         ('EUR', _('Евро (€)')),
         ('KZT', _('Тенге (₸)')),
     ]
-    
     currency = models.CharField(
         max_length=10,
         choices=CURRENCY_CHOICES,
         default="RUB",
         verbose_name=_("Валюта")
     )
-    
     order = models.PositiveIntegerField(
         default=0,
-        verbose_name=_("Порядок сортировки"),
-        help_text=_("Чем меньше число, тем выше в списке")
+        verbose_name=_("Индекс сортировки"),
+        help_text=_("Чем меньше номер, тем выше запись в каталоге")
     )
-    
     is_popular = models.BooleanField(
         default=False,
-        verbose_name=_("Популярная услуга"),
-        help_text=_("Отображать в блоке популярных услуг")
+        verbose_name=_("Популярная услуга (Хит продаж)"),
+        help_text=_("Вывод услуги в спец-блоках с тегом 'популярное'")
     )
-    
     estimated_time = models.CharField(
         max_length=100,
         blank=True,
-        verbose_name=_("Примерные сроки"),
-        help_text=_("Например: 3-5 дней, 2 недели и т.д.")
+        verbose_name=_("Сроки выполнения"),
+        help_text=_("Например: '2-3 недели', 'до 5 рабочих дней'")
     )
-
     views = models.PositiveIntegerField(
         default=0,
         verbose_name=_("Просмотры"),
         editable=False
     )
-
     category = models.CharField(
         max_length=100,
-        verbose_name=_("Категория услуги"),
+        verbose_name=_("Категория (Тег)"),
         blank=True,
-        help_text=_("Например: Веб-разработка, Дизайн, SEO и т.д.")
+        help_text=_("Используется для группировки услуг (напр. Веб-разработка, Дизайн и др.)")
     )
     
+    COMPLEXITY_CHOICES = [
+        ('simple', _('Простой')),
+        ('medium', _('Средний')),
+        ('complex', _('Сложный')),
+        ('expert', _('Ультра-кодинг')),
+    ]
     complexity_level = models.CharField(
         max_length=50,
         verbose_name=_("Уровень сложности"),
-        choices=[
-            ('simple', _('Простой')),
-            ('medium', _('Средний')),
-            ('complex', _('Сложный')),
-            ('expert', _('Экспертный')),
-        ],
+        choices=COMPLEXITY_CHOICES,
         default='medium',
     )
-    
     deliverables = HTMLField(
-        verbose_name=_("Что вы получите"),
+        verbose_name=_("Что будет в результате"),
         blank=True,
-        help_text=_("Список результатов/документов которые получит клиент")
+        help_text=_("Результат который отправляется заказчику на руки (файлы, макеты, код)")
     )
     
     class Meta:
@@ -243,164 +176,118 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         ]
 
     def __str__(self):
-        return self.title
+        return f"{self.title}"
 
     def clean(self):
-        """Валидация данных модели"""
+        """Инвариантная проверка модели перед записью в БД."""
         super().clean()
         
-        # Проверка цен в зависимости от типа
-        if self.price_type == 'fixed':
-            if not self.price_fixed:
-                raise ValidationError({'price_fixed': _('Для фиксированной цены необходимо указать фиксированную цену.')})
-            if self.price_min or self.price_max:
-                raise ValidationError(_('Для фиксированной цены не нужно указывать минимальную и максимальную цены.'))
-        
-        elif self.price_type == 'range':
-            if not self.price_min or not self.price_max:
-                raise ValidationError(_('Для цены диапазоном необходимо указать обе цены: ОТ и ДО.'))
-            if self.price_min >= self.price_max:
-                raise ValidationError({'price_max': _('Цена ДО должна быть больше цены ОТ.')})
-        
-        # Удаляем ненужные значения цен
+        # Обнуляем нерелевантные поля на основе типа цены:
         if self.price_type != 'fixed':
             self.price_fixed = None
         if self.price_type != 'range':
             self.price_min = None
             self.price_max = None
+            
+        if self.price_type == 'fixed' and not self.price_fixed:
+            raise ValidationError({'price_fixed': _('Обязательно укажите фиксированную цену.')})
+            
+        elif self.price_type == 'range':
+            if not self.price_min or not self.price_max:
+                raise ValidationError(_('Для ценового диапазона нужно задать границы ОТ и ДО.'))
+            if self.price_min >= self.price_max:
+                raise ValidationError({'price_max': _('Цена ДО должна быть строго больше цены ОТ.')})
 
     def get_price_display(self):
-        """Форматированное отображение цены"""
+        """Возвращает строку с красиво отформатированной ценой на основе типа."""
+        currency_symbols = {'RUB': '₽', 'USD': '$', 'EUR': '€', 'KZT': '₸'}
+        symbol = currency_symbols.get(self.currency, self.currency)
+        
         if self.price_type == 'fixed' and self.price_fixed:
-            currency_symbols = {'RUB': '₽', 'USD': '$', 'EUR': '€', 'KZT': '₸'}
-            symbol = currency_symbols.get(self.currency, self.currency)
-            return f"{self.price_fixed:,.0f} {symbol}".replace(',', ' ')
+            formatted = f"{self.price_fixed:,.0f}".replace(',', ' ')
+            return f"{formatted} {symbol}"
         
         elif self.price_type == 'range' and self.price_min and self.price_max:
-            currency_symbols = {'RUB': '₽', 'USD': '$', 'EUR': '€', 'KZT': '₸'}
-            symbol = currency_symbols.get(self.currency, self.currency)
-            return f"от {self.price_min:,.0f} до {self.price_max:,.0f} {symbol}".replace(',', ' ')
-        
+            min_fmt = f"{self.price_min:,.0f}".replace(',', ' ')
+            max_fmt = f"{self.price_max:,.0f}".replace(',', ' ')
+            return f"от {min_fmt} до {max_fmt} {symbol}"
+            
         elif self.price_type == 'contact':
-            return _("По договоренности")
-        
-        return _("Цена не указана")
+            return _("Определяется индивидуально")
+            
+        return _("Уточняйте у менеджера")
 
     def get_tech_requirements_list(self):
-        """Возвращает список кодов выбранных технологий"""
-        if self.technical_requirements:
-            # Исправлено: используем technical_requirements вместо technical_requests
-            return [item.strip() for item in self.technical_requirements.split(',') if item.strip()]
-        return []
+        """Возращает список названий технологий для этой услуги из ManyToMany."""
+        return [tech.name for tech in self.technologies.all()]
 
     def get_tech_requirements_display(self):
-        """Возвращает отображаемые названия выбранных технологий"""
-        tech_dict = dict(TECH_CHOICES)
-        selected_codes = self.get_tech_requirements_list()
-        return [tech_dict.get(code, code) for code in selected_codes]
-    
-    def add_tech_requirement(self, tech_code):
-        """Добавляет технологию к требованиям"""
-        current_list = self.get_tech_requirements_list()
-        if tech_code not in current_list:
-            current_list.append(tech_code)
-            self.technical_requirements = ', '.join(current_list)
-    
-    def remove_tech_requirement(self, tech_code):
-        """Удаляет технологию из требований"""
-        current_list = self.get_tech_requirements_list()
-        if tech_code in current_list:
-            current_list.remove(tech_code)
-            self.technical_requirements = ', '.join(current_list)
-    
-    def has_tech_requirement(self, tech_code):
-        """Проверяет, есть ли технология в требованиях"""
-        return tech_code in self.get_tech_requirements_list()
-    
-    def clear_tech_requirements(self):
-        """Очищает все технические требования"""
-        self.technical_requirements = ""
+        """Названия технологий для отображения пользователю (массив)."""
+        return self.get_tech_requirements_list()
 
 
 class ServiceOrder(TimestampModel):
+    """
+    Модель оформления заказа услуги. 
+    Собирает обратную связь или "лиды".
+    """
     STATUS_CHOICES = [
         ("new", _("Новый")),
         ("confirmed", _("Подтвержден")),
-        ("in_progress", _("В работе")),
-        ("completed", _("Выполнен")),
-        ("cancelled", _("Отменен")),
+        ("in_progress", _("Поступил в работу")),
+        ("completed", _("Реализован/Выполнен")),
+        ("cancelled", _("Отменен/Заморожен")),
     ]
     
     service = models.ForeignKey(
         Service,
         on_delete=models.PROTECT,
-        verbose_name=_("Услуга"),
+        verbose_name=_("Назначенная услуга"),
         related_name='orders'
     )
-    
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name=_("Пользователь"),
+        verbose_name=_("Покупатель"),
         related_name='service_orders'
     )
-    
-    full_name = models.CharField(
-        max_length=255,
-        verbose_name=_("ФИО")
-    )
-    
-    phone = models.CharField(
-        max_length=20,
-        verbose_name=_("Телефон"),
-        help_text=_("Формат: +7XXXXXXXXXX")
-    )
-    
-    email = models.EmailField(
-        verbose_name=_("Email"),
-        max_length=255
-    )
-    
+    full_name = models.CharField(max_length=255, verbose_name=_("Имя покупателя"))
+    phone = models.CharField(max_length=25, verbose_name=_("Номер связи"), help_text=_("Примерном: +7(900)123-45-67"))
+    email = models.EmailField(verbose_name=_("Электронная почта"), max_length=255)
     message = models.TextField(
-        verbose_name=_("Комментарий/Задача"),
+        verbose_name=_("Уточнения/Комментарий"),
         blank=True,
-        help_text=_("Подробное описание того, что необходимо сделать")
+        help_text=_("Детальное разъяснение задачи клиентом")
     )
-    
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default="new",
-        verbose_name=_("Статус")
+        verbose_name=_("Статус заявки")
     )
-    
     admin_notes = models.TextField(
-        verbose_name=_("Заметки администратора"),
+        verbose_name=_("Служебные пометки (невидимо клиенту)"),
         blank=True,
-        help_text=_("Внутренние заметки по заказу")
+        help_text=_("Для внутренней коммуникации команды")
     )
-    
     estimated_budget = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         null=True,
         blank=True,
-        verbose_name=_("Предварительный бюджет"),
-        help_text=_("Ориентировочная стоимость по мнению клиента")
+        verbose_name=_("Указанный бюджет"),
     )
-    
     deadline = models.DateField(
         null=True,
         blank=True,
-        verbose_name=_("Желаемый срок выполнения"),
-        help_text=_("Дата, к которой необходимо выполнить работу")
+        verbose_name=_("Желательный дедлайн")
     )
 
     class Meta:
-        verbose_name = _("Заказ услуги")
-        verbose_name_plural = _("Заказы услуг")
+        verbose_name = _("Заявка на услугу")
+        verbose_name_plural = _("Заявки на услуги")
         ordering = ["-created_at"]
         indexes = [
             models.Index(fields=['status', 'created_at']),
@@ -408,62 +295,36 @@ class ServiceOrder(TimestampModel):
         ]
 
     def __str__(self):
-        return f"Заказ #{self.pk} - {self.service.title}"
-
-    def clean(self):
-        """Валидация данных заказа"""
-        super().clean()
-        
-        # Проверка формата телефона
-        if self.phone:
-            # Более гибкая проверка телефона
-            phone_pattern = r'^[\+]?[1-9][\d\-\(\)\.]{9,15}$'
-            if not re.match(phone_pattern, self.phone):
-                raise ValidationError({
-                    'phone': _('Неверный формат телефона. Используйте международный формат, например: +79991234567')
-                })
-        
-        # Проверка бюджета
-        if self.estimated_budget and self.estimated_budget < 0:
-            raise ValidationError({'estimated_budget': _('Бюджет не может быть отрицательным.')})
+        return f"Заказ {self.short_id} - Услуга: {self.service.title}"
 
     @property
     def short_id(self):
-        """Короткий идентификатор заказа"""
-        return f"SVC-{self.pk:06d}"
+        """Интуитивно понятный генератор идентификатора."""
+        return f"ORD-{self.pk:06d}" if self.pk else "ORD-000000"
 
-    def get_status_color(self):
-        """Возвращает цвет для отображения статуса"""
-        colors = {
-            'new': 'blue',
-            'confirmed': 'green',
-            'in_progress': 'orange',
-            'completed': 'purple',
-            'cancelled': 'red',
-        }
-        return colors.get(self.status, 'gray')
+    def clean(self):
+        """Базовая проверка телефона."""
+        super().clean()
+        
+        if self.phone and not PHONE_PATTERN.match(self.phone):
+            raise ValidationError({'phone': _('Разрешен только корректный телефонный формат (+7...).')})
+            
+        if self.estimated_budget is not None and self.estimated_budget < 0:
+            raise ValidationError({'estimated_budget': _('Цена бюджета не может быть числом со знаком минус.')})
 
-    def get_contact_info(self):
-        """Возвращает форматированную контактную информацию"""
-        return f"{self.full_name}\n📞 {self.phone}\n✉️ {self.email}"
-    
     def get_status_display_with_color(self):
-        """Возвращает статус с HTML цветом"""
-        from django.utils.html import format_html
-        
+        """Возвращает защищенный HTML-тег для вывода подсвеченного статуса."""
         colors = {
-            'new': '#3498db',      # синий
-            'confirmed': '#2ecc71', # зеленый
+            'new': '#3498db',         # синий
+            'confirmed': '#27ae60',   # зеленый-спокойный
             'in_progress': '#f39c12', # оранжевый
-            'completed': '#9b59b6', # фиолетовый
-            'cancelled': '#e74c3c', # красный
+            'completed': '#8e44ad',   # фиолетовый
+            'cancelled': '#e74c3c',   # ярко-красный
         }
         
-        color = colors.get(self.status, '#95a5a6')
-        status_display = self.get_status_display()
-        
+        color = colors.get(self.status, '#7f8c8d')
         return format_html(
-            '<span style="color: {}; font-weight: bold;">{}</span>',
+            '<span style="background-color: {}; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase;">{}</span>',
             color,
-            status_display
+            self.get_status_display()
         )

@@ -1,62 +1,58 @@
 :root {
-    /* --- Core Color Tokens --- */
-    --color-primary: #3a7bd5;
-    --color-secondary: #00d2ff;
-    --color-accent: #6366f1;
-    --color-success: #10b981;
-    --color-warning: #f59e0b;
-    --color-danger: #ef4444;
+    /* --- Основные цвета (Core Color Tokens) --- */
+    --color-primary: #3a7bd5;      /* Главный синий */
+    --color-secondary: #00d2ff;    /* Вторичный голубой */
+    --color-accent: #6366f1;       /* Акцентный индиго */
+    --color-success: #10b981;      /* Успех (зеленый) */
+    --color-warning: #f59e0b;      /* Предупреждение (оранжевый) */
+    --color-danger: #ef4444;       /* Ошибка (красный) */
+    --color-red: #ef4444;          /* Альтернативный красный */
     
-    /* Dark Theme Surface Colors */
-    --color-dark-bg: #0b0f19;
-    --color-dark-surface: #151b28;
-    --color-dark-subtle: #1f2937;
+    /* --- Темная тема: Цвета поверхностей (Dark Theme Surfaces) --- */
+    --color-dark-bg: #0b0f19;      /* Главный фон сайта */
+    --color-dark-surface: #151b28; /* Фон карточек и панелей */
+    --color-dark-subtle: #1f2937;  /* Дополнительные оттенки для разделителей */
     
-    /* Glassmorphism Tokens */
-    --color-glass: rgba(255, 255, 255, 0.03);
-    --color-glass-hover: rgba(255, 255, 255, 0.08);
-    --color-glass-border: rgba(255, 255, 255, 0.1);
-    --color-glass-border-bright: rgba(255, 255, 255, 0.2);
+    /* --- Эффект стекла (Glassmorphism Tokens) --- */
+    --color-glass: rgba(255, 255, 255, 0.03);               /* Базовое стекло */
+    --color-glass-hover: rgba(255, 255, 255, 0.08);         /* Стекло при наведении */
+    --color-glass-border: rgba(255, 255, 255, 0.1);         /* Базовая рамка стекла */
+    --color-glass-border-bright: rgba(255, 255, 255, 0.2);  /* Яркая рамка стекла */
     
-    /* Text Colors */
-    --color-text-main: #f1f5f9;
-    --color-text-muted: #94a3b8;
-    --color-text-dim: #64748b;
-    --color-text-on-primary: #ffffff;
+    /* --- Цвета текста (Text Colors) --- */
+    --color-text-main: #f1f5f9;       /* Основной текст (светлый) */
+    --color-text-muted: #94a3b8;      /* Приглушенный текст */
+    --color-text-dim: #64748b;        /* Тусклый текст (для плейсхолдеров) */
+    --color-text-on-primary: #ffffff; /* Текст на ярких элементах */
     
-    /* Gradients */
-    --gradient-premium: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
-    --gradient-accent: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    --gradient-dark: linear-gradient(180deg, #0b0f19 0%, #151b28 100%);
+    /* --- Градиенты (Gradients) --- */
+    --gradient-premium: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, #8b5cf6 100%);
+    --gradient-dark: linear-gradient(180deg, var(--color-dark-bg) 0%, var(--color-dark-surface) 100%);
     --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
     
-    /* Shadow & Effects */
+    /* --- Тени сайта (Shadow & Effects) --- */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --shadow-glow: 0 0 15px rgba(58, 123, 213, 0.3);
     
-    /* Borders & Radius */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --radius-xl: 30px;
-    
-    /* Transitions */
-    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-
-    /* Colors */
-    --color-red: #ef4444;
-
-    /* Тени */
+    /* --- Красные тени (ошибки, удаление) --- */
     --shadow-red: 0 0 15px rgba(239, 68, 68, 0.3);
     --shadow-red-hover: 0 0 20px rgba(239, 68, 68, 0.5);
     --shadow-red-active: 0 0 25px rgba(239, 68, 68, 0.7);
     --shadow-red-focus: 0 0 30px rgba(239, 68, 68, 0.9);
     --shadow-red-inset: inset 0 0 15px rgba(239, 68, 68, 0.3);
     --shadow-red-inset-hover: inset 0 0 20px rgba(239, 68, 68, 0.5);
-    --shadow-red-inset-active: inset 0 0 25px rgba(239, 68, 68, 0.7);
-    --shadow-red-inset-focus: inset 0 0 30px rgba(239, 68, 68, 0.9);
+    
+    /* --- Скругления углов (Borders & Radius) --- */
+    --radius-sm: 8px;     /* Малые (кнопки, инпуты) */
+    --radius-md: 12px;    /* Средние (карточки средних размеров) */
+    --radius-lg: 20px;    /* Крупные (большие блоки) */
+    --radius-xl: 30px;    /* Максимальные скругления */
+    
+    /* --- Анимации и переходы (Transitions) --- */
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);    /* Быстрые (ховеры кнопок) */
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);  /* Нормальные (появление элементов) */
+    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);  /* Плавные (раскрытие меню) */
 }

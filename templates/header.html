@@ -1,59 +1,86 @@
 {% load cache static %}
 <header class="fixed-top premium-header">
-    <!-- Top Bar: Quick Actions & User Account -->
-    <div class="top-bar-custom premium-navbar d-none d-lg-block">
-        <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
-            <div class="text-muted d-flex align-items-center gap-4">
-                <span><i class="bi bi-geo-alt-fill text-primary me-2"></i>Мы работаем по всему миру</span>
-                <span><i class="bi bi-envelope-fill text-primary me-2"></i>Связь 24/7</span>
-            </div>
+    <!-- Top Contact Bar -->
+    <div class="w-100 bg-body border-bottom">    
+        <div class="container-fluid px-3 px-lg-4 py-1 d-flex justify-content-between align-items-center">
             
-            <ul class="nav align-items-center">
+            <!-- Contact Info -->
+            <div class="d-none d-lg-flex gap-4">
+                <span class="text-muted small d-inline-flex align-items-center" style="font-size: 0.75rem;">
+                    <i class="bi bi-geo-alt-fill text-primary me-1"></i>По всему миру
+                </span>
+                <span class="text-muted small d-inline-flex align-items-center" style="font-size: 0.75rem;">
+                    <i class="bi bi-envelope-fill text-primary me-1"></i>24/7 поддержка
+                </span>
+            </div>
+
+            <!-- Right End Icons + User Menu -->
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <!-- User Account (Desktop) -->
                 {% if user.is_authenticated %}
-                    <li class="nav-item me-3">
-                        <span class="text-muted">
-                            Добро пожаловать, <span class="text-primary fw-bold">{{ user.get_full_name|default:user.username }}</span>
-                        </span>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-body fw-bold p-0 d-flex align-items-center gap-2" href="#" id="userTopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle shadow-sm" width="34" height="34" alt="user">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end mega-dropdown-menu mt-2" aria-labelledby="userTopDropdown">
-                            <li><h6 class="dropdown-header text-uppercase text-muted">Аккаунт</h6></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle text-primary me-2"></i> Мой Кабинет</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-detailed text-primary me-2"></i> Мои Тикеты</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle-fill text-success me-2"></i> Новый тикет</a></li>
-                            {% if user.is_superuser %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header text-uppercase text-muted">Управление</h6></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'mail:index' %}"><i class="bi bi-mailbox2 text-warning me-2"></i> Почта Сайта</a></li>
-                            {% endif %}
-                            {% if user.is_staff %}
-                            <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>
-                            {% endif %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right me-2"></i> Выйти</a></li>
-                        </ul>
-                    </li>
+                <div class="dropdown d-none d-lg-block">
+                    <a class="btn action-btn border-0 shadow-sm d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle shadow-sm" width="34" height="34" alt="user">
+                        <span class="d-none d-xl-inline text-muted small">{{ user.get_full_name|default:user.username|truncatechars:12 }}</span>
+                        <i class="bi bi-chevron-down text-muted small"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end mega-dropdown-menu mt-2" aria-labelledby="userDropdown">
+                        <li><h6 class="dropdown-header text-uppercase text-muted">Аккаунт</h6></li>
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle text-primary me-2"></i> Мой Кабинет</a></li>
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-detailed text-primary me-2"></i> Мои Тикеты</a></li>
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle-fill text-success me-2"></i> Новый тикет</a></li>
+                        {% if user.is_superuser %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header text-uppercase text-muted">Управление</h6></li>
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'mail:index' %}"><i class="bi bi-mailbox2 text-warning me-2"></i> Почта Сайта</a></li>
+                        {% endif %}
+                        {% if user.is_staff %}
+                        <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right me-2"></i> Выйти</a></li>
+                    </ul>
+                </div>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link text-body px-2 fw-bold" href="{% url 'accounts:login' %}">
-                            <i class="bi bi-box-arrow-in-right me-1"></i> Войти
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-primary btn-sm rounded-pill px-4 ms-3 fw-bold shadow-sm" href="{% url 'accounts:register' %}">
-                            Регистрация
-                        </a>
-                    </li>
+                <div class="d-none d-lg-flex align-items-center gap-2">
+                    <a class="nav-link text-body px-2 fw-bold" href="{% url 'accounts:login' %}">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Войти
+                    </a>
+                    <a class="btn btn-primary btn-sm rounded-pill px-3 ms-1 fw-bold shadow-sm" href="{% url 'accounts:register' %}">
+                        Регистрация
+                    </a>
+                </div>
                 {% endif %}
-            </ul>
+                
+                <!-- Theme Toggle -->
+                <button class="btn action-btn border-0 shadow-sm" id="themeToggleBtn" aria-label="Смена темы" title="Переключить тему (Светлая/Темная)">
+                    <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
+                </button>
+                
+                <!-- Search Button -->
+                <button class="btn action-btn border-0 shadow-sm" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Поиск" title="Поиск по сайту">
+                    <i class="bi bi-search fs-5"></i>
+                </button>
+                
+                <!-- Cart Offcanvas Button -->
+                <a class="btn action-btn border-0 shadow-sm position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина">
+                    <i class="bi bi-bag-fill fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow {% if cart|length == 0 %}d-none{% endif %}" id="header-cart-badge" style="font-size: 0.7rem; border: 2px solid var(--bs-body-bg); padding: 0.35em 0.6em;">
+                        {{ cart|length }}
+                        <span class="visually-hidden">товаров</span>
+                    </span>
+                </a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none ms-1 action-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mainPremiumNav" aria-controls="mainPremiumNav" aria-expanded="false" aria-label="Открыть меню">
+                    <i class="bi bi-list fs-3"></i>
+                </button>
+            </div>
         </div>
     </div>
-    
-    <!-- Main Navigation Bar -->
-    <nav class="navbar navbar-expand-lg premium-navbar py-2 py-lg-3">
+
+    <!-- Unified Navigation Bar -->
+    <nav class="navbar navbar-expand-lg premium-navbar py-2">
         <div class="container-fluid px-3 px-lg-4">
             
             <!-- Logo Section -->
@@ -192,33 +219,6 @@
                     
                     {% endcache %}
                 </ul>
-            </div>
-            
-            <!-- Right End Icons -->
-            <div class="d-flex align-items-center gap-2 order-2 order-lg-3 ms-auto ms-lg-0">
-                <!-- Theme Toggle -->
-                <button class="btn action-btn border-0 shadow-sm" id="themeToggleBtn" aria-label="Смена темы" title="Переключить тему (Светлая/Темная)">
-                    <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
-                </button>
-                
-                <!-- Search Button -->
-                <button class="btn action-btn border-0 shadow-sm" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Поиск" title="Поиск по сайту">
-                    <i class="bi bi-search fs-5"></i>
-                </button>
-                
-                <!-- Cart Offcanvas Button -->
-                <a class="btn action-btn border-0 shadow-sm position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина">
-                    <i class="bi bi-bag-fill fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow {% if cart|length == 0 %}d-none{% endif %}" id="header-cart-badge" style="font-size: 0.7rem; border: 2px solid var(--bs-body-bg); padding: 0.35em 0.6em;">
-                        {{ cart|length }}
-                        <span class="visually-hidden">товаров</span>
-                    </span>
-                </a>
-                
-                <!-- Mobile Menu Toggle -->
-                <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none ms-1 action-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mainPremiumNav" aria-controls="mainPremiumNav" aria-expanded="false" aria-label="Открыть меню">
-                    <i class="bi bi-list fs-3"></i>
-                </button>
             </div>
             
         </div>

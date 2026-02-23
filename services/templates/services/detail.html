@@ -49,15 +49,20 @@
                            {{ service.description|safe }}
                        </div>
                     </div>
-                        {% if service.technical_requirements %}
+                        {% if tech_list %}
                         <div class="mb-4 bg-light p-4 rounded-3 border-start border-4 border-info">
                             <h4 class="fw-bold mb-3 text-info">
-                                <i class="fas fa-cogs me-2"></i>Технические условия
+                                <i class="fas fa-layer-group me-2"></i>Используемый стек / Технологии
                             </h4>
-                            <div class="">
-                                <div class="">
-                                    {{ service.technical_requirements|safe }}
+                            <div class="row pt-2">
+                                {% for tech in tech_list %}
+                                <div class="col-sm-6 col-md-4 col-lg-2 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <span class="fw-medium text-dark" style="font-size: 0.9em;">{{ tech }}</span>
+                                    </div>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                         {% endif %}

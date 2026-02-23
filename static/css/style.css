@@ -1,4 +1,4 @@
-/* --- Base Reset & Typography --- */
+/* --- Базовый сброс стилей и Типографика --- */
 * {
     margin: 0;
     padding: 0;
@@ -49,7 +49,7 @@ a:hover {
     color: var(--color-secondary);
 }
 
-/* --- Readability Enhancements --- */
+/* --- Улучшения читаемости текста --- */
 .text-content {
     max-width: 800px;
     margin-left: auto;
@@ -66,12 +66,12 @@ a:hover {
     margin-bottom: 1.5rem;
 }
 
-/* --- Layout Utility --- */
+/* --- Утилиты макета (Layout) --- */
 .section-padding {
     padding: 4rem 0;
 }
 
-/* --- Custom Scrollbar --- */
+/* --- Кастомная полоса прокрутки (Scrollbar) --- */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -90,7 +90,7 @@ a:hover {
     background: var(--color-primary);
 }
 
-/* --- Animations --- */
+/* --- Анимации --- */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -140,14 +140,14 @@ a:hover {
     animation: float 6s ease-in-out infinite;
 }
 
-/* Staggered Delays */
+/* Ступенчатые задержки анимаций */
 .delay-100 { animation-delay: 0.1s !important; }
 .delay-200 { animation-delay: 0.2s !important; }
 .delay-300 { animation-delay: 0.3s !important; }
 .delay-400 { animation-delay: 0.4s !important; }
 .delay-500 { animation-delay: 0.5s !important; }
 
-/* --- Advanced Glassmorphism --- */
+/* --- Продвинутый Глассморфизм (Эффект стекла) --- */
 .glass-card-premium {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
     backdrop-filter: blur(15px) saturate(180%);
@@ -177,7 +177,7 @@ a:hover {
     left: 100%;
 }
 
-/* --- Header & Navigation --- */
+/* --- Шапка сайта и Навигация --- */
 .main-header {
     z-index: 11000 !important; /* Extremely high to stay above all normal sections */
 }
@@ -257,7 +257,7 @@ a:hover {
     box-shadow: inset 0 0 10px rgba(58, 123, 213, 0.1);
 }
 
-/* --- Dropdown Styling --- */
+/* --- Стилизация выпадающих меню (Dropdown) --- */
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -342,7 +342,7 @@ a:hover {
     padding: 0.5rem 1rem;
 }
 
-/* --- Hero Section & Brand Styling --- */
+/* --- Главный экран (Hero Section) и Брендинг --- */
 .logo-container {
     background: var(--gradient-dark);
     min-height: 350px;
@@ -379,7 +379,7 @@ a:hover {
     text-shadow: 0 0 10px rgba(58, 123, 213, 0.5), 0 0 20px rgba(58, 123, 213, 0.3);
 }
 
-/* --- Modern Cards & Interaction --- */
+/* --- Современные карточки и их интерактивность --- */
 .card, .glass-card {
     background: var(--color-glass);
     backdrop-filter: blur(12px);
@@ -418,7 +418,7 @@ a:hover {
     transform: scale(1.05);
 }
 
-/* --- Buttons --- */
+/* --- Кнопки --- */
 .btn {
     border-radius: var(--radius-md);
     padding: 0.75rem 1.5rem;
@@ -469,7 +469,7 @@ a:hover {
     color: #fff;
 }
 
-/* --- Forms & Inputs --- */
+/* --- Формы и поля ввода (Inputs) --- */
 .form-control, .form-select {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--color-glass-border);
@@ -496,7 +496,7 @@ a:hover {
     margin-bottom: 0.5rem;
 }
 
-/* --- Sidebars & Lists --- */
+/* --- Боковые панели (Сайдбары) и Списки --- */
 .sidebar-card {
     background: var(--color-glass);
     border: 1px solid var(--color-glass-border);
@@ -524,7 +524,7 @@ a:hover {
     color: #fff;
 }
 
-/* --- Footer --- */
+/* --- Подвал сайта (Footer) --- */
 .footer {
     background: var(--color-background);
     padding-top: 5rem;
@@ -554,6 +554,7 @@ a:hover {
 .social-links {
     display: flex;
     gap: 1rem;
+    color: var(--color-text-main) !important;
 }
 
 .social-btn {
@@ -565,7 +566,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #000000;
     transition: var(--transition-normal);
 }
 
@@ -575,7 +576,7 @@ a:hover {
     transform: translateY(-5px);
 }
 
-/* --- Breadcrumbs --- */
+/* --- Хлебные крошки (Навигация) --- */
 .breadcrumb {
     padding: 1rem 0;
     font-size: 0.9rem;
@@ -628,7 +629,7 @@ a:hover {
     color: var(--color-secondary);
 }
 
-/* --- Pagination --- */
+/* --- Пагинация (Постраничная навигация) --- */
 .pagination {
     gap: 0.5rem;
 }
@@ -653,7 +654,7 @@ a:hover {
     border: none;
 }
 
-/* --- Alerts --- */
+/* --- Уведомления (Alerts) --- */
 .alert {
     border-radius: var(--radius-md);
     border: none;
@@ -663,7 +664,7 @@ a:hover {
 .alert-success { background: rgba(16, 185, 129, 0.2); color: #d1fae5; border: 1px solid rgba(16, 185, 129, 0.3); }
 .alert-danger { background: rgba(239, 68, 68, 0.2); color: #fee2e2; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-/* --- Category Badges & Filters --- */
+/* --- Бейджи категорий и Фильтры --- */
 .badge-category {
     padding: 0.4rem 1rem;
     border-radius: 50px;
@@ -697,7 +698,7 @@ a:hover {
     border-color: var(--color-primary);
 }
 
-/* --- Specific Enhancements --- */
+/* --- Специфичные улучшения (Enhancements) --- */
 .thin-lines-gradient {
     position: relative;
     overflow: hidden;
@@ -725,7 +726,7 @@ a:hover {
     .card-img-top { height: 180px; }
 }
 
-/* --- Bootstrap Utilities Overrides --- */
+/* --- Переопределение классов утилит Bootstrap --- */
 .text-primary { color: var(--color-primary) !important; }
 .bg-primary { background: var(--gradient-premium) !important; border: none !important; }
 .bg-light { background: var(--color-glass) !important; color: var(--color-text-main) !important; }
@@ -778,7 +779,7 @@ a:hover {
     transform: translateY(-34px); /* Height of user-top-bar */
 }
 
-/* --- Theme Switcher Variables --- */
+/* --- Переменные переключателя Светлой/Темной темы --- */
 body.light-mode {
     --color-dark-bg: #f8fafc;
     --color-dark-surface: #ffffff;
@@ -825,7 +826,7 @@ body.light-mode .dropdown-menu {
     background: rgba(255, 255, 255, 0.98);
 }
 
-/* --- Fullscreen Modal Search --- */
+/* --- Полноэкранный модальный поиск --- */
 .glass-search-modal {
     backdrop-filter: blur(25px);
     background: rgba(0, 0, 0, 0.7) !important;
@@ -847,7 +848,7 @@ body.light-mode .search-input-huge::placeholder {
     color: rgba(0,0,0,0.4);
 }
 
-/* --- Offcanvas Cart --- */
+/* --- Выезжающая боковая корзина (Offcanvas Basket) --- */
 .glass-offcanvas {
     background: rgba(15, 23, 42, 0.95) !important;
     backdrop-filter: blur(20px);
