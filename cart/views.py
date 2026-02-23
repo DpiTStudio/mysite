@@ -1,39 +1,43 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from services.models import Service
+from portfolio.models import Portfolio
 from .cart import Cart
 from django.contrib import messages
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 
 @require_POST
-def cart_add(request, service_id):
+def cart_add(request, item_type, item_id):
     """
-    Добавляет выбранную услугу в корзину пользователя.
+    Добавляет выбранную услугу или работу в корзину пользователя.
     """
     cart = Cart(request)
-    service = get_object_or_404(Service, id=service_id)
-    cart.add(service=service)
+    if item_type == 'service':
+        item = get_object_or_404(Service, id=item_id)
+    else:
+        item = get_object_or_404(Portfolio, id=item_id)
+        
+    cart.add(item=item, item_type=item_type)
     
     if 'HX-Request' in request.headers:
         return render(request, 'cart/detail_partial.html', {'cart': cart})
         
-    messages.success(request, f'Услуга "{service.title}" добавлена в корзину')
+    messages.success(request, f'"{item.title}" добавлено в корзину')
     return redirect('cart:cart_detail')
 
 @require_POST
-def cart_remove(request, service_id):
+def cart_remove(request, item_type, item_id):
     """
-    Удаляет услугу из корзины.
+    Удаляет элемент из корзины.
     """
     cart = Cart(request)
-    service = get_object_or_404(Service, id=service_id)
-    cart.remove(service)
+    cart.remove(item_type=item_type, item_id=item_id)
     
     if 'HX-Request' in request.headers:
         return render(request, 'cart/detail_partial.html', {'cart': cart})
         
-    messages.info(request, f'Услуга "{service.title}" удалена из корзины')
+    messages.info(request, 'Элемент удален из корзины')
     return redirect('cart:cart_detail')
 
 def cart_detail(request):
@@ -59,12 +63,20 @@ def order_create(request):
                 order.user = request.user
             order.save()
             for item in cart:
-                OrderItem.objects.create(
-                    order=order,
-                    service=item['service'],
-                    price=item['price'],
-                    quantity=item['quantity']
-                )
+                if item['item_type'] == 'service':
+                    OrderItem.objects.create(
+                        order=order,
+                        service=item['item_obj'],
+                        price=item['price'],
+                        quantity=item['quantity']
+                    )
+                else:
+                    OrderItem.objects.create(
+                        order=order,
+                        portfolio=item['item_obj'],
+                        price=item['price'],
+                        quantity=item['quantity']
+                    )
             # очистка корзины
             cart.clear()
             # Добавление сообщения пользователю

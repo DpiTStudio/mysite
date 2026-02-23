@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
 from services.models import Service
+from portfolio.models import Portfolio
 
 class Cart:
     def __init__(self, request):
@@ -14,48 +15,79 @@ class Cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, service, quantity=1, override_quantity=False):
+    def add(self, item, item_type='service', quantity=1, override_quantity=False):
         """
-        Добавить услугу в корзину или обновить ее количество.
+        Добавить товар/услугу в корзину или обновить ее количество.
         """
-        service_id = str(service.id)
-        if service_id not in self.cart:
-            self.cart[service_id] = {'quantity': 0,
-                                     'price': str(service.price_fixed or 0)}
+        item_id = str(item.id)
+        cart_key = f"{item_type}_{item_id}"
+        
+        if cart_key not in self.cart:
+            if item_type == 'service':
+                price = str(item.price_fixed or 0)
+            else:
+                price = str(item.price or 0)
+                
+            self.cart[cart_key] = {
+                'item_type': item_type,
+                'item_id': item_id,
+                'quantity': 0,
+                'price': price
+            }
+            
         if override_quantity:
-            self.cart[service_id]['quantity'] = quantity
+            self.cart[cart_key]['quantity'] = quantity
         else:
-            self.cart[service_id]['quantity'] += quantity
+            self.cart[cart_key]['quantity'] += quantity
         self.save()
 
     def save(self):
         # пометить сессию как "измененную", чтобы обеспечить ее сохранение
         self.session.modified = True
 
-    def remove(self, service):
+    def remove(self, item_type, item_id):
         """
         Удаление услуги из корзины.
         """
-        service_id = str(service.id)
-        if service_id in self.cart:
-            del self.cart[service_id]
+        cart_key = f"{item_type}_{item_id}"
+        if cart_key in self.cart:
+            del self.cart[cart_key]
             self.save()
 
     def __iter__(self):
         """
         Перебор элементов в корзине и получение услуг из базы данных.
         """
-        service_ids = self.cart.keys()
-        # получение объектов услуг и добавление их в корзину
+        # Сбор ID для каждого типа
+        service_ids = [int(v['item_id']) for k, v in self.cart.items() if v.get('item_type') == 'service']
+        portfolio_ids = [int(v['item_id']) for k, v in self.cart.items() if v.get('item_type') == 'portfolio']
+        
+        # Получение объектов из БД
         services = Service.objects.filter(id__in=service_ids)
-        cart = self.cart.copy()
-        for service in services:
-            cart[str(service.id)]['service'] = service
+        portfolios = Portfolio.objects.filter(id__in=portfolio_ids)
+        
+        # Создание словарей для быстрого доступа
+        service_dict = {s.id: s for s in services}
+        portfolio_dict = {p.id: p for p in portfolios}
 
-        for item in cart.values():
+        cart = self.cart.copy()
+        
+        # Заполнение данными объекта из БД
+        for key, item in cart.items():
+            item_type = item.get('item_type', 'service')
+            item_id = int(item['item_id'])
+            
+            if item_type == 'service':
+                item['item_obj'] = service_dict.get(item_id)
+            elif item_type == 'portfolio':
+                item['item_obj'] = portfolio_dict.get(item_id)
+                
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
-            yield item
+            
+            # Пропускаем, если объект был удален из БД
+            if item.get('item_obj'):
+                yield item
 
     def __len__(self):
         """

@@ -3,7 +3,7 @@ from .models import Order, OrderItem
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    raw_id_fields = ['service']
+    raw_id_fields = ['service', 'portfolio']
     extra = 0
 
 @admin.register(Order)

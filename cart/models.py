@@ -45,7 +45,8 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name=_("Заказ"))
-    service = models.ForeignKey(Service, related_name='order_items', on_delete=models.PROTECT, verbose_name=_("Услуга"))
+    service = models.ForeignKey(Service, related_name='order_items', on_delete=models.PROTECT, verbose_name=_("Услуга"), null=True, blank=True)
+    portfolio = models.ForeignKey('portfolio.Portfolio', related_name='order_items', on_delete=models.PROTECT, verbose_name=_("Работа (Портфолио)"), null=True, blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена (фикс)"))
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Количество"))
 

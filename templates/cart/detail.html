@@ -23,20 +23,30 @@
                     </thead>
                     <tbody>
                         {% for item in cart %}
-                            {% with service=item.service %}
+                            {% with obj=item.item_obj type=item.item_type %}
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            {% if service.icon %}
-                                                <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="me-3 rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                            {% if type == 'service' %}
+                                                {% if obj.icon %}
+                                                    <img src="{{ obj.icon.url }}" alt="{{ obj.title }}" class="me-3 rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                                {% else %}
+                                                    <div class="me-3 bg-secondary rounded d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px;">
+                                                        <i class="bi bi-gear text-white"></i>
+                                                    </div>
+                                                {% endif %}
                                             {% else %}
-                                                <div class="me-3 bg-secondary rounded d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px;">
-                                                    <i class="bi bi-gear text-white"></i>
-                                                </div>
+                                                {% if obj.image %}
+                                                    <img src="{{ obj.image.url }}" alt="{{ obj.title }}" class="me-3 rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                                {% else %}
+                                                    <div class="me-3 bg-secondary rounded d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px;">
+                                                        <i class="bi bi-briefcase text-white"></i>
+                                                    </div>
+                                                {% endif %}
                                             {% endif %}
                                             <div>
-                                                <h5 class="mb-0">{{ service.title }}</h5>
-                                                <small class="text-muted">{{ service.category }}</small>
+                                                <h5 class="mb-0">{{ obj.title }}</h5>
+                                                <small class="text-muted">{{ obj.category }}</small>
                                             </div>
                                         </div>
                                     </td>
@@ -44,9 +54,12 @@
                                     <td class="text-center">{{ item.quantity }}</td>
                                     <td class="fw-bold">{{ item.total_price }} ₽</td>
                                     <td class="text-end">
-                                        <a href="{% url 'cart:cart_remove' service.id %}" class="btn btn-outline-danger btn-sm rounded-pill">
-                                            <i class="bi bi-trash"></i> Удалить
-                                        </a>
+                                        <form action="{% url 'cart:cart_remove' type obj.id %}" method="post" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill">
+                                                <i class="bi bi-trash"></i> Удалить
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             {% endwith %}

@@ -56,10 +56,12 @@ class PortfolioAdmin(admin.ModelAdmin):
         "title",
         "category",
         "is_active",
+        "is_available_for_order",
+        "price",
         "created_at",
         "views",
     ]
-    list_editable = ["is_active"]
+    list_editable = ["is_active", "is_available_for_order", "price"]
     prepopulated_fields = {"slug": ("title",)}
     list_filter = [
         "category",
@@ -83,6 +85,8 @@ class PortfolioAdmin(admin.ModelAdmin):
                     "category",
                     "image",
                     "content",
+                    "is_available_for_order",
+                    "price",
                     "views",
                 )
             },

@@ -60,6 +60,26 @@
             {{ portfolio.content|safe }}
         </article>
 
+        {% if portfolio.is_available_for_order %}
+        <div class="glass-card p-4 p-md-5 mb-5" style="border: 1px solid rgba(40, 167, 69, 0.3);">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="mb-4 mb-md-0 text-center text-md-start">
+                    <h3 class="fw-bold mb-2 text-gradient">Приобрести эту работу</h3>
+                    <p class="text-muted mb-0">Этот кейс доступен для оформления и интеграции в ваш проект.</p>
+                </div>
+                <div class="text-center text-md-end">
+                    <div class="display-6 fw-bold text-success mb-3">{{ portfolio.price }} ₽</div>
+                    <form hx-post="{% url 'cart:cart_add' 'portfolio' portfolio.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success btn-lg px-4 rounded-pill">
+                            <i class="bi bi-cart-plus me-2"></i> В корзину
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Мета-информация и соцсети -->
         <div class="portfolio-meta-detail glass-card p-4">
             <div class="row align-items-center">

@@ -1,25 +1,35 @@
 {% if cart %}
 <div class="cart-items mt-3">
     {% for item in cart %}
-    {% with service=item.service %}
+    {% with obj=item.item_obj type=item.item_type %}
     <div class="d-flex align-items-center mb-3 pb-3 border-bottom border-secondary border-opacity-25">
-        {% if service.icon %}
-        <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="rounded shadow-sm me-3" style="width: 60px; height: 60px; object-fit: cover;">
+        {% if type == 'service' %}
+            {% if obj.icon %}
+            <img src="{{ obj.icon.url }}" alt="{{ obj.title }}" class="rounded shadow-sm me-3" style="width: 60px; height: 60px; object-fit: cover;">
+            {% else %}
+            <div class="bg-secondary bg-opacity-25 rounded d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px;">
+                <i class="bi bi-gear text-primary fs-4"></i>
+            </div>
+            {% endif %}
         {% else %}
-        <div class="bg-secondary bg-opacity-25 rounded d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px;">
-            <i class="bi bi-gear text-primary fs-4"></i>
-        </div>
+            {% if obj.image %}
+            <img src="{{ obj.image.url }}" alt="{{ obj.title }}" class="rounded shadow-sm me-3" style="width: 60px; height: 60px; object-fit: cover;">
+            {% else %}
+            <div class="bg-secondary bg-opacity-25 rounded d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px;">
+                <i class="bi bi-briefcase text-primary fs-4"></i>
+            </div>
+            {% endif %}
         {% endif %}
         
         <div class="flex-grow-1">
-            <h6 class="mb-1 text-white fw-bold">{{ service.title }}</h6>
+            <h6 class="mb-1 text-white fw-bold">{{ obj.title }}</h6>
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <span class="text-muted small">{{ item.quantity }} × {{ item.price }} ₽</span>
                 <span class="text-primary fw-bold">{{ item.total_price }} ₽</span>
             </div>
         </div>
         
-        <a href="#" hx-post="{% url 'cart:cart_remove' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="btn btn-sm btn-outline-danger ms-3 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" aria-label="Удалить">
+        <a href="#" hx-post="{% url 'cart:cart_remove' type obj.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="btn btn-sm btn-outline-danger ms-3 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" aria-label="Удалить">
             <i class="bi bi-trash"></i>
         </a>
     </div>

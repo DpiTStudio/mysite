@@ -43,6 +43,11 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
     image = models.ImageField(upload_to=RenameUploadTo("portfolio/images/"), verbose_name="Изображение")
     content = HTMLField(verbose_name="Контент", default="<p>Контент сайта</p>")
     views = models.IntegerField(default=0, verbose_name="Просмотры")
+    
+    # Для интеграции с корзиной
+    is_available_for_order = models.BooleanField(default=False, verbose_name="Доступно для заказа")
+    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name="Цена (Оформление)")
+
 
     class Meta:
         verbose_name = "Портфолио"
