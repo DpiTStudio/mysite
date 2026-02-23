@@ -89,7 +89,7 @@
     transition: all 0.2s ease;
     font-size: 1rem;
     font-weight: 500;
-    color: var(--bs-body-color);
+    color: #fff;
     margin-bottom: 0.2rem;
     white-space: normal;
     line-height: 1.4;
@@ -99,7 +99,7 @@
 }
 .dropdown-item:hover {
     background: rgba(var(--bs-primary-rgb), 0.08);
-    color: var(--bs-primary);
+    color: #fff;
     transform: translateX(6px);
 }
 .dropdown-header {

@@ -1,0 +1,27 @@
+.title-hero {
+  text-shadow: 2px 2px 4px #000;
+  color: #fff !important;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.sl_1 {
+  color: #fff !important;
+  font-size: 1.9rem;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.sl_2 {
+  color: #e6e6e6 !important;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}

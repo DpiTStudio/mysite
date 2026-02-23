@@ -93,7 +93,7 @@
                     </div>
                 {% endif %}
                 <div class="d-flex flex-column lh-1">
-                    <span class="brand-text site-domain fs-4" style="font-size: 0.65rem;">
+                    <span class="brand-text site-domain fs-4">
                         {% if site_settings and site_settings.site_domain %}
                             {{ site_settings.site_domain|upper }}
                         {% else %}
@@ -152,7 +152,6 @@
                         </ul>
                     </li>
                     {% endif %}
-
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'services:list' %}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Услуги
