@@ -14,7 +14,7 @@ import importlib.util
 
 # Инициализация django-environ
 env = environ.Env(
-    DEBUG=(bool, False)  # По умолчанию DEBUG выключен
+    DEBUG=(bool, True)  # По умолчанию DEBUG выключен
 )
 # Путь к корню проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
