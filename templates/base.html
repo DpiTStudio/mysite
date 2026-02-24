@@ -103,6 +103,12 @@
     <!-- Содержимое -->
     <main class="container-fluid py-0 px-lg-5">
         <div class="container-fluid">
+            {% comment %}
+            <div class="section-title animate-up">
+                <h2 class="display-5 text-gradient"></h2>
+                <p class="text-muted"></p>
+            </div>
+            {% endcomment %}
             {% if request.path != '/' %}
             <!-- Секция категорий (только не на главной) -->
             <div class="row pt-2 mb-4">
@@ -139,9 +145,9 @@
                     </div>
                 </div>
 
-                <!-- Боковая панель -->
+                <!-- Боковая панель style="top: 130px; z-index: 10;" sticky-lg-top-->
                 <aside class="col-12 col-lg-3">
-                    <div class="sidebar-wrapper sticky-lg-top" style="top: 130px; z-index: 10;">
+                    <div class="sidebar-wrapper">
                         {% include 'includes/bl_news_sbar.html' %}
                         {% include 'includes/bl_portfolio_sbar.html' %}
                         {% include 'includes/bl_reviews_sbar.html' %}

@@ -57,6 +57,15 @@ def mail_index(request):
                             "date": date,
                         })
         mail.logout()
+    except imaplib.IMAP4.error as e:
+        error_msg = str(e)
+        if "AUTHENTICATIONFAILED" in error_msg:
+            error = "Ошибка авторизации: неверный логин или пароль (AUTHENTICATIONFAILED). Проверьте настройки EMAIL_HOST_USER и EMAIL_HOST_PASSWORD в файле .env."
+        else:
+            # Пытаемся декодировать байтовый вывод, если он есть
+            if isinstance(e.args[0], bytes):
+                error_msg = e.args[0].decode('utf-8', errors='replace')
+            error = f"Ошибка IMAP: {error_msg}"
     except Exception as e:
         error = str(e)
 
