@@ -510,19 +510,20 @@ a:hover {
 
 /* --- Формы и поля ввода (Inputs) --- */
 .form-control, .form-select {
-    background: rgba(255, 255, 255, 0.05);
+    background: #fff !important;
     border: 1px solid var(--color-glass-border);
     border-radius: var(--radius-md);
-    color: #fff !important;
+    color: #000 !important;
     padding: 0.75rem 1rem;
     transition: var(--transition-normal);
 }
 
 .form-control:focus, .form-select:focus {
-    background: rgba(255, 255, 255, 0.1);
+    background: #fff !important;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 4px rgba(58, 123, 213, 0.15);
     outline: none;
+    color: #000 !important;
 }
 
 .form-control::placeholder {
@@ -880,6 +881,8 @@ body.light-mode .glass-search-modal {
 
 .search-input-huge {
     box-shadow: none !important;
+    background-color: transparent !important;
+    color: #ffffff !important;
 }
 
 .search-input-huge::placeholder {
@@ -911,4 +914,17 @@ body.light-mode .glass-offcanvas-header {
 
 body.light-mode .btn-close-white {
     filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* --- User Requested Form Styles --- */
+form input:not([type="submit"]):not([type="button"]):not([type="hidden"]):not(.bg-transparent):not(.search-input-huge), 
+form textarea:not(.bg-transparent), 
+form select:not(.bg-transparent) {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+form input:not(.bg-transparent):not(.search-input-huge)::placeholder, 
+form textarea:not(.bg-transparent)::placeholder {
+    color: #64748b !important;
 }
