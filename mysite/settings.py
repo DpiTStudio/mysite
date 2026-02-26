@@ -26,9 +26,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # ------------------------------------------------------------
 # Секретный ключ – храните в .env, а не в репозитории
 # , default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m'
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m')
 # Режим отладки – НЕ включать в продакшн!
-DEBUG = env('DEBUG')
+DEBUG = env('DEBUG', default=False)
 # Доступные хосты по умолчанию порт 4234
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
     '*',
