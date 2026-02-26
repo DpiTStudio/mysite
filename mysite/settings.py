@@ -29,7 +29,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 # Режим отладки – НЕ включать в продакшн!
 # DEBUG = env('DEBUG')
-DEBUG = True
+DEBUG = env('DEBUG', default=False)
 # Доступные хосты по умолчанию порт 4234
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
     '*',
