@@ -39,8 +39,9 @@
                         
                         <div class="mb-3">
                             <label for="{{ form.captcha.id_for_label }}" class="form-label">{{ form.captcha.label }}</label>
-                            <div>{{ form.captcha }}</div>
-                            <br>
+                            <div class="captcha-container">
+                                {{ form.captcha }}
+                            </div>
                             {% if form.captcha.errors %}
                                 <div class="text-danger small">{{ form.captcha.errors }}</div>
                             {% endif %}

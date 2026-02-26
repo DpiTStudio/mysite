@@ -34,7 +34,9 @@ ALLOWED_HOSTS = [
 # Приложения (INSTALLED_APPS)
 # ------------------------------------------------------------
 INSTALLED_APPS = [
+    # Темы
     "jazzmin",
+    # Основные приложения
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -43,73 +45,79 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",  # Для sitemap.xml
     "captcha",  # Капча
-    "main.apps.MainConfig",
-    "news.apps.NewsConfig",
-    "portfolio.apps.PortfolioConfig",
-    "reviews.apps.ReviewsConfig",
-    "logfiles.apps.LogfilesConfig",
-    "accounts.apps.AccountsConfig",
-    "tickets.apps.TicketsConfig",
-    "mail.apps.MailConfig",
-    "services.apps.ServicesConfig",
-    "cart.apps.CartConfig",
-    "knowledge_base.apps.KnowledgeBaseConfig",
-    "tinymce",
+    # Мои приложения
+    "main.apps.MainConfig", # Главная страница
+    "news.apps.NewsConfig", # Новости
+    "portfolio.apps.PortfolioConfig", # Портфолио
+    "reviews.apps.ReviewsConfig", # Отзывы
+    "logfiles.apps.LogfilesConfig", # Логи
+    "accounts.apps.AccountsConfig", # Аккаунты
+    "tickets.apps.TicketsConfig", # Тикеты
+    "mail.apps.MailConfig", # Почта
+    "services.apps.ServicesConfig", # Услуги
+    "cart.apps.CartConfig", # Корзина
+    "knowledge_base.apps.KnowledgeBaseConfig", # База знаний
+    "tinymce", # Редактор
+    
 ]
 
 # ------------------------------------------------------------
 # Middleware
 # ------------------------------------------------------------
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Основные middleware
+    "django.middleware.security.SecurityMiddleware", # Безопасность
+    "django.contrib.sessions.middleware.SessionMiddleware", # Сессии
+    "django.middleware.common.CommonMiddleware", # Общие настройки
+    "django.middleware.csrf.CsrfViewMiddleware", # CSRF
+    "django.contrib.auth.middleware.AuthenticationMiddleware", # Аутентификация
+    "django.contrib.messages.middleware.MessageMiddleware", # Сообщения
+    "django.middleware.clickjacking.XFrameOptionsMiddleware", # Защита от кликджекинга
 ]
 # Подключаем WhiteNoise, если он установлен (обслуживание статики)
 HAS_WHITENOISE = importlib.util.find_spec("whitenoise") is not None
-if HAS_WHITENOISE:
+if HAS_WHITENOISE: # Если WhiteNoise установлен
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 # ------------------------------------------------------------
 # URL‑конфигурация и шаблоны
 # ------------------------------------------------------------
-ROOT_URLCONF = "mysite.urls"
+ROOT_URLCONF = "mysite.urls" # Главная страница
 
 TEMPLATES = [
     {
+        # Основные шаблоны
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
-        "APP_DIRS": True,
+        "DIRS": [os.path.join(BASE_DIR, "templates")], # Шаблоны
+        "APP_DIRS": True, # Приложения
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "mysite.context_processors.season_theme",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-                "main.context_processors.main_context",
-                "news.context_processors.latest_news",
-                "portfolio.context_processors.latest_portfolio",
-                "reviews.context_processors.latest_reviews",
-                "cart.context_processors.cart",
+                "django.template.context_processors.debug", # Отладка
+                "django.template.context_processors.request", # Запрос
+                "mysite.context_processors.season_theme", # Тема
+                "django.contrib.auth.context_processors.auth", # Аутентификация
+                "django.contrib.messages.context_processors.messages", # Сообщения
+                "main.context_processors.main_context", # Главная страница
+                "news.context_processors.latest_news", # Новости
+                "portfolio.context_processors.latest_portfolio", # Портфолио
+                "reviews.context_processors.latest_reviews", # Отзывы
+                "cart.context_processors.cart", # Корзина
             ],
         },
     },
 ]
 
+# Главная страница
 WSGI_APPLICATION = "mysite.wsgi.application"
 
 # ------------------------------------------------------------
 # База данных
 # ------------------------------------------------------------
 DATABASES = {
+    # Основная база данных
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.sqlite3", # SQLite
+        "NAME": BASE_DIR / "db.sqlite3", # Путь к базе данных
     }
 }
 
@@ -118,37 +126,38 @@ DATABASES = {
 # Валидация паролей
 # ------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    # Основные валидаторы
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"}, # Проверка схожести пароля
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"}, # Минимальная длина пароля
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"}, # Проверка на частые пароли
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"}, # Проверка на числовые пароли
 ]
 
 # ------------------------------------------------------------
 # Интернационализация
 # ------------------------------------------------------------
-LANGUAGE_CODE = "ru-ru"
-TIME_ZONE = "Europe/Moscow"
-USE_I18N = True
-USE_TZ = True
+LANGUAGE_CODE = "ru-ru" # Русский язык
+TIME_ZONE = "Europe/Moscow" # Московское время
+USE_I18N = True # Интернационализация
+USE_TZ = True # Часовые пояса
 
 # ------------------------------------------------------------
 # Статические и медиа‑файлы
 # ------------------------------------------------------------
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/" # URL для статических файлов
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")] # Путь к статическим файлам
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles") # Путь к статическим файлам
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/" # URL для медиа‑файлов
+MEDIA_ROOT = os.path.join(BASE_DIR, "media") # Путь к медиа‑файлам
 
 # Хранилища (по умолчанию и для staticfiles)
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"}, # Хранилище по умолчанию
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}, # Хранилище для статических файлов
 }
 # В продакшене используем манифесты для кеширования
-if not DEBUG:
+if not DEBUG: # Если DEBUG выключен
     # В продакшене используем CompressedManifestStaticFilesStorage без дополнительных опций,
     # чтобы избежать ошибки "unexpected keyword argument 'manifest_strict'".
     STORAGES["staticfiles"] = {
@@ -158,55 +167,59 @@ if not DEBUG:
 # ------------------------------------------------------------
 # Пользовательская модель
 # ------------------------------------------------------------
-AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "accounts.User" # Пользовательская модель
 
 # ------------------------------------------------------------
 # Настройки капчи
 # ------------------------------------------------------------
-CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.random_char_challenge"
-CAPTCHA_LENGTH = 3
+CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.random_char_challenge" # Функция для генерации капчи
+CAPTCHA_LENGTH = 3 
 CAPTCHA_TIMEOUT = 5
+CAPTCHA_IMAGE_SIZE = (200, 80) # Размеры картинки (ширина, высота)
+CAPTCHA_FONT_SIZE = 48 # Размер шрифта на картинке
 SECURE_CONTENT_TYPE_NOSNIFF = False
 
 # ------------------------------------------------------------
 # Jazzmin – админ‑панель
 # ------------------------------------------------------------
 JAZZMIN_SETTINGS = {
-    "site_title": "DPIT-CMS Admin",
-    "site_header": "DPIT-CMS",
-    "site_brand": "DPIT-CMS",
-    "site_brand_small": "DPIT",
-    "site_logo_classes": "img-circle",
-    "site_logo": "images/logo.png",
-    "site_footer": "DPIT-CMS",
-    "menu_open_first_child": True,
-    "welcome_sign": "Добро пожаловать в админ-панель DPIT-CMS",
-    "copyright": "DPIT-CMS",
-    "show_ui_builder": True,
-    "changeform_format": "horizontal_tabs",
+    # Основные настройки
+    "site_title": "DPIT-CMS Admin", # Название админ-панели
+    "site_header": "DPIT-CMS", # Заголовок админ-панели
+    "site_brand": "DPIT-CMS", # Бренд админ-панели
+    "site_brand_small": "DPIT", # Маленький бренд админ-панели
+    "site_logo_classes": "img-circle", # Классы для логотипа
+    "site_logo": "images/logo.png", # Логотип админ-панели
+    "site_footer": "DPIT-CMS", # Футер админ-панели
+    "menu_open_first_child": True, # Открывать первый пункт меню
+    "welcome_sign": "Добро пожаловать в админ-панель DPIT-CMS", # Приветственное сообщение
+    "copyright": "DPIT-CMS", # Копирайт
+    "show_ui_builder": True, # Показывать UI builder
+    "changeform_format": "horizontal_tabs", # Формат изменения формы
     "changeform_format_overrides": {
-        "auth.user": "collapsible",
-        "auth.group": "vertical_tabs",
-        "admin.logentry": "vertical_tabs",
+        "auth.user": "collapsible", # Формат изменения формы для пользователя
+        "auth.group": "vertical_tabs", # Формат изменения формы для группы
+        "admin.logentry": "vertical_tabs", # Формат изменения формы для лога
     },
-    "use_google_fonts_cdn": True,
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "hide_apps": [],
-    "hide_models": [],
+    "use_google_fonts_cdn": True, # Использовать Google Fonts CDN
+    "show_sidebar": True, # Показывать боковую панель
+    "navigation_expanded": True, # Разворачивать боковую панель
+    "hide_apps": [], # Скрывать приложения
+    "hide_models": [], # Скрывать модели
     "order_with_respect_to": [
-        "main",
-        "knowledge_base",
-        "news",
-        "portfolio",
-        "services",
-        "reviews",
-        "tickets",
-        "mail",
-        "accounts",
-        "logfiles",
+        "main", # Главная
+        "knowledge_base", # База знаний
+        "news", # Новости
+        "portfolio", # Портфолио
+        "services", # Услуги
+        "reviews", # Отзывы
+        "tickets", # Тикеты
+        "mail", # Почта
+        "accounts", # Аккаунты
+        "logfiles", # Логи
     ],
     "custom_links": {
+        # Главная
         "main": [{
             "name": "Вернуться на сайт",
             "url": "/",
@@ -260,34 +273,35 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": True,
-    "footer_small_text": True,
-    "body_small_text": True,
-    "brand_small_text": True,
-    "brand_colour": "navbar-dark",
-    "accent": "accent-primary",
-    "navbar": "navbar-dark",
-    "no_navbar_border": True,
-    "navbar_fixed": False,
-    "layout_boxed": False,
-    "footer_fixed": True,
-    "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": True,
-    "sidebar_disable_expand": True,
-    "sidebar_nav_child_indent": True,
-    "sidebar_nav_compact_style": True,
-    "sidebar_nav_legacy_style": True,
-    "sidebar_nav_flat_style": True,
-    "theme": "darkly",
-    "dark_mode_theme": None,
+    # Настройки внешнего вида
+    "navbar_small_text": True, # Маленький текст в навигации
+    "footer_small_text": True, # Маленький текст в футере
+    "body_small_text": True, # Маленький текст в теле
+    "brand_small_text": True, # Маленький текст бренда
+    "brand_colour": "navbar-dark", # Цвет бренда
+    "accent": "accent-primary", # Акцентный цвет
+    "navbar": "navbar-dark", # Цвет навигации
+    "no_navbar_border": True, # Без рамки навигации
+    "navbar_fixed": False, # Фиксированная навигация
+    "layout_boxed": False, # Боксовый макет
+    "footer_fixed": True, # Фиксированный футер
+    "sidebar_fixed": True, # Фиксированная боковая панель
+    "sidebar": "sidebar-dark-primary", # Цвет боковой панели
+    "sidebar_nav_small_text": True, # Маленький текст в боковой панели
+    "sidebar_disable_expand": True, # Отключить разворачивание боковой панели
+    "sidebar_nav_child_indent": True, # Отступ у дочерних элементов
+    "sidebar_nav_compact_style": True, # Компактный стиль боковой панели
+    "sidebar_nav_legacy_style": True, # Старый стиль боковой панели
+    "sidebar_nav_flat_style": True, # Плоский стиль боковой панели
+    "theme": "darkly", # Тема
+    "dark_mode_theme": None, # Темная тема
     "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success",
+        "primary": "btn-primary", # Основная кнопка
+        "secondary": "btn-secondary", # Вторичная кнопка
+        "info": "btn-info", # Информационная кнопка
+        "warning": "btn-warning", # Предупреждающая кнопка
+        "danger": "btn-danger", # Опасная кнопка
+        "success": "btn-success", # Успешная кнопка
     },
 }
 
@@ -295,34 +309,38 @@ JAZZMIN_UI_TWEAKS = {
 # CSRF и безопасность
 # ------------------------------------------------------------
 CSRF_TRUSTED_ORIGINS = [
-    "https://dpit-cms.ru",
-    "http://dpit-cms.ru",
-    "https://www.dpit-cms.ru",
-    "http://www.dpit-cms.ru",
-    "http://localhost:4234",
-    "http://127.0.0.1:4234",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "https://dpit-cms.ru", # Доверенные источники
+    "http://dpit-cms.ru", # Доверенные источники
+    "https://www.dpit-cms.ru", # Доверенные источники
+    "http://www.dpit-cms.ru", # Доверенные источники
+    "http://localhost:4234", # Доверенные источники
+    "http://127.0.0.1:4234", # Доверенные источники
+    "http://localhost:8000", # Доверенные источники
+    "http://127.0.0.1:8000", # Доверенные источники
 ]
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
-SECURE_SSL_REDIRECT = False
-SECURE_HSTS_SECONDS = 31536000 if not DEBUG and SECURE_SSL_REDIRECT else 0
-SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG and SECURE_SSL_REDIRECT
-SECURE_HSTS_PRELOAD = not DEBUG and SECURE_SSL_REDIRECT
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-X_FRAME_OPTIONS = "DENY"
+CSRF_COOKIE_SAMESITE = "Lax" # Безопасность CSRF
+SESSION_COOKIE_SAMESITE = "Lax" # Безопасность сессий
+CSRF_COOKIE_SECURE = not DEBUG # Безопасность CSRF
+SESSION_COOKIE_SECURE = not DEBUG # Безопасность сессий
+SECURE_SSL_REDIRECT = False # Перенаправление на HTTPS
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG and SECURE_SSL_REDIRECT else 0 # Безопасность HSTS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG and SECURE_SSL_REDIRECT # Безопасность HSTS
+SECURE_HSTS_PRELOAD = not DEBUG and SECURE_SSL_REDIRECT # Безопасность HSTS
+SECURE_BROWSER_XSS_FILTER = True # Безопасность XSS
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https") # Безопасность прокси
+X_FRAME_OPTIONS = "DENY" # Безопасность XSS
 
 # ------------------------------------------------------------
 # Логирование
 # ------------------------------------------------------------
 LOGGING = {
+    # Версия конфигурации логирования
     "version": 1,
+    # Отключить существующие логгеры
     "disable_existing_loggers": False,
+    # Фильтры
     "filters": {
+        # Фильтр для пропуска ошибок "Broken pipe"
         "skip_broken_pipe": {
             "()": "django.utils.log.CallbackFilter",
             "callback": lambda record: "Broken pipe" not in record.getMessage(),

@@ -46,8 +46,20 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
     
     # Для интеграции с корзиной
     is_available_for_order = models.BooleanField(default=False, verbose_name="Доступно для заказа")
-    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name="Цена (Оформление)")
-
+    PRICE_TYPE_CHOICES = [
+        ('fixed', 'Фиксированная'),
+        ('range', 'От и До'),
+        ('contact', 'По договоренности'),
+    ]
+    price_type = models.CharField(
+        max_length=10,
+        choices=PRICE_TYPE_CHOICES,
+        default='fixed',
+        verbose_name="Тип ценообразования"
+    )
+    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name="Цена (Фикс)")
+    price_min = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name="Начальная цена (ОТ)")
+    price_max = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name="Конечная цена (ДО)")
 
     class Meta:
         verbose_name = "Портфолио"
@@ -61,10 +73,55 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
         """Возвращает URL детальной страницы работы"""
         return reverse("portfolio:detail", kwargs={"slug": self.slug})
 
+    @property
+    def can_be_ordered(self):
+        if not self.is_available_for_order:
+            return False
+        if self.price_type == 'fixed' and not self.price:
+            return False
+        return True
+
     def increment_views(self):
         """Увеличивает счетчик просмотров работы"""
         self.views += 1
         Portfolio.objects.filter(pk=self.pk).update(views=self.views)
+
+    def clean(self):
+        super().clean()
+        
+        if self.price_type != 'fixed':
+            self.price = None
+        if self.price_type != 'range':
+            self.price_min = None
+            self.price_max = None
+            
+        from django.core.exceptions import ValidationError
+        if self.price_type == 'fixed' and not self.price and self.is_available_for_order:
+            pass # allow None if not fixed or if zero
+            
+        elif self.price_type == 'range':
+            if not self.price_min or not self.price_max:
+                raise ValidationError('Для ценового диапазона нужно задать границы ОТ и ДО.')
+            if self.price_min >= self.price_max:
+                raise ValidationError({'price_max': 'Цена ДО должна быть строго больше цены ОТ.'})
+
+    def get_price_display(self):
+        """Возвращает строку с красиво отформатированной ценой на основе типа."""
+        if self.price_type == 'fixed' and self.price is not None:
+            if self.price == 0:
+                return "Бесплатно"
+            formatted = f"{self.price:,.0f}".replace(',', ' ')
+            return f"{formatted} ₽"
+        
+        elif self.price_type == 'range' and self.price_min and self.price_max:
+            min_fmt = f"{self.price_min:,.0f}".replace(',', ' ')
+            max_fmt = f"{self.price_max:,.0f}".replace(',', ' ')
+            return f"от {min_fmt} до {max_fmt} ₽"
+            
+        elif self.price_type == 'contact':
+            return "По договоренности"
+            
+        return "Уточняется после согласования"
 
 
 

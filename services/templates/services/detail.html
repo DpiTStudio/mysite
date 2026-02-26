@@ -86,7 +86,7 @@
                         </small>
                     </div>
                     
-                    {% if service.is_available_for_order %}
+                    {% if service.can_be_ordered %}
                     <form action="{% url 'services:order' service.slug %}" method="post">
                         {% csrf_token %}
                         {% for field in form %}

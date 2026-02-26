@@ -40,7 +40,7 @@
                     </div>
                     
                     <div class="d-flex flex-column gap-2">
-                        {% if service.is_available_for_order %}
+                        {% if service.can_be_ordered %}
                         <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="w-100" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-primary w-100 shine-effect">

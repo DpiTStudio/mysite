@@ -47,7 +47,10 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name=_("Заказ"))
     service = models.ForeignKey(Service, related_name='order_items', on_delete=models.PROTECT, verbose_name=_("Услуга"), null=True, blank=True)
     portfolio = models.ForeignKey('portfolio.Portfolio', related_name='order_items', on_delete=models.PROTECT, verbose_name=_("Работа (Портфолио)"), null=True, blank=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена (фикс)"))
+    price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена (фикс)"), null=True, blank=True)
+    price_type = models.CharField(max_length=10, default='fixed', verbose_name=_("Тип цены"))
+    price_min = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name=_("Начальная цена"))
+    price_max = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name=_("Конечная цена"))
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Количество"))
 
     class Meta:
@@ -58,4 +61,14 @@ class OrderItem(models.Model):
         return str(self.id)
 
     def get_cost(self):
-        return self.price * self.quantity
+        if self.price_type == 'fixed' and self.price is not None:
+            return self.price * self.quantity
+        return 0
+
+    def get_price_display(self):
+        if self.price_type == 'fixed' and self.price is not None:
+            return f"{self.price} ₽"
+        elif self.price_type == 'range' and self.price_min and self.price_max:
+            return f"от {self.price_min} до {self.price_max} ₽"
+        else:
+            return "По договоренности"

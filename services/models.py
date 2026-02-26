@@ -183,6 +183,14 @@ class Service(ActiveModel, SEOModel, TimestampModel):
     def __str__(self):
         return f"{self.title}"
 
+    @property
+    def can_be_ordered(self):
+        if not self.is_available_for_order:
+            return False
+        if self.price_type == 'fixed' and not self.price_fixed:
+            return False
+        return True
+
     def clean(self):
         """Инвариантная проверка модели перед записью в БД."""
         super().clean()

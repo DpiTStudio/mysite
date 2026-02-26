@@ -18,7 +18,7 @@ def cart_add(request, item_type, item_id):
     else:
         item = get_object_or_404(Portfolio, id=item_id)
         
-    if not getattr(item, 'is_available_for_order', True):
+    if not getattr(item, 'can_be_ordered', getattr(item, 'is_available_for_order', True)):
         messages.error(request, f'К сожалению, "{item.title}" временно недоступно для заказа.')
         return redirect(request.META.get('HTTP_REFERER', 'main:home'))
         
@@ -71,14 +71,20 @@ def order_create(request):
                     OrderItem.objects.create(
                         order=order,
                         service=item['item_obj'],
-                        price=item['price'],
+                        price=item.get('price'),
+                        price_type=item.get('price_type', 'fixed'),
+                        price_min=item.get('price_min'),
+                        price_max=item.get('price_max'),
                         quantity=item['quantity']
                     )
                 else:
                     OrderItem.objects.create(
                         order=order,
                         portfolio=item['item_obj'],
-                        price=item['price'],
+                        price=item.get('price'),
+                        price_type=item.get('price_type', 'fixed'),
+                        price_min=item.get('price_min'),
+                        price_max=item.get('price_max'),
                         quantity=item['quantity']
                     )
             # очистка корзины

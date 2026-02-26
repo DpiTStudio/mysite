@@ -50,9 +50,9 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ item.price }} ₽</td>
+                                    <td>{{ item.price_display }}</td>
                                     <td class="text-center">{{ item.quantity }}</td>
-                                    <td class="fw-bold">{{ item.total_price }} ₽</td>
+                                    <td class="fw-bold">{{ item.total_price_display }}</td>
                                     <td class="text-end">
                                         <form action="{% url 'cart:cart_remove' type obj.id %}" method="post" class="d-inline">
                                             {% csrf_token %}
@@ -67,9 +67,16 @@
                     </tbody>
                     <tfoot>
                         <tr class="fs-4">
-                            <td colspan="3" class="text-end border-0">Всего к оплате:</td>
+                            <td colspan="3" class="text-end border-0">Всего к оплате (фикс):</td>
                             <td colspan="2" class="text-gradient border-0 fw-bold">{{ cart.get_total_price }} ₽</td>
                         </tr>
+                        {% if cart.has_flexible_prices %}
+                        <tr>
+                            <td colspan="5" class="text-end border-0 text-muted small pb-3">
+                                * Окончательная цена по некоторым позициям будет указана после согласования.
+                            </td>
+                        </tr>
+                        {% endif %}
                     </tfoot>
                 </table>
             </div>

@@ -72,13 +72,18 @@
                             <h6 class="my-0">{{ item.item_obj.title }}</h6>
                             <small class="text-muted text-opacity-75">Кол-во: {{ item.quantity }}</small>
                         </div>
-                        <span class="text-muted">{{ item.total_price }} ₽</span>
+                        <span class="text-muted">{{ item.total_price_display }}</span>
                     </li>
                     {% endfor %}
                     <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-light py-3 px-0 fs-5 mt-2">
-                        <span>Итого (RUR)</span>
+                        <span>Итого (RUR, фикс)</span>
                         <strong class="text-gradient fw-bold">{{ cart.get_total_price }} ₽</strong>
                     </li>
+                    {% if cart.has_flexible_prices %}
+                    <li class="list-group-item bg-transparent text-muted small px-0 border-0 pt-0">
+                        * Окончательная цена будет указана после согласования.
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

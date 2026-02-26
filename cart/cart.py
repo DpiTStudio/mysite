@@ -23,16 +23,18 @@ class Cart:
         cart_key = f"{item_type}_{item_id}"
         
         if cart_key not in self.cart:
-            if item_type == 'service':
-                price = str(item.price_fixed or 0)
-            else:
-                price = str(item.price or 0)
+            price_val = getattr(item, 'price_fixed', getattr(item, 'price', 0))
+            if price_val is None:
+                price_val = 0
                 
             self.cart[cart_key] = {
                 'item_type': item_type,
                 'item_id': item_id,
                 'quantity': 0,
-                'price': price
+                'price': str(price_val),
+                'price_type': getattr(item, 'price_type', 'fixed'),
+                'price_min': str(getattr(item, 'price_min', 0) or 0),
+                'price_max': str(getattr(item, 'price_max', 0) or 0),
             }
             
         if override_quantity:
@@ -83,8 +85,25 @@ class Cart:
             elif item_type == 'portfolio':
                 item['item_obj'] = portfolio_dict.get(item_id)
                 
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
+            item['price'] = Decimal(item.get('price', 0))
+            item['price_min'] = Decimal(item.get('price_min', 0))
+            item['price_max'] = Decimal(item.get('price_max', 0))
+            item['price_type'] = item.get('price_type', 'fixed')
+            
+            if item['price_type'] == 'fixed':
+                item['total_price'] = item['price'] * item['quantity']
+                item['price_display'] = f"{item['price']} ₽"
+                item['total_price_display'] = f"{item['total_price']} ₽"
+            elif item['price_type'] == 'range':
+                item['total_price'] = 0
+                item['price_display'] = f"от {item['price_min']} до {item['price_max']} ₽"
+                item['total_price_display'] = f"от {item['price_min'] * item['quantity']} до {item['price_max'] * item['quantity']} ₽"
+            else:
+                item['total_price'] = 0
+                item['price_display'] = "По договоренности"
+                item['total_price_display'] = "По договоренности"
+            
+            item['has_flexible_price'] = item['price_type'] != 'fixed'
             
             # Пропускаем, если объект был удален из БД
             if item.get('item_obj'):
@@ -97,7 +116,10 @@ class Cart:
         return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        return sum(Decimal(item.get('price', 0)) * item['quantity'] for item in self.cart.values() if item.get('price_type', 'fixed') == 'fixed')
+
+    def has_flexible_prices(self):
+        return any(item.get('price_type', 'fixed') != 'fixed' for item in self.cart.values())
 
     def clear(self):
         # удаление корзины из сессии
