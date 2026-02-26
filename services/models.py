@@ -10,7 +10,7 @@ from main.models import ActiveModel, SEOModel, TimestampModel
 from accounts.models import User
 
 # Регулярное выражение для контактных телефонов вынесено на уровень модуля
-PHONE_PATTERN = re.compile(r'^\+?[1-9][\d\-\(\)\.]{9,15}$')
+PHONE_PATTERN = re.compile(r'^\+?[1-9][\d\-\(\)\.\s]{9,20}$')
 
 class Technology(models.Model):
     """Модель для хранения неограниченного стека технологий (веб-разработка, графика и т.д.)."""
