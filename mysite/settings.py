@@ -5,41 +5,30 @@
 """
 
 # ------------------------------------------------------------
-# Библиотеки и переменные окружения
+# Библиотеки
 # ------------------------------------------------------------
 import os
 from pathlib import Path
-import environ
 import importlib.util
 
-# Инициализация django-environ
-env = environ.Env(
-    DEBUG=(bool, True)  # По умолчанию DEBUG выключен
-)
 # Путь к корню проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
-# Загрузка .env файла
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # ------------------------------------------------------------
 # Безопасность
 # ------------------------------------------------------------
-# Секретный ключ – храните в .env, а не в репозитории
-# , default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m'
-SECRET_KEY = env('SECRET_KEY', default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m')
+# Секретный ключ
+SECRET_KEY = 'django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m'
 # Режим отладки – НЕ включать в продакшн!
-DEBUG = env('DEBUG', default=False)
+DEBUG = True
 # Доступные хосты по умолчанию порт 4234
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
+ALLOWED_HOSTS = [
     '*',
     '127.0.0.1:4234',
     'localhost:4234',
     'dpit-cms.ru:4234',
     'www.dpit-cms.ru:4234',
-    ])
-# Добавление IP‑адресов из переменных окружения (если заданы)
-if env('INTERNAL_IPS', default=None):
-    ALLOWED_HOSTS.extend(env.list('INTERNAL_IPS'))
+]
 
 # ------------------------------------------------------------
 # Приложения (INSTALLED_APPS)
@@ -123,9 +112,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-# При наличии DATABASE_URL в .env переопределяем настройки
-if env('DATABASE_URL', default=None):
-    DATABASES['default'] = env.db('DATABASE_URL')
+
 
 # ------------------------------------------------------------
 # Валидация паролей
@@ -319,12 +306,12 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 CSRF_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', default=not DEBUG)
-SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=not DEBUG)
-SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False)
-SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', default=31536000 if not DEBUG and SECURE_SSL_REDIRECT else 0)
-SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=not DEBUG and SECURE_SSL_REDIRECT)
-SECURE_HSTS_PRELOAD = env.bool('SECURE_HSTS_PRELOAD', default=not DEBUG and SECURE_SSL_REDIRECT)
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = False
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG and SECURE_SSL_REDIRECT else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG and SECURE_SSL_REDIRECT
+SECURE_HSTS_PRELOAD = not DEBUG and SECURE_SSL_REDIRECT
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 X_FRAME_OPTIONS = "DENY"
@@ -370,7 +357,11 @@ LOGGING = {
 # ------------------------------------------------------------
 # Кеширование
 # ------------------------------------------------------------
-CACHES = {"default": env.cache('REDIS_URL', default='locmemcache://')}
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
 
 # ------------------------------------------------------------
 # Создание директории для логов (если её нет)
@@ -386,8 +377,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.timeweb.ru"
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="admin@dpit-cms.ru")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="V2Jy*qKeb/j?L6")
+EMAIL_HOST_USER = "admin@dpit-cms.ru"
+EMAIL_HOST_PASSWORD = "V2Jy*qKeb/j?L6"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
@@ -402,7 +393,7 @@ IMAP_PASSWORD = EMAIL_HOST_PASSWORD
 # ------------------------------------------------------------
 # Celery
 # ------------------------------------------------------------
-CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/2")
+CELERY_BROKER_URL = "redis://localhost:6379/2"
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
