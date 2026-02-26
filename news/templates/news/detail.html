@@ -77,111 +77,112 @@
         <article class="news-content mb-3 glass-card p-3">
             {{ news.content|safe }}
 
-        <!-- Мета-информация и соцсети -->
-        <div class="news-meta-detail glass-card p-3 mb-3">
-            <div class="row align-items-center">
-                <div class="col-md-6 mb-3 mb-md-0">
-                    <h6 class="text-white-50 mb-2 text-uppercase small letter-spacing-1">Поделиться новостью</h6>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="https://vk.com/share.php?url={{ request.build_absolute_uri }}&title={{ news.title }}" 
-                           target="_blank" class="social-btn" title="VKontakte">
-                            <i class="bi bi-vk"></i>
+            <!-- Мета-информация и соцсети -->
+            <div class="p-3 mb-3">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <h6 class="text-white-50 mb-2 text-uppercase small letter-spacing-1">Поделиться новостью</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="https://vk.com/share.php?url={{ request.build_absolute_uri }}&title={{ news.title }}" 
+                            target="_blank" class="social-btn" title="VKontakte">
+                                <i class="bi bi-vk"></i>
+                            </a>
+                            <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ news.title }}" 
+                            target="_blank" class="social-btn" title="Telegram">
+                                <i class="bi bi-telegram"></i>
+                            </a>
+                            <a href="https://api.whatsapp.com/send?text={{ news.title }}%20{{ request.build_absolute_uri }}" 
+                            target="_blank" class="social-btn" title="WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="mailto:?subject={{ news.title }}&body={{ request.build_absolute_uri }}" 
+                            class="social-btn" title="Email">
+                                <i class="bi bi-envelope"></i>
+                            </a>
+                            <button class="social-btn" title="Копировать ссылку" onclick="navigator.clipboard.writeText(window.location.href).then(()=>this.innerHTML='<i class=\'bi bi-check2\'></i>')">
+                                <i class="bi bi-link-45deg"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="{% url 'news:list' %}" class="btn btn-outline-light btn-sm me-2">
+                            <i class="bi bi-arrow-left me-2"></i>Все новости
                         </a>
-                        <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ news.title }}" 
-                           target="_blank" class="social-btn" title="Telegram">
-                            <i class="bi bi-telegram"></i>
+                        <a href="{% url 'news:by_category' news.category.slug %}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-tag me-1"></i>{{ news.category.name }}
                         </a>
-                        <a href="https://api.whatsapp.com/send?text={{ news.title }}%20{{ request.build_absolute_uri }}" 
-                           target="_blank" class="social-btn" title="WhatsApp">
-                            <i class="bi bi-whatsapp"></i>
-                        </a>
-                        <a href="mailto:?subject={{ news.title }}&body={{ request.build_absolute_uri }}" 
-                           class="social-btn" title="Email">
-                            <i class="bi bi-envelope"></i>
-                        </a>
-                        <button class="social-btn" title="Копировать ссылку" onclick="navigator.clipboard.writeText(window.location.href).then(()=>this.innerHTML='<i class=\'bi bi-check2\'></i>')">
-                            <i class="bi bi-link-45deg"></i>
-                        </button>
                     </div>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="{% url 'news:list' %}" class="btn btn-outline-light btn-sm me-2">
-                        <i class="bi bi-arrow-left me-2"></i>Все новости
-                    </a>
-                    <a href="{% url 'news:by_category' news.category.slug %}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-tag me-1"></i>{{ news.category.name }}
-                    </a>
-                </div>
             </div>
-        </div>
-        <!-- События дня (если есть) -->
-        {% if events %}
-        <div class="events-timeline mb-3">
-            <div class="glass-card p-3 p-md-4">
-                <h3 class="h5 text-white mb-3">
-                    <i class="bi bi-clock-history me-2 text-primary"></i>
-                    Хронология событий за {{ news.news_date|date:"d.m.Y" }}
-                </h3>
-                <div class="timeline">
-                    {% for event in events %}
-                    <div class="timeline-item mb-3 pb-3 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="timeline-marker">
-                                <div class="d-flex align-items-center justify-content-center rounded-circle" 
-                                     style="width: 40px; height: 40px; background: var(--gradient-premium); flex-shrink: 0;">
-                                    <span class="text-white fw-bold small">{{ forloop.counter }}</span>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
-                                    <h5 class="h6 text-white mb-0">{{ event.title }}</h5>
-                                    <div class="d-flex gap-2">
-                                        <span class="badge bg-dark border border-secondary small">
-                                            {{ event.get_event_type_display }}
-                                        </span>
-                                        <span class="text-muted small">
-                                            <i class="bi bi-clock me-1"></i>{{ event.created_at|date:"H:i" }}
-                                        </span>
+
+            <!-- События дня (если есть) -->
+            {% if events %}
+            <div class="events-timeline mb-3">
+                <div class="glass-card p-3 p-md-4">
+                    <h3 class="h5 text-white mb-3">
+                        <i class="bi bi-clock-history me-2 text-primary"></i>
+                        Хронология событий за {{ news.news_date|date:"d.m.Y" }}
+                    </h3>
+                    <div class="timeline">
+                        {% for event in events %}
+                        <div class="timeline-item mb-3 pb-3 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="timeline-marker">
+                                    <div class="d-flex align-items-center justify-content-center rounded-circle" 
+                                        style="width: 40px; height: 40px; background: var(--gradient-premium); flex-shrink: 0;">
+                                        <span class="text-white fw-bold small">{{ forloop.counter }}</span>
                                     </div>
                                 </div>
-                                {% if event.image %}
-                                <div class="mb-2 mt-2">
-                                    <img src="{{ event.image.url }}" alt="{{ event.title }}" 
-                                         class="rounded" style="max-height: 150px; object-fit: cover;">
-                                </div>
-                                {% endif %}
-                                <div class="text-muted small event-description">
-                                    {{ event.description|safe }}
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                                        <h5 class="h6 text-white mb-0">{{ event.title }}</h5>
+                                        <div class="d-flex gap-2">
+                                            <span class="badge bg-dark border border-secondary small">
+                                                {{ event.get_event_type_display }}
+                                            </span>
+                                            <span class="text-muted small">
+                                                <i class="bi bi-clock me-1"></i>{{ event.created_at|date:"H:i" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {% if event.image %}
+                                    <div class="mb-2 mt-2">
+                                        <img src="{{ event.image.url }}" alt="{{ event.title }}" 
+                                            class="rounded" style="max-height: 150px; object-fit: cover;">
+                                    </div>
+                                    {% endif %}
+                                    <div class="text-muted small event-description">
+                                        {{ event.description|safe }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
             </div>
-        </div>
-        {% endif %}
-        
-        <!-- Связанные новости -->
-        {% if related_news %}
-        <div class="related-news mb-3 glass-card p-3">
-            <h4 class="h6 text-white mb-2">
-                <i class="bi bi-collection me-2 text-primary"></i>
-                Связанные новости
-            </h4>
-            <ul class="list-unstyled mb-0 ms-2">
-                {% for related in related_news %}
-                <li class="mb-2">
-                    <span class="text-muted small me-2">{{ related.news_date|date:"d.m.Y" }}</span>
-                    <span class="text-secondary me-2">&mdash;</span>
-                    <a href="{% url 'news:detail' related.slug %}" class="text-white hover-primary text-decoration-none">
-                        {{ related.title }}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
+            {% endif %}
+
+            <!-- Связанные новости -->
+            {% if related_news %}
+            <div class="related-news mb-3 glass-card p-3">
+                <h4 class="h6 text-white mb-2">
+                    <i class="bi bi-collection me-2 text-primary"></i>
+                    Связанные новости
+                </h4>
+                <ul class="list-unstyled mb-0 ms-2">
+                    {% for related in related_news %}
+                    <li class="mb-2">
+                        <span class="text-muted small me-2">{{ related.news_date|date:"d.m.Y" }}</span>
+                        <span class="text-secondary me-2">&mdash;</span>
+                        <a href="{% url 'news:detail' related.slug %}" class="text-white hover-primary text-decoration-none">
+                            {{ related.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         </article>
     </div>
 </div>
