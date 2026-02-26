@@ -1,0 +1,26 @@
+<!-- Статистика для персонала -->
+{% if stats %}
+<section class="home-section animate-scale">
+    <div class="glass-card-premium p-5 bg-primary text-white text-center">
+        <h3 class="h4 mb-5 fw-bold"><i class="bi bi-graph-up-arrow me-2"></i> Показатели системы</h3>
+        <div class="row g-4">
+            <div class="col-6 col-md-3">
+                <div class="display-6 fw-bold mb-1">{{ stats.news_count }}</div>
+                <div class="small text-uppercase opacity-75 letter-spacing-1">Новостей</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="display-6 fw-bold mb-1">{{ stats.portfolio_count }}</div>
+                <div class="small text-uppercase opacity-75 letter-spacing-1">Работ</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="display-6 fw-bold mb-1">{{ stats.total_views }}</div>
+                <div class="small text-uppercase opacity-75 letter-spacing-1">Просмотров</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="display-6 fw-bold mb-1">{{ stats.users_count }}</div>
+                <div class="small text-uppercase opacity-75 letter-spacing-1">Аккаунтов</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

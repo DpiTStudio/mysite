@@ -1,0 +1,10 @@
+<!-- Секция приветствия (если есть в настройках) -->
+{% if site_settings.content %}
+<section class="home-section animate-up animate-active">
+    <div class="glass-card-premium p-5 shadow-lg">
+        <div class="site_content">
+            {{ site_settings.content|safe }}
+        </div>
+    </div>
+</section>
+{% endif %}

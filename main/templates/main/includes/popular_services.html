@@ -1,0 +1,101 @@
+{% comment %}
+<!-- Популярные услуги -->
+{% if popular_services %}
+<section class="home-section">
+    <div class="section-title animate-up">
+        <h2 class="display-5 text-gradient">Наши Услуги</h2>
+        <p class="text-muted">Решения любой сложности для вашего бизнеса</p>
+    </div>
+    <div class="row g-4">
+        {% for service in popular_services %}
+        <div class="col-md-12 col-xl-3 animate-up delay-{{ forloop.counter }}00">
+            <div class="glass-card-premium p-4 service-card h-100">
+                <div class="feature-icon-box float-animation">
+                    {% if service.icon %}
+                        <img src="{{ service.icon.url }}" alt="{{ service.title }}" width="40">
+                    {% else %}
+                        <i class="bi bi-gear-wide-connected"></i>
+                    {% endif %}
+                </div>
+                <h4 class="h5">{{ service.title }}</h4>
+                <p class="small text-muted">{{ service.short_description|striptags|truncatewords:20 }}</p>
+                <div class="mt-auto">
+                    <span class="badge bg-primary mb-3">{{ service.get_price_display }}</span>
+                    <div class="d-flex gap-2">
+                         <a href="{% url 'services:list' %}" class="btn btn-sm btn-outline-primary w-100">Подробнее</a>
+                         <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="w-100" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
+                             {% csrf_token %}
+                             <button type="submit" class="btn btn-sm btn-success w-100">
+                                 <i class="bi bi-cart-plus"></i> Заказать
+                             </button>
+                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-5 animate-up">
+        <a href="{% url 'services:list' %}" class="btn btn-primary px-5">Показать все услуги <i class="bi bi-arrow-right"></i></a>
+    </div>
+</section>
+{% endif %}
+{% endcomment %}
+
+<!-- Популярные услуги -->
+{% if popular_services %}
+<section class="home-section">
+    <div class="section-title animate-up">
+        <h2 class="display-5 text-gradient">Наши Услуги</h2>
+        <p class="text-muted">Решения любой сложности для вашего бизнеса</p>
+    </div>
+    
+    <!-- Список услуг -->
+    <div class="services-list animate-up">
+        {% for service in popular_services %}
+        <div class="service-list-item glass-card-premium p-4 mb-3 animate-up delay-{{ forloop.counter }}00">
+            <div class="row align-items-center">
+                <div class="col-lg-1 col-md-2 text-center mb-3 mb-md-0">
+                    <div class="feature-icon-box float-animation">
+                        {% if service.icon %}
+                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" width="50">
+                        {% else %}
+                            <i class="bi bi-gear-wide-connected fs-1"></i>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+                    <h4 class="h5 mb-2">{{ service.title }}</h4>
+                    <span class="badge bg-primary">{{ service.get_price_display }}</span>
+                    <hr>
+                    <div class="">
+                        <div class="d-flex gap-2 justify-content-md-end">
+                            <a href="{% url 'services:list' %}" class="btn btn-outline-primary flex-fill flex-md-grow-0">
+                                <i class="bi bi-info-circle"></i> Подробнее
+                            </a>
+                            <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" 
+                                hx-target="#cart-offcanvas-body" 
+                                hx-swap="innerHTML" 
+                                class="flex-fill flex-md-grow-0"
+                                onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success w-200">
+                                    <i class="bi bi-cart-plus"></i> В корзину
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-4 mb-3 mb-md-0">
+                    <p class="text-muted mb-0">{{ service.short_description|striptags|truncatewords:30 }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="text-center mt-5 animate-up">
+        <a href="{% url 'services:list' %}" class="btn btn-primary px-5">Показать все услуги <i class="bi bi-arrow-right"></i></a>
+    </div>
+</section>
+{% endif %}

@@ -1,0 +1,35 @@
+<!-- Отзывы -->
+{% if recent_reviews %}
+<section class="home-section">
+    <div class="section-title animate-up">
+        <h2 class="display-5 text-gradient">Отзывы клиентов</h2>
+        <p class="text-muted">Что говорят наши клиенты о сотрудничестве</p>
+    </div>
+    <div class="row g-4">
+        {% for review in recent_reviews %}
+        <div class="col-md-4 animate-up delay-{{ forloop.counter }}00">
+            <div class="glass-card-premium p-4 review-card border-0 h-100">
+                <div class="mb-3">
+                    <i class="bi bi-quote fs-2 text-primary opacity-50"></i>
+                </div>
+                <p class="fst-italic opacity-75 mb-4">"{{ review.content|truncatewords:30 }}"</p>
+                <div class="d-flex align-items-center mt-auto">
+                    <div class="review-avatar me-3" style="width: 45px; height: 45px; background: var(--gradient-premium); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                        <i class="bi bi-person-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-white small fw-bold">{{ review.full_name }}</h6>
+                        <small class="text-muted">{{ review.created_at|date:"d.m.Y" }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-5 animate-up">
+        <a href="{% url 'reviews:list' %}" class="btn btn-outline-primary px-5">
+            <i class="bi bi-chat-left-quote me-2"></i>Все отзывы
+        </a>
+    </div>
+</section>
+{% endif %}
