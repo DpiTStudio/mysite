@@ -25,17 +25,19 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # Безопасность
 # ------------------------------------------------------------
 # Секретный ключ – храните в .env, а не в репозитории
-SECRET_KEY = env('SECRET_KEY', default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m')
+# , default='django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m'
+SECRET_KEY = env('SECRET_KEY')
 # Режим отладки – НЕ включать в продакшн!
-DEBUG = env('DEBUG')
-# Доступные хосты
+# DEBUG = env('DEBUG')
+DEBUG = True
+# Доступные хосты по умолчанию порт 4234
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
     '*',
     '127.0.0.1:4234',
     'localhost:4234',
     'dpit-cms.ru:4234',
     'www.dpit-cms.ru:4234',
-])
+    ])
 # Добавление IP‑адресов из переменных окружения (если заданы)
 if env('INTERNAL_IPS', default=None):
     ALLOWED_HOSTS.extend(env.list('INTERNAL_IPS'))
