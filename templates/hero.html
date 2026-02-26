@@ -1,7 +1,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/hero.css' %}">
-<div class="container-fluid hero-section">
-    <div class="col-12 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
+<div class="container-fluid px-0 hero-section">
+    <div class="col-12 px-0 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
         <div class="logo-inform-div">
             {% load breadcrumbs %}
             <nav aria-label="breadcrumb" class="mb-3 hero-breadcrumbs">

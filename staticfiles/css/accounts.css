@@ -35,3 +35,44 @@
 .profile-nav a i {
     font-size: 1.1rem;
 }
+
+/* Стили для капчи в формах входа и регистрации */
+.captcha-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Управление размерами картинки */
+.captcha-container img.captcha {
+    width: 200px;
+    height: auto;
+    border-radius: var(--radius-md, 8px);
+    border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.1));
+    cursor: pointer;
+}
+
+/* Управление полем ввода капчи */
+.captcha-container input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    /* Устанавливаем цвета в соответствии с пожеланиями (черный текст) */
+    color: #000;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.captcha-container input[type="text"]:focus {
+    color: #000;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}

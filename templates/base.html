@@ -108,8 +108,8 @@
             <p class="text-muted"></p>
         </div>
         {% endcomment %}
-        {% if request.path != '/' %}
-        <!-- Секция категорий (только не на главной) -->
+        {% if request.path == '/' %}
+        <!-- Секция категорий -->
         <div class="row pt-2 mb-4">
             <div class="col-12">
                 {% include 'category-bl.html' %}

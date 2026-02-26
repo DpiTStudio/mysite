@@ -383,7 +383,11 @@ a:hover {
 /* --- Главный экран (Hero Section) и Брендинг --- */
 .logo-container {
     background: var(--gradient-dark);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 450px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
