@@ -80,13 +80,13 @@
                                 onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-success w-200">
-                                    <i class="bi bi-cart-plus"></i> В корзину
+                                    <i class="bi bi-cart-plus"></i> Заказать
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-4 mb-3 mb-md-0">
+                <div class="col-lg-8 col-md-12 mb-3 mb-md-0">
                     <p class="text-muted mb-0">{{ service.short_description|striptags|truncatewords:30 }}</p>
                 </div>
             </div>
