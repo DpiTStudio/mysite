@@ -1,39 +1,39 @@
 <!-- Контакты -->
 <div class="col-lg-4 col-md-6 mb-4">
     <h5 class="text-primary mb-3 text-footer-title">Контакты</h5>
-    <ul class="list-unstyled footer-text-contacts text-footer">
+    <ul class="list-unstyled text-muted">
         {% if site_settings.site_address %}
-            <li class="mb-3 footer-text-contacts">
-                <i class="bi bi-geo-alt me-2"></i>
-                <span class="">{{ site_settings.site_address }}</span>
+            <li class="mb-3 d-flex align-items-start">
+                <i class="bi bi-geo-alt me-3 mt-1 text-primary"></i>
+                <span>{{ site_settings.site_address }}</span>
             </li>
         {% endif %}
         
         {% if site_settings.site_phone_1 %}
-            <li class="mb-3 footer-text-contacts text-footer">
-                <i class="bi bi-phone me-2"></i>
-                <a href="tel:{{ site_settings.site_phone_1 }}" class="text-decoration-none">{{ site_settings.site_phone_1 }}</a>
+            <li class="mb-3 d-flex align-items-center">
+                <i class="bi bi-phone me-3 text-primary"></i>
+                <a href="tel:{{ site_settings.site_phone_1 }}" class="text-decoration-none footer-link">{{ site_settings.site_phone_1 }}</a>
             </li>
         {% endif %}
         
         {% if site_settings.site_phone_2 %}
-            <li class="mb-3 footer-text-contacts text-footer">
-                <i class="bi bi-phone me-2"></i>
-                <a href="tel:{{ site_settings.site_phone_2 }}" class="text-decoration-none">{{ site_settings.site_phone_2 }}</a>
+            <li class="mb-3 d-flex align-items-center">
+                <i class="bi bi-phone me-3 text-primary"></i>
+                <a href="tel:{{ site_settings.site_phone_2 }}" class="text-decoration-none footer-link">{{ site_settings.site_phone_2 }}</a>
             </li>
         {% endif %}
         
         {% if site_settings.site_email %}
-            <li class="mb-3 footer-text-contacts text-footer">
-                <i class="bi bi-envelope me-2"></i>
-                <a href="mailto:{{ site_settings.site_email|safe }}" class="text-decoration-none">{{ site_settings.site_email|safe }}</a>
+            <li class="mb-3 d-flex align-items-center">
+                <i class="bi bi-envelope me-3 text-primary"></i>
+                <a href="mailto:{{ site_settings.site_email|safe }}" class="text-decoration-none footer-link">{{ site_settings.site_email|safe }}</a>
             </li>
         {% endif %}
         
         {% if site_settings.site_work_time %}
-            <li class="mb-3 footer-text-contacts text-footer">
-                <i class="bi bi-clock me-2"></i>
-                <span class="footer-text-contacts">{{ site_settings.site_work_time }}</span>
+            <li class="mb-3 d-flex align-items-start">
+                <i class="bi bi-clock me-3 mt-1 text-primary"></i>
+                <span>{{ site_settings.site_work_time }}</span>
             </li>
         {% endif %}
     </ul>

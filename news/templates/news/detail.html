@@ -37,21 +37,21 @@
     <div class="col-lg-12">
         <!-- Изображение новости -->
         {% if news.image %}
-        <div class="mb-5 position-relative">
-            <img src="{{ news.image.url }}" class="news-image-detail w-100" alt="{{ news.title }}" style="max-height: 500px; object-fit: cover; border-radius: var(--radius-lg);">
-            <div class="position-absolute bottom-0 start-0 p-4 w-100" style="background: linear-gradient(transparent, rgba(0,0,0,0.8)); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
-                <h1 class="text-white fw-bold mb-0">{{ news.title }}</h1>
+        <div class="mb-3 position-relative">
+            <img src="{{ news.image.url }}" class="news-image-detail w-100" alt="{{ news.title }}" style="max-height: 350px; object-fit: cover; border-radius: var(--radius-lg);">
+            <div class="position-absolute bottom-0 start-0 p-3 w-100" style="background: linear-gradient(transparent, rgba(0,0,0,0.8)); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <h1 class="text-white fw-bold mb-0 h3">{{ news.title }}</h1>
             </div>
         </div>
         {% else %}
-        <div class="mb-5">
-            <h1 class="display-4 fw-bold text-white mb-4">{{ news.title }}</h1>
+        <div class="mb-3">
+            <h1 class="h3 fw-bold text-white mb-3">{{ news.title }}</h1>
         </div>
         {% endif %}
 
         <!-- Мета-информация -->
-        <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-            <a href="{% url 'news:by_category' news.category.slug %}" class="badge bg-primary px-3 py-2 text-decoration-none">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <a href="{% url 'news:by_category' news.category.slug %}" class="badge bg-primary px-2 py-1 text-decoration-none">
                 <i class="bi bi-tag me-1"></i>{{ news.category.name }}
             </a>
             <span class="text-muted small">
@@ -64,7 +64,7 @@
                 <i class="bi bi-eye me-1"></i>{{ news.views }} просмотров
             </span>
             {% if events_count > 0 %}
-            <span class="badge bg-success bg-opacity-25 text-success px-3 py-2">
+            <span class="badge bg-success bg-opacity-25 text-success px-2 py-1">
                 <i class="bi bi-calendar-check me-1"></i>{{ events_count }} событий за день
             </span>
             {% endif %}
@@ -74,93 +74,14 @@
         </div>
 
         <!-- Содержание новости -->
-        <article class="news-content mb-5 glass-card p-4 p-md-5">
+        <article class="news-content mb-3 glass-card p-3">
             {{ news.content|safe }}
-        </article>
-
-        <!-- События дня (если есть) -->
-        {% if events %}
-        <div class="events-timeline mb-5">
-            <div class="glass-card p-4 p-md-5">
-                <h3 class="h4 text-white mb-4">
-                    <i class="bi bi-clock-history me-2 text-primary"></i>
-                    Хронология событий за {{ news.news_date|date:"d.m.Y" }}
-                </h3>
-                <div class="timeline">
-                    {% for event in events %}
-                    <div class="timeline-item mb-4 pb-4 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="timeline-marker">
-                                <div class="d-flex align-items-center justify-content-center rounded-circle" 
-                                     style="width: 40px; height: 40px; background: var(--gradient-premium); flex-shrink: 0;">
-                                    <span class="text-white fw-bold small">{{ forloop.counter }}</span>
-                                </div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
-                                    <h5 class="h6 text-white mb-0">{{ event.title }}</h5>
-                                    <div class="d-flex gap-2">
-                                        <span class="badge bg-dark border border-secondary small">
-                                            {{ event.get_event_type_display }}
-                                        </span>
-                                        <span class="text-muted small">
-                                            <i class="bi bi-clock me-1"></i>{{ event.created_at|date:"H:i" }}
-                                        </span>
-                                    </div>
-                                </div>
-                                {% if event.image %}
-                                <div class="mb-3 mt-2">
-                                    <img src="{{ event.image.url }}" alt="{{ event.title }}" 
-                                         class="rounded" style="max-height: 200px; object-fit: cover;">
-                                </div>
-                                {% endif %}
-                                <div class="text-muted small event-description">
-                                    {{ event.description|safe }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Связанные новости -->
-        {% if related_news %}
-        <div class="related-news mb-5">
-            <h3 class="h4 text-white mb-4">
-                <i class="bi bi-collection me-2 text-primary"></i>
-                Связанные новости
-            </h3>
-            <div class="row g-3">
-                {% for related in related_news %}
-                <div class="col-md-6 col-lg-3">
-                    <div class="glass-card-premium p-3 h-100">
-                        {% if related.image %}
-                        <div class="overflow-hidden rounded mb-3" style="height: 120px;">
-                            <img src="{{ related.image.url }}" class="w-100 h-100" alt="{{ related.title }}" style="object-fit: cover;">
-                        </div>
-                        {% endif %}
-                        <span class="badge bg-primary bg-opacity-25 text-primary small mb-2">{{ related.category.name }}</span>
-                        <h6 class="small mb-2">
-                            <a href="{% url 'news:detail' related.slug %}" class="text-white hover-primary">{{ related.title|truncatewords:10 }}</a>
-                        </h6>
-                        <small class="text-muted">
-                            <i class="bi bi-calendar3 me-1"></i>{{ related.news_date|date:"d.m.Y" }}
-                        </small>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
 
         <!-- Мета-информация и соцсети -->
-        <div class="news-meta-detail glass-card p-4 mb-5">
+        <div class="news-meta-detail glass-card p-3 mb-3">
             <div class="row align-items-center">
-                <div class="col-md-6 mb-4 mb-md-0">
-                    <h6 class="text-white-50 mb-3 text-uppercase small letter-spacing-1">Поделиться новостью</h6>
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h6 class="text-white-50 mb-2 text-uppercase small letter-spacing-1">Поделиться новостью</h6>
                     <div class="d-flex flex-wrap gap-2">
                         <a href="https://vk.com/share.php?url={{ request.build_absolute_uri }}&title={{ news.title }}" 
                            target="_blank" class="social-btn" title="VKontakte">
@@ -193,6 +114,75 @@
                 </div>
             </div>
         </div>
+        <!-- События дня (если есть) -->
+        {% if events %}
+        <div class="events-timeline mb-3">
+            <div class="glass-card p-3 p-md-4">
+                <h3 class="h5 text-white mb-3">
+                    <i class="bi bi-clock-history me-2 text-primary"></i>
+                    Хронология событий за {{ news.news_date|date:"d.m.Y" }}
+                </h3>
+                <div class="timeline">
+                    {% for event in events %}
+                    <div class="timeline-item mb-3 pb-3 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="timeline-marker">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle" 
+                                     style="width: 40px; height: 40px; background: var(--gradient-premium); flex-shrink: 0;">
+                                    <span class="text-white fw-bold small">{{ forloop.counter }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                                    <h5 class="h6 text-white mb-0">{{ event.title }}</h5>
+                                    <div class="d-flex gap-2">
+                                        <span class="badge bg-dark border border-secondary small">
+                                            {{ event.get_event_type_display }}
+                                        </span>
+                                        <span class="text-muted small">
+                                            <i class="bi bi-clock me-1"></i>{{ event.created_at|date:"H:i" }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% if event.image %}
+                                <div class="mb-2 mt-2">
+                                    <img src="{{ event.image.url }}" alt="{{ event.title }}" 
+                                         class="rounded" style="max-height: 150px; object-fit: cover;">
+                                </div>
+                                {% endif %}
+                                <div class="text-muted small event-description">
+                                    {{ event.description|safe }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Связанные новости -->
+        {% if related_news %}
+        <div class="related-news mb-3 glass-card p-3">
+            <h4 class="h6 text-white mb-2">
+                <i class="bi bi-collection me-2 text-primary"></i>
+                Связанные новости
+            </h4>
+            <ul class="list-unstyled mb-0 ms-2">
+                {% for related in related_news %}
+                <li class="mb-2">
+                    <span class="text-muted small me-2">{{ related.news_date|date:"d.m.Y" }}</span>
+                    <span class="text-secondary me-2">&mdash;</span>
+                    <a href="{% url 'news:detail' related.slug %}" class="text-white hover-primary text-decoration-none">
+                        {{ related.title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        </article>
     </div>
 </div>
 {% endblock %}

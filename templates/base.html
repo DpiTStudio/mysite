@@ -79,7 +79,7 @@
     </script>
     {% endblock %}
 </head>
-<body class="{{ current_season }}">
+<body class="{{ current_season }} d-flex flex-column min-vh-100">
     <!-- Preloader -->
     <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-dark-bg); z-index: 99999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease;">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
@@ -101,59 +101,57 @@
     </section>
 
     <!-- Содержимое -->
-    <main class="container-fluid py-0 px-lg-5">
-        <div class="container-fluid">
-            {% comment %}
-            <div class="section-title animate-up">
-                <h2 class="display-5 text-gradient"></h2>
-                <p class="text-muted"></p>
+    <main class="container-fluid py-0 px-lg-5 flex-grow-1">
+        {% comment %}
+        <div class="section-title animate-up">
+            <h2 class="display-5 text-gradient"></h2>
+            <p class="text-muted"></p>
+        </div>
+        {% endcomment %}
+        {% if request.path != '/' %}
+        <!-- Секция категорий (только не на главной) -->
+        <div class="row pt-2 mb-4">
+            <div class="col-12">
+                {% include 'category-bl.html' %}
             </div>
-            {% endcomment %}
-            {% if request.path != '/' %}
-            <!-- Секция категорий (только не на главной) -->
-            <div class="row pt-2 mb-4">
-                <div class="col-12">
-                    {% include 'category-bl.html' %}
-                </div>
-            </div>
-            {% endif %}
-            
-            <div class="row g-4">
-                <!-- Основной контент -->
-                <div class="col-12 col-lg-9">
-                    <div class="content-wrapper animate-up animate-active">
-                        {% if '/news/' in request.path %}
-                        <div class="section-title-wrapper mb-4 animate-fade">
-                            <h1 class="h2 text-white fw-bold border-start border-4 border-primary ps-3">
-                                Новости и Статьи
-                            </h1>
-                        </div>
-                        {% endif %}
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                        
-                        <div class="main-content-area">
-                            {% block content %}
-                            {% endblock %}
-                        </div>
+        </div>
+        {% endif %}
+        
+        <div class="row g-4">
+            <!-- Основной контент -->
+            <div class="col-12 col-lg-9">
+                <div class="content-wrapper animate-up animate-active">
+                    {% if '/news/' in request.path %}
+                    <div class="section-title-wrapper mb-4 animate-fade">
+                        <h1 class="h2 text-white fw-bold border-start border-4 border-primary ps-3">
+                            Новости и Статьи
+                        </h1>
+                    </div>
+                    {% endif %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <div class="main-content-area">
+                        {% block content %}
+                        {% endblock %}
                     </div>
                 </div>
+            </div>
 
-                <!-- Боковая панель style="top: 130px; z-index: 10;" sticky-lg-top-->
-                <aside class="col-12 col-lg-3">
-                    <div class="sidebar-wrapper">
-                        {% include 'includes/bl_news_sbar.html' %}
-                        {% include 'includes/bl_portfolio_sbar.html' %}
-                        {% include 'includes/bl_reviews_sbar.html' %}
-                    </div>
-                </aside>
-            </div>
+            <!-- Боковая панель style="top: 130px; z-index: 10;" sticky-lg-top-->
+            <aside class="col-12 col-lg-3">
+                <div class="sidebar-wrapper">
+                    {% include 'includes/bl_news_sbar.html' %}
+                    {% include 'includes/bl_portfolio_sbar.html' %}
+                    {% include 'includes/bl_reviews_sbar.html' %}
+                </div>
+            </aside>
         </div>
     </main>
 
