@@ -90,29 +90,7 @@
     </div>
 </div>
 
-<style>
-    .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    
-    .text-gradient {
-        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    .shadow-glow {
-        box-shadow: 0 0 15px rgba(58, 123, 213, 0.4);
-        transition: all 0.3s ease;
-    }
-    
-    .shadow-glow:hover {
-        box-shadow: 0 0 25px rgba(58, 123, 213, 0.6);
-        transform: translateY(-2px);
-    }
-</style>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
 {% endblock %}

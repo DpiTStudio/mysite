@@ -1,31 +1,55 @@
+<!-- Обертка для всех карточек: строка (row) с отступами между элементами (g-4) и малым отступом сверху (mt-2) -->
 <div class="row g-4 mt-2">
-    <div class="col-md-4 text-center logo-container-hero">
-        <div class="card glass-card">
-            <div class="card-body">
+    <!-- Первая колонка (составляет 1/3 ширины на средних и больших экранах, по центру текста). Ошибочный класс фона убран для корректного отображения карточек -->
+    <div class="col-12 col-md-4 text-center">
+        <!-- Карточка в стиле "глассморфизм" (эффект стекла), чтобы красиво смотреться поверх любых фонов сайта -->
+        <div class="card glass-card h-100">
+            <!-- Тело карточки, где располагается весь контент -->
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <!-- Иконка из Bootstrap Icons (Газета) синего (акцентного) цвета, большого размера, с отступом снизу -->
                 <i class="bi bi-newspaper fs-2 text-primary mb-3"></i>
-                <h5 class="card-title">Новости</h5>
-                <p class="card-text small text-muted">Последние новости и события нашей компании</p>
-                <a href="{% url 'news:list' %}" class="btn btn-primary btn-sm">Читать новости</a>
+                <!-- Заголовок карточки новостей -->
+                <h5 class="card-title text-white">Новости</h5>
+                <!-- Короткое описание новостного раздела, цвет приглушенный (muted) для визуальной иерархии -->
+                <p class="card-text small text-muted flex-grow-1">Последние новости и события нашей компании</p>
+                <!-- Кнопка-ссылка для перехода к списку новостей -->
+                <a href="{% url 'news:list' %}" class="btn btn-primary btn-sm w-100 mt-2">Читать новости</a>
             </div>
         </div>
     </div>
-    <div class="col-md-4 text-center logo-container-hero">
-        <div class="card glass-card">
-            <div class="card-body">
+    
+    <!-- Вторая колонка для раздела "Портфолио" (поведение идентично первой) -->
+    <div class="col-12 col-md-4 text-center">
+        <!-- Адаптивная карточка (эффект стекла, растянута на 100% высоты для выравнивания с соседями) -->
+        <div class="card glass-card h-100">
+            <!-- Внутренний контейнер -->
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <!-- Иконка-чемодан (Портфолио) -->
                 <i class="bi bi-briefcase fs-2 text-primary mb-3"></i>
-                <h5 class="card-title">Портфолио</h5>
-                <p class="card-text small text-muted">Наши лучшие работы и успешно завершенные проекты</p>
-                <a href="{% url 'portfolio:list' %}" class="btn btn-primary btn-sm">Смотреть работы</a>
+                <!-- Заголовок блока Портфолио -->
+                <h5 class="card-title text-white">Портфолио</h5>
+                <!-- Описание для раздела портфолио, занимает оставшееся свободное место (flex-grow-1) -->
+                <p class="card-text small text-muted flex-grow-1">Наши лучшие работы и успешно завершенные проекты</p>
+                <!-- Кнопка для перехода к просмотру работ -->
+                <a href="{% url 'portfolio:list' %}" class="btn btn-primary btn-sm w-100 mt-2">Смотреть работы</a>
             </div>
         </div>
     </div>
-    <div class="col-md-4 text-center logo-container-hero">
-        <div class="card glass-card">
-            <div class="card-body">
+    
+    <!-- Третья колонка для раздела "Отзывы" -->
+    <div class="col-12 col-md-4 text-center">
+        <!-- Стеклянная карточка Отзывов -->
+        <div class="card glass-card h-100">
+            <!-- Тело карточки -->
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <!-- Иконка сообщения/отзыва -->
                 <i class="bi bi-chat-left-quote fs-2 text-primary mb-3"></i>
-                <h5 class="card-title">Отзывы</h5>
-                <p class="card-text small text-muted">Честные отзывы наших клиентов о сотрудничестве</p>
-                <a href="{% url 'reviews:list' %}" class="btn btn-primary btn-sm">Читать отзывы</a>
+                <!-- Заголовок блока Отзывов -->
+                <h5 class="card-title text-white">Отзывы</h5>
+                <!-- Вспомогательный текст отзывов -->
+                <p class="card-text small text-muted flex-grow-1">Честные отзывы наших клиентов о сотрудничестве</p>
+                <!-- Кнопка перехода к отзывам (растянута на всю ширину внутри карточки для мобильных) -->
+                <a href="{% url 'reviews:list' %}" class="btn btn-primary btn-sm w-100 mt-2">Читать отзывы</a>
             </div>
         </div>
     </div>

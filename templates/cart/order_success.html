@@ -41,37 +41,7 @@
     </div>
 </div>
 
-<style>
-    .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    
-    .text-gradient {
-        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    .text-glow {
-        text-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
-    }
-    
-    .shadow-glow {
-        box-shadow: 0 0 15px rgba(58, 123, 213, 0.4);
-    }
-    
-    .pulse-animation {
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
-</style>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
 {% endblock %}

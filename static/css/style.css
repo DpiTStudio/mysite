@@ -55,13 +55,18 @@ p {
     color: var(--color-text-muted);
 }
 
+/* Ссылки по умолчанию (Links default styles) */
 a {
+    /* Цвет ссылок используется из переменной (обычно синий/акцентный цвет) */
     color: var(--color-primary);
+    /* Убираем подчеркивание для эстетики */
     text-decoration: none;
+    /* Плавный переход для всех изменений состояния (наведение и т.д.) */
     transition: var(--transition-fast);
 }
 
 a:hover {
+    /* Цвет ссылки при наведении меняется на вторичный цвет */
     color: var(--color-secondary);
 }
 
@@ -264,7 +269,7 @@ a:hover {
 }
 
 .nav-link {
-    color: var(--color-text-muted) !important;
+    color: #fff !important;
     font-weight: 500;
     font-size: 0.95rem;
     padding: 0.5rem 1.25rem !important;
@@ -274,7 +279,7 @@ a:hover {
 }
 
 .nav-link:hover {
-    color: #fff !important;
+    color: var(--color-primary) !important;
     background: var(--color-glass);
 }
 
@@ -310,15 +315,7 @@ a:hover {
     gap: 0.75rem;
 }
 
-/* Специфические стили для меню услуг */
-#servicesDropdown,
-#servicesDropdown + .dropdown-menu .dropdown-item {
-    color: #000 !important;
-}
-#servicesDropdown + .dropdown-menu .dropdown-item:hover {
-    color: #000 !important;
-    background: var(--color-glass-hover);
-}
+/* Убрали специфические стили для услуг, чтобы они подчинялись общим правилам и отличались от главного меню */
 
 .dropdown-item:hover {
     background: var(--color-glass-hover);
@@ -380,21 +377,25 @@ a:hover {
     padding: 0.5rem 1rem;
 }
 
-/* --- Главный экран (Hero Section) и Брендинг --- */
+/* --- Главный контейнер для лого-текста (Внешний блок) --- */
 .logo-container {
     background: var(--gradient-dark);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    /* Убрана жесткая высота 100%, используем min-height + flex-column, 
+       чтобы текстовый блок (logo-inform-div) мог растягивать обложку и не налезал на карточки категорий */
     min-height: 450px;
-    height: 100%;
+    height: auto;
     display: flex;
+    flex-direction: column;         /* Элементы выстраиваются сверху вниз (для предотвращения налезния текста на низ) */
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;    /* Блоки занимают место сверху, карточка растягивает низ */
     position: relative;
     overflow: hidden;
     margin-bottom: 3rem;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    padding-top: 4rem;              /* Добавляем верхний отступ (ранее его создавал top: 10%) */
 }
 
 .logo-container::after {
@@ -405,7 +406,11 @@ a:hover {
     background: radial-gradient(circle at center, rgba(58, 123, 213, 0.1) 0%, transparent 70%);
 }
 
+/* Информационный стеклянный блок на баннере */
 .logo-inform-div {
+    /* position: absolute; - удалено, так как эта строка ломала верстку при большом количестве текста
+       Блок был отвязан от сетки, и при наполнении наезжал на карточки категорий снизу */
+    position: relative;             /* Возвращаем в нормальный поток, чтобы текст расталкивал остальные элементы */
     background: var(--color-glass);
     color: #e2e8f0;
     backdrop-filter: blur(20px);
@@ -415,6 +420,9 @@ a:hover {
     max-width: 95%;
     width: 100% !important;
     z-index: 1;
+    /* margin-bottom: auto - расталкивает карточки в самый низ flex контейнера, если там есть свободное место */
+    margin-bottom: auto;
+    padding: 2rem;                  /* Отступы для удобочитаемости текста внутри */
     animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -461,23 +469,35 @@ a:hover {
     transform: scale(1.05);
 }
 
-/* --- Кнопки --- */
+/* --- Кнопки (Buttons) --- */
 .btn {
+    /* Скругление краев кнопок */
     border-radius: var(--radius-md);
+    /* Внутренние отступы для правильной формы кнопки */
     padding: 0.75rem 1.5rem;
+    /* Полужирный шрифт для лучшей читаемости */
     font-weight: 600;
+    /* Интерактивный плавный переход */
     transition: var(--transition-normal);
+    /* Прозрачная рамка по умолчанию, чтобы размеры не прыгали при наведении */
     border: 1px solid transparent;
+    /* Flexbox для выравнивания иконки и текста внутри кнопки */
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    /* Расстояние между иконкой и текстом (если они есть) */
     gap: 0.5rem;
 }
 
+/* Основная акцентная кнопка (Primary Button) */
 .btn-primary {
+    /* Градиентный фон для придания премиального вида */
     background: var(--gradient-premium);
+    /* Убираем стандартные рамки браузера */
     border: none;
+    /* Цвет текста всегда белый на цветном фоне для контраста */
     color: #fff;
+    /* Базовая легкая тень для объема */
     box-shadow: var(--shadow-sm);
 }
 
@@ -642,16 +662,25 @@ a:hover {
     font-size: 0.7rem;
 }
 
+/* --- Основная обертка для баннера-героя (Hero wrapper) --- */
 .bl-logo {
     width: 100%;
-    height: 450px;
+    /* Заменяем жесткую высоту (height) на минимальную (min-height), 
+       чтобы главный контент не наезжал на баннер, если внутри баннера много текста или карточек */
+    min-height: 450px;
+    height: auto;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
+
+/* Секция самого героя внутри обертки */
 .hero-section {
     width: 100%;
-    height: 700px;
+    /* Заменяем жестко заданные 700px на min-height для правильного расчета высоты браузером (чтобы избежать залипаний) */
+    min-height: 700px;
+    height: auto;
+    /* Отступ до основного (нижнего) контента страницы */
     margin-bottom: 3rem;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
@@ -769,7 +798,8 @@ a:hover {
 @media (max-width: 768px) {
     body { padding-top: 100px; }
     .navbar { padding: 0.8rem 0; }
-    .logo-inform-div { padding: 2rem; margin: 1rem; }
+    /* Сохраняем margin-bottom: auto для правильного расталкивания блоков внутри hero */
+    .logo-inform-div { padding: 1.5rem; margin: 1rem 1rem auto 1rem; }
     .card-img-top { height: 180px; }
 }
 
@@ -932,3 +962,69 @@ form input:not(.bg-transparent):not(.search-input-huge)::placeholder,
 form textarea:not(.bg-transparent)::placeholder {
     color: #64748b !important;
 }
+/* Стили загрузочного экрана (Preloader) */
+.page-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-dark-bg);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* Спиннер предзагрузчика */
+.preloader-spinner {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Полоса прогресса прокрутки (Scroll Progress Bar) */
+.scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--gradient-premium);
+    z-index: 100000;
+    transition: width 0.1s ease;
+}
+
+/* Стили загрузочного экрана (Preloader) */
+.page-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-dark-bg);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* Спиннер предзагрузчика */
+.preloader-spinner {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Полоса прогресса прокрутки (Scroll Progress Bar) */
+.scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--gradient-premium);
+    z-index: 100000;
+    transition: width 0.1s ease;
+}
+

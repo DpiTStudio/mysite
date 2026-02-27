@@ -1,19 +1,49 @@
+<!-- Загрузка статических файлов -->
 {% load static %}
+
+<!-- Подключение внешнего CSS файла для стилизации данной секции "Обертка" -->
 <link rel="stylesheet" href="{% static 'css/hero.css' %}">
+
+<!-- Основной контейнер-обертка секции. Класс px-0 убирает боковые отступы, hero-section отвечает за высоту -->
 <div class="container-fluid px-0 hero-section">
+    <!-- Контейнер для логотипа и фонового изображения. Если есть фон (header_data.image), устанавливаем его через style -->
     <div class="col-12 px-0 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
+        
+        <!-- Полупрозрачный стеклянный блок, содержащий текст и навигацию (хлебные крошки) -->
         <div class="logo-inform-div">
+            <!-- Загрузка пользовательского тега для генерации хлебных крошек -->
             {% load breadcrumbs %}
+            
+            <!-- Навигационная секция: Хлебные крошки (отображение текущего пути на сайте) -->
             <nav aria-label="breadcrumb" class="mb-3 hero-breadcrumbs">
+                <!-- Вызов тега для отрисовки крошек -->
                 {% breadcrumbs %}
             </nav>
+            
+            <!-- Основной заголовок страницы (H1). Классы отвечают за размер, отступ и анимацию появления -->
             <h1 class="display-4 mb-4 title-hero animate-fade">{{ header_data.title }}</h1>
+            
+            <!-- Блок для отображения тегов/подзаголовка, если они есть. truncatewords сокращает текст -->
             {% if header_data.tags %}
                 <div class="sl_1 animate-up">{{ header_data.tags|safe|truncatewords_html:30 }}</div>
             {% endif %}
+            
+            <!-- Блок для вывода описания секции с анимацией появления снизу -->
             {% if header_data.description %}
                 <div class="sl_2 animate-up">{{ header_data.description|safe|truncatewords_html:30 }}</div>
             {% endif %}
         </div>
+        
+        <!-- Условие проверки URL: показать блок категорий только на главной (/) или в новостях (/news/) -->
+        {% if request.path == '/' or '/news/' in request.path %}
+        <!-- Блок со списком категорий. Flex-end прижимает его к низу контейнера, z-index - поверх фона -->
+        <div class="row pt-2 mb-4 mx-0 w-100" style="position: relative; z-index: 10; align-self: flex-end;">
+            <!-- Колонка, занимающая всю ширину, с боковыми отступами на больших экранах (px-lg-5) -->
+            <div class="col-12 px-lg-5">
+                <!-- Подключение отдельного шаблона, содержащего сами кнопки категорий -->
+                {% include 'category-bl.html' %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>

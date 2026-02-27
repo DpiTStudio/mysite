@@ -136,25 +136,39 @@
 
                     {% cache 3600 site_navigation %}
                     
-                    {% if menu_pages %}
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Компания
+                            <i class="bi bi-building me-1"></i> Компания
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="pagesDropdown">
-                            {% for page in menu_pages %}
-                            <li>
-                                <a class="dropdown-item rounded py-2" href="{% url 'main:page_detail' page.slug %}">
-                                    <i class="bi {% if page.slug == 'o-nas' %}bi-building{% else %}bi-file-earmark-text{% endif %} text-primary me-2 opacity-75"></i> {{ page.title }}
-                                </a>
-                            </li>
-                            {% endfor %}
+                            {% if menu_pages %}
+                                {% for page in menu_pages %}
+                                <li>
+                                    <a class="dropdown-item rounded py-2" href="{% url 'main:page_detail' page.slug %}">
+                                        <i class="bi {% if page.slug == 'o-nas' %}bi-building{% else %}bi-file-earmark-text{% endif %} text-primary me-2 opacity-75"></i> {{ page.title }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                <li><hr class="dropdown-divider opacity-25"></li>
+                            {% endif %}
+                            
+                            <li><h6 class="dropdown-header text-uppercase text-muted">База знаний</h6></li>
+                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'knowledge_base:index' %}"><i class="bi bi-book-fill me-2"></i> Главная база</a></li>
+                            {% if nav_categories.knowledge_base %}
+                                {% for cat in nav_categories.knowledge_base %}
+                                <li><a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}"><i class="{{ cat.icon|default:'bi bi-folder2' }} text-primary me-2 opacity-75"></i> {{ cat.title }}</a></li>
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <li><hr class="dropdown-divider opacity-25"></li>
+                            <li><h6 class="dropdown-header text-uppercase text-muted">Отзывы</h6></li>
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'reviews:list' %}"><i class="bi bi-chat-quote-fill text-primary me-2 opacity-75"></i> Отзывы клиентов</a></li>
                         </ul>
                     </li>
-                    {% endif %}
+
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'services:list' %}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Услуги
+                            <i class="bi bi-gear-fill me-1"></i> Услуги
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="servicesDropdown">
                             <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'services:list' %}"><i class="bi bi-grid-1x2-fill me-2"></i> Все услуги</a></li>
@@ -169,12 +183,12 @@
 
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'news:list' %}" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Новости
+                            <i class="bi bi-newspaper me-1"></i> Новости
                         </a>
-                        <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="newsDropdown">
-                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'news:list' %}"><i class="bi bi-newspaper me-2"></i> Все публикации</a></li>
+                        <ul class="dropdown-menu mega-dropdown-menu mega-dropdown-2col mt-2" aria-labelledby="newsDropdown">
+                            <li class="full-width"><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'news:list' %}"><i class="bi bi-newspaper me-2"></i> Все публикации</a></li>
                             {% if nav_categories.news %}
-                            <li><hr class="dropdown-divider opacity-25"></li>
+                            <li class="full-width"><hr class="dropdown-divider opacity-25"></li>
                             {% for cat in nav_categories.news %}
                             <li><a class="dropdown-item rounded py-2" href="{% url 'news:by_category' cat.slug %}"><i class="bi bi-bookmark-star-fill text-primary me-2 opacity-75"></i> {{ cat.name }}</a></li>
                             {% endfor %}
@@ -184,7 +198,7 @@
 
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'portfolio:list' %}" id="portfolioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Портфолио
+                            <i class="bi bi-briefcase-fill me-1"></i> Портфолио
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="portfolioDropdown">
                             <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'portfolio:list' %}"><i class="bi bi-briefcase-fill me-2"></i> Наши проекты</a></li>
@@ -196,25 +210,44 @@
                             {% endif %}
                         </ul>
                     </li>
-
-                    <li class="nav-item dropdown main-nav-item">
-                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'knowledge_base:index' %}" id="kbDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            База знаний
+                    
+                    <!-- User Account (Desktop) -->
+                    {% if user.is_authenticated %}
+                    <div class="dropdown d-none d-lg-block">
+                        <a class="btn action-btn border-0 shadow-sm d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle shadow-sm" width="34" height="34" alt="user">
+                            <span class="d-none d-xl-inline text-muted small">{{ user.get_full_name|default:user.username|truncatechars:12 }}</span>
+                            <i class="bi bi-chevron-down text-muted small"></i>
                         </a>
-                        <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="kbDropdown">
-                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'knowledge_base:index' %}"><i class="bi bi-book-fill me-2"></i> Главная база</a></li>
-                            {% if nav_categories.knowledge_base %}
-                            <li><hr class="dropdown-divider opacity-25"></li>
-                            {% for cat in nav_categories.knowledge_base %}
-                            <li><a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}"><i class="{{ cat.icon|default:'bi bi-folder2' }} text-primary me-2 opacity-75"></i> {{ cat.title }}</a></li>
-                            {% endfor %}
+                        <ul class="dropdown-menu dropdown-menu-end mega-dropdown-menu mt-2" aria-labelledby="userDropdown">
+                            <li><h6 class="dropdown-header text-uppercase text-muted">Аккаунт</h6></li>
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle text-primary me-2"></i> Мой Кабинет</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-detailed text-primary me-2"></i> Мои Тикеты</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle-fill text-success me-2"></i> Новый тикет</a></li>
+                            {% if user.is_superuser %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header text-uppercase text-muted">Управление</h6></li>
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'mail:index' %}"><i class="bi bi-mailbox2 text-warning me-2"></i> Почта Сайта</a></li>
                             {% endif %}
+                            {% if user.is_staff %}
+                            <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right me-2"></i> Выйти</a></li>
                         </ul>
-                    </li>
+                    </div>
+                    {% else %}
+                    <div class="d-none d-lg-flex align-items-center gap-2">
+                        <a class="nav-link text-body px-2 fw-bold" href="{% url 'accounts:login' %}">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Войти
+                        </a>
+                        <a class="btn btn-primary btn-sm rounded-pill px-3 ms-1 fw-bold shadow-sm" href="{% url 'accounts:register' %}">
+                            Регистрация
+                        </a>
+                    </div>
+                    {% endif %}
+                
 
-                    <li class="nav-item main-nav-item">
-                        <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
-                    </li>
                     
                     {% endcache %}
                 </ul>

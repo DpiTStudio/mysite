@@ -81,14 +81,14 @@
 </head>
 <body class="{{ current_season }} d-flex flex-column min-vh-100">
     <!-- Preloader -->
-    <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-dark-bg); z-index: 99999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease;">
-        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+    <div id="preloader" class="page-preloader">
+        <div class="spinner-border text-primary preloader-spinner" role="status">
             <span class="visually-hidden">Загрузка...</span>
         </div>
     </div>
 
     <!-- Scroll Progress Bar -->
-    <div id="scroll-progress" style="position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gradient-premium); z-index: 100000; transition: width 0.1s ease;"></div>
+    <div id="scroll-progress" class="scroll-progress-bar"></div>
 
     <!-- Шапка + меню -->
     <section class="bl-nav">
@@ -108,14 +108,7 @@
             <p class="text-muted"></p>
         </div>
         {% endcomment %}
-        {% if request.path == '/' %}
-        <!-- Секция категорий -->
-        <div class="row pt-2 mb-4">
-            <div class="col-12">
-                {% include 'category-bl.html' %}
-            </div>
-        </div>
-        {% endif %}
+
         
         <div class="row g-4">
             <!-- Основной контент -->
@@ -124,7 +117,7 @@
                     {% if '/news/' in request.path %}
                     <div class="section-title-wrapper mb-4 animate-fade">
                         <h1 class="h2 text-white fw-bold border-start border-4 border-primary ps-3">
-                            Новости и Статьи
+                            Новости
                         </h1>
                     </div>
                     {% endif %}

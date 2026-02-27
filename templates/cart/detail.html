@@ -104,74 +104,7 @@
     </div>
 </div>
 
-<style>
-    .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    
-    .text-gradient {
-        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-    }
-    
-    .custom-table {
-        background: transparent !important;
-        border-collapse: separate;
-        border-spacing: 0 10px;
-    }
-    
-    .custom-table thead th {
-        border-bottom: 2px solid rgba(255,255,255,0.1);
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 1px;
-        padding-bottom: 20px;
-    }
-    
-    .custom-table tbody tr {
-        background: rgba(255,255,255,0.03);
-        transition: all 0.3s ease;
-    }
-    
-    .custom-table tbody tr:hover {
-        background: rgba(255,255,255,0.08);
-        transform: scale(1.01);
-    }
-    
-    .custom-table td, .custom-table th {
-        padding: 1.5rem 1rem;
-        border: none;
-    }
-    
-    .shadow-glow {
-        box-shadow: 0 0 20px rgba(58, 123, 213, 0.5);
-    }
-    
-    .shine-effect {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .shine-effect::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-        transform: rotate(45deg);
-        transition: 0.5s;
-    }
-    
-    .shine-effect:hover::after {
-        left: 100%;
-    }
-</style>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
 {% endblock %}
