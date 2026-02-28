@@ -1,115 +1,173 @@
-{% load cache static %}
-<header class="fixed-top premium-header">
-    <!-- Top Contact Bar -->
-    <div class="w-100 bg-body border-bottom">    
-        <div class="container-fluid px-3 px-lg-4 py-1 d-flex justify-content-between align-items-center">
+{% load cache static %}  
+<!-- Загружаем теги кэширования и статических файлов Django -->
+<header class="fixed-top premium-header">  
+    <!-- Шапка сайта, фиксированная сверху -->
+    <!-- Верхняя контактная панель -->
+    <div class="w-100 bg-body border-bottom">  
+        <!-- Белая панель на всю ширину с нижней границей -->
+        <div class="container-fluid px-3 px-lg-4 py-1 d-flex justify-content-between align-items-center">  
+            <!-- Контейнер с отступами, гибкое расположение элементов -->
             
-            <!-- Contact Info -->
-            <div class="d-none d-lg-flex gap-4">
-                <span class="text-muted small d-inline-flex align-items-center" style="font-size: 0.75rem;">
-                    <i class="bi bi-geo-alt-fill text-primary me-1"></i>По всему миру
+            <!-- Контактная информация (слева) -->
+            <div class="d-flex flex-column flex-lg-row gap-4">  
+                <!-- Вертикально на мобилке, горизонтально на ПК -->
+                <span class="text-muted small d-inline-flex align-items-center" style="font-size: 0.75rem;">  
+                    <!-- Текст с иконкой -->
+                    <i class="bi bi-geo-alt-fill text-primary me-1"></i>По всему миру  
+                    <!-- Иконка геолокации -->
                 </span>
-                <span class="text-muted small d-inline-flex align-items-center" style="font-size: 0.75rem;">
-                    <i class="bi bi-envelope-fill text-primary me-1"></i>24/7 поддержка
+                <hr> 
+                <span class="text-muted small d-inline-flex align-items-center" style="font-size: 0.75rem;">  
+                    <!-- Круглосуточная поддержка -->
+                    <i class="bi bi-envelope-fill text-primary me-1"></i>24/7 поддержка  
+                    <!-- Иконка конверта -->
                 </span>
             </div>
 
-            <!-- Right End Icons + User Menu -->
-            <div class="d-flex align-items-center gap-2 ms-auto">
-                <!-- User Account (Desktop) -->
-                {% if user.is_authenticated %}
-                <div class="dropdown d-none d-lg-block">
-                    <a class="btn action-btn border-0 shadow-sm d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle shadow-sm" width="34" height="34" alt="user">
-                        <span class="d-none d-xl-inline text-muted small">{{ user.get_full_name|default:user.username|truncatechars:12 }}</span>
-                        <i class="bi bi-chevron-down text-muted small"></i>
+            <!-- Правая часть с иконками и меню пользователя -->
+            <div class="d-flex align-items-center gap-2 ms-auto">  
+                <!-- Элементы справа с отступами -->
+                <!-- Меню пользователя (для ПК) -->
+                {% if user.is_authenticated %}  
+                    <!-- Если пользователь авторизован -->
+                <div class="dropdown d-none d-lg-block">  
+                    <!-- Выпадающее меню, скрыто на мобилках -->
+                    <a class="btn action-btn border-0 shadow-sm d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">  
+                        <!-- Кнопка с аватаркой -->
+                        <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle shadow-sm" width="34" height="34" alt="user">  
+                        <!-- Аватарка на основе имени -->
+                        <span class="d-none d-xl-inline text-muted small">{{ user.get_full_name|default:user.username|truncatechars:12 }}</span>  
+                        <!-- Имя пользователя (обрезанное) -->
+                        <i class="bi bi-chevron-down text-muted small"></i>  
+                        <!-- Иконка стрелки вниз -->
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end mega-dropdown-menu mt-2" aria-labelledby="userDropdown">
-                        <li><h6 class="dropdown-header text-uppercase text-muted">Аккаунт</h6></li>
-                        <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle text-primary me-2"></i> Мой Кабинет</a></li>
-                        <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-detailed text-primary me-2"></i> Мои Тикеты</a></li>
-                        <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle-fill text-success me-2"></i> Новый тикет</a></li>
-                        {% if user.is_superuser %}
-                        <li><hr class="dropdown-divider"></li>
-                        <li><h6 class="dropdown-header text-uppercase text-muted">Управление</h6></li>
-                        <li><a class="dropdown-item rounded py-2" href="{% url 'mail:index' %}"><i class="bi bi-mailbox2 text-warning me-2"></i> Почта Сайта</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end mega-dropdown-menu mt-2" aria-labelledby="userDropdown">  
+                        <!-- Выпадающий список -->
+                        <li><h6 class="dropdown-header text-uppercase text-muted">Аккаунт</h6></li>  
+                        <!-- Заголовок раздела -->
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle text-primary me-2"></i> Мой Кабинет</a></li>  
+                        <!-- Ссылка на профиль -->
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-detailed text-primary me-2"></i> Мои Тикеты</a></li>  
+                        <!-- Ссылка на список тикетов -->
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle-fill text-success me-2"></i> Новый тикет</a></li>  
+                        <!-- Создание нового тикета -->
+                        {% if user.is_superuser %}  
+                        <!-- Если суперпользователь -->
+                        <li><hr class="dropdown-divider"></li>  
+                        <!-- Разделитель -->
+                        <li><h6 class="dropdown-header text-uppercase text-muted">Управление</h6></li>  
+                        <!-- Заголовок раздела управления -->
+                        <li><a class="dropdown-item rounded py-2" href="{% url 'mail:index' %}"><i class="bi bi-mailbox2 text-warning me-2"></i> Почта Сайта</a></li>  
+                        <!-- Ссылка на почту сайта -->
                         {% endif %}
-                        {% if user.is_staff %}
-                        <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>
+                        {% if user.is_staff %}  
+                        <!-- Если персонал сайта -->
+                        <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>  
+                        <!-- Ссылка в админку -->
                         {% endif %}
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right me-2"></i> Выйти</a></li>
+                        <li><hr class="dropdown-divider"></li>  
+                        <!-- Разделитель -->
+                        <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right me-2"></i> Выйти</a></li>  
+                        <!-- Выход из аккаунта -->
                     </ul>
                 </div>
-                {% else %}
-                <div class="d-none d-lg-flex align-items-center gap-2">
-                    <a class="nav-link text-body px-2 fw-bold" href="{% url 'accounts:login' %}">
+                {% else %}  
+                <!-- Если пользователь не авторизован -->
+                <div class="d-none d-lg-flex align-items-center gap-2">  
+                    <!-- Блок авторизации, скрыт на мобилках -->
+                    <a class="nav-link text-body px-2 fw-bold" href="{% url 'accounts:login' %}">  
+                        <!-- Ссылка на вход -->
                         <i class="bi bi-box-arrow-in-right me-1"></i> Войти
                     </a>
-                    <a class="btn btn-primary btn-sm rounded-pill px-3 ms-1 fw-bold shadow-sm" href="{% url 'accounts:register' %}">
+                    <a class="btn btn-primary btn-sm rounded-pill px-3 ms-1 fw-bold shadow-sm" href="{% url 'accounts:register' %}">  
+                        <!-- Кнопка регистрации -->
                         Регистрация
                     </a>
                 </div>
                 {% endif %}
                 
-                <!-- Theme Toggle -->
+                <!-- Кнопка переключения темы (светлая/темная) -->
                 <button class="btn action-btn border-0 shadow-sm" id="themeToggleBtn" aria-label="Смена темы" title="Переключить тему (Светлая/Темная)">
-                    <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
+                    <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>  
+                    <!-- Иконка луны -->
                 </button>
                 
-                <!-- Search Button -->
+                <!-- Кнопка поиска -->
                 <button class="btn action-btn border-0 shadow-sm" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Поиск" title="Поиск по сайту">
-                    <i class="bi bi-search fs-5"></i>
+                    <i class="bi bi-search fs-5"></i>  
+                    <!-- Иконка лупы -->
                 </button>
                 
-                <!-- Cart Offcanvas Button -->
-                <a class="btn action-btn border-0 shadow-sm position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина">
-                    <i class="bi bi-bag-fill fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow {% if cart|length == 0 %}d-none{% endif %}" id="header-cart-badge" style="font-size: 0.7rem; border: 2px solid var(--bs-body-bg); padding: 0.35em 0.6em;">
-                        {{ cart|length }}
-                        <span class="visually-hidden">товаров</span>
+                <!-- Кнопка корзины -->
+                <a class="btn action-btn border-0 shadow-sm position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина">  
+                    <!-- Ссылка на корзину с выезжающей панелью -->
+                    <i class="bi bi-bag-fill fs-5"></i>  
+                    <!-- Иконка сумки -->
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow {% if cart|length == 0 %}d-none{% endif %}" id="header-cart-badge" style="font-size: 0.7rem; border: 2px solid var(--bs-body-bg); padding: 0.35em 0.6em;">  
+                        <!-- Бейдж с количеством товаров -->
+                        {{ cart|length }}  
+                        <!-- Количество товаров в корзине -->
+                        <span class="visually-hidden">товаров</span>  
+                            <!-- Скрытый текст для скринридеров -->
                     </span>
                 </a>
                 
-                <!-- Mobile Menu Toggle -->
-                <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none ms-1 action-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mainPremiumNav" aria-controls="mainPremiumNav" aria-expanded="false" aria-label="Открыть меню">
-                    <i class="bi bi-list fs-3"></i>
+                <!-- Кнопка мобильного меню (бургер) -->
+                <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none ms-1 action-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mainPremiumNav" aria-controls="mainPremiumNav" aria-expanded="false" aria-label="Открыть меню">  
+                    <!-- Кнопка появляется только на мобилках -->
+                    <i class="bi bi-list fs-3"></i>  
+                        <!-- Иконка бургер-меню -->
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Unified Navigation Bar -->
-    <nav class="navbar navbar-expand-lg premium-navbar py-2">
-        <div class="container-fluid px-3 px-lg-4">
+    <!-- Основная навигационная панель -->
+    <nav class="navbar navbar-expand-lg premium-navbar py-2">  
+        <!-- Навбар с адаптивным расширением -->
+        <div class="container-fluid px-3 px-lg-4">  
+            <!-- Контейнер с отступами -->
             
-            <!-- Logo Section -->
-            <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'main:home' %}">
-                {% if site_settings and site_settings.logo %}
-                    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_title }}" height="52" class="rounded-3 shadow-sm" style="object-fit: contain;">
-                {% else %}
-                    <div class="bg-gradient bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 52px; height: 52px; font-size: 1.4rem;">
-                        DP
+            <!-- Логотип и название сайта -->
+            <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'main:home' %}">  
+                <!-- Ссылка на главную -->
+                {% if site_settings and site_settings.logo %}  
+                    <!-- Если загружен логотип в настройках -->
+                    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_title }}" height="52" class="rounded-3 shadow-sm" style="object-fit: contain;">  <!-- Отображаем логотип -->
+                {% else %}  <!-- Если логотипа нет -->
+                    <div class="bg-gradient bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 52px; height: 52px; font-size: 1.4rem;">  <!-- Заглушка логотипа -->
+                        DP  <!-- Инициалы по умолчанию -->
                     </div>
                 {% endif %}
-                <div class="d-flex flex-column lh-1">
-                    <span class="brand-text site-domain fs-4">
-                        {% if site_settings and site_settings.site_domain %}
-                            {{ site_settings.site_domain|upper }}
-                        {% else %}
-                            {{ request.get_host|cut:":4234"|cut:":8000"|upper }}
+                <div class="d-flex flex-column lh-1">  
+                    <!-- Блок с названием сайта -->
+                    <span class="brand-text site-domain fs-4">  
+                        <!-- Домен сайта -->
+                        {% if site_settings and site_settings.site_domain %}  
+                            <!-- Если указан домен в настройках -->
+                            {{ site_settings.site_domain|upper }}  
+                            <!-- Показываем его большими буквами -->
+                        {% else %}  
+                            <!-- Иначе -->
+                            {{ request.get_host|cut:":4234"|cut:":8000"|upper }}  
+                            <!-- Извлекаем домен из запроса -->
                         {% endif %}
                     </span>
-                    <span class="text-body-secondary" style="font-size: 0.45rem; letter-spacing: 0.5px; font-weight: 500;">
-                        {{ site_settings.site_title|default:"Официальный сайт"|upper }}
+                    <span class="text-body-secondary" style="font-size: 0.45rem; letter-spacing: 0.5px; font-weight: 500;">  
+                        <!-- Подпись под доменом -->
+                        {{ site_settings.site_title|default:"Официальный сайт"|upper }}  
+                        <!-- Название сайта -->
                     </span>
                 </div>
             </a>
             
-            <!-- Center Navigation Links -->
-            <div class="collapse navbar-collapse justify-content-center order-3 order-lg-2 mt-3 mt-lg-0" id="mainPremiumNav">
-                <ul class="navbar-nav gap-1 gap-lg-2">
+            <!-- Центральное навигационное меню -->
+            <div class="collapse navbar-collapse justify-content-center order-3 order-lg-2 mt-3 mt-lg-0" id="mainPremiumNav">  
+                <!-- Сворачиваемое меню, по центру -->
+                <ul class="navbar-nav gap-1 gap-lg-2">  
+                    <!-- Список навигации -->
                     
+                    {% comment %}  <!-- Начало закомментированного блока (дублирующие ссылки для мобильной версии) -->
                     {% if not user.is_authenticated %}
                     <li class="nav-item d-lg-none border-bottom pb-2 mb-2">
                         <div class="d-flex gap-2">
@@ -127,129 +185,121 @@
                             <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}">Кабинет</a></li>
                             <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}">Тикеты</a></li>
                             {% if user.is_staff %}
-                            <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="/admin/">Админ-панель</a></li>
+                            <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="/admin/" target="_blank">Админ-панель</a></li>
                             {% endif %}
                             <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}">Выйти</a></li>
                         </ul>
                     </li>
                     {% endif %}
+                    {% endcomment %}  <!-- Конец закомментированного блока -->
 
-                    {% cache 3600 site_navigation %}
+                    {% cache 1600 site_navigation %}  <!-- Кэширование навигации на 1600 секунд -->
                     
+                    <!-- Пункт меню "Компания" с выпадающим списком -->
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-building me-1"></i> Компания
+                            <i class="bi bi-building me-1"></i> Компания  <!-- Иконка здания -->
                         </a>
-                        <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="pagesDropdown">
-                            {% if menu_pages %}
-                                {% for page in menu_pages %}
+                        <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="pagesDropdown">  <!-- Выпадающее меню -->
+                            {% if menu_pages %}  <!-- Если есть страницы для меню -->
+                                {% for page in menu_pages %}  <!-- Перебираем все страницы -->
                                 <li>
-                                    <a class="dropdown-item rounded py-2" href="{% url 'main:page_detail' page.slug %}">
-                                        <i class="bi {% if page.slug == 'o-nas' %}bi-building{% else %}bi-file-earmark-text{% endif %} text-primary me-2 opacity-75"></i> {{ page.title }}
+                                    <a class="dropdown-item rounded py-2" href="{% url 'main:page_detail' page.slug %}">  <!-- Ссылка на страницу -->
+                                        <i class="bi {% if page.slug == 'o-nas' %}bi-building{% else %}bi-file-earmark-text{% endif %} text-primary me-2 opacity-75"></i> {{ page.title }}  <!-- Разные иконки для "О нас" и других страниц -->
                                     </a>
                                 </li>
                                 {% endfor %}
-                                <li><hr class="dropdown-divider opacity-25"></li>
+                                <li><hr class="dropdown-divider opacity-25"></li>  <!-- Разделитель -->
                             {% endif %}
                             
-                            <li><h6 class="dropdown-header text-uppercase text-muted">База знаний</h6></li>
-                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'knowledge_base:index' %}"><i class="bi bi-book-fill me-2"></i> Главная база</a></li>
-                            {% if nav_categories.knowledge_base %}
+                            <li><h6 class="dropdown-header text-uppercase text-muted">База знаний</h6></li>  <!-- Заголовок раздела -->
+                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'knowledge_base:index' %}"><i class="bi bi-book-fill me-2"></i> Главная база</a></li>  <!-- Ссылка на базу знаний -->
+                            {% if nav_categories.knowledge_base %}  <!-- Если есть категории базы знаний -->
                                 {% for cat in nav_categories.knowledge_base %}
-                                <li><a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}"><i class="{{ cat.icon|default:'bi bi-folder2' }} text-primary me-2 opacity-75"></i> {{ cat.title }}</a></li>
+                                <li><a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}"><i class="{{ cat.icon|default:'bi bi-folder2' }} text-primary me-2 opacity-75"></i> {{ cat.title }}</a></li>  <!-- Категории с иконками -->
                                 {% endfor %}
                             {% endif %}
                             
-                            <li><hr class="dropdown-divider opacity-25"></li>
-                            <li><h6 class="dropdown-header text-uppercase text-muted">Отзывы</h6></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'reviews:list' %}"><i class="bi bi-chat-quote-fill text-primary me-2 opacity-75"></i> Отзывы клиентов</a></li>
+                            <li><hr class="dropdown-divider opacity-25"></li>  <!-- Разделитель -->
+                            <li><h6 class="dropdown-header text-uppercase text-muted">Отзывы</h6></li>  <!-- Заголовок раздела -->
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'reviews:list' %}"><i class="bi bi-chat-quote-fill text-primary me-2 opacity-75"></i> Отзывы клиентов</a></li>  <!-- Ссылка на отзывы -->
                         </ul>
                     </li>
 
+                    <!-- Пункт меню "Услуги" с выпадающим списком -->
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'services:list' %}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-gear-fill me-1"></i> Услуги
+                            <i class="bi bi-gear-fill me-1"></i> Услуги  <!-- Иконка шестеренки -->
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="servicesDropdown">
-                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'services:list' %}"><i class="bi bi-grid-1x2-fill me-2"></i> Все услуги</a></li>
-                            {% if nav_categories.services %}
-                            <li><hr class="dropdown-divider opacity-25"></li>
+                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'services:list' %}"><i class="bi bi-grid-1x2-fill me-2"></i> Все услуги</a></li>  <!-- Ссылка на все услуги -->
+                            {% if nav_categories.services %}  <!-- Если есть категории услуг -->
+                            <li><hr class="dropdown-divider opacity-25"></li>  <!-- Разделитель -->
                             {% for cat in nav_categories.services %}
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'services:list' %}?category={{ cat }}"><i class="bi bi-gear-fill text-primary me-2 opacity-75"></i> {{ cat }}</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'services:list' %}?category={{ cat }}"><i class="bi bi-gear-fill text-primary me-2 opacity-75"></i> {{ cat }}</a></li>  <!-- Категории услуг -->
                             {% endfor %}
                             {% endif %}
                         </ul>
                     </li>
 
+                    <!-- Пункт меню "Новости" с выпадающим списком в 2 колонки -->
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'news:list' %}" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-newspaper me-1"></i> Новости
+                            <i class="bi bi-newspaper me-1"></i> Новости  <!-- Иконка газеты -->
                         </a>
-                        <ul class="dropdown-menu mega-dropdown-menu mega-dropdown-2col mt-2" aria-labelledby="newsDropdown">
-                            <li class="full-width"><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'news:list' %}"><i class="bi bi-newspaper me-2"></i> Все публикации</a></li>
-                            {% if nav_categories.news %}
-                            <li class="full-width"><hr class="dropdown-divider opacity-25"></li>
+                        <ul class="dropdown-menu mega-dropdown-menu mega-dropdown-2col mt-2" aria-labelledby="newsDropdown">  <!-- Меню в две колонки -->
+                            <li class="full-width"><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'news:list' %}"><i class="bi bi-newspaper me-2"></i> Все публикации</a></li>  <!-- Ссылка на все новости -->
+                            {% if nav_categories.news %}  <!-- Если есть категории новостей -->
+                            <li class="full-width"><hr class="dropdown-divider opacity-25"></li>  <!-- Разделитель на всю ширину -->
                             {% for cat in nav_categories.news %}
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'news:by_category' cat.slug %}"><i class="bi bi-bookmark-star-fill text-primary me-2 opacity-75"></i> {{ cat.name }}</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'news:by_category' cat.slug %}"><i class="bi bi-bookmark-star-fill text-primary me-2 opacity-75"></i> {{ cat.name }}</a></li>  <!-- Категории новостей -->
                             {% endfor %}
                             {% endif %}
                         </ul>
                     </li>
 
+                    <!-- Пункт меню "Портфолио" с выпадающим списком -->
                     <li class="nav-item dropdown main-nav-item">
                         <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'portfolio:list' %}" id="portfolioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-briefcase-fill me-1"></i> Портфолио
+                            <i class="bi bi-briefcase-fill me-1"></i> Портфолио  <!-- Иконка портфеля -->
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="portfolioDropdown">
-                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'portfolio:list' %}"><i class="bi bi-briefcase-fill me-2"></i> Наши проекты</a></li>
-                            {% if nav_categories.portfolio %}
-                            <li><hr class="dropdown-divider opacity-25"></li>
+                            <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'portfolio:list' %}"><i class="bi bi-briefcase-fill me-2"></i> Наши проекты</a></li>  <!-- Ссылка на все проекты -->
+                            {% if nav_categories.portfolio %}  <!-- Если есть категории портфолио -->
+                            <li><hr class="dropdown-divider opacity-25"></li>  <!-- Разделитель -->
                             {% for cat in nav_categories.portfolio %}
-                            <li><a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}"><i class="bi bi-laptop text-primary me-2 opacity-75"></i> {{ cat.name }}</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}"><i class="bi bi-laptop text-primary me-2 opacity-75"></i> {{ cat.name }}</a></li>  <!-- Категории портфолио -->
                             {% endfor %}
                             {% endif %}
                         </ul>
                     </li>
-                    
-                    <!-- User Account (Desktop) -->
-                    {% if user.is_authenticated %}
-                    <div class="dropdown d-none d-lg-block">
-                        <a class="btn action-btn border-0 shadow-sm d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle shadow-sm" width="34" height="34" alt="user">
-                            <span class="d-none d-xl-inline text-muted small">{{ user.get_full_name|default:user.username|truncatechars:12 }}</span>
-                            <i class="bi bi-chevron-down text-muted small"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end mega-dropdown-menu mt-2" aria-labelledby="userDropdown">
-                            <li><h6 class="dropdown-header text-uppercase text-muted">Аккаунт</h6></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle text-primary me-2"></i> Мой Кабинет</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}"><i class="bi bi-ticket-detailed text-primary me-2"></i> Мои Тикеты</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:create' %}"><i class="bi bi-plus-circle-fill text-success me-2"></i> Новый тикет</a></li>
-                            {% if user.is_superuser %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header text-uppercase text-muted">Управление</h6></li>
-                            <li><a class="dropdown-item rounded py-2" href="{% url 'mail:index' %}"><i class="bi bi-mailbox2 text-warning me-2"></i> Почта Сайта</a></li>
-                            {% endif %}
-                            {% if user.is_staff %}
-                            <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>
-                            {% endif %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right me-2"></i> Выйти</a></li>
-                        </ul>
-                    </div>
-                    {% else %}
-                    <div class="d-none d-lg-flex align-items-center gap-2">
-                        <a class="nav-link text-body px-2 fw-bold" href="{% url 'accounts:login' %}">
-                            <i class="bi bi-box-arrow-in-right me-1"></i> Войти
-                        </a>
-                        <a class="btn btn-primary btn-sm rounded-pill px-3 ms-1 fw-bold shadow-sm" href="{% url 'accounts:register' %}">
-                            Регистрация
-                        </a>
-                    </div>
-                    {% endif %}
-                
 
-                    
-                    {% endcache %}
+                    {% endcache %}  <!-- Конец кэшируемого блока -->
+
+                    <!-- Мобильные дублирующие пункты меню (повторяются здесь, но не закомментированы) -->
+                    {% if not user.is_authenticated %}  <!-- Если не авторизован - показываем кнопки входа/регистрации в мобильном меню -->
+                    <li class="nav-item d-lg-none border-bottom pb-2 mb-2">
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-outline-primary w-50 rounded-pill fw-bold" href="{% url 'accounts:login' %}">Войти</a>
+                            <a class="btn btn-primary w-50 rounded-pill fw-bold" href="{% url 'accounts:register' %}">Регистрация</a>
+                        </div>
+                    </li>
+                    {% else %}  <!-- Если авторизован - показываем меню пользователя в мобильной версии -->
+                    <li class="nav-item dropdown d-lg-none border-bottom pb-2 mb-2">
+                         <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" id="mobileUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">  <!-- Кнопка с именем пользователя -->
+                            <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle me-2" width="28" height="28" alt="user">  <!-- Мини-аватарка -->
+                            {{ user.get_full_name|default:user.username }}  <!-- Имя пользователя -->
+                        </a>
+                        <ul class="dropdown-menu mega-dropdown-menu mt-2 border-0 shadow-sm" aria-labelledby="mobileUserDropdown">  <!-- Выпадающее меню -->
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'accounts:profile' %}">Кабинет</a></li>  <!-- Профиль -->
+                            <li><a class="dropdown-item rounded py-2" href="{% url 'tickets:list' %}">Тикеты</a></li>  <!-- Тикеты -->
+                            {% if user.is_staff %}  <!-- Если персонал -->
+                            <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="/admin/" target="_blank">Админ-панель</a></li>  <!-- Админка -->
+                            {% endif %}
+                            <li><a class="dropdown-item rounded py-2 text-danger fw-bold" href="{% url 'accounts:logout' %}">Выйти</a></li>  <!-- Выход -->
+                        </ul>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             

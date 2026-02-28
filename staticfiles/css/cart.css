@@ -1,0 +1,107 @@
+/* 
+ * Стили для корзины и оформления заказа
+ * Эти стили применяются на страницах: detail.html, checkout.html, order_success.html
+ */
+
+/* Эффект стеклянной карточки для блоков с контентом */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Текст с градиентом */
+.text-gradient {
+    background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+/* Свечение текста (например, для иконок успеха) */
+.text-glow {
+    text-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
+}
+
+/* Свечение тени для кнопок */
+.shadow-glow {
+    box-shadow: 0 0 15px rgba(58, 123, 213, 0.4);
+    transition: all 0.3s ease;
+}
+
+/* Эффект при наведении на элемент с теневым свечением */
+.shadow-glow:hover {
+    box-shadow: 0 0 25px rgba(58, 123, 213, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Анимация пульсации */
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+/* Ключевые кадры для пульсации */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Стили для кастомной таблицы в корзине */
+.custom-table {
+    background: transparent !important;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+/* Стили для заголовков таблицы */
+.custom-table thead th {
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    padding-bottom: 20px;
+}
+
+/* Стили для строк таблицы (фон и плавная анимация) */
+.custom-table tbody tr {
+    background: rgba(255,255,255,0.03);
+    transition: all 0.3s ease;
+}
+
+/* Эффект при наведении на строку таблицы */
+.custom-table tbody tr:hover {
+    background: rgba(255,255,255,0.08);
+    transform: scale(1.01);
+}
+
+/* Отступы в ячейках таблицы */
+.custom-table td, .custom-table th {
+    padding: 1.5rem 1rem;
+    border: none;
+}
+
+/* Эффект "блеска" на кнопках */
+.shine-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-effect::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+}
+
+.shine-effect:hover::after {
+    left: 100%;
+}
