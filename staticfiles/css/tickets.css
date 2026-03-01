@@ -11,7 +11,7 @@
 
 .status-open { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
 .status-in_progress { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
-.status-resolved { background: rgba(58, 123, 213, 0.2); color: #3a7bd5; border: 1px solid rgba(58, 123, 213, 0.3); }
+.status-resolved { background: rgba(99, 102, 241, 0.2); color: var(--color-primary); border: 1px solid rgba(99, 102, 241, 0.3); }
 .status-closed { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }
 
 .priority-badge {
@@ -23,7 +23,7 @@
 }
 
 .priority-low { background: rgba(100, 116, 139, 0.1); color: #94a3b8; }
-.priority-medium { background: rgba(58, 123, 213, 0.1); color: #3a7bd5; }
+.priority-medium { background: rgba(99, 102, 241, 0.1); color: var(--color-primary); }
 .priority-high { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
 .priority-urgent { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
 

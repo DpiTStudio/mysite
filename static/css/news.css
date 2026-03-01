@@ -59,7 +59,7 @@
     top: 0;
     bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, var(--color-primary), rgba(58, 123, 213, 0.1));
+    background: linear-gradient(to bottom, var(--color-primary), rgba(99, 102, 241, 0.1));
     z-index: 0;
 }
 
@@ -91,7 +91,7 @@
 
 .date-badge:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(58, 123, 213, 0.5), var(--shadow-lg);
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5), var(--shadow-lg);
 }
 
 .date-day {
@@ -146,7 +146,7 @@
     top: 0;
     bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, var(--color-primary), rgba(58, 123, 213, 0.1));
+    background: linear-gradient(to bottom, var(--color-primary), rgba(99, 102, 241, 0.1));
 }
 
 .timeline-item {
@@ -172,7 +172,7 @@
     border-left: 3px solid var(--color-primary);
     padding: 1rem 1.5rem;
     margin: 1rem 0;
-    background: rgba(58, 123, 213, 0.05);
+    background: rgba(99, 102, 241, 0.05);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     font-style: italic;
 }
@@ -252,7 +252,7 @@
 
 /* Badge count */
 .badge-count {
-    background: rgba(58, 123, 213, 0.3);
+    background: rgba(99, 102, 241, 0.3);
     color: #fff;
     padding: 0.15em 0.5em;
     border-radius: 50px;

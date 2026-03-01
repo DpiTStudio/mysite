@@ -34,7 +34,7 @@
 
 .mail-item.unread {
     border-left: 4px solid var(--color-primary);
-    background: rgba(58, 123, 213, 0.05);
+    background: rgba(99, 102, 241, 0.05);
 }
 
 .mail-subject {

@@ -1,49 +1,37 @@
 /* theme_seasons.css */
-/* Файл определяет стили для разных сезонов, переопределяя переменные цветов */
+/* Файл определяет акцентные стили для разных сезонов, сохраняя структуру темной/светлой темы */
+
 .spring {
-    --color-primary: #ff7f50; /* Coral */
-    --color-secondary: #ffb347; /* Orange */
-    --color-accent: #ff6f61; /* Soft Red */
-    --color-background: #fff5e6; /* Light warm */
-    --color-text-main: #2c3e50; /* Dark text */
-    --color-dark-bg: #f0e5d8; /* Light background */
+    --color-primary: #10b981; /* Emerald */
+    --color-secondary: #059669; /* Darker Emerald */
+    --color-accent: #34d399; /* Light Emerald */
+    /* Subtle background tint */
+    --gradient-premium: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
 .summer {
-    --color-primary: #ffdd57; /* Sunflower */
-    --color-secondary: #ff9f1c; /* Bright Orange */
-    --color-accent: #ff6b6b; /* Coral Red */
-    --color-background: #fff9e6; /* Very light */
-    --color-text-main: #1a1a1a; /* Dark */
-    --color-dark-bg: #f2f2f2; /* Light gray */
+    --color-primary: #f59e0b; /* Amber */
+    --color-secondary: #d97706; /* Darker Amber */
+    --color-accent: #fbbf24; /* Light Amber */
+    /* Subtle background tint */
+    --gradient-premium: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }
 
 .autumn {
-    --color-primary: #d35400; /* Pumpkin */
-    --color-secondary: #e67e22; /* Orange */
-    --color-accent: #c0392b; /* Red */
-    --color-background: #fdf2e9; /* Warm */
-    --color-text-main: #2c3e50; /* Dark */
-    --color-dark-bg: #f5e6d3; /* Light brown */
+    --color-primary: #ea580c; /* Orange */
+    --color-secondary: #c2410c; /* Dark Orange */
+    --color-accent: #f97316; /* Light Orange */
+    /* Subtle background tint */
+    --gradient-premium: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
 }
 
 .winter {
-    --color-primary: #3498db; /* Ice Blue */
-    --color-secondary: #85c1e9; /* Light Blue */
-    --color-accent: #5dade2; /* Soft Blue */
-    --color-background: #e8f6ff; /* Very light blue */
-    --color-text-main: #1b2631; /* Dark */
-    --color-dark-bg: #d6eaf8; /* Light blue */
+    --color-primary: #0ea5e9; /* Sky Blue */
+    --color-secondary: #0284c7; /* Dark Sky Blue */
+    --color-accent: #38bdf8; /* Light Sky Blue */
+    /* Subtle background tint */
+    --gradient-premium: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
 }
 
-/* Ensure links have sufficient contrast in all seasons */
-a {
-    color: var(--color-primary);
-    text-decoration: underline;
-    transition: var(--transition-fast);
-}
-
-a:hover {
-    color: var(--color-secondary);
-    text-decoration: none;
-}
+/* Ensure links adhere to the base rules and don't conflict with normal styles */
+/* Seasonal themes only adjust colors, base styles stay in style.css */
