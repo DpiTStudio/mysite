@@ -20,10 +20,10 @@
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <div class="footer-links">
-                    <a href="{{ site_settings.privacy_policy_url }}" class="footer-link d-inline-block me-3 small">
+                    <a href="{% url 'main:page_detail' 'politika-konfidencialnosti' %}" class="footer-link d-inline-block me-3 small">
                         Политика конфиденциальности
                     </a>
-                    <a href="{{ site_settings.terms_of_use_url }}" class="footer-link d-inline-block small">
+                    <a href="{% url 'main:page_detail' 'usloviya-ispolzovaniya-materialov-s-sajta' %}" class="footer-link d-inline-block small">
                         Условия использования
                     </a>
                 </div>

@@ -32,7 +32,7 @@
                     <!-- Если пользователь авторизован -->
                 <div class="dropdown d-none d-lg-block">  
                     <!-- Выпадающее меню, скрыто на мобилках -->
-                    <a class="btn action-btn border-0 shadow-sm d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">  
+                    <a class="btn action-btn border-0 shadow-sm d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" hx-boost="false">  
                         <!-- Кнопка с аватаркой -->
                         <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle shadow-sm" width="34" height="34" alt="user">  
                         <!-- Аватарка на основе имени -->
@@ -99,7 +99,7 @@
                 </button>
                 
                 <!-- Кнопка корзины -->
-                <a class="btn action-btn border-0 shadow-sm position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина">  
+                <a class="btn action-btn border-0 shadow-sm position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина" hx-boost="false">  
                     <!-- Ссылка на корзину с выезжающей панелью -->
                     <i class="bi bi-bag-fill fs-5"></i>  
                     <!-- Иконка сумки -->
@@ -197,7 +197,7 @@
                     
                     <!-- Пункт меню "Компания" с выпадающим списком -->
                     <li class="nav-item dropdown main-nav-item">
-                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" hx-boost="false">
                             <i class="bi bi-building me-1"></i> Компания  <!-- Иконка здания -->
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="pagesDropdown">  <!-- Выпадающее меню -->
@@ -228,7 +228,7 @@
 
                     <!-- Пункт меню "Услуги" с выпадающим списком -->
                     <li class="nav-item dropdown main-nav-item">
-                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'services:list' %}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'services:list' %}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" hx-boost="false">
                             <i class="bi bi-gear-fill me-1"></i> Услуги  <!-- Иконка шестеренки -->
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="servicesDropdown">
@@ -244,7 +244,7 @@
 
                     <!-- Пункт меню "Новости" с выпадающим списком в 2 колонки -->
                     <li class="nav-item dropdown main-nav-item">
-                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'news:list' %}" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'news:list' %}" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" hx-boost="false">
                             <i class="bi bi-newspaper me-1"></i> Новости  <!-- Иконка газеты -->
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mega-dropdown-2col mt-2" aria-labelledby="newsDropdown">  <!-- Меню в две колонки -->
@@ -260,7 +260,7 @@
 
                     <!-- Пункт меню "Портфолио" с выпадающим списком -->
                     <li class="nav-item dropdown main-nav-item">
-                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'portfolio:list' %}" id="portfolioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle clickable-parent" href="{% url 'portfolio:list' %}" id="portfolioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" hx-boost="false">
                             <i class="bi bi-briefcase-fill me-1"></i> Портфолио  <!-- Иконка портфеля -->
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu mt-2" aria-labelledby="portfolioDropdown">
@@ -286,7 +286,7 @@
                     </li>
                     {% else %}  <!-- Если авторизован - показываем меню пользователя в мобильной версии -->
                     <li class="nav-item dropdown d-lg-none border-bottom pb-2 mb-2">
-                         <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" id="mobileUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">  <!-- Кнопка с именем пользователя -->
+                         <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" id="mobileUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" hx-boost="false">  <!-- Кнопка с именем пользователя -->
                             <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" class="rounded-circle me-2" width="28" height="28" alt="user">  <!-- Мини-аватарка -->
                             {{ user.get_full_name|default:user.username }}  <!-- Имя пользователя -->
                         </a>

@@ -81,10 +81,9 @@
 </head>
 <body class="{{ current_season }} d-flex flex-column min-vh-100">
     <!-- Preloader -->
-    <div id="preloader" class="page-preloader">
-        <div class="spinner-border text-primary preloader-spinner" role="status">
-            <span class="visually-hidden">Загрузка...</span>
-        </div>
+    <div id="preloader" class="page-preloader d-flex justify-content-center align-items-center z-3">
+        <!-- Lottie Animation -->
+        <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent" speed="1" style="width: 150px; height: 150px;" loop autoplay></lottie-player>
     </div>
 
     <!-- Прокрутка индикатора выполнения -->
@@ -192,9 +191,27 @@
         </div>
         <div class="offcanvas-body" id="cart-offcanvas-body">
             <!-- Сюда будет грузиться контент через HTMX или AJAX -->
-            <div class="text-center text-muted my-5" hx-get="{% url 'cart:cart_detail' %}?partial=true" hx-trigger="load, cartUpdated from:body" hx-target="this">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Загрузка...</span>
+            <div class="my-4" hx-get="{% url 'cart:cart_detail' %}?partial=true" hx-trigger="load, cartUpdated from:body" hx-target="this">
+                <!-- Skeleton Loader for Cart -->
+                <div class="skeleton-loader w-100 placeholder-glow">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="placeholder rounded" style="width: 70px; height: 70px;"></div>
+                        <div class="ms-3 w-100">
+                            <div class="placeholder rounded w-75 mb-2" style="height: 14px;"></div>
+                            <div class="placeholder rounded w-50" style="height: 14px;"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="placeholder rounded" style="width: 70px; height: 70px;"></div>
+                        <div class="ms-3 w-100">
+                            <div class="placeholder rounded w-100 mb-2" style="height: 14px;"></div>
+                            <div class="placeholder rounded w-50" style="height: 14px;"></div>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between">
+                        <div class="placeholder rounded w-25" style="height: 24px;"></div>
+                        <div class="placeholder rounded w-25" style="height: 24px;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -206,6 +223,8 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="https://unpkg.com/htmx.org@1.9.10" defer></script>
+    <!-- Lottie Player for animations -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
     <script src="{% static 'js/script.js' %}" defer></script>
     
     <!-- Блок для дополнительного JavaScript -->
