@@ -242,6 +242,11 @@ select.form-control {
     color: #666 !important;
 }
 
+/* Скрытие версии Jazzmin в футере */
+.main-footer .float-right {
+    display: none !important;
+}
+
 /* Jazzmin specific tweaks override */
 .login-box, .register-box {
     background: var(--admin-bg-card);
