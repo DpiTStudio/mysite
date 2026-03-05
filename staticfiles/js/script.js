@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const elements = document.querySelectorAll('.animate-up, .animate-left, .animate-right, .animate-scale, .glass-card, .card, .glass-card-premium');
         elements.forEach(el => {
             const rect = el.getBoundingClientRect();
-            // Порог появления: 10% элемента должно быть видно
-            const isVisible = rect.top < (window.innerHeight - 100) && rect.bottom > 0;
+            // Порог появления: 10% элемента должно быть видно (или сразу если они уже в области видимости)
+            const isVisible = rect.top < (window.innerHeight - 50) && rect.bottom > 0;
             if (isVisible) {
                 el.classList.add('animate-active');
             }
@@ -68,55 +68,79 @@ document.addEventListener('DOMContentLoaded', function() {
     // Небольшая задержка для плавного старта
     setTimeout(animateOnScroll, 100);
 
-    // 5. Увеличение изображений
-    const images = document.querySelectorAll('.gallery img, .img-thumbnail, .card-img-top');
-    images.forEach(img => {
-        img.addEventListener('click', function(e) {
-            e.stopPropagation();
-            this.classList.toggle('enlarged');
-            if (this.classList.contains('enlarged')) {
-                this.style.transform = 'scale(1.1)';
-                this.style.zIndex = '100';
-            } else {
-                this.style.transform = 'scale(1)';
-                this.style.zIndex = '1';
-            }
-        });
-    });
-    
-    // 6. Плавная прокрутка
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href !== '#' && href !== '') {
-                const target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+    // Функция для инициализации динамических элементов
+    function initDynamicElements(root) {
+        // 5. Увеличение изображений
+        root.querySelectorAll('.gallery img, .img-thumbnail, .card-img-top').forEach(img => {
+            img.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('enlarged');
+                if (this.classList.contains('enlarged')) {
+                    this.style.transform = 'scale(1.1)';
+                    this.style.zIndex = '100';
+                } else {
+                    this.style.transform = 'scale(1)';
+                    this.style.zIndex = '1';
                 }
-            }
+            });
         });
-    });
-    
-    // 7. Ripple эффект
-    document.querySelectorAll('.btn, .nav-link').forEach(button => {
-        button.addEventListener('mousedown', function(e) {
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.classList.add('ripple');
-            
-            this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
+        
+        // 6. Плавная прокрутка
+        root.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== '') {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
         });
+        
+        // 7. Ripple эффект
+        root.querySelectorAll('.btn, .nav-link').forEach(button => {
+            button.addEventListener('mousedown', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // 12. Fix clickable parent dropdowns on desktop
+        root.querySelectorAll('.dropdown-toggle.clickable-parent').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                if (window.innerWidth >= 992 && this.href && this.href !== '#' && !this.href.endsWith('#')) {
+                    // Prevent bootstrap default behaviour
+                    window.location.href = this.href;
+                }
+            });
+        });
+    }
+
+    // Инициализация для исходного документа
+    initDynamicElements(document);
+
+    // Инициализация для элементов, загруженных через HTMX
+    document.body.addEventListener('htmx:load', function(e) {
+        initDynamicElements(e.detail.elt);
+        // Запускаем анимацию для нового контента с небольшой задержкой (чтобы DOM успел обновиться)
+        setTimeout(animateOnScroll, 100);
+        // Для подстраховки проверяем скролл
+        window.scrollTo(0, 0); 
     });
 
     // 8. Стили для Ripple (если не добавлены)
@@ -181,4 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // 11. Включаем View Transitions API для красивых SPA переходов HTMX
+    if (typeof htmx !== 'undefined') {
+        htmx.config.globalViewTransitions = true;
+    }
 });

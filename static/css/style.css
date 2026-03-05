@@ -8,6 +8,12 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 114px;
+    scroll-padding-bottom: 114px;
+    scroll-padding-left: 114px;
+    scroll-padding-right: 114px;
+    scroll-padding: 114px;
+    scroll-margin: 114px;
 }
 
 body {
@@ -452,7 +458,7 @@ a:hover {
 }
 
 .card-title {
-    color: #08021d;
+    /* color: #08021d; */
     font-weight: 700;
     margin-bottom: 1rem;
 }
