@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Секретный ключ
 SECRET_KEY = 'django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m'
 # Режим отладки – НЕ включать в продакшн!
-DEBUG = False
+DEBUG = True
 # Доступные хосты по умолчанию порт 4234
 ALLOWED_HOSTS = [
     '*',
