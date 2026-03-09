@@ -391,7 +391,7 @@ a:hover {
     background-repeat: no-repeat;
     /* Убрана жесткая высота 100%, используем min-height + flex-column, 
        чтобы текстовый блок (logo-inform-div) мог растягивать обложку и не налезал на карточки категорий */
-    min-height: 450px;
+    min-height: 250px;
     height: auto;
     display: flex;
     flex-direction: column;         /* Элементы выстраиваются сверху вниз (для предотвращения налезния текста на низ) */
@@ -538,24 +538,55 @@ a:hover {
 
 /* --- Формы и поля ввода (Inputs) --- */
 .form-control, .form-select {
-    background: #fff !important;
+    background: rgba(15, 23, 42, 0.4) !important;
     border: 1px solid var(--color-glass-border);
     border-radius: var(--radius-md);
-    color: #000 !important;
+    color: #fff !important;
     padding: 0.75rem 1rem;
     transition: var(--transition-normal);
 }
 
 .form-control:focus, .form-select:focus {
-    background: #fff !important;
+    background: rgba(15, 23, 42, 0.7) !important;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
     outline: none;
-    color: #000 !important;
+    color: #fff !important;
 }
 
 .form-control::placeholder {
     color: var(--color-text-dim);
+}
+
+/* Fix browser autofill in dark mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+body.light-mode .form-control, body.light-mode .form-select {
+    background: #fff !important;
+    color: #212529 !important;
+    border-color: #ced4da;
+}
+
+body.light-mode .form-control:focus, body.light-mode .form-select:focus {
+    background: #fff !important;
+    color: #212529 !important;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+body.light-mode input:-webkit-autofill,
+body.light-mode input:-webkit-autofill:hover, 
+body.light-mode input:-webkit-autofill:focus, 
+body.light-mode input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+    -webkit-text-fill-color: #212529 !important;
 }
 
 .form-label {
@@ -682,11 +713,19 @@ a:hover {
 .hero-section {
     width: 100%;
     /* Заменяем жестко заданные 700px на min-height для правильного расчета высоты браузером (чтобы избежать залипаний) */
-    min-height: 700px;
+    min-height: 250px;
     height: auto;
     /* Отступ до основного (нижнего) контента страницы */
     margin-bottom: 3rem;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+/* Большая версия героя для главной */
+.hero-large {
+    min-height: 700px;
+}
+.hero-large .logo-container {
+    min-height: 450px;
 }
 .hero-breadcrumbs .breadcrumb {
     padding: 0;
@@ -1032,3 +1071,23 @@ form textarea:not(.bg-transparent)::placeholder {
     transition: width 0.1s ease;
 }
 
+/* */
+.fs-1 {
+    text-transform: uppercase;
+    font-size: 2.5rem !important;
+    text-shadow: 0px 0px 1px hsla(71, 97%, 50%, 0.232);
+    
+}
+
+.fs-2 {
+    text-transform: uppercase;
+    font-size: 0.5rem !important;
+    text-shadow: 0px 0px 1px hsla(71, 97%, 50%, 0.232);
+    
+}
+.fs-6 {
+    text-transform: uppercase;
+    font-size: 0.5rem !important;
+    text-shadow: 0px 0px 1px hsla(71, 97%, 50%, 0.232);
+    
+}
