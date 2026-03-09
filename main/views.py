@@ -294,10 +294,52 @@ def robots_txt(request):
         content_type="text/plain",  # MIME-тип ответа
     )
 
+def admin_dashboard(request):
+    """Представление для панели аналитики в админке."""
+    if not request.user.is_staff:
+        return redirect('main:home')
+    
+    from news.models import News
+    from portfolio.models import Portfolio
+    from services.models import ServiceOrder
+    from django.db.models.functions import TruncDate
+    from django.utils import timezone
+    from datetime import timedelta
+
+    # Данные за последние 30 дней
+    last_30_days = timezone.now() - timedelta(days=30)
+    
+    from django.db.models import Count, Sum
+    
+    # Статистика заявок
+    orders_stats = (
+        ServiceOrder.objects.filter(created_at__gte=last_30_days)
+        .annotate(date=TruncDate('created_at'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
+    # Статистика просмотров (топ-5)
+    top_news = News.objects.order_by('-views')[:5]
+    top_portfolio = Portfolio.objects.order_by('-views')[:5]
+
+    context = {
+        "orders_stats": list(orders_stats),
+        "top_news": top_news,
+        "top_portfolio": top_portfolio,
+        "total_orders": ServiceOrder.objects.count(),
+        "total_revenue": ServiceOrder.objects.filter(status='completed').aggregate(total=Sum('estimated_budget'))['total'] or 0,
+    }
+    
+    return render(request, "main/admin_dashboard.html", context)
+
 def health_check(request):
-    """
-    Простой эндпоинт для проверки работоспособности приложения.
-    Не использует базу данных для минимизации риска ошибок при деплое.
-    """
+    """Проверка работоспособности."""
     from django.http import HttpResponse
     return HttpResponse("OK")
+
+def og_image_view(request):
+    """Обертка для генерации OG-изображений."""
+    from .og_utils import generate_og_image
+    return generate_og_image(request)

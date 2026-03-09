@@ -32,4 +32,27 @@
         </a>
     </div>
 </section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {% for review in recent_reviews %}
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "{{ review.full_name|escapejs }}"
+      },
+      "datePublished": "{{ review.created_at|date:'c' }}",
+      "reviewBody": "{{ review.content|striptags|escapejs }}",
+      "itemReviewed": {
+        "@type": "Organization",
+        "name": "{{ site_settings.site_title|escapejs }}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
 {% endif %}

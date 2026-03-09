@@ -24,6 +24,7 @@ from django.http import HttpResponse
 from django.urls import re_path
 from django.views.static import serve
 from django.views.generic import RedirectView
+from django.conf.urls.i18n import i18n_patterns
 from main import views as main_views
 from main.sitemaps import (
     PageSitemap,
@@ -43,14 +44,25 @@ sitemaps = {
     "static": StaticViewSitemap,
 }
 
+
+
 urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
+    path(
+        ".well-known/appspecific/com.chrome.devtools.json",
+        lambda r: HttpResponse(status=204),
+    ),
+]
+
+urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
+    path("rosetta/", include("rosetta.urls")), # Для перевода .po файлов
     path("", include("main.urls")),
     path("news/", include("news.urls")),
     path("portfolio/", include("portfolio.urls")),
     path("reviews/", include("reviews.urls")),
     path("accounts/", include("accounts.urls")),
+    path("accounts/", include("allauth.urls")), # Social login
     path("tickets/", include("tickets.urls")),
     path("mail/", include("mail.urls")),
     path("services/", include("services.urls")),
@@ -64,11 +76,8 @@ urlpatterns = [
         name="django.contrib.sitemaps.views.sitemap",
     ),
     path("robots.txt", main_views.robots_txt, name="robots"),
-    path(
-        ".well-known/appspecific/com.chrome.devtools.json",
-        lambda r: HttpResponse(status=204),
-    ),
-]
+    prefix_default_language=False,
+)
 
 # Включение обслуживания медиа-файлов и статики даже в продакшене (DEBUG=False)
 # Полезно, если Nginx ещё не настроен для отдачи статики

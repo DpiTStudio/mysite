@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
 # ------------------------------------------------------------
 INSTALLED_APPS = [
     # Темы
+    "modeltranslation", # Перевод моделей (должно быть ПЕРЕД админкой)
     "jazzmin",
     # Основные приложения
     "django.contrib.admin",
@@ -44,7 +45,19 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",  # Для sitemap.xml
+    "django.contrib.sites",     # Нужно для allauth
     "captcha",  # Капча
+    
+    # Allauth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
+
+    # Rosetta (перевод .po файлов)
+    "rosetta",
+
     # Мои приложения
     "main.apps.MainConfig", # Главная страница
     "news.apps.NewsConfig", # Новости
@@ -68,11 +81,13 @@ MIDDLEWARE = [
     # Основные middleware
     "django.middleware.security.SecurityMiddleware", # Безопасность
     "django.contrib.sessions.middleware.SessionMiddleware", # Сессии
+    "django.middleware.locale.LocaleMiddleware", # Мультиязычность
     "django.middleware.common.CommonMiddleware", # Общие настройки
     "django.middleware.csrf.CsrfViewMiddleware", # CSRF
     "django.contrib.auth.middleware.AuthenticationMiddleware", # Аутентификация
     "django.contrib.messages.middleware.MessageMiddleware", # Сообщения
     "django.middleware.clickjacking.XFrameOptionsMiddleware", # Защита от кликджекинга
+    "allauth.account.middleware.AccountMiddleware", # Allauth
 ]
 # Подключаем WhiteNoise, если он установлен (обслуживание статики)
 HAS_WHITENOISE = importlib.util.find_spec("whitenoise") is not None
@@ -140,12 +155,28 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ------------------------------------------------------------
-# Интернационализация
+# Интернационализация (i18n)
 # ------------------------------------------------------------
-LANGUAGE_CODE = "ru-ru" # Русский язык
+LANGUAGE_CODE = "ru" # Основной язык
 TIME_ZONE = "Europe/Moscow" # Московское время
 USE_I18N = True # Интернационализация
+USE_L10N = True # Локализация
 USE_TZ = True # Часовые пояса
+
+from django.utils.translation import gettext_lazy as _
+
+LANGUAGES = (
+    ('ru', _('Russian')),
+    ('en', _('English')),
+)
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'ru'
+MODELTRANSLATION_LANGUAGES = ('ru', 'en')
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('ru',)
 
 # ------------------------------------------------------------
 # Статические и медиа‑файлы
@@ -171,9 +202,34 @@ if not DEBUG: # Если DEBUG выключен
     }
 
 # ------------------------------------------------------------
-# Пользовательская модель
+# Пользовательская модель и Allauth
 # ------------------------------------------------------------
 AUTH_USER_MODEL = "accounts.User" # Пользовательская модель
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+# Настройки Allauth
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+ACCOUNT_EMAIL_VERIFICATION = "none" # "mandatory" для продакшена
+LOGIN_REDIRECT_URL = "accounts:profile"
+LOGOUT_REDIRECT_URL = "main:home"
+
+# Социальные провайдеры (Примеры конфигов)
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'OAUTH_PKCE_ENABLED': True,
+    },
+    'github': {
+        'SCOPE': ['user', 'repo', 'read:org'],
+    }
+}
 
 # ------------------------------------------------------------
 # Настройки капчи
@@ -232,6 +288,11 @@ JAZZMIN_SETTINGS = {
             "url": "/",
             "icon": "fas fa-home",
             "new_window": True,
+        }, {
+            "name": "Аналитика",
+            "url": "/admin/dashboard/",
+            "icon": "fas fa-chart-line",
+            "new_window": False,
         }]
     },
     "icons": {

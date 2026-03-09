@@ -16,16 +16,15 @@
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:title" content="{% block og_title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{% if site_settings %}{{ site_settings.meta_description }}{% else %}DPIT-CMS - Современная система управления контентом{% endif %}{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{% if site_settings and site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}{% endif %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% if site_settings and site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% url 'main:og_image' %}?title={% block og_title_val %}{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}{% endblock %}&subtitle={% block og_subtitle_val %}{{ site_settings.site_description|truncatechars:100 }}{% endblock %}{% endif %}{% endblock %}">
     <meta property="og:site_name" content="{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}">
     <meta property="og:locale" content="ru_RU">
     
-    <!-- Twitter Card -->
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
-    <meta name="twitter:title" content="{% block twitter_title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}{% if site_settings %}{{ site_settings.meta_description }}{% else %}DPIT-CMS - Современная система управления контентом{% endif %}{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}{% if site_settings and site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}{% endif %}{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ block.super }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ block.super }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ block.super }}{% endblock %}">
     
     <!-- Фавикон -->
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
@@ -119,9 +118,16 @@
                     {% if messages %}
                         <div class="messages-container mb-4">
                             {% for message in messages %}
-                                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+                                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show glass-card border-0" role="alert">
+                                    <div class="d-flex align-items-center">
+                                        {% if message.tags == 'success' %}
+                                        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_7W99On.json" background="transparent" speed="1" style="width: 50px; height: 50px;" autoplay></lottie-player>
+                                        {% elif message.tags == 'error' %}
+                                        <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_hp6reunx.json" background="transparent" speed="1" style="width: 50px; height: 50px;" autoplay></lottie-player>
+                                        {% endif %}
+                                        <div class="ms-2">{{ message }}</div>
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Закрыть"></button>
                                 </div>
                             {% endfor %}
                         </div>
@@ -225,7 +231,22 @@
     <script src="https://unpkg.com/htmx.org@1.9.10" defer></script>
     <!-- Lottie Player for animations -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
+    <!-- Simple Parallax -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.5.1/dist/simpleParallax.min.js" defer></script>
     <script src="{% static 'js/script.js' %}" defer></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Инициализация параллакса
+            const images = document.querySelectorAll('.parallax-img');
+            if (images.length > 0) {
+                new simpleParallax(images, {
+                    delay: 0.6,
+                    transition: 'cubic-bezier(0,0,0,1)'
+                });
+            }
+        });
+    </script>
     
     <!-- Блок для дополнительного JavaScript -->
     {% block extra_js %}{% endblock %}

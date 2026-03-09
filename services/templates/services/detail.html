@@ -17,13 +17,15 @@
   "serviceType": "{{ service.title|escapejs }}",
   "provider": {
     "@type": "Organization",
-    "name": "{{ site_settings.site_title|default:'DPIT-CMS'|escapejs }}"
+    "name": "{{ site_settings.site_title|default:'DPIT-CMS'|escapejs }}",
+    "logo": "{{ request.scheme }}://{{ request.get_host }}{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'images/logo.png' %}{% endif %}"
   },
-  "description": "{{ service.short_description|escapejs }}",
+  "description": "{{ service.short_description|striptags|escapejs }}",
   "offers": {
     "@type": "Offer",
-    "price": "{{ service.price }}",
-    "priceCurrency": "RUB"
+    "price": "{% if service.price_type == 'fixed' %}{{ service.price_fixed }}{% elif service.price_type == 'range' %}{{ service.price_min }}{% else %}0{% endif %}",
+    "priceCurrency": "{{ service.currency }}",
+    "availability": "https://schema.org/{% if service.is_available_for_order %}InStock{% else %}OutOfStock{% endif %}"
   }
 }
 </script>

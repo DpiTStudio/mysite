@@ -1,0 +1,74 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+    .analytics-card { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); color: #333; }
+    .dark-mode .analytics-card { background: #2d2d2d; color: #eee; }
+    .stat-value { font-size: 2rem; font-weight: bold; color: #3498db; }
+    .stat-label { color: #888; text-transform: uppercase; font-size: 0.8rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-header" style="padding: 20px;">
+    <h1>Аналитика и статистика</h1>
+    <p>Обзор ключевых показателей проекта за последние 30 дней.</p>
+</div>
+
+<div class="analytics-grid">
+    <div class="analytics-card">
+        <div class="stat-label">Всего заказов</div>
+        <div class="stat-value">{{ total_orders }}</div>
+    </div>
+    <div class="analytics-card">
+        <div class="stat-label">Общая выручка (завершенные)</div>
+        <div class="stat-value">{{ total_revenue }} ₽</div>
+    </div>
+</div>
+
+<div class="analytics-grid">
+    <div class="analytics-card" style="grid-column: span 2;">
+        <h3>Динамика заказов</h3>
+        <canvas id="ordersChart"></canvas>
+    </div>
+    
+    <div class="analytics-card">
+        <h3>Топ новости (просмотры)</h3>
+        <ul style="list-style: none; padding: 0;">
+            {% for item in top_news %}
+            <li style="margin-bottom: 10px; display: flex; justify-content: space-between;">
+                <span>{{ item.title|truncatechars:30 }}</span>
+                <span class="badge" style="background: #3498db;">{{ item.views }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('ordersChart').getContext('2d');
+    const data = {
+        labels: [{% for item in orders_stats %}'{{ item.date|date:"d.m" }}',{% endfor %}],
+        datasets: [{
+            label: 'Количество заказов',
+            data: [{% for item in orders_stats %}{{ item.count }},{% endfor %}],
+            borderColor: '#3498db',
+            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+            fill: true,
+            tension: 0.4
+        }]
+    };
+    new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+</script>
+{% endblock %}

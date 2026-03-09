@@ -33,4 +33,6 @@ urlpatterns = [
     path("page/<slug:slug>/", views.page_detail, name="page_detail"),
     path("search/", views.global_search, name="search"),
     path("health/", views.health_check, name="health"),
+    path("og-image/", views.og_image_view, name="og_image"),
+    path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
 ]
