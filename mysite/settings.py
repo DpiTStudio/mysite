@@ -221,6 +221,7 @@ JAZZMIN_SETTINGS = {
         "reviews", # Отзывы
         "tickets", # Тикеты
         "mail", # Почта
+        "cart", # Корзина
         "accounts", # Аккаунты
         "logfiles", # Логи
     ],
@@ -252,6 +253,8 @@ JAZZMIN_SETTINGS = {
         "tickets.Ticket": "fas fa-ticket-alt",
         "tickets.TicketMessage": "fas fa-comment-dots",
         "mail.Mail": "fas fa-envelope",
+        "cart.Order": "fas fa-shopping-basket",
+        "cart.OrderItem": "fas fa-cart-plus",
         "logfiles.LogFile": "fas fa-file-alt",
         "logfiles.LogBackup": "fas fa-archive",
         "accounts.User": "fas fa-user-circle",
@@ -272,6 +275,7 @@ JAZZMIN_SETTINGS = {
         {"app": "reviews", "icon": "fas fa-star"},
         {"app": "tickets", "icon": "fas fa-ticket-alt"},
         {"app": "mail", "icon": "fas fa-envelope"},
+        {"app": "cart", "icon": "fas fa-shopping-cart"},
         {"app": "accounts", "icon": "fas fa-users"},
         {"app": "logfiles", "icon": "fas fa-file-alt"},
         {"model": "admin.LogEntry", "label": "История действий", "icon": "fas fa-history"},

@@ -6,6 +6,10 @@ from portfolio.models import Portfolio, PortfolioCategory
 from reviews.models import Review
 from tickets.models import Ticket
 from main.models import Page
+from services.models import Service, ServiceOrder
+from knowledge_base.models import Article, Category as KBCategory
+from cart.models import Order as CartOrder
+from logfiles.models import LogFile
 
 register = template.Library()
 User = get_user_model()
@@ -23,8 +27,18 @@ def get_admin_stats():
         'tickets_count': Ticket.objects.count(),
         'tickets_open_count': Ticket.objects.exclude(status='closed').count(),
         'pages_count': Page.objects.count(),
+        'services_count': Service.objects.count(),
+        'service_orders_count': ServiceOrder.objects.count(),
+        'service_orders_new_count': ServiceOrder.objects.filter(status='new').count(),
         'total_news_views': News.objects.aggregate(Sum('views'))['views__sum'] or 0,
         'total_portfolio_views': Portfolio.objects.aggregate(Sum('views'))['views__sum'] or 0,
+        
+        # Новые статистики
+        'kb_articles_count': Article.objects.count(),
+        'kb_categories_count': KBCategory.objects.count(),
+        'cart_orders_count': CartOrder.objects.count(),
+        'cart_orders_new_count': CartOrder.objects.filter(status='new').count(),
+        'log_files_count': LogFile.objects.count(),
     }
     return stats
 

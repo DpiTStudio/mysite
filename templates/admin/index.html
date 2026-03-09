@@ -166,6 +166,79 @@
         </div>
     </div>
 
+    <!-- Третья строка статистики -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box bg-lightblue">
+                <div class="inner">
+                    <h3>{{ stats.kb_articles_count }}</h3>
+                    <p>Статей базы знаний</p>
+                    <small class="d-block mt-1"><i class="fas fa-book mr-1"></i>Всего статей</small>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <a href="{% url 'admin:knowledge_base_article_changelist' %}" class="small-box-footer">
+                    Управление <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box bg-olive">
+                <div class="inner">
+                    <h3>{{ stats.cart_orders_count }}</h3>
+                    <p>Заказов в корзине</p>
+                    <small class="d-block mt-1">
+                        {% if stats.cart_orders_new_count > 0 %}
+                            <i class="fas fa-exclamation-circle mr-1"></i>{{ stats.cart_orders_new_count }} новых
+                        {% else %}
+                            <i class="fas fa-check-circle mr-1"></i>Все обработаны
+                        {% endif %}
+                    </small>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-shopping-basket"></i>
+                </div>
+                <a href="{% url 'admin:cart_order_changelist' %}" class="small-box-footer">
+                    Управление <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box bg-maroon">
+                <div class="inner">
+                    <h3>{{ stats.log_files_count }}</h3>
+                    <p>Системных логов</p>
+                    <small class="d-block mt-1"><i class="fas fa-file-alt mr-1"></i>Файлы журналов</small>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <a href="{% url 'admin:logfiles_logfile_changelist' %}" class="small-box-footer">
+                    Управление <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="small-box" style="background-color: #605ca8; color: #fff;">
+                <div class="inner">
+                    <h3>Настройки</h3>
+                    <p>Конфигурация сайта</p>
+                    <small class="d-block mt-1"><i class="fas fa-cogs mr-1"></i>Глобальные параметры</small>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <a href="{% url 'admin:main_sitesettings_changelist' %}" class="small-box-footer" style="color: rgba(255, 255, 255, 0.8);">
+                    Управление <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Быстрые действия и информация -->
     <div class="row mt-3">
         <!-- Быстрые действия -->
@@ -204,6 +277,13 @@
                                 <small class="d-block text-muted">Создать статическую страницу</small>
                             </div>
                         </a>
+                        <a href="{% url 'admin:knowledge_base_article_add' %}" class="list-group-item list-group-item-action d-flex align-items-center py-3">
+                            <i class="fas fa-plus-circle text-warning mr-3 fa-lg"></i>
+                            <div>
+                                <strong>Новая статья</strong>
+                                <small class="d-block text-muted">Добавить в базу знаний</small>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 <div class="card-footer text-center">
@@ -238,9 +318,16 @@
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
                         <div>
                             <i class="fas fa-shopping-cart text-purple mr-2"></i>
-                            <strong>Новые заказы услуг</strong>
+                            <strong>Новые заявки услуг</strong>
                         </div>
                         <span class="badge badge-purple badge-pill">{{ stats.service_orders_new_count }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                        <div>
+                            <i class="fas fa-shopping-basket text-success mr-2"></i>
+                            <strong>Новые заказы в корзине</strong>
+                        </div>
+                        <span class="badge badge-success badge-pill">{{ stats.cart_orders_new_count }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
