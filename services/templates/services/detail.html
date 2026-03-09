@@ -29,99 +29,98 @@
 </script>
 {% endblock %}
 {% block content %}
-<div class="container py-5">
-
-    <div class="row">
-        <!-- Main Content -->
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body p-4 p-md-5">
-                    <div class="d-flex align-items-center mb-4">
-                        {% if service.icon %}
-                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="me-4" style="width: 64px; height: 64px;">
-                        {% endif %}
-                        <h1 class="display-5 fw-bold mb-0">{{ service.title }}</h1>
+<div class="row">
+    <!-- Main Content -->
+    <div class="col-lg-8 animate-left">
+        <div class="glass-card mb-5">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex align-items-center mb-4">
+                    {% if service.icon %}
+                        <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="me-4" style="width: 64px; height: 64px;">
+                    {% endif %}
+                    <h1 class="display-5 fw-bold mb-0 text-white">{{ service.title }}</h1>
+                </div>
+                
+                <div class="mb-5">
+                    <h4 class="fw-bold mb-3 text-white">Описание услуги</h4>
+                    <div class="content-body text-muted">
+                        {{ service.description|safe }}
                     </div>
-                    
-                    <div class="mb-5">
-                       <h4 class="fw-bold mb-3">Описание услуги</h4>
-                       <div class="content-body">
-                           {{ service.description|safe }}
-                       </div>
-                    </div>
-                        {% if tech_list %}
-                        <div class="mb-4 bg-light p-4 rounded-3 border-start border-4 border-info">
-                            <h4 class="fw-bold mb-3 text-info">
-                                <i class="fas fa-layer-group me-2"></i>Используемый стек / Технологии
-                            </h4>
-                            <div class="row pt-2">
-                                {% for tech in tech_list %}
-                                <div class="col-sm-6 col-md-4 col-lg-2 mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <span class="fw-medium text-dark" style="font-size: 0.9em;">{{ tech }}</span>
-                                    </div>
+                </div>
+                    {% if tech_list %}
+                    <div class="mb-4 bg-dark bg-opacity-25 p-4 rounded-3 border-start border-4 border-info">
+                        <h4 class="fw-bold mb-3 text-info">
+                            <i class="fas fa-layer-group me-2"></i>Используемый стек / Технологии
+                        </h4>
+                        <div class="row pt-2">
+                            {% for tech in tech_list %}
+                            <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span class="fw-medium text-white" style="font-size: 0.9em;">{{ tech }}</span>
                                 </div>
-                                {% endfor %}
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar / Order Form -->
-        <div class="col-lg-4">
-            <div class="card shadow border-0 position-sticky" style="top: 20px;">
-                <div class="card-header bg-primary text-white p-4">
-                    <h4 class="mb-0 text-center">Заказать услугу</h4>
-                </div>
-                <div class="card-body p-4">
-                    <div class="price-box text-center mb-4">
-                        <div class="display-6 fw-bold text-primary">{{ service.get_price_display }}</div>
-                        <small class="text-muted">
-                            {% if service.price_type == 'fixed' %}Фиксированная стоимость{% endif %}
-                            {% if service.price_type == 'range' %}Диапазон цен{% endif %}
-                            {% if service.price_type == 'contact' %}Цена по запросу{% endif %}
-                        </small>
-                    </div>
-                    
-                    {% if service.can_be_ordered %}
-                    <form action="{% url 'services:order' service.slug %}" method="post">
-                        {% csrf_token %}
-                        {% for field in form %}
-                        <div class="mb-3">
-                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                            <div class="text-danger small">{{ field.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                        
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">Отправить заявку</button>
-                        </div>
-                        <div class="text-center mt-3">
-                            <small class="text-muted">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</small>
-                        </div>
-                    </form>
-                    <div class="d-grid mt-3">
-                        <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-success btn-lg w-100 shine-effect">
-                                <i class="bi bi-cart-plus"></i> В корзину
-                            </button>
-                        </form>
-                    </div>
-                    {% else %}
-                    <div class="text-center p-4 rounded bg-danger bg-opacity-10 border border-danger border-opacity-25 mt-4">
-                        <i class="bi bi-calendar-x display-4 text-danger mb-3"></i>
-                        <h4 class="fw-bold text-danger mb-2">Временно недоступно</h4>
-                        <p class="text-muted mb-0">К сожалению, в данный момент нет возможности заказать эту услугу. Пожалуйста, зайдите позже.</p>
                     </div>
                     {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar / Order Form -->
+    <div class="col-lg-4 animate-right">
+        <div class="glass-card position-sticky" style="top: 130px;">
+            <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
+                <h4 class="mb-0 text-center text-white">Заказать услугу</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="price-box text-center mb-4">
+                    <div class="display-6 fw-bold text-primary">{{ service.get_price_display }}</div>
+                    <small class="text-muted">
+                        {% if service.price_type == 'fixed' %}Фиксированная стоимость{% endif %}
+                        {% if service.price_type == 'range' %}Диапазон цен{% endif %}
+                        {% if service.price_type == 'contact' %}Цена по запросу{% endif %}
+                    </small>
                 </div>
+                
+                {% if service.can_be_ordered %}
+                <form action="{% url 'services:order' service.slug %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label text-white-50">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg shine-effect">Отправить заявку</button>
+                    </div>
+                    <div class="text-center mt-3 mb-4 border-bottom border-secondary border-opacity-25 pb-4">
+                        <small class="text-muted">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</small>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4 pt-2">
+                    <div class="text-muted small mb-3">Или добавьте услугу в общую корзину:</div>
+                    <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success btn-lg w-100 shine-effect">
+                            <i class="bi bi-cart-plus me-2"></i> В корзину
+                        </button>
+                    </form>
+                </div>
+                {% else %}
+                <div class="text-center p-4 rounded bg-danger bg-opacity-10 border border-danger border-opacity-25 mt-4">
+                    <i class="bi bi-calendar-x display-4 text-danger mb-3"></i>
+                    <h4 class="fw-bold text-danger mb-2">Временно недоступно</h4>
+                    <p class="text-muted mb-0">К сожалению, в данный момент нет возможности заказать эту услугу. Пожалуйста, зайдите позже.</p>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -16,43 +16,45 @@
 }
 </script>
 {% endblock %}
-<section class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h1 class="card-title">{{ article.title }}</h1>
-                        <div class="mb-4 text-muted border-bottom pb-2">
-                            <span><i class="far fa-calendar-alt me-1"></i> {{ article.created_at|date:"d M Y" }}</span>
-                            <span class="ms-3"><i class="far fa-eye me-1"></i> {{ article.views }} Просмотров</span>
-                            <span class="ms-3"><i class="fas fa-folder me-1"></i> <a href="{{ article.category.get_absolute_url }}">{{ article.category.title }}</a></span>
-                        </div>
-                        <div class="article-content">
-                            {{ article.content|safe }}
-                        </div>
-                    </div>
+<div class="row gx-5 animate-up">
+    <div class="col-lg-8 animate-left">
+        <div class="glass-card mb-5">
+            <div class="card-body p-4 p-md-5">
+                <h1 class="card-title text-white mb-3">{{ article.title }}</h1>
+                <div class="mb-4 text-white-50 border-bottom border-light border-opacity-10 pb-3 d-flex flex-wrap gap-3 align-items-center">
+                    <span><i class="bi bi-calendar3 text-primary me-2"></i> {{ article.created_at|date:"d M Y" }}</span>
+                    <span><i class="bi bi-eye text-primary me-2"></i> {{ article.views }} Просмотров</span>
+                    <span><i class="bi bi-folder2 text-primary me-2"></i> <a href="{{ article.category.get_absolute_url }}" class="text-white-50 hover-primary text-decoration-none">{{ article.category.title }}</a></span>
                 </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title">О категории</h4>
-                        <p><strong>{{ article.category.title }}</strong></p>
-                        <a href="{{ article.category.get_absolute_url }}" class="btn btn-outline-primary btn-sm w-100">Все статьи категории</a>
-                    </div>
-                </div>
-                
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h4 class="card-title">Нужна помощь?</h4>
-                        <p class="card-text text-muted">Если вы не нашли ответ в статье, мы готовы помочь.</p>
-                        <a href="{% url 'tickets:create' %}" class="btn btn-primary w-100">Создать тикет</a>
-                    </div>
+                <!-- Контент статьи -->
+                <div class="article-content text-light lh-lg article-glass-content">
+                    {{ article.content|safe }}
                 </div>
             </div>
         </div>
     </div>
-</section>
+    
+    <div class="col-lg-4 animate-right mt-4 mt-lg-0">
+        <div class="glass-card mb-4">
+            <div class="card-body p-4">
+                <h4 class="card-title h5 text-white mb-3"><i class="bi bi-bookmark text-primary me-2"></i> О категории</h4>
+                <p class="text-white-50 mb-4">Эта статья относится к категории <strong>{{ article.category.title }}</strong>.</p>
+                <a href="{{ article.category.get_absolute_url }}" class="btn btn-outline-light btn-sm w-100 rounded-pill">Все статьи категории <i class="bi bi-arrow-right ms-2"></i></a>
+            </div>
+        </div>
+        
+        <div class="glass-card sticky-top" style="top: 100px;">
+            <div class="card-body p-4 text-center">
+                <div class="mb-3">
+                    <i class="bi bi-life-preserver fs-1 text-primary opacity-75"></i>
+                </div>
+                <h4 class="card-title h5 text-white mb-2">Нужна помощь?</h4>
+                <p class="card-text text-white-50 small mb-4">Если вы не нашли ответ в статье, мы готовы помочь.</p>
+                <a href="{% url 'tickets:create' %}" class="btn btn-primary w-100 rounded-pill shine-effect">
+                    <i class="bi bi-headset me-2"></i> Создать тикет
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

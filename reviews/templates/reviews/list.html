@@ -4,53 +4,56 @@
 {% block title %}Отзывы клиентов{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="display-5 fw-bold text-primary mb-0">
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-5 animate-left">
+            <div>
+                <h1 class="display-4 fw-bold text-white mb-3">
                     <i class="bi bi-star-fill text-warning"></i> Отзывы
                 </h1>
-                <a href="{% url 'reviews:create' %}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Оставить отзыв
-                </a>
+                <p class="lead text-muted">Мнения наших клиентов</p>
             </div>
-            
-            <div class="row">
-                {% for review in reviews %}
-                <div class="col-md-6 mb-4">
-                    <div class="card standard-card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h5 class="card-title mb-1 text-primary">{{ review.full_name }}</h5>
-                                    <div class="small text-muted d-flex flex-wrap gap-2">
-                                        <span><i class="bi bi-envelope"></i> {{ review.email }}</span>
-                                        {% if review.phone %}
-                                            <span>| <i class="bi bi-telephone"></i> {{ review.phone }}</span>
-                                        {% endif %}
-                                    </div>
+            <a href="{% url 'reviews:create' %}" class="btn btn-primary shine-effect">
+                <i class="bi bi-plus-circle"></i> Оставить отзыв
+            </a>
+        </div>
+        
+        <div class="row g-4">
+            {% for review in reviews %}
+            <div class="col-md-6">
+                <div class="card glass-card-premium border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="card-title mb-1 text-primary">{{ review.full_name }}</h5>
+                                <div class="small text-muted d-flex flex-wrap gap-2">
+                                    <span><i class="bi bi-envelope"></i> {{ review.email }}</span>
+                                    {% if review.phone %}
+                                        <span>| <i class="bi bi-telephone"></i> {{ review.phone }}</span>
+                                    {% endif %}
                                 </div>
-                                <div class="text-end">
-                                    <small class="text-muted"><i class="bi bi-calendar3"></i> {{ review.created_at|date:"d.m.Y" }}</small>
-                                </div>
                             </div>
-                            <div class="card-text mb-3">
-                                <i class="bi bi-quote fs-4 text-muted opacity-25"></i>
-                                <span class="ms-2">{{ review.content|linebreaksbr }}</span>
+                            <div class="text-end">
+                                <small class="text-muted"><i class="bi bi-calendar3"></i> {{ review.created_at|date:"d.m.Y" }}</small>
                             </div>
-                            <div class="mt-auto border-top pt-2">
-                                {% if review.status == 'pending' %}
-                                    <span class="badge bg-warning"><i class="bi bi-clock"></i> На модерации</span>
-                                {% elif review.status == 'approved' %}
-                                    <span class="badge bg-success"><i class="bi bi-check-circle"></i> Одобрен</span>
-                                {% endif %}
-                            </div>
+                        </div>
+                        <div class="card-text mb-3 flex-grow-1">
+                            <i class="bi bi-quote fs-4 text-muted opacity-25"></i>
+                            <span class="ms-2">{{ review.content|linebreaksbr }}</span>
+                        </div>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            {% if review.status == 'pending' %}
+                                <span class="badge bg-warning text-dark"><i class="bi bi-clock"></i> На модерации</span>
+                            {% elif review.status == 'approved' %}
+                                <span class="badge bg-success"><i class="bi bi-check-circle"></i> Одобрен</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="col-12 text-center py-5">
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5 animate-scale">
+                <div class="glass-card-premium p-5 border-0">
                     <i class="bi bi-star display-1 text-muted opacity-25 mb-4"></i>
                     <h4>Отзывов пока нет</h4>
                     <p class="text-muted">Будьте первым, кто оставит свой отзыв о нашей работе!</p>
@@ -58,8 +61,8 @@
                         Написать отзыв
                     </a>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>

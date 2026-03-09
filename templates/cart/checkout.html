@@ -4,87 +4,96 @@
 {% block title %}Оформление заказа | {{ site_settings.site_title }}{% endblock %}
 
 {% block content %}
-<div class="container py-5 mt-5">
+<div class="animate-up">
     <div class="row gx-5">
-        <div class="col-lg-8 mb-5">
-            <div class="glass-card p-4 p-md-5">
-                <h2 class="mb-4 text-gradient">Данные для оформления</h2>
-                
-                <form method="post" class="needs-validation">
-                    {% csrf_token %}
-                    
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label text-light">Имя <span class="text-danger">*</span></label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="text-danger small mt-1">{{ form.first_name.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label text-light">Фамилия</label>
-                            {{ form.last_name }}
+        <div class="col-lg-8 mb-5 animate-left">
+            <div class="glass-card mb-5">
+                <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
+                    <h2 class="h4 mb-0 text-white"><i class="bi bi-file-earmark-text text-primary me-2"></i> Данные для оформления</h2>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" class="needs-validation">
+                        {% csrf_token %}
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-white-50">Имя <span class="text-danger">*</span></label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                    <div class="text-danger small mt-1">{{ form.first_name.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-white-50">Фамилия</label>
+                                {{ form.last_name }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label text-white-50">Email <span class="text-danger">*</span></label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-white-50">Телефон <span class="text-danger">*</span></label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                    <div class="text-danger small mt-1">{{ form.phone.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-12">
+                                <label class="form-label text-white-50">Компания</label>
+                                {{ form.company }}
+                            </div>
+                            
+                            <div class="col-12">
+                                <label class="form-label text-white-50">Комментарий к заказу (необязательно)</label>
+                                {{ form.comment }}
+                            </div>
                         </div>
                         
-                        <div class="col-md-6">
-                            <label class="form-label text-light">Email <span class="text-danger">*</span></label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>
-                            {% endif %}
+                        <div class="mt-5 pt-4 border-top border-secondary border-opacity-25">
+                            <button class="btn btn-primary btn-lg w-100 shadow-glow shine-effect" type="submit">
+                                <i class="bi bi-check-circle me-2"></i> Разместить заказ
+                            </button>
+                            <div class="text-white-50 small mt-3 text-center">
+                                Нажимая на кнопку "Разместить заказ", вы соглашаетесь с условиями обработки персональных данных.
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label text-light">Телефон <span class="text-danger">*</span></label>
-                            {{ form.phone }}
-                            {% if form.phone.errors %}
-                                <div class="text-danger small mt-1">{{ form.phone.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="col-12">
-                            <label class="form-label text-light">Компания</label>
-                            {{ form.company }}
-                        </div>
-                        
-                        <div class="col-12">
-                            <label class="form-label text-light">Комментарий к заказу (необязательно)</label>
-                            {{ form.comment }}
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary btn-lg w-100 mt-4 shadow-glow" type="submit">
-                        Разместить заказ
-                    </button>
-                    <div class="text-muted small mt-3 text-center">
-                        Нажимая на кнопку "Разместить заказ", вы соглашаетесь с условиями обработки персональных данных.
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
         
-        <div class="col-lg-4">
-            <div class="glass-card p-4 sticky-top" style="top: 100px;">
-                <h4 class="mb-4">Ваш заказ</h4>
-                <ul class="list-group mb-3 border-0 bg-transparent">
-                    {% for item in cart %}
-                    <li class="list-group-item d-flex justify-content-between lh-sm bg-transparent border-bottom border-light border-opacity-10 text-light py-3 px-0">
-                        <div>
-                            <h6 class="my-0">{{ item.item_obj.title }}</h6>
-                            <small class="text-muted text-opacity-75">Кол-во: {{ item.quantity }}</small>
-                        </div>
-                        <span class="text-muted">{{ item.total_price_display }}</span>
-                    </li>
-                    {% endfor %}
-                    <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-light py-3 px-0 fs-5 mt-2">
-                        <span>Итого (RUR, фикс)</span>
-                        <strong class="text-gradient fw-bold">{{ cart.get_total_price }} ₽</strong>
-                    </li>
-                    {% if cart.has_flexible_prices %}
-                    <li class="list-group-item bg-transparent text-muted small px-0 border-0 pt-0">
-                        * Окончательная цена будет указана после согласования.
-                    </li>
-                    {% endif %}
-                </ul>
+        <div class="col-lg-4 animate-right">
+            <div class="glass-card p-0 sticky-top" style="top: 130px;">
+                <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
+                    <h4 class="h5 mb-0 text-white"><i class="bi bi-bag-check text-primary me-2"></i> Ваш заказ</h4>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="list-group list-group-flush mb-3 border-0 bg-transparent">
+                        {% for item in cart %}
+                        <li class="list-group-item d-flex justify-content-between lh-sm bg-transparent border-bottom border-secondary border-opacity-25 text-white py-3 px-0">
+                            <div>
+                                <h6 class="my-0 text-white">{{ item.item_obj.title }}</h6>
+                                <small class="text-white-50">Кол-во: {{ item.quantity }}</small>
+                            </div>
+                            <span class="text-white fw-medium">{{ item.total_price_display }}</span>
+                        </li>
+                        {% endfor %}
+                        <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 fs-5 mt-2">
+                            <span>Итого (RUR, фикс)</span>
+                            <strong class="text-gradient fw-bold">{{ cart.get_total_price }} ₽</strong>
+                        </li>
+                        {% if cart.has_flexible_prices %}
+                        <li class="list-group-item bg-transparent text-white-50 small px-0 border-0 pt-0">
+                            * Окончательная цена будет указана после согласования.
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

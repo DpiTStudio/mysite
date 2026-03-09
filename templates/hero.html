@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/hero.css' %}">
 
 <!-- Основной контейнер-обертка секции. Класс px-0 убирает боковые отступы, hero-section отвечает за высоту -->
-<div class="container-fluid px-0 hero-section">
+<div class="container-fluid px-0 hero-section {% if request.path == '/' %}hero-large{% endif %}">
     <!-- Контейнер для логотипа и фонового изображения. Если есть фон (header_data.image), устанавливаем его через style -->
     <div class="w-100 px-0 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
         

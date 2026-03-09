@@ -8,7 +8,7 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
-        <div class="mb-5">
+        <div class="mb-5 animate-left">
             <h1 class="display-4 fw-bold text-white mb-3">
                 {% if current_category %}
                     {{ current_category.name }}
@@ -16,6 +16,8 @@
                     Портфолио проектов
                 {% endif %}
             </h1>
+            <p class="lead text-muted">Наши лучшие реализованные проекты и кейсы</p>
+        </div>
             
             {% if current_category and current_category.content %}
             <div class="alert alert-info shadow-sm">

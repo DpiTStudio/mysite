@@ -3,12 +3,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. Preloader
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        window.addEventListener('load', function() {
-            setTimeout(() => {
+        const hidePreloader = () => {
+            if (preloader.style.opacity !== '0') {
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
-            }, 500);
+            }
+        };
+        
+        window.addEventListener('load', function() {
+            setTimeout(hidePreloader, 500);
         });
+        
+        // Safety net to hide preloader even if external resources fail
+        setTimeout(hidePreloader, 2000);
     }
 
     // 2. Scroll Progress Bar

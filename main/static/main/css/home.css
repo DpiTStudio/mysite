@@ -1,6 +1,6 @@
 /* Секция на главной странице */
 .home-section {
-    padding: 5rem 0;
+    padding: 3rem 0;
 }
 
 /* Заголовок секции */
@@ -15,8 +15,7 @@
     content: '';
     position: absolute;
     bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: 80px;
     height: 4px;
     background: var(--gradient-premium);

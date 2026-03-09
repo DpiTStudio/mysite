@@ -12,7 +12,7 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
-        <div class="mb-4">
+        <div class="mb-5 animate-left">
             <h1 class="display-4 fw-bold text-white mb-3">
                 {% if search_query %}
                     Результаты поиска: <span class="text-primary">"{{ search_query }}"</span>
@@ -24,6 +24,9 @@
                     Наши публикации
                 {% endif %}
             </h1>
+            {% if not search_query and not target_date and not current_category %}
+            <p class="lead text-muted">Свежие новости, статьи и полезные материалы</p>
+            {% endif %}
             
             {% if search_query %}
             <div class="alert alert-info shadow-sm">

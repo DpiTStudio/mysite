@@ -8,109 +8,126 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2><i class="bi bi-ticket-perforated"></i> Мои тикеты</h2>
-                <a href="{% url 'tickets:create' %}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Создать тикет
-                </a>
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-5 animate-left">
+            <div>
+                <h1 class="display-4 fw-bold text-white mb-3">
+                    <i class="bi bi-ticket-perforated text-primary"></i> Мои тикеты
+                </h1>
+                <p class="lead text-muted">Управление запросами в поддержку</p>
             </div>
+            <a href="{% url 'tickets:create' %}" class="btn btn-primary shine-effect">
+                <i class="bi bi-plus-circle"></i> Создать тикет
+            </a>
+        </div>
             
-            <!-- Фильтр по статусу -->
-            <div class="mb-3">
-                <div class="btn-group" role="group">
-                    <a href="{% url 'tickets:list' %}" class="btn btn-outline-secondary {% if not current_status %}active{% endif %}">
-                        Все
-                    </a>
-                    {% for status_value, status_label in status_choices %}
-                        <a href="{% url 'tickets:list' %}?status={{ status_value }}" 
-                           class="btn btn-outline-secondary {% if current_status == status_value %}active{% endif %}">
-                            {{ status_label }}
+            <div class="glass-card p-4 p-md-5 mb-4 animate-up delay-100">
+                <!-- Фильтр по статусу -->
+                <div class="mb-4">
+                    <div class="d-flex flex-wrap gap-2" role="group">
+                        <a href="{% url 'tickets:list' %}" class="btn btn-sm btn-outline-light rounded-pill px-3 {% if not current_status %}active{% endif %}">
+                            Все
                         </a>
-                    {% endfor %}
+                        {% for status_value, status_label in status_choices %}
+                            <a href="{% url 'tickets:list' %}?status={{ status_value }}" 
+                               class="btn btn-sm btn-outline-light rounded-pill px-3 {% if current_status == status_value %}active{% endif %}">
+                                {{ status_label }}
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            
-            {% if tickets %}
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Тема</th>
-                                <th>Статус</th>
-                                <th>Приоритет</th>
-                                <th>Создан</th>
-                                <th>Обновлен</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for ticket in tickets %}
+                
+                {% if tickets %}
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle custom-table border-0 text-white-50 mb-0">
+                            <thead class="bg-dark bg-opacity-50 text-white">
                                 <tr>
-                                    <td>#{{ ticket.id }}</td>
-                                    <td>
-                                        <a href="{% url 'tickets:detail' ticket.id %}">{{ ticket.subject }}</a>
-                                    </td>
-                                    <td>
-                                        <span class="ticket-status status-{{ ticket.status }}">
-                                            {{ ticket.get_status_display }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="priority-badge priority-{{ ticket.priority }}">
-                                            {{ ticket.get_priority_display }}
-                                        </span>
-                                    </td>
-                                    <td>{{ ticket.created_at|date:"d.m.Y H:i" }}</td>
-                                    <td>{{ ticket.updated_at|date:"d.m.Y H:i" }}</td>
-                                    <td>
-                                        <a href="{% url 'tickets:detail' ticket.id %}" class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i> Открыть
-                                        </a>
-                                    </td>
+                                    <th class="py-3 ps-4 opacity-75">ID</th>
+                                    <th class="py-3 opacity-75">Тема</th>
+                                    <th class="py-3 opacity-75">Статус</th>
+                                    <th class="py-3 opacity-75">Приоритет</th>
+                                    <th class="py-3 opacity-75">Создан</th>
+                                    <th class="py-3 opacity-75">Обновлен</th>
+                                    <th class="py-3 pe-4 text-end opacity-75">Действия</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {% for ticket in tickets %}
+                                    <tr class="border-bottom border-secondary border-opacity-25 transition hover-bg">
+                                        <td class="ps-4 text-white-50">#{{ ticket.id }}</td>
+                                        <td>
+                                            <a href="{% url 'tickets:detail' ticket.id %}" class="text-white hover-primary text-decoration-none fw-medium d-flex align-items-center">
+                                                <i class="bi bi-file-earmark-text text-primary me-2"></i> {{ ticket.subject }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-opacity-10 border rounded-pill d-inline-flex align-items-center px-2 py-1 ticket-status status-{{ ticket.status }}">
+                                                <span class="status-indicator rounded-circle me-1" style="width: 6px; height: 6px;"></span>
+                                                {{ ticket.get_status_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-dark border border-secondary border-opacity-50 text-white-50 rounded-pill priority-badge priority-{{ ticket.priority }}">
+                                                {{ ticket.get_priority_display }}
+                                            </span>
+                                        </td>
+                                        <td class="text-white-50 small"><i class="bi bi-calendar3 me-1"></i> {{ ticket.created_at|date:"d.m.Y H:i" }}</td>
+                                        <td class="text-white-50 small"><i class="bi bi-clock me-1"></i> {{ ticket.updated_at|date:"d.m.Y H:i" }}</td>
+                                        <td class="pe-4 text-end">
+                                            <a href="{% url 'tickets:detail' ticket.id %}" class="btn btn-sm btn-outline-primary rounded-pill transition">
+                                                <i class="bi bi-eye"></i> Открыть
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 
                 <!-- Пагинация -->
                 {% if tickets.has_other_pages %}
-                    <nav aria-label="Навигация по страницам">
-                        <ul class="pagination justify-content-center">
+                    <nav aria-label="Навигация по страницам" class="mt-5">
+                        <ul class="pagination justify-content-center mb-0 custom-pagination">
                             {% if tickets.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ tickets.previous_page_number }}">Предыдущая</a>
+                                    <a class="page-link shadow-none" href="?page={{ tickets.previous_page_number }}">Предыдущая</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link shadow-none">Предыдущая</span>
                                 </li>
                             {% endif %}
                             
                             {% for num in tickets.paginator.page_range %}
                                 {% if tickets.number == num %}
                                     <li class="page-item active">
-                                        <span class="page-link">{{ num }}</span>
+                                        <span class="page-link shadow-none">{{ num }}</span>
                                     </li>
                                 {% else %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        <a class="page-link shadow-none" href="?page={{ num }}">{{ num }}</a>
                                     </li>
                                 {% endif %}
                             {% endfor %}
                             
                             {% if tickets.has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ tickets.next_page_number }}">Следующая</a>
+                                    <a class="page-link shadow-none" href="?page={{ tickets.next_page_number }}">Следующая</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link shadow-none">Следующая</span>
                                 </li>
                             {% endif %}
                         </ul>
                     </nav>
                 {% endif %}
             {% else %}
-                <div class="alert alert-info">
-                    <i class="bi bi-info-circle"></i> У вас пока нет тикетов. 
-                    <a href="{% url 'tickets:create' %}">Создайте первый тикет</a>
+                <div class="alert bg-black bg-opacity-25 border border-secondary border-opacity-25 text-white-50 text-center p-5 mb-0">
+                    <i class="bi bi-ticket-detailed display-4 d-block mb-3 opacity-50"></i>
+                    У вас пока нет тикетов.<br>
+                    <a href="{% url 'tickets:create' %}" class="btn btn-outline-light rounded-pill mt-3">Создайте первый тикет</a>
                 </div>
             {% endif %}
         </div>
