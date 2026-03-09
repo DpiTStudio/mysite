@@ -36,9 +36,9 @@
     <div class="col-lg-12">
         <!-- Изображение проекта -->
         {% if portfolio.image %}
-        <div class="mb-5 position-relative overflow-hidden" style="border-radius: var(--radius-lg);">
-            <img src="{{ portfolio.image.url }}" class="w-100" alt="{{ portfolio.title }}" style="max-height: 550px; object-fit: cover;">
-            <div class="position-absolute bottom-0 start-0 p-4 w-100" style="background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+        <div class="mb-5 position-relative overflow-hidden portfolio-image-container">
+            <img src="{{ portfolio.image.url }}" class="w-100 portfolio-hero-image" alt="{{ portfolio.title }}">
+            <div class="position-absolute bottom-0 start-0 p-4 w-100 portfolio-hero-overlay">
                 <span class="badge bg-primary mb-2">{{ portfolio.category.name }}</span>
                 <h1 class="text-white fw-bold mb-0">{{ portfolio.title }}</h1>
             </div>
@@ -61,7 +61,7 @@
         </article>
 
         {% if portfolio.can_be_ordered %}
-        <div class="glass-card p-4 p-md-5 mb-5" style="border: 1px solid rgba(40, 167, 69, 0.3);">
+        <div class="glass-card p-4 p-md-5 mb-5 portfolio-available-box">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="mb-4 mb-md-0 text-center text-md-start">
                     <h3 class="fw-bold mb-2 text-gradient">Приобрести эту работу</h3>
@@ -79,14 +79,14 @@
             </div>
         </div>
         {% else %}
-        <div class="glass-card p-4 p-md-5 mb-5" style="border: 1px solid rgba(220, 53, 69, 0.3);">
+        <div class="glass-card p-4 p-md-5 mb-5 portfolio-unavailable-box">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="mb-4 mb-md-0 text-center text-md-start">
                     <h3 class="fw-bold mb-2 text-danger"><i class="bi bi-exclamation-circle me-2"></i> Временно недоступно</h3>
                     <p class="text-muted mb-0">К сожалению, в данный момент возможность заказа этой работы временно приостановлена.</p>
                 </div>
                 <div class="text-center text-md-end mt-3 mt-md-0">
-                    <button class="btn btn-secondary btn-lg px-4 rounded-pill" disabled style="opacity: 0.7;">
+                    <button class="btn btn-secondary btn-lg px-4 rounded-pill portfolio-btn-disabled" disabled>
                         <i class="bi bi-x-circle me-2"></i> Нет в наличии
                     </button>
                 </div>
