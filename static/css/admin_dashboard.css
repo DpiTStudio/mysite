@@ -71,6 +71,8 @@
 
 /* App categories grid */
 .app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 25px !important;
 }
 
@@ -79,6 +81,10 @@
     border: 1px solid var(--dash-border) !important;
     padding: 24px !important;
     border-radius: 20px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .app-item-title span {
@@ -91,6 +97,8 @@
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 10px !important;
     padding: 6px 12px !important;
+    margin: 2px 4px;
+    display: inline-block;
     color: #cbd5e1 !important;
     font-weight: 500 !important;
 }

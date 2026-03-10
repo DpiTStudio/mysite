@@ -155,9 +155,17 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------
 LANGUAGE_CODE = "ru" # Основной язык
 TIME_ZONE = "Europe/Moscow" # Московское время
-USE_I18N = False # Интернационализация
-USE_L10N = False # Локализация
+USE_I18N = True  # Включить интернационализацию
+USE_L10N = True  # Включить локализацию
 USE_TZ = True # Часовые пояса
+
+LANGUAGES = [
+    ('ru', 'Russian'),
+    ('en', 'English'),
+]
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+
 
 # ------------------------------------------------------------
 # Статические и медиа‑файлы
@@ -326,34 +334,34 @@ JAZZMIN_SETTINGS = {
 
 JAZZMIN_UI_TWEAKS = {
     # Настройки внешнего вида
-    "navbar_small_text": True, # Маленький текст в навигации
-    "footer_small_text": True, # Маленький текст в футере
-    "body_small_text": True, # Маленький текст в теле
-    "brand_small_text": True, # Маленький текст бренда
-    "brand_colour": "navbar-dark", # Цвет бренда
-    "accent": "accent-primary", # Акцентный цвет
-    "navbar": "navbar-dark", # Цвет навигации
-    "no_navbar_border": True, # Без рамки навигации
-    "navbar_fixed": False, # Фиксированная навигация
-    "layout_boxed": False, # Боксовый макет
-    "footer_fixed": True, # Фиксированный футер
-    "sidebar_fixed": True, # Фиксированная боковая панель
-    "sidebar": "sidebar-dark-primary", # Цвет боковой панели
-    "sidebar_nav_small_text": True, # Маленький текст в боковой панели
-    "sidebar_disable_expand": True, # Отключить разворачивание боковой панели
-    "sidebar_nav_child_indent": True, # Отступ у дочерних элементов
-    "sidebar_nav_compact_style": True, # Компактный стиль боковой панели
-    "sidebar_nav_legacy_style": True, # Старый стиль боковой панели
-    "sidebar_nav_flat_style": True, # Плоский стиль боковой панели
-    "theme": "darkly", # Тема
-    "dark_mode_theme": None, # Темная тема
+    "navbar_small_text": True,
+    "footer_small_text": True,
+    "body_small_text": True,
+    "brand_small_text": True,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": True,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": True,
+    "sidebar_fixed": True,
+    "sidebar": "--sidebar-width: 200px;  /* Уменьшить ширину боковой панели для компактности */rimary",
+    "sidebar_nav_small_text": True,
+    "sidebar_disable_expand": True,
+    "sidebar_nav_child_indent": False,  # Убрать отступы для компактности
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": False,  # Отключить старый стиль
+    "sidebar_nav_flat_style": True,
+    "theme": "darkly",
+    "dark_mode_theme": None,
     "button_classes": {
-        "primary": "btn-primary", # Основная кнопка
-        "secondary": "btn-secondary", # Вторичная кнопка
-        "info": "btn-info", # Информационная кнопка
-        "warning": "btn-warning", # Предупреждающая кнопка
-        "danger": "btn-danger", # Опасная кнопка
-        "success": "btn-success", # Успешная кнопка
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
     },
 }
 
