@@ -35,3 +35,20 @@ class AccountsConfig(AppConfig):
     # Человекочитаемое название приложения во множественном числе
     # Используется, когда нужно отобразить название во множественном числе
     verbose_name_plural = 'Пользователи'
+
+    def ready(self):
+        """
+        Вызывается при запуске приложения.
+        Создает объект Site для корректной работы allauth (решает ошибку Site.DoesNotExist).
+        """
+        try:
+            from django.contrib.sites.models import Site
+            from django.conf import settings
+            # Создаем или получаем Site с указанным SITE_ID
+            Site.objects.get_or_create(
+                id=getattr(settings, 'SITE_ID', 1),
+                defaults={'domain': '127.0.0.1:4234', 'name': 'DPIT-CMS'}
+            )
+        except Exception:
+            # Игнорируем ошибки, например, если таблицы БД еще не созданы при выполнении migrate
+            pass
