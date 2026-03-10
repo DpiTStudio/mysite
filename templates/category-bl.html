@@ -1,4 +1,6 @@
 <!-- Обертка для всех карточек: строка (row) с отступами между элементами (g-4) и малым отступом сверху (mt-2) -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/category-bl.css' %}">
 <div class="row g-4 mt-2">
     <!-- Первая колонка (составляет 1/3 ширины на средних и больших экранах, по центру текста). Ошибочный класс фона убран для корректного отображения карточек -->
     <div class="col-12 col-md-4 text-center">
@@ -7,13 +9,13 @@
             <!-- Тело карточки, где располагается весь контент -->
             <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <!-- Иконка из Bootstrap Icons (Газета) синего (акцентного) цвета, большого размера, с отступом снизу -->
-                <i class="bi bi-newspaper icon-lg-c-1 text-primary mb-3"></i>
+                <i class="bi bi-newspaper category-icon-1 text-primary mb-3"></i>
                 <!-- Заголовок карточки новостей -->
-                <h5 class="card-title text-white text-category-ti">Новости</h5>
+                <h5 class="card-title text-white category-text-ti">Новости</h5>
                 <!-- Короткое описание новостного раздела, цвет приглушенный (muted) для визуальной иерархии -->
-                <p class="card-text small text-muted flex-grow-1">Последние новости и события нашей компании</p>
+                <p class="card-text small text-muted flex-grow-1 category-text-op">Последние новости и события нашей компании</p>
                 <!-- Кнопка-ссылка для перехода к списку новостей -->
-                <a href="{% url 'news:list' %}" class="btn btn-primary btn-sm w-100 mt-2">Читать новости</a>
+                <a href="{% url 'news:list' %}" class="btn category-btn btn-sm w-100 mt-2">Читать новости</a>
             </div>
         </div>
     </div>
@@ -25,13 +27,13 @@
             <!-- Внутренний контейнер -->
             <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <!-- Иконка-чемодан (Портфолио) -->
-                <i class="bi bi-briefcase icon-lg-c-1 text-primary mb-3"></i>
+                <i class="bi bi-briefcase category-icon-1 text-primary mb-3"></i>
                 <!-- Заголовок блока Портфолио -->
-                <h5 class="card-title text-white text-category-ti">Портфолио</h5>
+                <h5 class="card-title text-white category-text-ti">Портфолио</h5>
                 <!-- Описание для раздела портфолио, занимает оставшееся свободное место (flex-grow-1) -->
-                <p class="card-text small text-muted flex-grow-1">Наши лучшие работы и успешно завершенные проекты</p>
+                <p class="card-text small text-muted flex-grow-1 category-text-op">Наши лучшие работы и успешно завершенные проекты</p>
                 <!-- Кнопка для перехода к просмотру работ -->
-                <a href="{% url 'portfolio:list' %}" class="btn btn-primary btn-sm w-100 mt-2">Смотреть работы</a>
+                <a href="{% url 'portfolio:list' %}" class="btn category-btn btn-sm w-100 mt-2">Смотреть работы</a>
             </div>
         </div>
     </div>
@@ -43,13 +45,13 @@
             <!-- Тело карточки -->
             <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <!-- Иконка сообщения/отзыва -->
-                <i class="bi bi-chat-left-quote icon-lg-c-1 text-primary mb-3"></i>
+                <i class="bi bi-chat-left-quote category-icon-1 text-primary mb-3"></i>
                 <!-- Заголовок блока Отзывов -->
-                <h5 class="card-title text-white text-category-ti">Отзывы</h5>
+                <h5 class="card-title text-white category-text-ti">Отзывы</h5>
                 <!-- Вспомогательный текст отзывов -->
-                <p class="card-text small text-muted flex-grow-1">Честные отзывы наших клиентов о сотрудничестве</p>
+                <p class="card-text small text-muted flex-grow-1 category-text-op">Честные отзывы наших клиентов о сотрудничестве</p>
                 <!-- Кнопка перехода к отзывам (растянута на всю ширину внутри карточки для мобильных) -->
-                <a href="{% url 'reviews:list' %}" class="btn btn-primary btn-sm w-100 mt-2">Читать отзывы</a>
+                <a href="{% url 'reviews:list' %}" class="btn category-btn btn-sm w-100 mt-2">Читать отзывы</a>
             </div>
         </div>
     </div>

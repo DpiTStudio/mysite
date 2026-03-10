@@ -1,0 +1,54 @@
+/* --- Иконки --- */
+.category-icon-1 {
+    /* Размер иконки */
+    font-size: 2.5rem;
+    /* Цвет иконки */
+    color: var(--color-white) !important;
+    /* Отступ снизу */
+    margin-bottom: 1rem;
+    /* Тень для читаемости */
+    text-shadow: 1px 1px 2px hsla(0, 100%, 50%, 0.364) !important;
+}
+
+/* --- Текст --- */
+.category-text-ti {
+    /* Заголовок категории */
+    font-size: 2.2rem !important;
+    /* Жирное начертание для акцента */
+    font-weight: 500 !important;
+    /* Цвет шрифта белый */
+    color: var(--color-white) !important;
+    /* Тень для читаемости */
+    text-shadow: 0px 0px 1px rgba(233, 10, 10, 0.214) !important;
+}
+
+/* Описание */
+.category-text-op {
+    /* Цвет шрифта белый */
+    color: var(--color-white) !important;
+    /* Тень для читаемости */
+    text-shadow: 0px 0px 1px rgba(233, 10, 10, 0.214) !important;
+}
+
+/* --- Кнопки --- */
+.category-btn {
+    /* Цвет кнопки */
+    color: var(--color-white) !important;
+    /* Тень для читаемости */
+    text-shadow: 0px 0px 1px rgba(233, 10, 10, 0.214) !important;
+    /* Цвет кнопки */
+    background-color: var(--color-primary) !important;
+    /* Цвет кнопки */
+    border-color: var(--color-primary) !important;
+}
+
+.category-btn:hover {
+    /* Цвет кнопки */
+    color: var(--color-black) !important;
+    /* Тень для читаемости */
+    text-shadow: 0px 0px 1px rgba(233, 10, 10, 0.214) !important;
+    /* Цвет кнопки */
+    background-color: var(--color-white) !important;
+    /* Цвет кнопки */
+    border-color: var(--color-white) !important;
+}
