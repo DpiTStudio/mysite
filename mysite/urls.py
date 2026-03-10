@@ -43,6 +43,7 @@ sitemaps = {
     "static": StaticViewSitemap,
 }
 urlpatterns = [
+    path("admin/dashboard/", main_views.admin_dashboard, name="admin_dashboard"),
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
     path(
         ".well-known/appspecific/com.chrome.devtools.json",
@@ -58,8 +59,8 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path("admin/", admin.site.urls),
     path("", include("main.urls")),
+    path("admin/", admin.site.urls),
     path("news/", include("news.urls")),
     path("portfolio/", include("portfolio.urls")),
     path("reviews/", include("reviews.urls")),

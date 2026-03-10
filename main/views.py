@@ -26,6 +26,7 @@ from tickets.models import Ticket
 from django.contrib.auth import get_user_model
 # Импорт функции агрегации Sum для подсчета сумм
 from django.db.models import Sum, Q
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Получение модели пользователя (может быть кастомная модель)
 User = get_user_model()
@@ -294,25 +295,27 @@ def robots_txt(request):
         content_type="text/plain",  # MIME-тип ответа
     )
 
+@staff_member_required
 def admin_dashboard(request):
-    """Представление для панели аналитики в админке."""
-    if not request.user.is_staff:
-        return redirect('main:home')
+    """Расширенное представление для панели аналитики в админке."""
     
     from news.models import News
     from portfolio.models import Portfolio
     from services.models import ServiceOrder
+    from cart.models import Order as CartOrder
+    from reviews.models import Review
+    from tickets.models import Ticket
     from django.db.models.functions import TruncDate
     from django.utils import timezone
     from datetime import timedelta
-
-    # Данные за последние 30 дней
-    last_30_days = timezone.now() - timedelta(days=30)
-    
     from django.db.models import Count, Sum
+
+    # Период: последние 30 дней
+    now = timezone.now()
+    last_30_days = now - timedelta(days=30)
     
-    # Статистика заявок
-    orders_stats = (
+    # 1. СТАТИСТИКА ЗАКАЗОВ (Сервисные заявки)
+    service_orders_stats = (
         ServiceOrder.objects.filter(created_at__gte=last_30_days)
         .annotate(date=TruncDate('created_at'))
         .values('date')
@@ -320,16 +323,59 @@ def admin_dashboard(request):
         .order_by('date')
     )
 
-    # Статистика просмотров (топ-5)
+    # 2. СТАТИСТИКА КОРЗИНЫ
+    cart_orders_stats = (
+        CartOrder.objects.filter(created__gte=last_30_days)
+        .annotate(date=TruncDate('created'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
+    # 3. ТОП КОНТЕНТ
     top_news = News.objects.order_by('-views')[:5]
     top_portfolio = Portfolio.objects.order_by('-views')[:5]
 
+    # 4. ОБЩИЕ ПОКАЗАТЕЛИ
+    total_revenue_services = ServiceOrder.objects.filter(status='completed').aggregate(total=Sum('estimated_budget'))['total'] or 0
+    
+    # Считаем сумму оплаченных заказов из корзины (сложнее из-за OrderItem)
+    # Для простоты возьмём общее кол-во и статус
+    pending_reviews = Review.objects.filter(status='pending').count()
+    open_tickets = Ticket.objects.filter(status='open').count()
+    new_users_30d = User.objects.filter(date_joined__gte=last_30_days).count()
+
+    # 5. ДИНАМИКА ПОЛЬЗОВАТЕЛЕЙ
+    user_growth = (
+        User.objects.filter(date_joined__gte=last_30_days)
+        .annotate(date=TruncDate('date_joined'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
     context = {
-        "orders_stats": list(orders_stats),
+        # Данные графиков
+        "orders_stats": list(service_orders_stats),
+        "cart_stats": list(cart_orders_stats),
+        "user_growth": list(user_growth),
+        
+        # Топ списки
         "top_news": top_news,
         "top_portfolio": top_portfolio,
-        "total_orders": ServiceOrder.objects.count(),
-        "total_revenue": ServiceOrder.objects.filter(status='completed').aggregate(total=Sum('estimated_budget'))['total'] or 0,
+        
+        # Карточки показателей
+        "stats_cards": {
+            "total_service_orders": ServiceOrder.objects.count(),
+            "new_service_orders_30d": ServiceOrder.objects.filter(created_at__gte=last_30_days).count(),
+            "total_revenue": total_revenue_services,
+            "pending_reviews": pending_reviews,
+            "open_tickets": open_tickets,
+            "new_users_30d": new_users_30d,
+            "total_users": User.objects.count(),
+            "cart_orders_total": CartOrder.objects.count(),
+            "cart_orders_new": CartOrder.objects.filter(status='new').count(),
+        }
     }
     
     return render(request, "main/admin_dashboard.html", context)

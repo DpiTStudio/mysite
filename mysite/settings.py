@@ -346,7 +346,7 @@ JAZZMIN_UI_TWEAKS = {
     "layout_boxed": False,
     "footer_fixed": True,
     "sidebar_fixed": True,
-    "sidebar": "--sidebar-width: 200px;  /* Уменьшить ширину боковой панели для компактности */rimary",
+    "sidebar": "sidebar-dark-primary",
     "sidebar_nav_small_text": True,
     "sidebar_disable_expand": True,
     "sidebar_nav_child_indent": False,  # Убрать отступы для компактности
