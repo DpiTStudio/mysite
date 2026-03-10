@@ -239,7 +239,7 @@ CAPTCHA_LENGTH = 3
 CAPTCHA_TIMEOUT = 5
 CAPTCHA_IMAGE_SIZE = (200, 80) # Размеры картинки (ширина, высота)
 CAPTCHA_FONT_SIZE = 48 # Размер шрифта на картинке
-SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # ------------------------------------------------------------
 # Jazzmin – админ‑панель

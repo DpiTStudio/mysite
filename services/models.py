@@ -175,9 +175,9 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         verbose_name_plural = _("Услуги")
         ordering = ["order", "title"]
         indexes = [
-            models.Index(fields=['order', 'is_active']),
-            models.Index(fields=['is_popular', 'is_active']),
-            models.Index(fields=['category', 'is_active']),
+            models.Index(fields=['order', 'is_active'], name='srv_ord_act_idx'),
+            models.Index(fields=['is_popular', 'is_active'], name='srv_pop_act_idx'),
+            models.Index(fields=['category', 'is_active'], name='srv_cat_act_idx'),
         ]
 
     def __str__(self):

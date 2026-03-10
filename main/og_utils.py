@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from PIL import Image, ImageDraw, ImageFont
 import os
-from django.conf import settings
 from django.core.cache import cache
 import hashlib
 
@@ -38,16 +37,20 @@ def generate_og_image(request):
     for i in range(0, width, 40):
         draw.line([(i, 0), (i+200, height)], fill=(accent_color[0], accent_color[1], accent_color[2], 30), width=1)
 
-    # Загрузка шрифта (попытка найти системный или использовать дефолтный)
+    # Загрузка шрифта
     try:
-        # Пытаемся найти шрифт в папке статики (если он там есть)
-        font_path = os.path.join(settings.STATIC_ROOT, 'fonts/Inter-Bold.ttf')
-        if not os.path.exists(font_path):
-             font_path = "arial.ttf" # Fallback для Windows
+        from django.contrib.staticfiles import finders
+        # Пытаемся найти Inter-Bold в статике (ищет в STATICFILES_DIRS и папках приложений)
+        font_path = finders.find('fonts/Inter-Bold.ttf')
+        
+        if not font_path or not os.path.exists(font_path):
+             # Fallback для Windows (Arial обычно поддерживает кириллицу)
+             font_path = "arial.ttf"
         
         font_title = ImageFont.truetype(font_path, 80)
         font_sub = ImageFont.truetype(font_path, 40)
     except Exception:
+        # Последний рубеж - дефолтный шрифт (может не поддерживать кириллицу!)
         font_title = ImageFont.load_default()
         font_sub = ImageFont.load_default()
 

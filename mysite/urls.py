@@ -43,15 +43,19 @@ sitemaps = {
     "portfolio_categories": PortfolioCategorySitemap,
     "static": StaticViewSitemap,
 }
-
-
-
 urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
     path(
         ".well-known/appspecific/com.chrome.devtools.json",
         lambda r: HttpResponse(status=204),
     ),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
+    path("robots.txt", main_views.robots_txt, name="robots"),
 ]
 
 urlpatterns += i18n_patterns(
@@ -69,13 +73,6 @@ urlpatterns += i18n_patterns(
     path("cart/", include("cart.urls")),
     path("knowledge-base/", include("knowledge_base.urls")),
     path("captcha/", include("captcha.urls")),
-    path(
-        "sitemap.xml",
-        sitemap,
-        {"sitemaps": sitemaps},
-        name="django.contrib.sitemaps.views.sitemap",
-    ),
-    path("robots.txt", main_views.robots_txt, name="robots"),
     prefix_default_language=False,
 )
 

@@ -384,108 +384,147 @@
 
     <!-- Панель управления разделами -->
     <div class="row mt-4">
-        <div class="col-lg-8">
-            <div class="card card-primary card-outline shadow-sm">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-th-large mr-2"></i>Управление разделами сайта</h3>
-                    <div class="card-tools">
-                        <span class="badge badge-primary">{{ app_list|length }} разделов</span>
+        <div class="col-lg-12">
+            <div class="card app-category-card shadow-lg">
+                <div class="app-category-header d-flex align-items-center justify-content-between">
+                    <h3 class="card-title m-0 text-white"><i class="fas fa-th-large mr-3 text-primary"></i>Управление разделами сайта</h3>
+                    <div class="search-container ml-3">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="appSearch" class="form-control search-input" placeholder="Поиск по разделам или моделям...">
+                    </div>
+                    <div class="card-tools d-none d-md-block">
+                        <span class="badge badge-pill badge-primary px-3 py-2" id="appCount">{{ app_list|length }} разделов всего</span>
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <table class="table table-hover table-striped mb-0">
-                        <thead>
-                            <tr>
-                                <th width="25%"><i class="fas fa-cube mr-2"></i>Раздел</th>
-                                <th width="60%"><i class="fas fa-database mr-2"></i>Модели данных</th>
-                                <th width="15%" class="text-center"><i class="fas fa-cog mr-2"></i>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for app in app_list %}
-                                <tr>
-                                    <td class="align-middle">
-                                        <h6 class="mb-0 font-weight-bold" style="font-size: 0.9rem; white-space: nowrap;">
-                                            <i class="fas fa-folder text-primary mr-2"></i>{{ app.name }}
-                                        </h6>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="d-flex flex-wrap align-items-center" style="gap: 10px;">
+                    <div class="app-grid" id="appsContainer">
+                        {% for app in app_list %}
+                            <div class="app-item-card" data-app-name="{{ app.name|lower }}" data-models="{% for model in app.models %}{{ model.name|lower }} {% endfor %}">
+                                <div>
+                                    <div class="app-item-title">
+                                        <i class="{{ app.app_label|get_app_icon }}"></i>
+                                        <span>{{ app.name }}</span>
+                                    </div>
+                                    <div class="model-tags-container">
                                         {% for model in app.models %}
-                                            <a href="{{ model.admin_url }}" class="btn btn-outline-secondary shadow-sm" style="white-space: nowrap; border-radius: 15px; font-size: 0.75rem; padding: 0.2rem 0.5rem;" title="{{ model.name }}">
-                                                <i class="{{ model.object_name|get_model_icon }} mr-1"></i>{{ model.name|truncatechars:15 }}
+                                            <a href="{{ model.admin_url }}" class="model-tag" title="Перейти к {{ model.name }}">
+                                                <i class="{{ model.object_name|get_model_icon }}"></i>
+                                                {{ model.name }}
                                             </a>
                                         {% endfor %}
-                                        </div>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <a href="{{ app.app_url }}" class="btn btn-sm btn-outline-primary" title="Открыть раздел">
-                                            <i class="fas fa-external-link-alt"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                                <div class="app-actions">
+                                    <a href="{{ app.app_url }}" class="btn btn-xs btn-outline-info rounded-pill px-3" title="Открыть весь раздел {{ app.name }}">
+                                        Раздел <i class="fas fa-external-link-alt ml-1" style="font-size: 0.7rem;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div id="noResults" class="text-center py-5 d-none">
+                        <i class="fas fa-search-minus fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Ничего не найдено</h5>
+                        <p class="small text-muted">Попробуйте изменить поисковый запрос</p>
+                    </div>
                 </div>
-                <div class="card-footer text-center">
-                    <small class="text-muted">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        Нажмите на название модели для просмотра данных или на иконку для открытия раздела
+                <div class="card-footer py-2 text-center bg-transparent border-0">
+                    <small class="text-muted opacity-50">
+                        <i class="fas fa-magic mr-1"></i> Динамическая фильтрация разделов системы
                     </small>
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="row">
         <!-- История активности -->
-        <div class="col-lg-4">
+        <div class="col-lg-12">
             <div class="card card-dark card-outline shadow-sm">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-history mr-2"></i>Последние действия</h3>
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h3 class="card-title"><i class="fas fa-history mr-2 text-info"></i>Журнал последних действий</h3>
                     <div class="card-tools">
-                        <span class="badge badge-dark">15 записей</span>
+                        <a href="{% url 'admin:admin_logentry_changelist' %}" class="btn btn-xs btn-outline-light">Вся история</a>
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div class="timeline timeline-inverse m-0 p-3" style="max-height: 500px; overflow-y: auto;">
+                    <div class="timeline-inverse p-3" style="max-height: 400px; overflow-y: auto;">
                         {% load log %}
-                        {% get_admin_log 15 as admin_log for_user user %}
+                        {% get_admin_log 20 as admin_log for_user user %}
                         {% if not admin_log %}
                             <div class="text-center py-5">
                                 <i class="fas fa-ghost fa-3x text-muted mb-3"></i>
-                                <p class="text-muted">Активности пока нет</p>
-                                <small class="text-muted">Здесь будет отображаться история ваших действий</small>
+                                <p class="text-muted">История действий пуста</p>
                             </div>
                         {% else %}
+                            <div class="row">
                             {% for entry in admin_log %}
-                                <div>
-                                    {% if entry.is_addition %}<i class="fas fa-plus bg-success"></i>{% endif %}
-                                    {% if entry.is_change %}<i class="fas fa-edit bg-info"></i>{% endif %}
-                                    {% if entry.is_deletion %}<i class="fas fa-trash bg-danger"></i>{% endif %}
-                                    <div class="timeline-item shadow-none border-bottom mb-2 pb-2">
-                                        <span class="time text-muted small">
-                                            <i class="far fa-clock mr-1"></i>{{ entry.action_time|date:"H:i" }}
-                                        </span>
-                                        <h3 class="timeline-header no-border mb-1" style="font-size: 0.9rem;">
-                                            <strong>{{ entry.object_repr|truncatechars:35 }}</strong>
-                                        </h3>
-                                        <div class="timeline-body py-0 small text-muted">
-                                            <i class="fas fa-tag mr-1"></i>{{ entry.content_type }}
+                                <div class="col-md-4 mb-2">
+                                    <div class="timeline-item shadow-none px-3 position-relative" style="margin-left: 30px; border-radius: 8px; background: rgba(255,255,255,0.02) !important;">
+                                        {% if entry.is_addition %}<i class="fas fa-plus timeline-icon bg-success"></i>{% endif %}
+                                        {% if entry.is_change %}<i class="fas fa-edit timeline-icon bg-info"></i>{% endif %}
+                                        {% if entry.is_deletion %}<i class="fas fa-trash timeline-icon bg-danger"></i>{% endif %}
+                                        
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <span class="time text-muted small"><i class="far fa-clock mr-1"></i>{{ entry.action_time|date:"d.m H:i" }}</span>
+                                            <span class="badge badge-dark-light" style="font-size: 0.65rem;">{{ entry.content_type|truncatechars:15 }}</span>
                                         </div>
+                                        <h6 class="mt-1 mb-0 font-weight-bold text-white text-truncate" title="{{ entry.object_repr }}">
+                                            {{ entry.object_repr }}
+                                        </h6>
                                     </div>
                                 </div>
                             {% endfor %}
+                            </div>
                         {% endif %}
                     </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'admin:admin_logentry_changelist' %}" class="text-light small">
-                        <i class="fas fa-list mr-1"></i>Вся история действий <i class="fas fa-arrow-circle-right ml-1"></i>
-                    </a>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('appSearch');
+            const appsContainer = document.getElementById('appsContainer');
+            const noResults = document.getElementById('noResults');
+            const appCountBadge = document.getElementById('appCount');
+            const appItems = document.querySelectorAll('.app-item-card');
+
+            searchInput.addEventListener('input', function(e) {
+                const term = e.target.value.toLowerCase().trim();
+                let visibleCount = 0;
+
+                appItems.forEach(item => {
+                    const appName = item.dataset.appName;
+                    const models = item.dataset.models;
+                    
+                    if (appName.includes(term) || models.includes(term)) {
+                        item.classList.remove('d-none');
+                        item.classList.add('d-flex');
+                        visibleCount++;
+                    } else {
+                        item.classList.remove('d-flex');
+                        item.classList.add('d-none');
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    appsContainer.classList.add('d-none');
+                    noResults.classList.remove('d-none');
+                } else {
+                    appsContainer.classList.remove('d-none');
+                    noResults.classList.add('d-none');
+                }
+
+                appCountBadge.textContent = visibleCount + ' найдено';
+                if (term === '') {
+                    appCountBadge.textContent = appItems.length + ' разделов всего';
+                }
+            });
+        });
+    </script>
 
     <!-- Ссылка на сайт -->
     <div class="row mt-3 mb-4">

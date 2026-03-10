@@ -43,6 +43,44 @@ def get_admin_stats():
     return stats
 
 @register.filter
+def get_app_icon(app_label):
+    """
+    Возвращает иконку для приложения на основе настроек JAZZMIN или стандартную.
+    Принимает label приложения (например, 'main' или 'news').
+    """
+    from django.conf import settings
+    
+    jazzmin_settings = getattr(settings, 'JAZZMIN_SETTINGS', {})
+    # В Jazzmin иконку приложения можно задать через "icons" (если там есть app name) 
+    # или через "menu" (но там сложнее достать).
+    # Мы будем искать в icons по точному совпадению или по умолчанию.
+    
+    icons = jazzmin_settings.get('icons', {})
+    icon = icons.get(app_label)
+    
+    if not icon:
+        common_app_icons = {
+            'main': 'fas fa-home',
+            'news': 'fas fa-newspaper',
+            'portfolio': 'fas fa-briefcase',
+            'services': 'fas fa-concierge-bell',
+            'reviews': 'fas fa-star',
+            'tickets': 'fas fa-ticket-alt',
+            'mail': 'fas fa-envelope',
+            'cart': 'fas fa-shopping-cart',
+            'accounts': 'fas fa-user-circle',
+            'logfiles': 'fas fa-file-alt',
+            'knowledge_base': 'fas fa-book',
+            'auth': 'fas fa-users-cog',
+            'admin': 'fas fa-history',
+            'sites': 'fas fa-globe',
+            'captcha': 'fas fa-shield-alt',
+        }
+        icon = common_app_icons.get(app_label.lower(), "fas fa-folder")
+        
+    return icon
+
+@register.filter
 def get_model_icon(model_name):
     """
     Возвращает иконку для модели на основе настроек JAZZMIN или стандартную.
