@@ -35,7 +35,6 @@ ALLOWED_HOSTS = [
 # ------------------------------------------------------------
 INSTALLED_APPS = [
     # Темы
-    "modeltranslation", # Перевод моделей (должно быть ПЕРЕД админкой)
     "jazzmin",
     # Основные приложения
     "django.contrib.admin",
@@ -55,8 +54,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
 
-    # Rosetta (перевод .po файлов)
-    "rosetta",
 
     # Мои приложения
     "main.apps.MainConfig", # Главная страница
@@ -81,7 +78,6 @@ MIDDLEWARE = [
     # Основные middleware
     "django.middleware.security.SecurityMiddleware", # Безопасность
     "django.contrib.sessions.middleware.SessionMiddleware", # Сессии
-    "django.middleware.locale.LocaleMiddleware", # Мультиязычность
     "django.middleware.common.CommonMiddleware", # Общие настройки
     "django.middleware.csrf.CsrfViewMiddleware", # CSRF
     "django.contrib.auth.middleware.AuthenticationMiddleware", # Аутентификация
@@ -159,24 +155,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------
 LANGUAGE_CODE = "ru" # Основной язык
 TIME_ZONE = "Europe/Moscow" # Московское время
-USE_I18N = True # Интернационализация
-USE_L10N = True # Локализация
+USE_I18N = False # Интернационализация
+USE_L10N = False # Локализация
 USE_TZ = True # Часовые пояса
-
-from django.utils.translation import gettext_lazy as _
-
-LANGUAGES = (
-    ('ru', _('Russian')),
-    ('en', _('English')),
-)
-
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale'),
-]
-
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'ru'
-MODELTRANSLATION_LANGUAGES = ('ru', 'en')
-MODELTRANSLATION_FALLBACK_LANGUAGES = ('ru',)
 
 # ------------------------------------------------------------
 # Статические и медиа‑файлы
@@ -325,7 +306,7 @@ JAZZMIN_SETTINGS = {
     "default_icon_children": "fas fa-circle",
     "related_modal_active": False,
     "custom_css": "css/admin_custom.css",
-    "custom_js": None,
+    "custom_js": "js/admin_custom.js",
     "menu": [
         {"name": "Главная", "icon": "fas fa-home", "url": "/", "new_window": True},
         {"app": "main", "icon": "fas fa-cogs"},
