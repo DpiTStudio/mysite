@@ -9,7 +9,7 @@ def create_site(apps, schema_editor):
     if not Site.objects.filter(id=site_id).exists():
         Site.objects.create(
             id=site_id,
-            domain="localhost:4234",
+            domain="dpit-cms.ru:4234",
             name="DPIT-CMS"
         )
 
