@@ -212,11 +212,21 @@ LOGOUT_REDIRECT_URL = "main:home"
 # Социальные провайдеры (Примеры конфигов)
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        'APP': {
+            'client_id': '123_dummy_client_id_for_google',
+            'secret': 'dummy_secret_for_google',
+            'key': ''
+        },
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
         'OAUTH_PKCE_ENABLED': True,
     },
     'github': {
+        'APP': {
+            'client_id': '123_dummy_client_id_for_github',
+            'secret': 'dummy_secret_for_github',
+            'key': ''
+        },
         'SCOPE': ['user', 'repo', 'read:org'],
     }
 }
