@@ -10,6 +10,7 @@
 
 # Импорт функции path для создания маршрутов URL
 from django.urls import path
+from django.views.generic import RedirectView
 # Импорт представлений (views) приложения
 from . import views
 
@@ -24,6 +25,9 @@ urlpatterns = [
     # Обработчик: функция home из views.py
     # Имя маршрута: "home" (используется как main:home)
     path("", views.home, name="home"),
+    
+    # Редирект с /page/ на главную
+    path("page/", RedirectView.as_view(pattern_name="main:home", permanent=False)),
     
     # Маршрут для статических страниц
     # URL: /page/<slug>/ (например, /page/about/, /page/kontakty/)

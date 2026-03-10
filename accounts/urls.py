@@ -9,6 +9,7 @@
 
 # Импорт функции path для создания маршрутов URL
 from django.urls import path
+from django.views.generic import RedirectView
 # Импорт представлений (views) приложения
 from . import views
 
@@ -18,6 +19,9 @@ app_name = "accounts"
 
 # Список маршрутов URL приложения
 urlpatterns = [
+    # Перенаправление с корневого URL приложения на профиль
+    path("", RedirectView.as_view(pattern_name="accounts:profile", permanent=False), name="index"),
+    
     # Маршрут для страницы регистрации
     # URL: /accounts/register/
     # Обработчик: функция register_view из views.py

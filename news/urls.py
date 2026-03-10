@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 from .feeds import LatestNewsFeed
 
@@ -7,7 +8,9 @@ app_name = "news"
 urlpatterns = [
     path("", views.news_list, name="list"),  # news:list
     path("search/", views.news_search, name="search"),  # news:search
+    path("category/", RedirectView.as_view(pattern_name="news:list", permanent=False)),
     path("category/<slug:category_slug>/", views.news_by_category, name="by_category"),
+    path("date/", RedirectView.as_view(pattern_name="news:list", permanent=False)),
     path("date/<int:year>/<int:month>/<int:day>/", views.news_by_date, name="by_date"),
     path("feed/", LatestNewsFeed(), name="feed"),  # RSS лента
     path("<slug:slug>/", views.news_detail, name="detail"),
