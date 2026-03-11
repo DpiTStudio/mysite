@@ -8,15 +8,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5 animate-up">
-        <div class="mb-4 text-center animate-left">
+<div class="row justify-content-left pb-200">
+    <div class="col-12 animate-up">
+        <div class="mb-4 text-left animate-left">
             <h1 class="display-5 fw-bold text-white mb-2">Добро пожаловать</h1>
             <p class="text-muted">Войдите в свой аккаунт для доступа к личному кабинету</p>
         </div>
         
         <div class="glass-card mb-5">
-            <div class="card-header border-bottom border-secondary border-opacity-25 p-4 text-center">
+            <div class="card-header border-bottom border-secondary border-opacity-25 p-4 text-left">
                 <h3 class="h5 mb-0 text-white"><i class="bi bi-box-arrow-in-right text-primary me-2"></i> Вход в систему</h3>
             </div>
             <div class="card-body p-4 p-md-5">
@@ -59,7 +59,7 @@
                         <i class="bi bi-box-arrow-in-right me-2"></i> Войти
                     </button>
                 </form>
-
+                {% comment %}
                 <div class="mt-4 text-center">
                     <div class="position-relative mb-4">
                         <hr class="border-secondary border-opacity-25">
@@ -67,7 +67,7 @@
                     </div>
                     
                     {% load socialaccount %}
-                    <div class="d-flex flex-column gap-2">
+                    <div class="d-flex flex-column gap-1">
                         <a href="{% provider_login_url 'google' %}" class="btn btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2">
                             <i class="bi bi-google text-danger"></i> Google
                         </a>
@@ -76,7 +76,7 @@
                         </a>
                     </div>
                 </div>
-                
+                {% endcomment %}
                 <div class="text-center mt-5 pt-4 border-top border-secondary border-opacity-25">
                     <p class="text-white-50 mb-0">
                         Нет аккаунта? <a href="{% url 'accounts:register' %}" class="text-primary text-decoration-none hover-primary transition">Зарегистрироваться</a>
