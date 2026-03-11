@@ -56,7 +56,7 @@
                         {% endif %}
                         {% if user.is_staff %}  
                         <!-- Если персонал сайта -->
-                        <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>  
+                        <li><a class="dropdown-item rounded py-2 fw-bold" href="/admin/" target="_blank"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Админ-панель</a></li>  
                         <!-- Ссылка в админку -->
                         {% endif %}
                         <li><hr class="dropdown-divider"></li>  
@@ -229,13 +229,20 @@
                             <li><a class="dropdown-item rounded py-2 fw-bold text-primary" href="{% url 'services:list' %}"><i class="bi bi-grid-1x2-fill me-2"></i> Все услуги</a></li>  <!-- Ссылка на все услуги -->
                             {% if nav_categories.services %}  <!-- Если есть категории услуг -->
                             <li><hr class="dropdown-divider opacity-25"></li>  <!-- Разделитель -->
+                            {% comment %}
                             {% for cat in nav_categories.services %}
-                            {% comment "" %}
                             <li>
                                 <a class="dropdown-item rounded py-2" href="{% url 'services:list' %}?category={{ cat }}"><i class="bi bi-gear-fill text-primary me-2 opacity-75"></i> {{ cat }}
                                 </a>
                             </li> 
+                            <li>
+                                <a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}">
+                                    <i class="{{ cat.icon|default:'bi bi-gear-fill' }} text-primary me-2 opacity-75"></i> {{ cat.title }}
+                                </a>
+                            </li>
+                            {% endfor %}
                             {% endcomment %} 
+                            {% for cat in nav_categories.services %}
                             <li>
                                 <a class="dropdown-item rounded py-2" href="{{ cat.get_absolute_url }}">
                                     <i class="{{ cat.icon|default:'bi bi-gear-fill' }} text-primary me-2 opacity-75"></i> {{ cat.title }}

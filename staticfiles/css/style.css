@@ -93,6 +93,22 @@ a:hover {
     margin-bottom: 1.5rem;
 }
 
+.pb-200 {
+    padding-bottom: 200px;
+}
+
+.glass-card-premium {
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
 /* --- Утилиты макета (Layout) --- */
 .section-padding {
     padding: 4rem 0;
