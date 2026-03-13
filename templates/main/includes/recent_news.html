@@ -1,42 +1,94 @@
 <!-- Свежие новости -->
 {% if recent_news %}
-<section class="home-section">
-    <div class="section-title animate-up">
-        <h2 class="display-5 text-gradient">Новости и Статьи</h2>
-        <p class="text-muted">Будьте в курсе последних событий</p>
+<section class="home-section py-5">
+    <div class="section-title animate-up text-left mb-5">
+        <h2 class="display-5 text-gradient fw-bold mb-3">Новости и Статьи</h2>
+        <p class="text-muted fs-5">Будьте в курсе последних событий и обновлений</p>
     </div>
-    <div class="row g-4">
+    
+    <div class="row g-4 justify-content-center">
         {% for news in recent_news %}
-        <div class="col-md-4 animate-right delay-{{ forloop.counter }}00">
-            <div class="glass-card-premium overflow-hidden border-0 h-100">
-                {% if news.image %}
-                <div class="overflow-hidden" style="height: 180px;">
-                    <img src="{{ news.image.url }}" class="w-100 h-100" alt="{{ news.title }}" style="object-fit: cover; transition: transform 0.6s ease;">
-                </div>
-                {% endif %}
-                <div class="p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div>
-                            <i class="bi bi-calendar3 me-2 text-primary"></i>
-                            <span class="small text-muted">{{ news.news_date|date:"d.m.Y" }}</span>
+        <div class="col-12 col-md-6 col-lg-4 animate-up delay-{{ forloop.counter }}00">
+            <div class="glass-card-premium overflow-hidden border-0 h-100 d-flex flex-column" style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                <!-- Изображение -->
+                <div class="overflow-hidden position-relative news-img-wrapper" style="height: 220px;">
+                    {% if news.image %} 
+                        <img src="{{ news.image.url }}" class="w-100 h-100 news-img" alt="{{ news.title }}" style="object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
+                    {% elif news.category and news.category.image %}
+                        <img src="{{ news.category.image.url }}" class="w-100 h-100 news-img" alt="{{ news.category.name }}" style="object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
+                    {% else %}
+                        <!-- Дефолтное изображение / заглушка -->
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-gradient news-img" style="transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
+                            <i class="bi bi-newspaper display-1 text-white opacity-25"></i>
                         </div>
-                        {% if news.category %}
-                        <span class="badge bg-primary bg-opacity-25 text-primary small">{{ news.category.name }}</span>
-                        {% endif %}
+                    {% endif %}
+                    
+                    <!-- Тень поверх картинки для читаемости -->
+                    <div class="position-absolute bottom-0 start-0 w-100 h-50" style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);"></div>
+
+                    {% if news.category %}
+                    <div class="position-absolute top-0 end-0 m-3 z-2">
+                        <span class="badge bg-primary bg-opacity-75 text-white px-3 py-2 rounded-pill shadow-sm" style="backdrop-filter: blur(4px);">
+                            {{ news.category.name }}
+                        </span>
                     </div>
-                    <h5 class="h6 mb-3"><a href="{% url 'news:detail' news.slug %}" class="text-white hover-primary">{{ news.title }}</a></h5>
-                    <p class="small text-muted mb-4">{{ news.meta_description|default:news.content|striptags|truncatewords:20 }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="{% url 'news:detail' news.slug %}" class="text-primary small text-uppercase fw-bold letter-spacing-1">Подробнее <i class="bi bi-arrow-right"></i></a>
-                        <span class="small text-muted"><i class="bi bi-eye me-1"></i>{{ news.views }}</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Контент карточки -->
+                <div class="p-4 d-flex flex-column flex-grow-1 position-relative z-2 bg-transparent">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div class="d-flex align-items-center text-muted small">
+                            <span class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                                <i class="bi bi-calendar3"></i>
+                            </span>
+                            <span class="fw-medium">{{ news.news_date|date:"d M Y" }}</span>
+                        </div>
+                        <div class="text-muted small d-flex align-items-center">
+                            <i class="bi bi-eye me-2 opacity-75"></i> <span class="fw-medium">{{ news.views|default:"0" }}</span>
+                        </div>
+                    </div>
+                    
+                    <h4 class="h5 mb-3 fw-bold" style="line-height: 1.4;">
+                        <a href="{% url 'news:detail' news.slug %}" class="text-white text-decoration-none stretched-link hover-primary transition-all">
+                            {{ news.title }}
+                        </a>
+                    </h4>
+                    
+                    <p class="small text-muted mb-4 flex-grow-1" style="line-height: 1.6;">
+                        {{ news.meta_description|default:news.content|striptags|truncatewords:18 }}
+                    </p>
+                    
+                    <div class="mt-auto pt-4 border-top border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
+                        <span class="text-primary text-uppercase fw-bold small letter-spacing-1 d-flex align-items-center news-read-more">
+                            Читать далее <i class="bi bi-arrow-right ms-2 transition-all"></i>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    <div class="text-center mt-5 animate-up">
-        <a href="{% url 'news:list' %}" class="btn btn-outline-light px-5">Все новости <i class="bi bi-arrow-right"></i></a>
+    
+    <div class="text-center mt-5 pt-3 animate-up delay-300">
+        <a href="{% url 'news:list' %}" class="btn btn-outline-primary btn-lg px-5 py-3 rounded-pill fw-medium d-inline-flex align-items-center transition-all">
+            Все публикации 
+            <span class="bg-primary text-white rounded-circle ms-3 d-inline-flex align-items-center justify-content-center transition-all btn-icon" style="width: 30px; height: 30px;">
+                <i class="bi bi-chevron-right small"></i>
+            </span>
+        </a>
     </div>
 </section>
+
+<style>
+    /* Анимации при наведении для карточек новостей */
+    .glass-card-premium { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .glass-card-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0,0,0,0.3) !important; }
+    .glass-card-premium:hover .news-img { transform: scale(1.1); }
+    .glass-card-premium:hover .news-read-more i { transform: translateX(8px); }
+    .glass-card-premium:hover .hover-primary { color: var(--bs-primary) !important; }
+    
+    /* Анимация кнопки */
+    .btn-outline-primary:hover .btn-icon { background-color: #fff !important; color: var(--bs-primary) !important; transform: translateX(5px); }
+</style>
 {% endif %}
