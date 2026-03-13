@@ -10,50 +10,48 @@
 {% block content %}
 <div class="row">
     <div class="col-12 text-left mb-5 animate-left">
-        <h1 class="display-4 fw-bold text-white mb-3">Наши Услуги</h1>
+        <h1 class="display-4 fw-bold text-gradient mb-3">Наши Услуги</h1>
         <p class="lead text-muted">Профессиональные решения для вашего бизнеса</p>
     </div>
 
     <div class="row g-4">
         {% for service in services %}
         <div class="col-lg-4 col-md-6">
-            <div class="card glass-card h-100">
-                <div class="card-body text-center p-4 d-flex flex-column">
-                    <div class="service-icon mb-4">
-                        {% if service.icon %}
-                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 80px; height: 80px; object-fit: contain;">
-                        {% else %}
-                             <div class="text-primary">
-                                <i class="bi bi-cpu fs-1"></i>
-                            </div>
-                        {% endif %}
-                    </div>
+            <div class="glass-card-premium p-4 border-0 h-100 d-flex flex-column text-center" style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                <div class="service-icon mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px; background: rgba(var(--bs-primary-rgb), 0.1); border-radius: 20px;">
+                    {% if service.icon %}
+                        <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 60px; height: 60px; object-fit: contain;">
+                    {% else %}
+                        <div class="text-primary">
+                            <i class="bi bi-cpu fs-1"></i>
+                        </div>
+                    {% endif %}
+                </div>
 
-                    <h3 class="h4 fw-bold mb-3 text-white">{{ service.title }}</h3>
-                    
-                    <p class="card-text text-muted small mb-4 flex-grow-1">
-                        {{ service.short_description|striptags|truncatewords:15 }}
-                    </p>
-                    
-                    <div class="price-tag mb-4 fs-4 text-secondary">
-                        {{ service.get_price_display }}
-                    </div>
-                    
-                    <div class="d-flex flex-column gap-2">
-                        {% if service.can_be_ordered %}
-                        <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="w-100" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary w-100 shine-effect">
-                                <i class="bi bi-cart-plus me-2"></i> В корзину
-                            </button>
-                        </form>
-                        {% else %}
-                        <button class="btn btn-secondary w-100" disabled style="opacity: 0.6;">
-                            <i class="bi bi-x-circle me-2"></i> Недоступно
+                <h3 class="h4 fw-bold mb-3 text-white">{{ service.title }}</h3>
+                
+                <p class="small text-muted mb-4 flex-grow-1" style="line-height: 1.6;">
+                    {{ service.short_description|striptags|truncatewords:15 }}
+                </p>
+                
+                <div class="price-tag mb-4 fs-4 text-gradient fw-bold">
+                    {{ service.get_price_display }}
+                </div>
+                
+                <div class="d-flex flex-column gap-2 mt-auto">
+                    {% if service.can_be_ordered %}
+                    <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="w-100" onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill shine-effect py-2 fw-medium">
+                            <i class="bi bi-cart-plus me-2"></i> В корзину
                         </button>
-                        {% endif %}
-                        <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-light btn-sm w-100">Подробнее</a>
-                    </div>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-secondary w-100 rounded-pill py-2" disabled style="opacity: 0.6;">
+                        <i class="bi bi-x-circle me-2"></i> Недоступно
+                    </button>
+                    {% endif %}
+                    <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-light btn-sm w-100 rounded-pill py-2 mt-1">Подробнее</a>
                 </div>
             </div>
         </div>
@@ -68,4 +66,13 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+    /* Анимации при наведении для карточек услуг */
+    .glass-card-premium { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .glass-card-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0,0,0,0.3) !important; }
+    .glass-card-premium:hover .service-icon { transform: scale(1.1) rotate(5deg); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+</style>
 {% endblock %}
