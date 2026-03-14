@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {{ site_settings.site_domain|upper }} | 
+        {% if site_settings and site_settings.site_domain %}
+            {{ site_settings.site_domain|upper }} | 
+        {% endif %}
         {% block title %}
             {% if site_settings %}
                 {{ site_settings.site_title }} 
