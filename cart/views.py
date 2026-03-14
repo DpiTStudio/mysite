@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+from django.http import JsonResponse
 from services.models import Service
 from portfolio.models import Portfolio
 from .cart import Cart
 from django.contrib import messages
-from .models import OrderItem, Order
+from .models import OrderItem, Order, PromoCode
 from .forms import OrderCreateForm
+import json
 
 @require_POST
 def cart_add(request, item_type, item_id):
@@ -112,3 +114,55 @@ def order_success(request, order_id):
     if order.user and order.user != request.user and not request.user.is_superuser:
          return redirect('main:home')
     return render(request, 'cart/order_success.html', {'order': order})
+
+
+@require_POST
+def apply_promo(request):
+    """
+    AJAX-endpoint для проверки и применения промокода.
+    Хранит промокод в сессии до оформления заказа.
+    """
+    try:
+        body = json.loads(request.body)
+        code = body.get('code', '').strip().upper()
+    except (json.JSONDecodeError, AttributeError):
+        code = request.POST.get('code', '').strip().upper()
+
+    if not code:
+        return JsonResponse({'success': False, 'error': 'Введите промокод'}, status=400)
+
+    try:
+        promo = PromoCode.objects.get(code=code)
+    except PromoCode.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Промокод не найден'}, status=404)
+
+    if not promo.is_valid():
+        return JsonResponse({'success': False, 'error': 'Промокод недействителен или истёк его срок'}, status=400)
+
+    # Сохраняем промокод в сессии
+    request.session['promo_code'] = code
+
+    cart = Cart(request)
+    total = cart.get_total_price()
+    discount = float(promo.apply_discount(total)) if total else 0
+
+    discount_label = (
+        f'{promo.discount_value} %'
+        if promo.discount_type == 'percent'
+        else f'{promo.discount_value} ₽'
+    )
+
+    return JsonResponse({
+        'success': True,
+        'message': f'Промокод примёнян! Скидка: {discount_label}',
+        'discount': discount,
+        'discount_label': discount_label,
+        'code': promo.code,
+    })
+
+
+@require_POST
+def remove_promo(request):
+    """Отменить промокод из сессии."""
+    request.session.pop('promo_code', None)
+    return JsonResponse({'success': True})

@@ -100,12 +100,24 @@
                 <div class="col-md-6 mb-4 mb-md-0">
                     <h6 class="text-white-50 mb-3 text-uppercase small letter-spacing-1">Поделиться проектом</h6>
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="#" class="social-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-btn" title="Twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="social-btn" title="VK"><i class="bi bi-vk"></i></a>
-                        <a href="#" class="social-btn" title="Telegram"><i class="bi bi-telegram"></i></a>
-                    </div>
-                </div>
+                        <a href="https://vk.com/share.php?url={{ request.build_absolute_uri }}&title={{ portfolio.title|urlencode }}"
+                           target="_blank" rel="noopener noreferrer" class="social-btn" title="ВКонтакте">
+                            <i class="bi bi-vk"></i>
+                        </a>
+                        <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ portfolio.title|urlencode }}"
+                           target="_blank" rel="noopener noreferrer" class="social-btn" title="Telegram">
+                            <i class="bi bi-telegram"></i>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?text={{ portfolio.title|urlencode }}%20{{ request.build_absolute_uri }}"
+                           target="_blank" rel="noopener noreferrer" class="social-btn" title="WhatsApp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        <button class="social-btn" title="Скопировать ссылку"
+                                onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.innerHTML='<i class=\'bi bi-check2\'></i>';setTimeout(()=>this.innerHTML='<i class=\'bi bi-link-45deg\'></i>',2000)})">
+                            <i class="bi bi-link-45deg"></i>
+                        </button>
+                    </div><!-- /.d-flex share buttons -->
+                </div><!-- /.col-md-6 -->
                 <div class="col-md-6 text-md-end">
                     <a href="{% url 'portfolio:list' %}" class="btn btn-outline-light btn-sm">
                         <i class="bi bi-arrow-left me-2"></i>К списку работ

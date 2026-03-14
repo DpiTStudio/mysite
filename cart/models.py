@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from services.models import Service
 from accounts.models import User
 
@@ -72,3 +73,124 @@ class OrderItem(models.Model):
             return f"от {self.price_min} до {self.price_max} ₽"
         else:
             return "По договоренности"
+
+
+class PromoCode(models.Model):
+    """
+    Промокод для скидки в корзине.
+    Поддерживает 2 типа: процентную скидку и фиксированную сумму.
+    """
+
+    DISCOUNT_TYPE_CHOICES = [
+        ('percent', _('Процент (%)')),
+        ('fixed', _('Фиксированная сумма (₽)')),
+    ]
+
+    code = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name=_('Промокод'),
+        help_text=_('Латинские буквы, цифры. Например: SUMMER2025')
+    )
+    discount_type = models.CharField(
+        max_length=10,
+        choices=DISCOUNT_TYPE_CHOICES,
+        default='percent',
+        verbose_name=_('Тип скидки')
+    )
+    discount_value = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name=_('Размер скидки'),
+        help_text=_('Для процентов — значение 1–100, для фиксированной суммы — в рублях')
+    )
+    valid_from = models.DateTimeField(
+        default=timezone.now,
+        verbose_name=_('Действителен с')
+    )
+    valid_until = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_('Действителен до'),
+        help_text=_('Оставьте пустым для бессрочного промокода')
+    )
+    max_uses = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Макс. кол-во активаций'),
+        help_text=_('0 — безлимитно')
+    )
+    current_uses = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Текущее кол-во активаций'),
+        editable=False
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('Активен')
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Создан'))
+
+    class Meta:
+        verbose_name = _('Промокод')
+        verbose_name_plural = _('Промокоды')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.code} ({self.get_discount_type_display()}: {self.discount_value})'
+
+    def is_valid(self):
+        """True, если промокод активен, не истёк срок и не исчерпан лимит."""
+        now = timezone.now()
+        if not self.is_active:
+            return False
+        if self.valid_from and self.valid_from > now:
+            return False
+        if self.valid_until and self.valid_until < now:
+            return False
+        if self.max_uses > 0 and self.current_uses >= self.max_uses:
+            return False
+        return True
+
+    def apply_discount(self, total):
+        """Returns сумму скидки (decimal) для данной стоимости."""
+        from decimal import Decimal
+        if self.discount_type == 'percent':
+            return (total * self.discount_value / Decimal('100')).quantize(Decimal('0.01'))
+        else:  # fixed
+            return min(self.discount_value, total)
+
+
+class PromoCodeUsage(models.Model):
+    """Oтслеживает кто и когда использовал промокод."""
+    promo_code = models.ForeignKey(
+        PromoCode,
+        on_delete=models.CASCADE,
+        related_name='usages',
+        verbose_name=_('Промокод')
+    )
+    order = models.OneToOneField(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='promo_usage',
+        verbose_name=_('Заказ')
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_('Пользователь')
+    )
+    discount_amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        verbose_name=_('Сумма скидки')
+    )
+    used_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Дата использования'))
+
+    class Meta:
+        verbose_name = _('Использование промокода')
+        verbose_name_plural = _('История промокодов')
+
+    def __str__(self):
+        return f'{self.promo_code.code} — Заказ #{self.order.id}'

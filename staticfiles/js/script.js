@@ -216,4 +216,123 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof htmx !== 'undefined') {
         htmx.config.globalViewTransitions = true;
     }
+
+    // ============================================================
+    // ИННОВАЦИОННЫЕ УЛУЧШЕНИЯ v2.0
+    // Для отката: git revert HEAD (после коммита)
+    // ============================================================
+
+    // 12. 3D Tilt Effect — наклон карточек при движении мыши
+    function init3DTilt(root) {
+        root.querySelectorAll('.card, .glass-card, .glass-card-premium').forEach(card => {
+            // Пропускаем мобильные устройства (pointer: coarse)
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * 8;
+                const rotateY = ((centerX - x) / centerX) * 8;
+                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale(1.01)`;
+                // Динамичный highlight — следует за курсором
+                const percentX = (x / rect.width) * 100;
+                const percentY = (y / rect.height) * 100;
+                card.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.07), transparent 60%)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                card.style.background = '';
+            });
+        });
+    }
+
+    init3DTilt(document);
+
+    document.body.addEventListener('htmx:load', (e) => {
+        init3DTilt(e.detail.elt);
+    });
+
+    // 13. Active Nav Item — подсвечиваем текущий раздел в навигации
+    (function markActiveNav() {
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.main-nav-item').forEach(item => {
+            const link = item.querySelector('a.nav-link');
+            if (!link) return;
+            const href = link.getAttribute('href');
+            if (!href || href === '#') return;
+            if (currentPath.startsWith(href) && href !== '/') {
+                item.classList.add('active');
+            } else if (href === '/' && currentPath === '/') {
+                item.classList.add('active');
+            }
+        });
+    })();
+
+    // ============================================================
+    // 14. Scroll-to-Top Button — кнопка "наверх"
+    // ============================================================
+    (function initScrollToTop() {
+        // Создаём кнопку программно
+        const btn = document.createElement('button');
+        btn.id = 'scroll-to-top-btn';
+        btn.setAttribute('aria-label', 'Прокрутить наверх');
+        btn.setAttribute('title', 'Наверх');
+        btn.innerHTML = '<i class="bi bi-arrow-up"></i>';
+        btn.style.cssText = [
+            'position: fixed',
+            'bottom: 2rem',
+            'right: 2rem',
+            'width: 48px',
+            'height: 48px',
+            'border-radius: 50%',
+            'border: none',
+            'background: var(--gradient-premium, linear-gradient(135deg,#6c63ff,#48cae4))',
+            'color: #fff',
+            'font-size: 1.2rem',
+            'cursor: pointer',
+            'z-index: 9999',
+            'box-shadow: 0 4px 20px rgba(108,99,255,0.45)',
+            'opacity: 0',
+            'visibility: hidden',
+            'transform: translateY(10px)',
+            'transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease',
+            'display: flex',
+            'align-items: center',
+            'justify-content: center',
+        ].join(';');
+        document.body.appendChild(btn);
+
+        // Показываем/скрываем в зависимости от позиции скролла
+        const toggleVisibility = () => {
+            if (window.scrollY > 300) {
+                btn.style.opacity = '1';
+                btn.style.visibility = 'visible';
+                btn.style.transform = 'translateY(0)';
+            } else {
+                btn.style.opacity = '0';
+                btn.style.visibility = 'hidden';
+                btn.style.transform = 'translateY(10px)';
+            }
+        };
+
+        window.addEventListener('scroll', toggleVisibility, { passive: true });
+
+        btn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Небольшой hover-эффект
+        btn.addEventListener('mouseenter', () => {
+            btn.style.filter = 'brightness(1.15)';
+            btn.style.transform = 'translateY(-3px)';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.filter = '';
+            btn.style.transform = window.scrollY > 300 ? 'translateY(0)' : 'translateY(10px)';
+        });
+    })();
 });

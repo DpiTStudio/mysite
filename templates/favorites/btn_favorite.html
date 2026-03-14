@@ -1,0 +1,23 @@
+{# 
+  Кнопка "Добавить в избранное" — универсальная, работает с любым объектом.
+  
+  Использование в шаблоне:
+    {% include 'favorites/btn_favorite.html' with obj=news app='news' model='news' %}
+    {% include 'favorites/btn_favorite.html' with obj=portfolio app='portfolio' model='portfolio' %}
+  
+  Требует: пользователь авторизован + приложение favorites подключено.
+#}
+{% if user.is_authenticated %}
+{% load favorites_tags %}
+{% with is_fav=obj|is_favorite:user count=obj|fav_count %}
+<button type="button"
+        class="btn btn-sm fav-toggle-btn {% if is_fav %}btn-danger{% else %}btn-outline-secondary{% endif %} rounded-circle p-1"
+        style="width:34px;height:34px;line-height:1"
+        data-url="{% url 'favorites:toggle' app model obj.pk %}"
+        data-active="{{ is_fav|yesno:'true,false' }}"
+        title="{% if is_fav %}В избранном{% else %}В избранное{% endif %}"
+        aria-label="Избранное">
+    <i class="bi {% if is_fav %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+</button>
+{% endwith %}
+{% endif %}

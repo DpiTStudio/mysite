@@ -10,6 +10,7 @@
 import os # Операционная система
 from pathlib import Path # Пути к файлам
 import importlib.util # Импорт модулей
+from celery.schedules import crontab  # Расписание Celery Beat
 
 # Путь к корню проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -66,6 +67,7 @@ INSTALLED_APPS = [
     "mail.apps.MailConfig", # Почта
     "services.apps.ServicesConfig", # Услуги
     "cart.apps.CartConfig", # Корзина
+    "favorites.apps.FavoritesConfig", # Избранное
     "knowledge_base.apps.KnowledgeBaseConfig", # База знаний
     "tinymce", # Редактор
     
@@ -486,12 +488,44 @@ IMAP_PASSWORD = EMAIL_HOST_PASSWORD
 # ------------------------------------------------------------
 # Celery
 # ------------------------------------------------------------
-# CELERY_BROKER_URL = "redis://localhost:6379/2"
-# CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-# CELERY_ACCEPT_CONTENT = ["application/json"]
-# CELERY_TASK_SERIALIZER = "json"
-# CELERY_RESULT_SERIALIZER = "json"
-# CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_URL = "redis://localhost:6379/2"
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
+
+# Autodiscover задачи в backup_tasks и других модулях
+CELERY_IMPORTS = [
+    'mysite.backup_tasks',
+]
+
+# Расписание Celery Beat (периодические задачи)
+CELERY_BEAT_SCHEDULE = {
+    # Полный бэкап (БД + медиа) каждую ночь в 03:00
+    'full-backup-nightly': {
+        'task': 'backup.full',
+        'schedule': crontab(hour=3, minute=0),
+        'options': {'expires': 3600},
+    },
+    # Бэкап только БД каждые 12 часов (в 03:00 и 15:00)
+    'db-backup-twice-daily': {
+        'task': 'backup.database',
+        'schedule': crontab(hour='3,15', minute=0),
+        'options': {'expires': 3600},
+    },
+    # Очистка старых бэкапов каждое воскресенье в 04:00
+    'cleanup-old-backups-weekly': {
+        'task': 'backup.cleanup',
+        'schedule': crontab(hour=4, minute=0, day_of_week=0),
+    },
+}
+
+# ------------------------------------------------------------
+# Настройки резервного копирования
+# ------------------------------------------------------------
+BACKUP_MAX_DB_COUNT = 14     # Хранить последние 14 бэкапов БД
+BACKUP_MAX_MEDIA_COUNT = 7   # Хранить последние 7 архивов медиа
 
 # ------------------------------------------------------------
 # Идентификатор корзины в сессии

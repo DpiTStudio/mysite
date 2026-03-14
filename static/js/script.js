@@ -271,4 +271,68 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     })();
+
+    // ============================================================
+    // 14. Scroll-to-Top Button — кнопка "наверх"
+    // ============================================================
+    (function initScrollToTop() {
+        // Создаём кнопку программно
+        const btn = document.createElement('button');
+        btn.id = 'scroll-to-top-btn';
+        btn.setAttribute('aria-label', 'Прокрутить наверх');
+        btn.setAttribute('title', 'Наверх');
+        btn.innerHTML = '<i class="bi bi-arrow-up"></i>';
+        btn.style.cssText = [
+            'position: fixed',
+            'bottom: 2rem',
+            'right: 2rem',
+            'width: 48px',
+            'height: 48px',
+            'border-radius: 50%',
+            'border: none',
+            'background: var(--gradient-premium, linear-gradient(135deg,#6c63ff,#48cae4))',
+            'color: #fff',
+            'font-size: 1.2rem',
+            'cursor: pointer',
+            'z-index: 9999',
+            'box-shadow: 0 4px 20px rgba(108,99,255,0.45)',
+            'opacity: 0',
+            'visibility: hidden',
+            'transform: translateY(10px)',
+            'transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease',
+            'display: flex',
+            'align-items: center',
+            'justify-content: center',
+        ].join(';');
+        document.body.appendChild(btn);
+
+        // Показываем/скрываем в зависимости от позиции скролла
+        const toggleVisibility = () => {
+            if (window.scrollY > 300) {
+                btn.style.opacity = '1';
+                btn.style.visibility = 'visible';
+                btn.style.transform = 'translateY(0)';
+            } else {
+                btn.style.opacity = '0';
+                btn.style.visibility = 'hidden';
+                btn.style.transform = 'translateY(10px)';
+            }
+        };
+
+        window.addEventListener('scroll', toggleVisibility, { passive: true });
+
+        btn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Небольшой hover-эффект
+        btn.addEventListener('mouseenter', () => {
+            btn.style.filter = 'brightness(1.15)';
+            btn.style.transform = 'translateY(-3px)';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.filter = '';
+            btn.style.transform = window.scrollY > 300 ? 'translateY(0)' : 'translateY(10px)';
+        });
+    })();
 });

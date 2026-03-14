@@ -70,6 +70,7 @@ urlpatterns += [
     path("mail/", include("mail.urls")),
     path("services/", include("services.urls")),
     path("cart/", include("cart.urls")),
+    path("favorites/", include("favorites.urls")),
     path("knowledge-base/", include("knowledge_base.urls")),
     path("captcha/", include("captcha.urls")),
 ]
