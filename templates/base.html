@@ -4,7 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}{% endblock %}</title>
+    <title>
+        {{ site_settings.site_domain|upper }} | 
+        {% block title %}
+            {% if site_settings %}
+                {{ site_settings.site_title }} 
+            {% else %}
+                DPIT-CMS 
+            {% endif %}
+        {% endblock %}
+    </title>
     
     <!-- Базовые мета-теги -->
     <meta name="description" content="{% block meta_description %}{% if site_settings %}{{ site_settings.meta_description }}{% else %}DPIT-CMS - Современная система управления контентом{% endif %}{% endblock %}">
