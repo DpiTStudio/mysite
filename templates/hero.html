@@ -8,6 +8,15 @@
 <div class="container-fluid px-0 hero-section {% if request.path == '/' %}hero-large{% endif %}">
     <!-- Контейнер для логотипа и фонового изображения. Если есть фон (header_data.image), устанавливаем его через style -->
     <div class="w-100 px-0 text-left logo-container" {% if header_data.image %}style="background-image: url('{{ header_data.image }}');"{% endif %}>
+
+        <!-- Анимированные частицы фона (CSS particles) -->
+        <div class="hero-particles" aria-hidden="true">
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+        </div>
         
         <!-- Полупрозрачный стеклянный блок, содержащий текст и навигацию (хлебные крошки) -->
         <div class="logo-inform-div">

@@ -1054,56 +1054,134 @@ form textarea:not(.bg-transparent)::placeholder {
     transition: width 0.1s ease;
 }
 
-/* Стили загрузочного экрана (Preloader) */
-.page-preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--color-dark-bg);
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+/* ============================================================
+   ИННОВАЦИОННЫЕ УЛУЧШЕНИЯ ВЕРСТКИ v2.0
+   Для отката: git revert HEAD (после коммита)
+   ============================================================ */
+
+/* --- 1. Nav Link Indicator — анимированная линия под пунктом меню --- */
+.main-nav-item > .nav-link {
+    position: relative;
 }
 
-/* Спиннер предзагрузчика */
-.preloader-spinner {
-    width: 3rem;
-    height: 3rem;
-}
-
-/* Полоса прогресса прокрутки (Scroll Progress Bar) */
-.scroll-progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
+.main-nav-item > .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
     background: var(--gradient-premium);
-    z-index: 100000;
-    transition: width 0.1s ease;
+    border-radius: 99px;
+    transform: translateX(-50%);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* */
-.fs-1 {
-    text-transform: uppercase;
-    font-size: 2.5rem !important;
-    text-shadow: 0px 0px 1px hsla(71, 97%, 50%, 0.232);
-    
+.main-nav-item > .nav-link:hover::after,
+.main-nav-item.active > .nav-link::after {
+    width: calc(100% - 2rem);
 }
 
-.fs-2 {
-    text-transform: uppercase;
-    font-size: 0.5rem !important;
-    text-shadow: 0px 0px 1px hsla(71, 97%, 50%, 0.232);
-    
+/* --- 2. Shimmer Skeleton — плавная анимация загрузки --- */
+.skeleton-shimmer,
+.placeholder {
+    background: linear-gradient(
+        90deg,
+        var(--color-dark-surface) 0%,
+        var(--color-dark-highlight) 50%,
+        var(--color-dark-surface) 100%
+    ) !important;
+    background-size: 200% 100% !important;
+    animation: shimmer-move 1.5s infinite !important;
+    border-radius: var(--radius-sm);
 }
-.fs-6 {
-    text-transform: uppercase;
-    font-size: 0.5rem !important;
-    text-shadow: 0px 0px 1px hsla(71, 97%, 50%, 0.232);
-    
+
+@keyframes shimmer-move {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
+
+/* --- 3. SVG Noise Texture — глубина тёмного фона --- */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+
+body.light-mode::after {
+    opacity: 0.015;
+}
+
+/* --- 4. Footer Gradient Mesh --- */
+.footer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+}
+
+.footer > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- 5. 3D Card Tilt — CSS-подготовка для JS-эффекта --- */
+.card,
+.glass-card,
+.glass-card-premium {
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.15s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --- 6. Gradient Title Support --- */
+.title-gradient {
+    background: linear-gradient(135deg, #ffffff 60%, rgba(99, 102, 241, 0.9) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* --- 7. Glow Pulse на кнопках --- */
+@keyframes glow-pulse {
+    0%, 100% { box-shadow: var(--shadow-sm), 0 0 0 0 var(--color-primary-alpha); }
+    50%       { box-shadow: var(--shadow-md), 0 0 20px 6px var(--color-primary-alpha); }
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+    animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* --- 8. Reveal анимация для section-title-wrapper --- */
+.section-title-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--gradient-premium);
+    border-radius: 99px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.animate-active .section-title-wrapper::after,
+.section-title-wrapper.animate-active::after {
+    width: 60px;
+}
+
+/* --- FIX: Убраны сломанные переопределения Bootstrap утилит .fs-2 / .fs-6 ---
+   (ранее font-size: 0.5rem!important ломал строку поиска и другие элементы) --- */

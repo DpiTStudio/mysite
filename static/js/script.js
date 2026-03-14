@@ -216,4 +216,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof htmx !== 'undefined') {
         htmx.config.globalViewTransitions = true;
     }
+
+    // ============================================================
+    // ИННОВАЦИОННЫЕ УЛУЧШЕНИЯ v2.0
+    // Для отката: git revert HEAD (после коммита)
+    // ============================================================
+
+    // 12. 3D Tilt Effect — наклон карточек при движении мыши
+    function init3DTilt(root) {
+        root.querySelectorAll('.card, .glass-card, .glass-card-premium').forEach(card => {
+            // Пропускаем мобильные устройства (pointer: coarse)
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * 8;
+                const rotateY = ((centerX - x) / centerX) * 8;
+                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale(1.01)`;
+                // Динамичный highlight — следует за курсором
+                const percentX = (x / rect.width) * 100;
+                const percentY = (y / rect.height) * 100;
+                card.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.07), transparent 60%)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                card.style.background = '';
+            });
+        });
+    }
+
+    init3DTilt(document);
+
+    document.body.addEventListener('htmx:load', (e) => {
+        init3DTilt(e.detail.elt);
+    });
+
+    // 13. Active Nav Item — подсвечиваем текущий раздел в навигации
+    (function markActiveNav() {
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.main-nav-item').forEach(item => {
+            const link = item.querySelector('a.nav-link');
+            if (!link) return;
+            const href = link.getAttribute('href');
+            if (!href || href === '#') return;
+            if (currentPath.startsWith(href) && href !== '/') {
+                item.classList.add('active');
+            } else if (href === '/' && currentPath === '/') {
+                item.classList.add('active');
+            }
+        });
+    })();
 });
