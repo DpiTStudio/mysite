@@ -7,9 +7,9 @@
 # ------------------------------------------------------------
 # Библиотеки
 # ------------------------------------------------------------
-import os
-from pathlib import Path
-import importlib.util
+import os # Операционная система
+from pathlib import Path # Пути к файлам
+import importlib.util # Импорт модулей
 
 # Путь к корню проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,15 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Секретный ключ
 SECRET_KEY = 'django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m'
 # Режим отладки – НЕ включать в продакшн!
-DEBUG = True
+DEBUG = False
 # Доступные хосты по умолчанию порт 4234
 ALLOWED_HOSTS = [
-    '*',
-    '127.0.0.1:4234',
-    'localhost:4234',
-    '46.149.71.34:4234',
-    '192.168.0.4:4234',
-    'dpit-cms.ru:4234',
+    '*', # Все хосты
+    '127.0.0.1:4234', # Локальный хост
+    'localhost:4234', # Локальный хост
+    '46.149.71.34:4234', # IP адрес
+    '192.168.0.4:4234', # IP адрес
+    'dpit-cms.ru:4234', # Домен
 ]
 
 # ------------------------------------------------------------
@@ -38,12 +38,12 @@ INSTALLED_APPS = [
     # Темы
     "jazzmin",
     # Основные приложения
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    "django.contrib.admin", # Админ панель
+    "django.contrib.auth", # Аутентификация
+    "django.contrib.contenttypes", # Типы контента
+    "django.contrib.sessions", # Сессии
+    "django.contrib.messages", # Сообщения
+    "django.contrib.staticfiles", # Статические файлы
     "django.contrib.sitemaps",  # Для sitemap.xml
     "django.contrib.sites",     # Нужно для allauth
     "captcha",  # Капча
@@ -145,10 +145,14 @@ DATABASES = {
 # ------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     # Основные валидаторы
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"}, # Проверка схожести пароля
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"}, # Минимальная длина пароля
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"}, # Проверка на частые пароли
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"}, # Проверка на числовые пароли
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"}, 
+    # Проверка схожести пароля
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"}, 
+    # Минимальная длина пароля
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"}, 
+    # Проверка на частые пароли
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"}, 
+    # Проверка на числовые пароли
 ]
 
 # ------------------------------------------------------------
@@ -162,7 +166,6 @@ USE_TZ = True # Часовые пояса
 
 LANGUAGES = [
     ('ru', 'Russian'),
-    ('en', 'English'),
 ]
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
@@ -180,8 +183,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media") # Путь к медиа‑файл
 
 # Хранилища (по умолчанию и для staticfiles)
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"}, # Хранилище по умолчанию
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}, # Хранилище для статических файлов
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"}, 
+    # Хранилище по умолчанию
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}, 
+    # Хранилище для статических файлов
 }
 # В продакшене используем манифесты для кеширования
 if not DEBUG: # Если DEBUG выключен
@@ -482,12 +487,12 @@ IMAP_PASSWORD = EMAIL_HOST_PASSWORD
 # ------------------------------------------------------------
 # Celery
 # ------------------------------------------------------------
-CELERY_BROKER_URL = "redis://localhost:6379/2"
-CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-CELERY_ACCEPT_CONTENT = ["application/json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
-CELERY_TIMEZONE = TIME_ZONE
+# CELERY_BROKER_URL = "redis://localhost:6379/2"
+# CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+# CELERY_ACCEPT_CONTENT = ["application/json"]
+# CELERY_TASK_SERIALIZER = "json"
+# CELERY_RESULT_SERIALIZER = "json"
+# CELERY_TIMEZONE = TIME_ZONE
 
 # ------------------------------------------------------------
 # Идентификатор корзины в сессии
