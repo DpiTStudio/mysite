@@ -36,54 +36,96 @@
     <hr class="my-4 bg-secondary">
     <div class="social-links">
         {% if site_settings.site_linkedin %}
-        <a href="{{ site_settings.site_linkedin }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-linkedin"></i>
+        <a href="{{ site_settings.site_linkedin }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_linkedin_img %}
+                <img src="{{ site_settings.site_linkedin_img.url }}" alt="LinkedIn" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-linkedin"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_instagram %}
-        <a href="{{ site_settings.site_instagram }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-instagram"></i>
+        <a href="{{ site_settings.site_instagram }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_instagram_img %}
+                <img src="{{ site_settings.site_instagram_img.url }}" alt="Instagram" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-instagram"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_twitter %}
-        <a href="{{ site_settings.site_twitter }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-twitter"></i>
+        <a href="{{ site_settings.site_twitter }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_twitter_img %}
+                <img src="{{ site_settings.site_twitter_img.url }}" alt="Twitter" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-twitter"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_facebook %}
-        <a href="{{ site_settings.site_facebook }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-facebook"></i>
+        <a href="{{ site_settings.site_facebook }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_facebook_img %}
+                <img src="{{ site_settings.site_facebook_img.url }}" alt="Facebook" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-facebook"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_telegram %}
-        <a href="{{ site_settings.site_telegram }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-telegram"></i>
+        <a href="{{ site_settings.site_telegram }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_telegram_img %}
+                <img src="{{ site_settings.site_telegram_img.url }}" alt="Telegram" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-telegram"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_vk %}
-        <a href="{{ site_settings.site_vk }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-vk"></i>
+        <a href="{{ site_settings.site_vk }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_vk_img %}
+                <img src="{{ site_settings.site_vk_img.url }}" alt="VK" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-vk"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_ok %}
-        <a href="{{ site_settings.site_ok }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-ok"></i>
+        <a href="{{ site_settings.site_ok }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_ok_img %}
+                <img src="{{ site_settings.site_ok_img.url }}" alt="OK" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-ok"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_whatsapp %}
-        <a href="{{ site_settings.site_whatsapp }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-whatsapp"></i>
+        <a href="{{ site_settings.site_whatsapp }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_whatsapp_img %}
+                <img src="{{ site_settings.site_whatsapp_img.url }}" alt="WhatsApp" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-whatsapp"></i>
+            {% endif %}
         </a>
         {% endif %}
         {% if site_settings.site_youtube %}
-        <a href="{{ site_settings.site_youtube }}" class="social-btn me-2 mb-2">
-            <i class="bi bi-youtube"></i>
+        <a href="{{ site_settings.site_youtube }}" class="social-btn me-2 mb-2" target="_blank">
+            {% if site_settings.site_youtube_img %}
+                <img src="{{ site_settings.site_youtube_img.url }}" alt="YouTube" style="width: 20px; height: 20px; object-fit: contain;">
+            {% else %}
+                <i class="bi bi-youtube"></i>
+            {% endif %}
         </a>
         {% endif %}
     </div>
     <div class="payment-methods">
         {% comment %}
         <p class="text-footer-title mb-4">Мы принимаем:</p>
+        {% if site_settings.site_payment_methods %}
+            {% for method in site_settings.site_payment_methods.all %}
+                <img src="{{ method.image.url }}" alt="{{ method.name }}" class="img-fluid">
+            {% endfor %}
+        {% endif %}
+        {% comment %}
         <img src="{% static 'images/payment/yoomoney.png' %}" alt="Yoomoney" class="img-fluid">
         <img src="{% static 'images/payment/qiwi.png' %}" alt="Qiwi" class="img-fluid">
         <img src="{% static 'images/payment/webmoney.png' %}" alt="Webmoney" class="img-fluid">

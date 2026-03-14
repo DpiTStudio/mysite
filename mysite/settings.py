@@ -35,7 +35,6 @@ ALLOWED_HOSTS = [
 # Приложения (INSTALLED_APPS)
 # ------------------------------------------------------------
 INSTALLED_APPS = [
-    # Темы
     "jazzmin",
     # Основные приложения
     "django.contrib.admin", # Админ панель
