@@ -37,57 +37,97 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
 # ------------------------------------------------------------
 # Приложения (INSTALLED_APPS)
 # ------------------------------------------------------------
+# INSTALLED_APPS = [
+#     "jazzmin",
+#     # Основные приложения
+#     "django.contrib.admin", # Админ панель
+#     "django.contrib.auth", # Аутентификация
+#     "django.contrib.contenttypes", # Типы контента
+#     "django.contrib.sessions", # Сессии
+#     "django.contrib.messages", # Сообщения
+#     "django.contrib.staticfiles", # Статические файлы
+#     "django.contrib.sitemaps",  # Для sitemap.xml
+#     "django.contrib.sites",     # Нужно для allauth
+#     "captcha",  # Капча
+    
+#     # Allauth
+#     "allauth",
+#     "allauth.account",
+#     "allauth.socialaccount",
+#     "allauth.socialaccount.providers.google",
+#     "allauth.socialaccount.providers.github",
+
+
+#     # Мои приложения
+#     "main.apps.MainConfig", # Главная страница
+#     "news.apps.NewsConfig", # Новости
+#     "portfolio.apps.PortfolioConfig", # Портфолио
+#     "reviews.apps.ReviewsConfig", # Отзывы
+#     "logfiles.apps.LogfilesConfig", # Логи
+#     "accounts.apps.AccountsConfig", # Аккаунты
+#     "tickets.apps.TicketsConfig", # Тикеты
+#     "mail.apps.MailConfig", # Почта
+#     "services.apps.ServicesConfig", # Услуги
+#     "cart.apps.CartConfig", # Корзина
+#     "favorites.apps.FavoritesConfig", # Избранное
+#     "knowledge_base.apps.KnowledgeBaseConfig", # База знаний
+#     "tinymce", # Редактор   
+# ]
 INSTALLED_APPS = [
+    # Внешний вид админки (должен быть первым)
     "jazzmin",
-    # Основные приложения
-    "django.contrib.admin", # Админ панель
-    "django.contrib.auth", # Аутентификация
-    "django.contrib.contenttypes", # Типы контента
-    "django.contrib.sessions", # Сессии
-    "django.contrib.messages", # Сообщения
-    "django.contrib.staticfiles", # Статические файлы
-    "django.contrib.sitemaps",  # Для sitemap.xml
-    "django.contrib.sites",     # Нужно для allauth
-    "captcha",  # Капча
     
-    # Allauth
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
-    "allauth.socialaccount.providers.github",
-
-
-    # Мои приложения
-    "main.apps.MainConfig", # Главная страница
-    "news.apps.NewsConfig", # Новости
-    "portfolio.apps.PortfolioConfig", # Портфолио
-    "reviews.apps.ReviewsConfig", # Отзывы
-    "logfiles.apps.LogfilesConfig", # Логи
-    "accounts.apps.AccountsConfig", # Аккаунты
-    "tickets.apps.TicketsConfig", # Тикеты
-    "mail.apps.MailConfig", # Почта
-    "services.apps.ServicesConfig", # Услуги
-    "cart.apps.CartConfig", # Корзина
-    "favorites.apps.FavoritesConfig", # Избранное
-    "knowledge_base.apps.KnowledgeBaseConfig", # База знаний
-    "tinymce", # Редактор
+    # ========== СТАНДАРТНЫЕ ПРИЛОЖЕНИЯ DJANGO ==========
+    "django.contrib.admin",           # Админ-панель
+    "django.contrib.auth",            # Аутентификация
+    "django.contrib.contenttypes",    # Работа с типами моделей
+    "django.contrib.sessions",        # Управление сессиями
+    "django.contrib.messages",        # Система сообщений
+    "django.contrib.staticfiles",     # Статические файлы (CSS, JS)
+    "django.contrib.sitemaps",        # Генерация sitemap.xml
+    "django.contrib.sites",           # Поддержка нескольких сайтов
     
+    # ========== СТОРОННИЕ ПРИЛОЖЕНИЯ ==========
+    # Аутентификация через соцсети
+    "allauth",                                  # Allauth
+    "allauth.account",                          # Allauth account
+    "allauth.socialaccount",                    # Allauth social account
+    "allauth.socialaccount.providers.google",   # Allauth google
+    "allauth.socialaccount.providers.github",   # Allauth github
+    
+    # Прочие сторонние приложения
+    "captcha",        # Защита от ботов
+    "tinymce",        # Визуальный редактор
+    
+    # ========== СОБСТВЕННЫЕ ПРИЛОЖЕНИЯ ==========
+    "main.apps.MainConfig",                     # Главная страница
+    "accounts.apps.AccountsConfig",             # Управление аккаунтами
+    "news.apps.NewsConfig",                     # Новости
+    "portfolio.apps.PortfolioConfig",           # Портфолио работ
+    "services.apps.ServicesConfig",             # Услуги
+    "reviews.apps.ReviewsConfig",               # Отзывы клиентов
+    "cart.apps.CartConfig",                     # Корзина покупок
+    "favorites.apps.FavoritesConfig",           # Избранное
+    "tickets.apps.TicketsConfig",               # Система тикетов (поддержка)
+    "knowledge_base.apps.KnowledgeBaseConfig",  # База знаний
+    "mail.apps.MailConfig",                     # Почтовые уведомления
+    "logfiles.apps.LogfilesConfig",             # Логирование действий
 ]
+
 
 # ------------------------------------------------------------
 # Middleware
 # ------------------------------------------------------------
 MIDDLEWARE = [
     # Основные middleware
-    "django.middleware.security.SecurityMiddleware", # Безопасность
-    "django.contrib.sessions.middleware.SessionMiddleware", # Сессии
-    "django.middleware.common.CommonMiddleware", # Общие настройки
-    "django.middleware.csrf.CsrfViewMiddleware", # CSRF
-    "django.contrib.auth.middleware.AuthenticationMiddleware", # Аутентификация
-    "django.contrib.messages.middleware.MessageMiddleware", # Сообщения
+    "django.middleware.security.SecurityMiddleware",          # Безопасность
+    "django.contrib.sessions.middleware.SessionMiddleware",   # Сессии
+    "django.middleware.common.CommonMiddleware",              # Общие настройки
+    "django.middleware.csrf.CsrfViewMiddleware",              # CSRF
+    "django.contrib.auth.middleware.AuthenticationMiddleware",# Аутентификация
+    "django.contrib.messages.middleware.MessageMiddleware",   # Сообщения
     "django.middleware.clickjacking.XFrameOptionsMiddleware", # Защита от кликджекинга
-    "allauth.account.middleware.AccountMiddleware", # Allauth
+    "allauth.account.middleware.AccountMiddleware",           # Allauth
 ]
 # Подключаем WhiteNoise, если он установлен (обслуживание статики)
 HAS_WHITENOISE = importlib.util.find_spec("whitenoise") is not None
