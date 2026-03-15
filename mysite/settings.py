@@ -11,7 +11,6 @@ import os # Операционная система
 from pathlib import Path # Пути к файлам
 import importlib.util # Импорт модулей
 from celery.schedules import crontab  # Расписание Celery Beat
-from dotenv import load_dotenv # Загрузка .env
 import environ  # django-environ для чтения .env
 
 # Путь к корню проекта
@@ -19,7 +18,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Инициализация django-environ: читаем .env из корня проекта (рядом с manage.py)
 env = environ.Env()
-load_dotenv(BASE_DIR / ".env")
 environ.Env.read_env(BASE_DIR / ".env")
 
 # ------------------------------------------------------------
@@ -31,16 +29,13 @@ SECRET_KEY = env.str("SECRET_KEY", default="django-insecure-fallback-key-replace
 DEBUG = env.bool("DEBUG", default=True)
 
 # Доступные хосты: базовые всегда включены + дополнительные из .env
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[
-    '127.0.0.1:4234',      # Локальный хост
-    'localhost:4234',      # Локальный хост
-    '46.149.71.34:4234',   # Внешний IP адрес
-    '192.168.0.4:4234',    # IP адрес локальной сети
-    'dpit-cms.ru:4234',    # Основной домен с портом
-    'www.dpit-cms.ru:4234',# Домен с www и портом
-    'dpit-cms.ru',         # Основной домен
-    'www.dpit-cms.ru',     # Домен с www
-])
+domains = ['dpit-cms.ru', 'www.dpit-cms.ru']
+hosts = ['127.0.0.1', 'localhost', '46.149.71.34', '192.168.0.4'] + domains
+
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=
+    [f'{host}:4234' for host in hosts] + 
+    domains
+)
 
 # ------------------------------------------------------------
 # Приложения (INSTALLED_APPS)
