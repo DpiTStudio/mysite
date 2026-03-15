@@ -1,8 +1,11 @@
 <!-- Статистика для персонала -->
 {% if stats %}
 <section class="home-section animate-scale">
-    <div class="glass-card-premium p-5 bg-primary text-white text-center">
-        <h3 class="h4 mb-5 fw-bold"><i class="bi bi-graph-up-arrow me-2"></i> Показатели системы</h3>
+    <div class="section-title animate-up text-left mb-5">
+        <h2 class="display-5 text-gradient fw-bold mb-3"><i class="bi bi-graph-up-arrow me-2"></i>Системная статистика</h2>
+        <p class="text-muted fs-5">Показатели системы на текущий момент</p>
+    </div>
+    <div class="text-white text-center">
         <div class="row g-4">
             <div class="col-6 col-md-3">
                 <div class="display-6 fw-bold mb-1">{{ stats.news_count }}</div>
