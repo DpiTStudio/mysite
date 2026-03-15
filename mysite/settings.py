@@ -29,13 +29,10 @@ SECRET_KEY = env.str("SECRET_KEY", default="django-insecure-fallback-key-replace
 DEBUG = env.bool("DEBUG", default=True)
 
 # Доступные хосты: базовые всегда включены + дополнительные из .env
-domains = ['dpit-cms.ru', 'www.dpit-cms.ru']
-hosts = ['127.0.0.1', 'localhost', '46.149.71.34', '192.168.0.4'] + domains
+domains = ['dpit-cms.ru:4234', 'www.dpit-cms.ru:4234']
+hosts = ['127.0.0.1:4234', 'localhost:4234', '46.149.71.34:4234', '192.168.0.4:4234'] + domains
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=
-    [f'{host}:4234' for host in hosts] + 
-    domains
-)
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
 
 # ------------------------------------------------------------
 # Приложения (INSTALLED_APPS)
