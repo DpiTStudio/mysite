@@ -1,0 +1,43 @@
+{
+  "name": "DPIT-CMS",
+  "short_name": "DPIT",
+  "description": "Современная система управления контентом",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f1117",
+  "theme_color": "#6c63ff",
+  "lang": "ru",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/static/images/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Новости",
+      "url": "/news/",
+      "description": "Последние новости"
+    },
+    {
+      "name": "Портфолио",
+      "url": "/portfolio/",
+      "description": "Наши работы"
+    },
+    {
+      "name": "Услуги",
+      "url": "/services/",
+      "description": "Каталог услуг"
+    }
+  ],
+  "categories": ["business", "productivity"]
+}

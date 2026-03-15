@@ -1,0 +1,90 @@
+/* Accounts Styles */
+.profile-sidebar {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+}
+
+.profile-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-nav li {
+    margin-bottom: 0.5rem;
+}
+
+.profile-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.25rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: var(--transition-normal);
+}
+
+.profile-nav a:hover, .profile-nav a.active {
+    background: rgba(99, 102, 241, 0.2);
+    color: #fff;
+}
+
+.profile-nav a i {
+    font-size: 1.1rem;
+}
+
+/* Стили для капчи в формах входа и регистрации */
+.captcha-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Управление размерами картинки */
+.captcha-container img.captcha {
+    width: 200px;
+    height: auto;
+    border-radius: var(--radius-md, 8px);
+    border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.1));
+    cursor: pointer;
+}
+
+/* Управление полем ввода капчи */
+.captcha-container input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #fff !important;
+    background: rgba(15, 23, 42, 0.4) !important;
+    background-clip: padding-box;
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-md);
+    transition: var(--transition-normal);
+}
+
+.captcha-container input[type="text"]:focus {
+    color: #fff !important;
+    background: rgba(15, 23, 42, 0.7) !important;
+    border-color: var(--color-primary);
+    outline: 0;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+body.light-mode .captcha-container input[type="text"] {
+    color: #212529 !important;
+    background: #fff !important;
+    border-color: #ced4da;
+}
+
+body.light-mode .captcha-container input[type="text"]:focus {
+    color: #212529 !important;
+    background: #fff !important;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
