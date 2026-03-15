@@ -49,7 +49,123 @@
                         {{ service.description|safe }}
                     </div>
                 </div>
-                    {% if tech_list %}
+
+                <!-- Преимущества -->
+                {% if benefits %}
+                <div class="mb-5">
+                    <h4 class="fw-bold mb-4 text-white"><i class="fas fa-star text-warning me-2"></i>Преимущества</h4>
+                    <div class="row g-4">
+                        {% for benefit in benefits %}
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start p-3 rounded bg-white bg-opacity-5 border border-white border-opacity-10 h-100">
+                                {% if benefit.icon_code %}
+                                <div class="benefit-icon me-3 mt-1 text-primary">
+                                    <i class="{{ benefit.icon_code }} fs-4"></i>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <h5 class="fw-bold text-white mb-1">{{ benefit.title }}</h5>
+                                    <p class="small text-muted mb-0">{{ benefit.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Тарифные планы -->
+                {% if price_plans %}
+                <div class="mb-5">
+                    <h4 class="fw-bold mb-4 text-white"><i class="fas fa-tags text-info me-2"></i>Тарифные планы</h4>
+                    <div class="row g-3">
+                        {% for plan in price_plans %}
+                        <div class="col-md-4">
+                            <div class="glass-card-premium p-3 h-100 border-0 {% if plan.is_recommended %}border-primary border-top border-4{% endif %}" style="background: rgba(255,255,255,0.05);">
+                                {% if plan.is_recommended %}
+                                <div class="badge bg-primary mb-2">ХИТ ПРОДАЖ</div>
+                                {% endif %}
+                                <h5 class="fw-bold text-white">{{ plan.title }}</h5>
+                                <div class="h4 fw-bold text-gradient mb-3">{{ plan.price|floatformat:0 }} ₽</div>
+                                <p class="small text-muted mb-3">{{ plan.description }}</p>
+                                <ul class="list-unstyled mb-0">
+                                    {% for feature in plan.get_features %}
+                                    <li class="small text-white-50 mb-2"><i class="fas fa-check text-success me-2"></i>{{ feature }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Этапы работы -->
+                {% if steps %}
+                <div class="mb-5">
+                    <h4 class="fw-bold mb-4 text-white"><i class="fas fa-tasks text-success me-2"></i>Как мы работаем</h4>
+                    <div class="process-timeline px-3">
+                        {% for step in steps %}
+                        <div class="process-step mb-4 d-flex align-items-start">
+                            <div class="step-num me-3 d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fw-bold" style="min-width: 40px; height: 40px;">
+                                {{ step.step_number }}
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-white mb-1">{{ step.title }}</h5>
+                                <p class="text-muted small mb-0">{{ step.description }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Примеры работ (Портфолио) -->
+                {% if related_portfolio %}
+                <div class="mb-5">
+                    <h4 class="fw-bold mb-4 text-white"><i class="fas fa-images text-danger me-2"></i>Примеры реализации</h4>
+                    <div class="row g-3">
+                        {% for project in related_portfolio %}
+                        <div class="col-md-4">
+                            <a href="{{ project.get_absolute_url }}" class="d-block text-decoration-none group">
+                                <div class="rounded overflow-hidden position-relative" style="height: 150px;">
+                                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-100 h-100 object-fit-cover transition-transform group-hover:scale-110">
+                                    <div class="position-absolute bottom-0 start-0 w-100 p-2 bg-dark bg-opacity-75">
+                                        <div class="small text-white truncate">{{ project.title }}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- FAQ -->
+                {% if faqs %}
+                <div class="mb-5">
+                    <h4 class="fw-bold mb-4 text-white"><i class="fas fa-question-circle text-info me-2"></i>Частые вопросы</h4>
+                    <div class="accordion accordion-flush" id="faqAccordion">
+                        {% for faq in faqs %}
+                        <div class="accordion-item bg-transparent border-white border-opacity-10">
+                            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                <button class="accordion-button collapsed bg-transparent text-white fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}">
+                                    {{ faq.question }}
+                                </button>
+                            </h2>
+                            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted small pb-4 pt-0">
+                                    {{ faq.answer }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if tech_list %}
+
                     <div class="mb-4 bg-dark bg-opacity-25 p-4 rounded-3 border-start border-4 border-info">
                         <h4 class="fw-bold mb-3 text-info">
                             <i class="fas fa-layer-group me-2"></i>Используемый стек / Технологии

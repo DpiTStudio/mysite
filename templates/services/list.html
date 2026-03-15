@@ -9,10 +9,23 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-12 text-left mb-5 animate-left">
+    <div class="col-12 text-left mb-4 animate-left">
         <h1 class="display-4 fw-bold text-gradient mb-3">Наши Услуги</h1>
         <p class="lead text-muted">Профессиональные решения для вашего бизнеса</p>
     </div>
+
+    <!-- Фильтры по категориям -->
+    <div class="col-12 mb-5 animate-left">
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'services:list' %}" class="btn {% if not request.GET.category %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-4">Все</a>
+            {% for cat in service_categories %}
+            <a href="{% url 'services:list' %}?category={{ cat.id }}" class="btn {% if request.GET.category == cat.id|stringformat:'s' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-4">
+                {{ cat.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
 
     <div class="col-12">
         <div class="row g-4">

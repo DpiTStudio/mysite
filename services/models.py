@@ -8,6 +8,9 @@ from tinymce.models import HTMLField
 from main.utils import RenameUploadTo
 from main.models import ActiveModel, SEOModel, TimestampModel
 from accounts.models import User
+# Импортируем Portfolio для ManyToMany связи, используем строковое имя для избежания циклических импортов если возникнут
+# from portfolio.models import Portfolio  # Но лучше через 'portfolio.Portfolio'
+
 
 # Регулярное выражение для контактных телефонов вынесено на уровень модуля
 PHONE_PATTERN = re.compile(r'^\+?[1-9][\d\-\(\)\.\s]{9,20}$')
@@ -28,6 +31,31 @@ class Technology(models.Model):
 
     def __str__(self):
         return self.name
+
+class ServiceCategory(ActiveModel, SEOModel, TimestampModel):
+    """
+    Модель категории услуг. 
+    Позволяет группировать услуги по направлениям (напр. Разработка, Маркетинг).
+    """
+    name = models.CharField(max_length=100, verbose_name=_("Название категории"))
+    slug = models.SlugField(unique=True, verbose_name=_("URL (slug)"), max_length=100)
+    icon = models.FileField(
+        upload_to=RenameUploadTo("services/categories/"),
+        verbose_name=_("Иконка категории"),
+        blank=True,
+        null=True
+    )
+    description = models.TextField(verbose_name=_("Описание"), blank=True)
+    order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок сортировки"))
+
+    class Meta:
+        verbose_name = _("Категория услуг")
+        verbose_name_plural = _("Категории услуг")
+        ordering = ["order", "name"]
+
+    def __str__(self):
+        return self.name
+
 
 class Service(ActiveModel, SEOModel, TimestampModel):
     """
@@ -63,13 +91,45 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         default=_("<p>Описание услуги</p>"),
         help_text=_("Подробное описание профиля услуги с использованием форматирования")
     )
+    
+    # --- Технологии ---
+    TECHNOLOGY_CHOICES = [
+        ('web-design', _('Веб-дизайн')),
+        ('web-development', _('Веб-разработка')),
+        ('graphic-design', _('Графический дизайн')),
+        ('digital-marketing', _('Цифровой маркетинг')),
+        ('seo', _('SEO')),
+        ('crm', _('CRM-системы')),
+        ('mobile-development', _('Мобильная разработка')),
+        ('iot', _('Интернет вещей')),
+        ('testing', _('Тестирование')),
+        ('support-maintenance', _('Поддержка и обслуживание')),
+        ('training', _('Обучение')),
+        ('shop-development', _('Разработка интернет-магазинов')),
+        ('landing-page', _('Разработка лендингов')),
+        ('corporate-website', _('Разработка корпоративных сайтов')),
+        ('php', _('PHP')),
+        ('python', _('Python')),
+        ('javascript', _('JavaScript')),
+        ('html-css', _('HTML/CSS')),
+        ('other', _('Другое')),
+    ]
+    # Можно выбирать несколько техналогии из списка в которую можно добавить свои
+    # 
     technologies = models.ManyToManyField(
         Technology,
+        related_name='services',
         verbose_name=_("Стек технологий"),
         blank=True,
-        related_name="services",
-        help_text=_("Выберите неограниченное число технологий (веб-разработка, дизайн и др.)")
+        help_text=_("Выберите стек технологий")
     )
+    # technologies = models.CharField(
+    #     max_length=100,
+    #     verbose_name=_("Стек технологий"),
+    #     choices=TECHNOLOGY_CHOICES,
+    #     default='web-development',
+    #     help_text=_("Выберите стек технологий")
+    # )
     
     PRICE_TYPE_CHOICES = [
         ('fixed', _('Фиксированная')),
@@ -145,12 +205,31 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         verbose_name=_("Просмотры"),
         editable=False
     )
-    category = models.CharField(
-        max_length=100,
-        verbose_name=_("Категория (Тег)"),
+    category = models.ForeignKey(
+        ServiceCategory,
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True,
-        help_text=_("Используется для группировки услуг (напр. Веб-разработка, Дизайн и др.)")
+        related_name='services',
+        verbose_name=_("Категория")
     )
+    # Поле для обратной совместимости или временного хранения старой категории
+    old_category_tag = models.CharField(
+        max_length=100,
+        verbose_name=_("Старый Тег (архив)"),
+        blank=True,
+        help_text=_("Старое текстовое поле категории")
+    )
+    
+    # --- Связь с портфолио ---
+    related_portfolio = models.ManyToManyField(
+        'portfolio.Portfolio',
+        blank=True,
+        related_name='related_services',
+        verbose_name=_("Связанные работы из портфолио"),
+        help_text=_("Выберите работы, которые будут отображаться как примеры для этой услуги")
+    )
+
     
     COMPLEXITY_CHOICES = [
         ('simple', _('Простой')),
@@ -258,6 +337,15 @@ class ServiceOrder(TimestampModel):
         verbose_name=_("Назначенная услуга"),
         related_name='orders'
     )
+    selected_plan = models.ForeignKey(
+        'ServicePricePlan',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Выбранный тариф"),
+        related_name='orders'
+    )
+
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -324,6 +412,88 @@ class ServiceOrder(TimestampModel):
             
         if self.estimated_budget is not None and self.estimated_budget < 0:
             raise ValidationError({'estimated_budget': _('Цена бюджета не может быть числом со знаком минус.')})
+
+
+class ServiceBenefit(models.Model):
+    """Преимущества/особенности конкретной услуги."""
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='benefits', verbose_name=_("Услуга"))
+    title = models.CharField(max_length=200, verbose_name=_("Заголовок преимущества"))
+    description = models.TextField(verbose_name=_("Описание преимущества"), blank=True)
+    icon_code = models.CharField(
+        max_length=100, 
+        blank=True, 
+        verbose_name=_("Код иконки (FontAwesome/Bootstrap)"),
+        help_text=_("Например: 'fas fa-rocket' или 'bi-check-circle'")
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок"))
+
+    class Meta:
+        verbose_name = _("Преимущество услуги")
+        verbose_name_plural = _("Преимущества услуги")
+        ordering = ['order']
+
+    def __str__(self):
+        return self.title
+
+
+class ServiceStep(models.Model):
+    """Этапы выполнения услуги (Процесс работы)."""
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='steps', verbose_name=_("Услуга"))
+    step_number = models.PositiveIntegerField(verbose_name=_("Номер этапа"), default=1)
+    title = models.CharField(max_length=200, verbose_name=_("Название этапа"))
+    description = models.TextField(verbose_name=_("Что делаем на этом этапе"), blank=True)
+    order = models.PositiveIntegerField(default=0, verbose_name=_("Сортировка"))
+
+    class Meta:
+        verbose_name = _("Этап работы")
+        verbose_name_plural = _("Этапы работы")
+        ordering = ['step_number', 'order']
+
+    def __str__(self):
+        return f"{self.step_number}. {self.title}"
+
+
+class ServiceFAQ(models.Model):
+    """Часто задаваемые вопросы по услуге."""
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='faqs', verbose_name=_("Услуга"))
+    question = models.CharField(max_length=255, verbose_name=_("Вопрос"))
+    answer = models.TextField(verbose_name=_("Ответ"))
+    order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок"))
+
+    class Meta:
+        verbose_name = _("FAQ услуги")
+        verbose_name_plural = _("FAQ услуги")
+        ordering = ['order']
+
+    def __str__(self):
+        return self.question
+
+
+class ServicePricePlan(models.Model):
+    """Тарифные планы для услуги (напр. Базовый, Стандарт, VIP)."""
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='price_plans', verbose_name=_("Услуга"))
+    title = models.CharField(max_length=100, verbose_name=_("Название тарифа"))
+    description = models.TextField(verbose_name=_("Краткое описание тарифа"), blank=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена тарифа"))
+    features_list = models.TextField(
+        verbose_name=_("Список возможностей"), 
+        help_text=_("Каждая возможность с новой строки")
+    )
+    is_recommended = models.BooleanField(default=False, verbose_name=_("Рекомендуемый тариф"))
+    order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок"))
+
+    class Meta:
+        verbose_name = _("Тарифный план")
+        verbose_name_plural = _("Тарифные планы")
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.title} - {self.service.title}"
+
+    def get_features(self):
+        """Возвращает список возможностей в виде массива."""
+        return [f.strip() for f in self.features_list.split('\n') if f.strip()]
+
 
     def get_status_display_with_color(self):
         """Возвращает защищенный HTML-тег для вывода подсвеченного статуса."""

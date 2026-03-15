@@ -694,7 +694,7 @@ body.light-mode input:-webkit-autofill:active {
 
 /* --- Хлебные крошки (Навигация) --- */
 .breadcrumb-fon {
-    background-color: rgba(244, 244, 244, 0.182);
+    background-color: rgba(244, 244, 244, 0.078);
     padding: 1rem;
     border-radius: var(--radius-md);
     font-size: 1.4rem !important;

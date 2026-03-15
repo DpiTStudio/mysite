@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.db.models import Q, F
 
 
-from .models import Service
+from .models import Service, ServiceCategory
+
 from .forms import ServiceOrderForm
 
 
@@ -23,10 +24,11 @@ class ServiceListView(ListView):
         queryset = Service.objects.filter(is_active=True).order_by('order')
         
         filters = {
-            'category__icontains': self.request.GET.get('category'),
+            'category': self.request.GET.get('category'),
             'complexity_level': self.request.GET.get('complexity'),
-            'technologies__name__icontains': self.request.GET.get('tech'),
+            'technologies': self.request.GET.get('tech'),
         }
+
         
         # Применяем только те фильтры, значения которых были переданы
         active_filters = {k: v for k, v in filters.items() if v}
@@ -40,12 +42,11 @@ class ServiceListView(ListView):
         context = super().get_context_data(**kwargs)
         
         context['service_categories'] = (
-            Service.objects
+            ServiceCategory.objects
             .filter(is_active=True)
-            .exclude(category='')
-            .values_list('category', flat=True)
-            .distinct()
+            .order_by('order')
         )
+
         
         context['popular_services'] = Service.objects.filter(
             is_active=True, 
@@ -79,7 +80,10 @@ class ServiceDetailView(DetailView):
                 'phone': getattr(user, 'phone', ''),
             })
         
-        context['form'] = ServiceOrderForm(initial=initial_data)
+        form = ServiceOrderForm(initial=initial_data)
+        form.fields['selected_plan'].queryset = self.object.price_plans.all()
+        context['form'] = form
+
         
         # Похожие услуги из той же категории
         if self.object.category:
@@ -90,8 +94,18 @@ class ServiceDetailView(DetailView):
         else:
             context['related_services'] = Service.objects.none()
         
+        # Интеграция с портфолио
+        context['related_portfolio'] = self.object.related_portfolio.filter(is_active=True)
+        
+        # Дополнительный контент
+        context['benefits'] = self.object.benefits.all().order_by('order')
+        context['steps'] = self.object.steps.all().order_by('step_number', 'order')
+        context['faqs'] = self.object.faqs.all().order_by('order')
+        context['price_plans'] = self.object.price_plans.all().order_by('order')
+        
         context['tech_list'] = self.object.get_tech_requirements_display()
         return context
+
     
     def get(self, request, *args, **kwargs):
         """Увеличиваем счетчик просмотров при каждом GET-запросе"""
@@ -112,6 +126,8 @@ class ServiceOrderView(View):
     def post(self, request, slug):
         service = get_object_or_404(Service, slug=slug)
         form = ServiceOrderForm(request.POST)
+        form.fields['selected_plan'].queryset = service.price_plans.all()
+
         
         if form.is_valid():
             order = form.save(commit=False)
@@ -166,8 +182,9 @@ class ServiceSearchView(ListView):
                 Q(short_description__icontains=query) |
                 Q(description__icontains=query) |
                 Q(technologies__name__icontains=query) |
-                Q(category__icontains=query)
+                Q(category__name__icontains=query)
             ).distinct()
+
             
         return queryset
 

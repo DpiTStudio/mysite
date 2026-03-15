@@ -3,24 +3,76 @@ from django.utils.html import format_html, format_html_join
 from django.http import HttpResponse
 import csv
 
-from .models import Service, ServiceOrder, Technology
+from .models import Service, ServiceOrder, Technology, ServiceCategory, ServiceBenefit, ServiceStep, ServiceFAQ, ServicePricePlan
+
 
 
 @admin.register(Technology)
 class TechnologyAdmin(admin.ModelAdmin):
-    list_display = ('name',)
     search_fields = ('name',)
+
+@admin.register(ServiceCategory)
+class ServiceCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'order', 'is_active')
+    prepopulated_fields = {'slug': ('name',)}
+    list_editable = ('order', 'is_active')
+    search_fields = ('name', 'description')
+
+class ServiceBenefitInline(admin.TabularInline):
+    model = ServiceBenefit
+    extra = 1
+
+class ServiceStepInline(admin.TabularInline):
+    model = ServiceStep
+    extra = 1
+
+class ServiceFAQInline(admin.TabularInline):
+    model = ServiceFAQ
+    extra = 1
+
+class ServicePricePlanInline(admin.TabularInline):
+    model = ServicePricePlan
+    extra = 1
+
 
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'price_display', 'is_active', 'is_popular', 'is_available_for_order', 'order')
-    list_filter = ('is_active', 'is_popular', 'is_available_for_order', 'price_type', 'category', 'complexity_level', 'technologies')
-    search_fields = ('title', 'description', 'short_description', 'technologies__name')
+    list_display = (
+        'title', 
+        'category', 
+        'price_display', 
+        'is_active', 
+        'is_popular', 
+        'is_available_for_order', 
+        'order'
+    )
+    list_filter = (
+        'is_active', 
+        'is_popular', 
+        'is_available_for_order', 
+        'price_type', 
+        'category', 
+        'complexity_level', 
+        'technologies'
+    )
+    search_fields = (
+        'title', 
+        'description', 
+        'short_description', 
+        'technologies__name'
+    )
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ('is_active', 'is_popular', 'is_available_for_order', 'order')
-    filter_horizontal = ('technologies',)
+    list_editable = (
+        'is_active', 
+        'is_popular', 
+        'is_available_for_order', 
+        'order'
+    )
+    filter_horizontal = ('technologies', 'related_portfolio')
+    inlines = [ServiceBenefitInline, ServiceStepInline, ServiceFAQInline, ServicePricePlanInline]
     save_on_top = True
+
     save_as = True
     
     readonly_fields = ('get_tech_display', 'views')
@@ -30,10 +82,11 @@ class ServiceAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Основная информация', {
             'fields': (
-                'title', 'slug', 'category', 'icon', 
-                'short_description', 'description', 'technologies'
+                'title', 'slug', 'category', 'old_category_tag', 'icon', 
+                'short_description', 'description', 'technologies', 'related_portfolio'
             )
         }),
+
         ('Что получит клиент', {
             'fields': ('deliverables', 'estimated_time'),
             'classes': ('collapse', 'wide'),

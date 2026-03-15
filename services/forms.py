@@ -5,7 +5,7 @@ from .models import ServiceOrder
 class ServiceOrderForm(forms.ModelForm):
     class Meta:
         model = ServiceOrder
-        fields = ['full_name', 'phone', 'email', 'message', 'estimated_budget', 'deadline']
+        fields = ['full_name', 'phone', 'email', 'selected_plan', 'message', 'estimated_budget', 'deadline']
         widgets = {
             'full_name': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': _('Иванов Иван')}
@@ -15,6 +15,9 @@ class ServiceOrderForm(forms.ModelForm):
             ),
             'email': forms.EmailInput(
                 attrs={'class': 'form-control', 'placeholder': 'example@mail.ru'}
+            ),
+            'selected_plan': forms.Select(
+                attrs={'class': 'form-select'}
             ),
             'message': forms.Textarea(
                 attrs={
@@ -30,3 +33,4 @@ class ServiceOrderForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'type': 'date'}
             ),
         }
+
