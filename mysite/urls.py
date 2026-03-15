@@ -21,7 +21,6 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
-from django.urls import re_path
 from django.views.static import serve
 from django.views.generic import RedirectView
 from main import views as main_views
@@ -43,6 +42,8 @@ sitemaps = {
     "static": StaticViewSitemap,
 }
 urlpatterns = [
+    path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+    path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),
     path("admin/dashboard/", main_views.admin_dashboard, name="admin_dashboard"),
     path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
     path(
@@ -75,15 +76,12 @@ urlpatterns += [
     path("captcha/", include("captcha.urls")),
 ]
 
-# Включение обслуживания медиа-файлов и статики даже в продакшене (DEBUG=False)
-# Полезно, если Nginx ещё не настроен для отдачи статики
-urlpatterns += [
-    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
-    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-]
+# Обработчики ошибок (работают только когда DEBUG=False)
+handler404 = "main.views.page_not_found"
+handler500 = "main.views.server_error"
 
 if settings.DEBUG:
-    # Эти строки можно оставить, но они теперь дублируются универсальным re_path выше
+    # В режиме отладки также используем стандартные хелперы для статики
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
