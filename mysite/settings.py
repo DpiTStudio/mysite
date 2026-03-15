@@ -181,6 +181,8 @@ if not DEBUG: # Если DEBUG выключен
     STORAGES["staticfiles"] = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     }
+# Отключаем строгость манифеста, чтобы сайт не падал при отсутствии файла (ValueError)
+WHITENOISE_MANIFEST_STRICT = False
 
 # ------------------------------------------------------------
 # Пользовательская модель и Allauth
