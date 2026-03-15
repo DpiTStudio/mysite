@@ -142,33 +142,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3", # SQLite
         "NAME": BASE_DIR / "db.sqlite3", # Путь к базе данных
     },
-    # База данных для пользователей нужно чтобы этот файл не перезаписывался только один раз
-    # Это нужно для того чтобы пользователи не терялись при каждом запуске
-    # "users": {
-    #     "ENGINE": "django.db.backends.sqlite3", # SQLite
-    #     "NAME": BASE_DIR / "users.sqlite3", # Путь к базе данных
-    # }
 }
 
-
-# ------------------------------------------------------------
-# Валидация паролей
-# ------------------------------------------------------------
-AUTH_PASSWORD_VALIDATORS = [
-    # Основные валидаторы
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"}, 
-    # Проверка схожести пароля
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"}, 
-    # Минимальная длина пароля
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"}, 
-    # Проверка на частые пароли
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"}, 
-    # Проверка на числовые пароли
-]
-
-# ------------------------------------------------------------
-# Интернационализация (i18n)
-# ------------------------------------------------------------
 LANGUAGE_CODE = "ru" # Основной язык
 TIME_ZONE = "Europe/Moscow" # Московское время
 USE_I18N = True  # Включить интернационализацию
