@@ -11,20 +11,25 @@ import os # Операционная система
 from pathlib import Path # Пути к файлам
 import importlib.util # Импорт модулей
 from celery.schedules import crontab  # Расписание Celery Beat
+import environ  # django-environ для чтения .env
 
 # Путь к корню проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Инициализация django-environ: читаем .env из корня проекта (рядом с manage.py)
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
 
 # ------------------------------------------------------------
 # Безопасность
 # ------------------------------------------------------------
 # Секретный ключ
-SECRET_KEY = 'django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m'
+SECRET_KEY = env.str("SECRET_KEY", default="django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m")
 # Режим отладки – НЕ включать в продакшн!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=True)
 # Доступные хосты по умолчанию порт 4234
 ALLOWED_HOSTS = [
-    '*', # Все хосты
+    env.str("ALLOWED_HOSTS", default="*"), # Все хосты
     '127.0.0.1:4234', # Локальный хост
     'localhost:4234', # Локальный хост
     '46.149.71.34:4234', # IP адрес
@@ -350,10 +355,9 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    # Настройки внешнего вида
     "navbar_small_text": True,
-    "footer_small_text": True,
-    "body_small_text": True,
+    "footer_small_text": False,
+    "body_small_text": False,
     "brand_small_text": True,
     "brand_colour": "navbar-dark",
     "accent": "accent-primary",
@@ -361,26 +365,60 @@ JAZZMIN_UI_TWEAKS = {
     "no_navbar_border": True,
     "navbar_fixed": False,
     "layout_boxed": False,
-    "footer_fixed": True,
-    "sidebar_fixed": True,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
     "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": True,
+    "sidebar_nav_small_text": False,
     "sidebar_disable_expand": True,
-    "sidebar_nav_child_indent": False,  # Убрать отступы для компактности
-    "sidebar_nav_compact_style": True,
-    "sidebar_nav_legacy_style": False,  # Отключить старый стиль
-    "sidebar_nav_flat_style": True,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
     "theme": "darkly",
     "dark_mode_theme": None,
     "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success",
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-outline-warning",
+        "danger": "btn-outline-danger",
+        "success": "btn-outline-success"
     },
+    "actions_sticky_top": False
 }
+
+# JAZZMIN_UI_TWEAKS = {
+#     # Настройки внешнего вида
+#     "navbar_small_text": True,
+#     "footer_small_text": True,
+#     "body_small_text": True,
+#     "brand_small_text": True,
+#     "brand_colour": "navbar-dark",
+#     "accent": "accent-primary",
+#     "navbar": "navbar-dark",
+#     "no_navbar_border": True,
+#     "navbar_fixed": False,
+#     "layout_boxed": False,
+#     "footer_fixed": True,
+#     "sidebar_fixed": True,
+#     "sidebar": "sidebar-dark-primary",
+#     "sidebar_nav_small_text": True,
+#     "sidebar_disable_expand": True,
+#     "sidebar_nav_child_indent": False,  # Убрать отступы для компактности
+#     "sidebar_nav_compact_style": True,
+#     "sidebar_nav_legacy_style": False,  # Отключить старый стиль
+#     "sidebar_nav_flat_style": True,
+#     "theme": "darkly",
+#     "dark_mode_theme": None,
+#     "button_classes": {
+#         "primary": "btn-primary",
+#         "secondary": "btn-secondary",
+#         "info": "btn-info",
+#         "warning": "btn-warning",
+#         "danger": "btn-danger",
+#         "success": "btn-success",
+#     },
+# }
 
 # ------------------------------------------------------------
 # CSRF и безопасность
@@ -466,24 +504,25 @@ if not logs_dir.exists():
     os.makedirs(logs_dir, exist_ok=True)
 
 # ------------------------------------------------------------
-# Настройки почты
+# Настройки почты (читаются из .env)
 # ------------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.timeweb.ru"
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = "admin@dpit-cms.ru"
-EMAIL_HOST_PASSWORD = "V2Jy*qKeb/j?L6"
+EMAIL_HOST = env.str("EMAIL_HOST", default="smtp.timeweb.ru")
+EMAIL_PORT = env.int("EMAIL_PORT", default=465)
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=True)
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=False)
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
 # ------------------------------------------------------------
-# Настройки IMAP (Timeweb)
+# Настройки IMAP (читаются из .env)
 # ------------------------------------------------------------
-IMAP_HOST = "imap.timeweb.ru"
-IMAP_PORT = 993
-IMAP_USER = EMAIL_HOST_USER
-IMAP_PASSWORD = EMAIL_HOST_PASSWORD
+IMAP_HOST = env.str("IMAP_HOST", default="imap.timeweb.ru")
+IMAP_PORT = env.int("IMAP_PORT", default=993)
+IMAP_USER = env.str("IMAP_USER", default=EMAIL_HOST_USER)
+IMAP_PASSWORD = env.str("IMAP_PASSWORD", default=EMAIL_HOST_PASSWORD)
 
 # ------------------------------------------------------------
 # Celery
