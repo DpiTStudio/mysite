@@ -693,24 +693,41 @@ body.light-mode input:-webkit-autofill:active {
 }
 
 /* --- Хлебные крошки (Навигация) --- */
+.breadcrumb-fon {
+    background-color: rgba(244, 244, 244, 0.182);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    font-size: 1.4rem !important;
+}
 .breadcrumb {
-    padding: 1rem 0;
-    font-size: 0.9rem;
+    font-size: 1.4rem !important;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .breadcrumb-item a {
-    color: var(--color-text-muted);
+    color: rgba(189, 91, 16, 0.648);
+    font-size: 1.4rem !important;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.breadcrumb-item a:hover {
+    color: rgba(90, 121, 12, 0.807);
+    font-size: 1.4rem !important;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .breadcrumb-item.active {
-    color: var(--color-primary);
+    color: rgba(22, 7, 89, 0.478);
+    font-size: 1.4rem !important;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(104, 103, 103, 0.4);
     content: "\F285"; /* bi-chevron-right icon code */
     font-family: "bootstrap-icons";
-    font-size: 0.7rem;
+    font-size: 1.4rem !important;
+    text-shadow: 1px 1px 2px #000;
 }
 
 /* --- Основная обертка для баннера-героя (Hero wrapper) --- */
