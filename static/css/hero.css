@@ -2,20 +2,7 @@
 
 /* Основной заголовок (h1) внутри баннера */
 .title-hero {
-    /* Адаптивный размер через clamp(): min / preferred / max */
-    font-size: clamp(1.8rem, 5vw, 3.5rem);
-    font-weight: 800;
-    text-align: left;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
-    /* Gradient text — Apple-style */
-    background: linear-gradient(135deg, #ffffff 55%, rgba(99, 102, 241, 0.85) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: #fff; /* fallback */
-    display: inline-block;
-    max-width: 100%;
+    
 }
 
 /* Подзаголовок или блок с тегами (слоган 1) */
@@ -48,7 +35,7 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     margin-bottom: 2rem;
-    background-image: url('/media/fon_haeders/fon1.jpg');
+    /* background-image: url('/media/fon_haeders/fon1.jpg'); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
