@@ -175,7 +175,7 @@ STORAGES = {
     # Хранилище для статических файлов
 }
 # В продакшене используем манифесты для кеширования
-if not DEBUG: # Если DEBUG выключен
+if not DEBUG and HAS_WHITENOISE: # Если DEBUG выключен и WhiteNoise установлен
     # В продакшене используем CompressedManifestStaticFilesStorage без дополнительных опций,
     # чтобы избежать ошибки "unexpected keyword argument 'manifest_strict'".
     STORAGES["staticfiles"] = {
