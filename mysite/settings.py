@@ -291,10 +291,11 @@ JAZZMIN_SETTINGS = {
     },
     "use_google_fonts_cdn": True, # Использовать Google Fonts CDN
     "show_sidebar": True, # Показывать боковую панель
-    "navigation_expanded": True, # Разворачивать боковую панель
+    "navigation_expanded": False, # Разворачивать боковую панель
     "hide_apps": [], # Скрывать приложения
     "hide_models": [], # Скрывать модели
     "order_with_respect_to": [
+        "auth", # Авторизация
         "main", # Главная
         "knowledge_base", # База знаний
         "news", # Новости
@@ -305,6 +306,7 @@ JAZZMIN_SETTINGS = {
         "mail", # Почта
         "cart", # Корзина
         "accounts", # Аккаунты
+        "backup", # Бэкапы
         "logfiles", # Логи
     ],
     "custom_links": {
@@ -368,11 +370,10 @@ JAZZMIN_SETTINGS = {
         {"model": "admin.LogEntry", "label": "История действий", "icon": "fas fa-history"},
     ],
 }
-
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": True,
-    "footer_small_text": False,
-    "body_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": True,
     "brand_small_text": True,
     "brand_colour": "navbar-dark",
     "accent": "accent-primary",
@@ -381,14 +382,14 @@ JAZZMIN_UI_TWEAKS = {
     "navbar_fixed": False,
     "layout_boxed": False,
     "footer_fixed": False,
-    "sidebar_fixed": False,
+    "sidebar_fixed": True,
     "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": False,
+    "sidebar_nav_small_text": True,
     "sidebar_disable_expand": True,
     "sidebar_nav_child_indent": False,
-    "sidebar_nav_compact_style": False,
+    "sidebar_nav_compact_style": True,
     "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
+    "sidebar_nav_flat_style": True,
     "theme": "darkly",
     "dark_mode_theme": None,
     "button_classes": {
@@ -542,12 +543,12 @@ IMAP_PASSWORD = env.str("IMAP_PASSWORD", default=EMAIL_HOST_PASSWORD)
 # ------------------------------------------------------------
 # Celery
 # ------------------------------------------------------------
-# CELERY_BROKER_URL = "redis://localhost:6379/2"
-# CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-# CELERY_ACCEPT_CONTENT = ["application/json"]
-# CELERY_TASK_SERIALIZER = "json"
-# CELERY_RESULT_SERIALIZER = "json"
-# CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_URL = "redis://localhost:6379/2"
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
 
 # Autodiscover задачи в backup_tasks и других модулях
 CELERY_IMPORTS = [
