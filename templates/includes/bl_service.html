@@ -9,47 +9,81 @@
     <!-- Список услуг -->
     <div class="services-list animate-up">
         {% for service in popular_services %}
-        <div class="service-list-item glass-card-premium p-4 mb-3 animate-up delay-{{ forloop.counter }}00">
-            <div class="row align-items-center">
-                <div class="col-lg-1 col-md-2 text-center mb-3 mb-md-0">
-                    <div class="feature-icon-box float-animation">
+        <div class="service-linear-card glass-card-premium mb-4 animate-up delay-{{ forloop.counter }}00">
+            <div class="row g-0 align-items-center">
+                <!-- Секция 1: ID и Иконка -->
+                <div class="col-lg-1 col-md-2 text-center py-4 border-end border-glass d-flex flex-column align-items-center justify-content-center">
+                    <span class="service-id-badge mb-3">ID: {{ service.id }}</span>
+                    <div class="service-icon-wrapper float-animation">
                         {% if service.icon %}
-                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" width="50">
+                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="service-icon-img">
                         {% else %}
-                            <i class="bi bi-gear-wide-connected fs-1"></i>
+                            <i class="bi bi-gear-wide-connected fs-2 text-primary"></i>
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
-                    <h4 class="h5 mb-2">{{ service.title }}</h4>
-                    <span class="badge bg-primary">{{ service.get_price_display }}</span>
-                    <hr>
-                    <div class="">
-                        <div class="d-flex gap-2 justify-content-md-end">
-                            <a href="{% url 'services:list' %}" class="btn btn-outline-primary flex-fill flex-md-grow-0">
+
+                <!-- Секция 2: Инфо (Категория - Название) и Описание -->
+                <div class="col-lg-5 col-md-6 p-4">
+                    <div class="service-meta-line mb-1">
+                        <span class="text-primary fw-bold">{{ service.category.name|default:"Разработка" }}</span>
+                        <span class="mx-2 text-muted">|</span>
+                        <span class="text-muted small">Услуга компании</span>
+                    </div>
+                    <h3 class="h4 service-title mb-2">{{ service.title }}</h3>
+                    <div class="service-short-desc text-muted small line-clamp-2">
+                        {{ service.short_description|striptags|truncatewords:20 }}
+                    </div>
+                </div>
+
+                <!-- Секция 3: Статистика -->
+                <div class="col-lg-2 d-none d-lg-block border-start border-end border-glass py-4">
+                    <div class="d-flex justify-content-center gap-4">
+                        <div class="stat-item text-center">
+                            <div class="stat-value">{{ service.views }}</div>
+                            <div class="stat-label">Просмотров</div>
+                        </div>
+                        <div class="stat-item text-center border-start border-glass ps-4">
+                            <div class="stat-value">{{ service.orders.count|default:"0" }}</div>
+                            <div class="stat-label">Заказов</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Секция 4: Цена и Кнопки -->
+                <div class="col-lg-4 col-md-4 p-4">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="price-highlight-box w-100 justify-content-between">
+                            <span class="price-label-text">Цена - </span>
+                            <span class="price-value-text text-gradient">{{ service.get_price_display }}</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-primary flex-grow-1 py-1">
                                 <i class="bi bi-info-circle"></i> Подробнее
                             </a>
                             {% if service.can_be_ordered %}
                             <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" 
                                 hx-target="#cart-offcanvas-body" 
                                 hx-swap="innerHTML" 
-                                class="flex-fill flex-md-grow-0"
+                                class="flex-grow-1"
                                 onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-success w-200">
-                                    <i class="bi bi-cart-plus"></i> В корзину
+                                <button type="submit" class="btn btn-primary w-100 py-1">
+                                    <i class="bi bi-cart-plus"></i> Заказать
                                 </button>
                             </form>
                             {% else %}
-                            <button class="btn btn-secondary flex-fill flex-md-grow-0 w-200" disabled style="opacity: 0.6;">
-                                <i class="bi bi-x-circle"></i> Недоступно
+                            <button class="btn btn-secondary flex-grow-1 py-2" disabled style="opacity: 0.6;">
+                                <i class="bi bi-x-circle"></i> Н/Д
                             </button>
                             {% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-4 mb-3 mb-md-0">
-                    <p class="text-muted mb-0">{{ service.short_description|striptags|truncatewords:30 }}</p>
+                    <!-- Stats for mobile views -->
+                    <div class="d-flex justify-content-between mt-3 d-lg-none border-top border-glass pt-2">
+                        <span class="small text-muted"><i class="bi bi-eye"></i> {{ service.views }}</span>
+                        <span class="small text-muted"><i class="bi bi-bag-check"></i> {{ service.orders.count|default:"0" }}</span>
+                    </div>
                 </div>
             </div>
         </div>
