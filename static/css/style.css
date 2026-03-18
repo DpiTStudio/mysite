@@ -1,9 +1,13 @@
-/* --- Базовый сброс стилей и Типографика --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    text-shadow: 1px 1px 2px #272727;
+}
+
+/* Изменено: Улучшенное выделение текста */
+::selection {
+    background: var(--color-selection-bg);
+    color: var(--color-selection-text);
 }
 
 html {
@@ -49,16 +53,25 @@ body {
     text-shadow: 0px 0px 1px hsla(0, 92%, 34%, 0.359);
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-family-headings);
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: var(--color-text-main);
     margin-bottom: 1rem;
+    text-wrap: balance; /* Современная переноска заголовков */
 }
+
+h1 { font-size: var(--text-4xl); line-height: 1.1; }
+h2 { font-size: var(--text-3xl); line-height: 1.2; }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-md); }
 
 p {
     margin-bottom: 1.25rem;
     color: var(--color-text-muted);
+    font-size: var(--text-md);
 }
 
 /* Ссылки по умолчанию (Links default styles) */
@@ -1200,5 +1213,134 @@ body.light-mode::after {
     width: 60px;
 }
 
-/* --- FIX: Убраны сломанные переопределения Bootstrap утилит .fs-2 / .fs-6 ---
-   (ранее font-size: 0.5rem!important ломал строку поиска и другие элементы) --- */
+/* --- 9. Bento Grid System (Premium Layouts) --- */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(150px, auto);
+    gap: var(--spacing-6);
+}
+
+.bento-item {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.bento-item:hover {
+    background: var(--color-glass-hover);
+    border-color: var(--color-glass-border-bright);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+    transform: translateY(-5px);
+}
+
+/* Варианты размеров элементов бенто-сетки */
+.bento-lg { grid-column: span 2; grid-row: span 2; }
+.bento-wide { grid-column: span 2; }
+.bento-tall { grid-row: span 2; }
+
+@media (max-width: 991px) {
+    .bento-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 575px) {
+    .bento-grid { grid-template-columns: 1fr; }
+    .bento-lg, .bento-wide, .bento-tall { grid-column: span 1; grid-row: span 1; }
+}
+
+/* --- 11. HTMX & Page Progress Bar --- */
+#htmx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--gradient-premium);
+    z-index: var(--z-toast);
+    transition: width 0.4s ease, opacity 0.4s ease;
+    box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+/* --- 12. Floating Action Button (FAB) --- */
+.fab-container {
+    position: fixed;
+    bottom: var(--spacing-8);
+    right: var(--spacing-8);
+    z-index: var(--z-sticky);
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--spacing-4);
+    align-items: center;
+}
+
+.fab-main {
+    width: 56px;
+    height: 56px;
+    background: var(--gradient-premium);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    transition: var(--transition-normal);
+    border: none;
+}
+
+.fab-main:hover {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.fab-item {
+    width: 45px;
+    height: 45px;
+    background: var(--color-dark-surface);
+    border: 1px solid var(--color-glass-border);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.fab-container:hover .fab-item {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* --- 13. Glass Card Overhaul --- */
+.glass-card, .card {
+    background: var(--color-glass);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+}
+
+.glass-card:hover, .card:hover {
+    background: var(--color-glass-hover);
+    border-color: var(--color-glass-border-bright);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+/* Улучшение индикатора скролла */
+#scroll-progress {
+    height: 3px;
+    background: var(--gradient-premium);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-toast);
+    transition: width 0.1s;
+}

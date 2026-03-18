@@ -6,53 +6,53 @@
         <p class="text-muted fs-5">Наши лучшие реализованные проекты</p>
     </div>
     
-    <div class="row g-4 justify-content-center">
+    <div class="bento-grid">
         {% for item in latest_portfolio %}
-        <div class="col-12 col-md-6 col-lg-4 animate-up delay-{{ forloop.counter }}00">
-            <div class="glass-card-premium overflow-hidden border-0 h-100 d-flex flex-column" style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
-                <!-- Изображение -->
-                <div class="overflow-hidden position-relative portfolio-img-wrapper" style="height: 220px;">
-                    {% if item.image %}
-                        <img src="{{ item.image.url }}" class="w-100 h-100 portfolio-img" alt="{{ item.title }}" style="object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
-                    {% else %}
-                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-gradient portfolio-img" style="transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
-                            <i class="bi bi-briefcase display-1 text-white opacity-25"></i>
-                        </div>
-                    {% endif %}
-                    
-                    <!-- Тень поверх картинки -->
-                    <div class="position-absolute bottom-0 start-0 w-100 h-50" style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);"></div>
-
-                    {% if item.category %}
-                    <div class="position-absolute top-0 end-0 m-3 z-2">
-                        <span class="badge bg-primary bg-opacity-75 text-white px-3 py-2 rounded-pill shadow-sm" style="backdrop-filter: blur(4px);">
-                            {{ item.category.name }}
-                        </span>
+        <div class="bento-item {% if forloop.first %}bento-lg{% endif %} animate-up delay-{{ forloop.counter }}00 d-flex flex-column p-0">
+            <!-- Изображение -->
+            <div class="portfolio-img-wrapper position-relative overflow-hidden" style="flex: 1; min-height: 250px;">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" class="w-100 h-100 portfolio-img" alt="{{ item.title }}" style="object-fit: cover;">
+                {% else %}
+                    <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-gradient">
+                        <i class="bi bi-briefcase display-1 text-white opacity-25"></i>
                     </div>
-                    {% endif %}
-                </div>
+                {% endif %}
                 
-                <!-- Контент карточки -->
-                <div class="p-4 d-flex flex-column flex-grow-1 position-relative z-2 bg-transparent">
-                    <h4 class="h5 mb-3 fw-bold" style="line-height: 1.4;">
-                        <a href="{{ item.get_absolute_url }}" class="text-white text-decoration-none stretched-link hover-primary transition-all">
+                <div class="position-absolute bottom-0 start-0 w-100 h-100" style="background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);"></div>
+
+                {% if item.category %}
+                <div class="position-absolute top-0 end-0 m-3 z-2">
+                    <span class="badge bg-primary bg-opacity-75 text-white px-3 py-2 rounded-pill shadow-sm" style="backdrop-filter: blur(4px);">
+                        {{ item.category.name }}
+                    </span>
+                </div>
+                {% endif %}
+                
+                <!-- Контент поверх изображения -->
+                <div class="position-absolute bottom-0 start-0 w-100 p-4 z-2">
+                    <h4 class="{% if forloop.first %}h2{% else %}h5{% endif %} mb-2 fw-bold">
+                        <a href="{{ item.get_absolute_url }}" class="text-white text-decoration-none stretched-link">
                             {{ item.title }}
                         </a>
                     </h4>
-                    
-                    <p class="small text-muted mb-4 flex-grow-1" style="line-height: 1.6;">
-                        {{ item.description|striptags|truncatewords:18 }}
+                    <p class="small text-white text-opacity-75 mb-0">
+                        {{ item.description|striptags|truncatewords:15 }}
                     </p>
-                    
-                    <div class="mt-auto pt-4 border-top border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
-                        <span class="text-primary text-uppercase fw-bold small letter-spacing-1 d-flex align-items-center portfolio-view-case">
-                            Смотреть кейс <i class="bi bi-arrow-right ms-2 transition-all"></i>
-                        </span>
-                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
+        
+        <!-- Заглушка для красоты сетки, если работ мало -->
+        {% if latest_portfolio|length < 3 %}
+        <div class="bento-item bento-wide animate-up d-flex align-items-center justify-content-center bg-primary-alpha">
+            <div class="text-center p-4">
+                <h5 class="mb-3">Ваш проект может быть здесь</h5>
+                <a href="{% url 'main:page_detail' 'kontakty' %}" class="btn btn-sm btn-primary">Обсудить проект</a>
+            </div>
+        </div>
+        {% endif %}
     </div>
     
     <div class="text-center mt-5 pt-3 animate-up delay-300">
@@ -64,16 +64,5 @@
         </a>
     </div>
 </section>
-
-<style>
-    /* Анимации при наведении для карточек портфолио */
-    .glass-card-premium { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .glass-card-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0,0,0,0.3) !important; }
-    .glass-card-premium:hover .portfolio-img { transform: scale(1.1); }
-    .glass-card-premium:hover .portfolio-view-case i { transform: translateX(8px); }
-    .glass-card-premium:hover .hover-primary { color: var(--bs-primary) !important; }
-    
-    /* Анимация кнопки */
-    .btn-outline-primary:hover .btn-icon { background-color: #fff !important; color: var(--bs-primary) !important; transform: translateX(5px); }
-</style>
 {% endif %}
+

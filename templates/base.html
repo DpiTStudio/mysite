@@ -104,6 +104,9 @@
         <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent" speed="1" style="width: 150px; height: 150px;" loop autoplay></lottie-player>
     </div>
 
+    <!-- MODERN UI ELEMENTS: Progress -->
+    <div id="htmx-progress"></div>
+
     <!-- Прокрутка индикатора выполнения -->
     <div id="scroll-progress" class="scroll-progress-bar"></div>
 
@@ -242,6 +245,19 @@
         </div>
     </div>
 
+    <!-- Floating Action Button (FAB) -->
+    <div class="fab-container d-none d-md-flex">
+        <a href="{% url 'tickets:create' %}" class="fab-item" title="Создать тикет">
+            <i class="bi bi-plus-lg"></i>
+        </a>
+        <button class="fab-item" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Наверх">
+            <i class="bi bi-arrow-up"></i>
+        </button>
+        <button class="fab-main">
+            <i class="bi bi-grid-fill"></i>
+        </button>
+    </div>
+
     <!-- Футер -->
     {% include 'footer.html' %}
     
@@ -252,11 +268,50 @@
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
     <!-- Simple Parallax -->
     <script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.5.1/dist/simpleParallax.min.js" defer></script>
+    
+    <!-- Lenis Smooth Scroll (Modern inertial scrolling) -->
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+    
     <script src="{% static 'js/script.js' %}" defer></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Инициализация параллакса
+            // 1. Инициализация Lenis (Smooth Scroll)
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+                smoothTouch: false,
+                touchMultiplier: 2,
+                infinite: false,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // 3. HTMX Progress Bar logic
+            const progressBar = document.getElementById('htmx-progress');
+            if (progressBar) {
+                document.addEventListener('htmx:beforeRequest', () => {
+                    progressBar.style.opacity = '1';
+                    progressBar.style.width = '30%';
+                });
+                document.addEventListener('htmx:afterRequest', () => {
+                    progressBar.style.width = '100%';
+                    setTimeout(() => {
+                        progressBar.style.opacity = '0';
+                        setTimeout(() => progressBar.style.width = '0%', 400);
+                    }, 400);
+                });
+            }
+
+            // 4. Инициализация параллакса
             const images = document.querySelectorAll('.parallax-img');
             if (images.length > 0) {
                 new simpleParallax(images, {
