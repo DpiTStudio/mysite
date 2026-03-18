@@ -145,8 +145,20 @@ TEMPLATES = [
         # Основные шаблоны
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [os.path.join(BASE_DIR, "templates")], # Шаблоны
-        "APP_DIRS": True, # Приложения
+        "APP_DIRS": False, # Приложения (должно быть False, если заданы loaders)
         "OPTIONS": {
+            "loaders": [
+                (
+                    "django.template.loaders.cached.Loader",
+                    [
+                        "django.template.loaders.filesystem.Loader",
+                        "django.template.loaders.app_directories.Loader",
+                    ],
+                ),
+            ] if not DEBUG else [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
+            ],
             "context_processors": [
                 "django.template.context_processors.debug", # Отладка
                 "django.template.context_processors.request", # Запрос
@@ -216,6 +228,9 @@ if not DEBUG and HAS_WHITENOISE: # Если DEBUG выключен и WhiteNoise
     }
 # Отключаем строгость манифеста, чтобы сайт не падал при отсутствии файла (ValueError)
 WHITENOISE_MANIFEST_STRICT = False
+# Кеширование статики на 1 год (для WhiteNoise)
+WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 # ------------------------------------------------------------
 # Пользовательская модель и Allauth

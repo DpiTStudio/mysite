@@ -288,13 +288,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             // 1. Инициализация Lenis (Smooth Scroll)
             const lenis = new Lenis({
-                duration: 1.2,
+                duration: 1.0, 
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                direction: 'vertical',
-                gestureDirection: 'vertical',
-                smooth: true,
-                mouseMultiplier: 1,
-                smoothTouch: false,
+                orientation: 'vertical',
+                gestureOrientation: 'vertical',
+                smoothWheel: true,
+                wheelMultiplier: 0.8, 
                 touchMultiplier: 2,
                 infinite: false,
             });
@@ -321,13 +320,20 @@
                 });
             }
 
-            // 4. Инициализация параллакса
-            const images = document.querySelectorAll('.parallax-img');
-            if (images.length > 0) {
-                new simpleParallax(images, {
-                    delay: 0.6,
-                    transition: 'cubic-bezier(0,0,0,1)'
-                });
+            // 4. Инициализация параллакса (Только если не мобильный)
+            if (window.innerWidth > 768) {
+                const images = document.querySelectorAll('.parallax-img');
+                if (images.length > 0) {
+                    new simpleParallax(images, {
+                        delay: 0.6,
+                        scale: 1.2,
+                        transition: 'cubic-bezier(0,0,0,1)',
+                        orientation: 'up',
+                        customWrapper: '.portfolio-img-wrapper'
+                    });
+                    // Hint to hardware acceleration
+                    images.forEach(img => img.style.willChange = 'transform');
+                }
             }
         });
     </script>

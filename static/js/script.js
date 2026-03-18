@@ -57,23 +57,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 4. Анимация появления элементов при скролле
-    const animateOnScroll = function() {
-        const elements = document.querySelectorAll('.animate-up, .animate-left, .animate-right, .animate-scale, .glass-card, .card, .glass-card-premium');
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            // Порог появления: 10% элемента должно быть видно (или сразу если они уже в области видимости)
-            const isVisible = rect.top < (window.innerHeight - 50) && rect.bottom > 0;
-            if (isVisible) {
-                el.classList.add('animate-active');
+    // 4. Анимация появления элементов при скролле (Использование IntersectionObserver для производительности)
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-active');
+                // После активации можно прекратить наблюдение за элементом
+                scrollObserver.unobserve(entry.target);
             }
         });
+    }, observerOptions);
+
+    const observeElements = (root = document) => {
+        const elements = root.querySelectorAll('.animate-up, .animate-left, .animate-right, .animate-scale, .glass-card, .card, .glass-card-premium');
+        elements.forEach(el => scrollObserver.observe(el));
     };
     
-    // Начальные стили для анимаций заданы в CSS, но для надежности:
-    window.addEventListener('scroll', animateOnScroll);
-    // Небольшая задержка для плавного старта
-    setTimeout(animateOnScroll, 100);
+    observeElements();
 
     // Функция для инициализации динамических элементов
     function initDynamicElements(root) {
@@ -144,8 +149,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация для элементов, загруженных через HTMX
     document.body.addEventListener('htmx:load', function(e) {
         initDynamicElements(e.detail.elt);
-        // Запускаем анимацию для нового контента с небольшой задержкой (чтобы DOM успел обновиться)
-        setTimeout(animateOnScroll, 100);
+        // Запускаем наблюдение для нового контента
+        observeElements(e.detail.elt);
+        if (typeof init3DTilt === 'function') init3DTilt(e.detail.elt);
+        
         // Для подстраховки проверяем скролл
         window.scrollTo(0, 0); 
     });
@@ -222,26 +229,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Для отката: git revert HEAD (после коммита)
     // ============================================================
 
-    // 12. 3D Tilt Effect — наклон карточек при движении мыши
+    // 12. 3D Tilt Effect — наклон карточек при движении мыши (Оптимизировано через rAF)
     function init3DTilt(root) {
         root.querySelectorAll('.card, .glass-card, .glass-card-premium').forEach(card => {
-            // Пропускаем мобильные устройства (pointer: coarse)
             if (window.matchMedia('(pointer: coarse)').matches) return;
 
+            let ticking = false;
+
             card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * 8;
-                const rotateY = ((centerX - x) / centerX) * 8;
-                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale(1.01)`;
-                // Динамичный highlight — следует за курсором
-                const percentX = (x / rect.width) * 100;
-                const percentY = (y / rect.height) * 100;
-                card.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.07), transparent 60%)`;
-            });
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * 8;
+                        const rotateY = ((centerX - x) / centerX) * 8;
+                        
+                        card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale(1.01)`;
+                        
+                        const percentX = (x / rect.width) * 100;
+                        const percentY = (y / rect.height) * 100;
+                        card.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.07), transparent 60%)`;
+                        
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
 
             card.addEventListener('mouseleave', () => {
                 card.style.transform = '';
