@@ -263,7 +263,7 @@ SOCIALACCOUNT_PROVIDERS = {
 CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.random_char_challenge" # Функция для генерации капчи
 CAPTCHA_LENGTH = 3 
 CAPTCHA_TIMEOUT = 5
-CAPTCHA_IMAGE_SIZE = (200, 80) # Размеры картинки (ширина, высота)
+CAPTCHA_IMAGE_SIZE = (180, 80) # Размеры картинки (ширина, высота)
 CAPTCHA_FONT_SIZE = 48 # Размер шрифта на картинке
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
@@ -542,12 +542,12 @@ IMAP_PASSWORD = env.str("IMAP_PASSWORD", default=EMAIL_HOST_PASSWORD)
 # ------------------------------------------------------------
 # Celery
 # ------------------------------------------------------------
-CELERY_BROKER_URL = "redis://localhost:6379/2"
-CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-CELERY_ACCEPT_CONTENT = ["application/json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
-CELERY_TIMEZONE = TIME_ZONE
+# CELERY_BROKER_URL = "redis://localhost:6379/2"
+# CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+# CELERY_ACCEPT_CONTENT = ["application/json"]
+# CELERY_TASK_SERIALIZER = "json"
+# CELERY_RESULT_SERIALIZER = "json"
+# CELERY_TIMEZONE = TIME_ZONE
 
 # Autodiscover задачи в backup_tasks и других модулях
 CELERY_IMPORTS = [
