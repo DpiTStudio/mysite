@@ -7,23 +7,33 @@
 {% endblock %}
 
 {% block content %}
+    {% load cache %}
+    
     <!-- Секция приветствия (если есть в настройках) -->
     {% include 'main/includes/content.html' %}
 
     <!-- Популярные услуги -->
-    {% include 'main/includes/popular_services.html' %}
+    {% cache 1800 homepage_services %}
+        {% include 'main/includes/popular_services.html' %}
+    {% endcache %}
 
     <!-- Последние работы портфолио -->
-    {% include 'main/includes/latest_portfolio.html' %}
+    {% cache 1800 homepage_portfolio %}
+        {% include 'main/includes/latest_portfolio.html' %}
+    {% endcache %}
 
     <!-- Свежие новости -->
-    {% include 'main/includes/recent_news.html' %}
+    {% cache 1800 homepage_news %}
+        {% include 'main/includes/recent_news.html' %}
+    {% endcache %}
 
     <!-- Отзывы -->
-    {% include 'main/includes/recent_reviews.html' %}
+    {% cache 1800 homepage_reviews %}
+        {% include 'main/includes/recent_reviews.html' %}
+    {% endcache %}
 
     <!-- Статистика для персонала -->
     {% include 'main/includes/stats.html' %}
-
 {% endblock %}
+
 

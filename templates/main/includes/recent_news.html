@@ -12,9 +12,9 @@
             <!-- Изображение -->
             <div class="news-img-wrapper position-relative overflow-hidden" style="height: 200px;">
                 {% if news.image %} 
-                    <img src="{{ news.image.url }}" class="w-100 h-100 news-img" alt="{{ news.title }}" style="object-fit: cover;">
+                    <img src="{{ news.image.url }}" class="w-100 h-100 news-img" alt="{{ news.title }}" style="object-fit: cover;" loading="lazy">
                 {% elif news.category and news.category.image %}
-                    <img src="{{ news.category.image.url }}" class="w-100 h-100 news-img" alt="{{ news.category.name }}" style="object-fit: cover;">
+                    <img src="{{ news.category.image.url }}" class="w-100 h-100 news-img" alt="{{ news.category.name }}" style="object-fit: cover;" loading="lazy">
                 {% else %}
                     <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-gradient">
                         <i class="bi bi-newspaper display-1 text-white opacity-25"></i>

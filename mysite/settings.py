@@ -121,6 +121,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     # Основные middleware
     "django.middleware.security.SecurityMiddleware",          # Безопасность
+    "django.middleware.gzip.GZipMiddleware",                  # Сжатие ответов (Ускорение)
     "django.contrib.sessions.middleware.SessionMiddleware",   # Сессии
     "django.middleware.common.CommonMiddleware",              # Общие настройки
     "django.middleware.csrf.CsrfViewMiddleware",              # CSRF
