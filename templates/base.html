@@ -255,6 +255,7 @@
         </div>
     </div>
 
+    {% comment %}
     <!-- Floating Action Button (FAB) -->
     <div class="fab-container d-none d-md-flex">
         <a href="{% url 'tickets:create' %}" class="fab-item" title="Создать тикет">
@@ -267,6 +268,7 @@
             <i class="bi bi-grid-fill"></i>
         </button>
     </div>
+    {% endcomment %}
 
     <!-- Футер -->
     {% include 'footer.html' %}
