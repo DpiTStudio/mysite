@@ -11,7 +11,7 @@
             <!-- Контейнер с отступами, использующий Flexbox для горизонтального распределения элементов -->
             <!-- Левая часть: Информационная зона (скрыта на мобильных устройствах d-none d-lg-flex) -->
             <div class="d-none d-lg-flex align-items-center gap-4">
-                <span class="logo-info-zone-time small text-muted">
+                <span class="logo-info-zone-time text-muted">
                     <!-- Иконки Bootstrap Icons для визуализации контактов -->
                     <i class="bi bi-geo-alt-fill text-primary me-1" aria-hidden="true"></i>По всему миру / 
                     <i class="bi bi-envelope-fill text-primary me-2 ms-2" aria-hidden="true"></i>24/7 поддержка
@@ -153,9 +153,11 @@
                             <li><a class="dropdown-item rounded fw-bold text-primary" href="{% url 'services:list' %}"><i class="bi bi-grid-fill me-2"></i> Все услуги</a></li>
                             {% if nav_categories.services %}
                             <li><hr class="dropdown-divider opacity-10"></li>
+                            {% comment %}
                             {% for cat in nav_categories.services %}
                             <li><a class="dropdown-item rounded" href="{{ cat.get_absolute_url }}">{{ cat.title }}</a></li>
                             {% endfor %}
+                            {% endcomment %}
                             {% endif %}
                         </ul>
                     </li>

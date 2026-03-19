@@ -17,13 +17,11 @@
         <!-- Цикл для перебора всех новостей в списке recent_news -->
         {% for news in recent_news %}
         
-        <!-- Карточка новости. Если это первая новость, добавляется класс увеличения (bento-lg). -->
-        <!-- Используются классы Bootstrap: d-flex, flex-column, p-0 для гибкой компоновки и обнуления отступов -->
-        <div class="bento-item {% if forloop.first %}bento-lg{% endif %} animate-up delay-{{ forloop.counter }}00 d-flex flex-column p-0">
+        <div class="bento-item animate-up delay-{{ forloop.counter }}00 d-flex flex-column p-0">
             
             <!-- Обертка для изображения с относительным позиционированием и скрытием выхода за границы -->
-            <!-- Для первой новости высота 100% с минимальным ограничением, для остальных фиксированная 220px -->
-            <div class="news-img-wrapper position-relative overflow-hidden" style="{% if forloop.first %}height: 100%; min-height: 350px;{% else %}height: 220px;{% endif %}">
+            <!-- Унифицированная высота 220px для всех новостей -->
+            <div class="news-img-wrapper position-relative overflow-hidden" style="height: 220px;">
                 
                 <!-- Если у новости есть собственное изображение -->
                 {% if news.image %} 
@@ -59,38 +57,8 @@
                 </div>
                 {% endif %}
 
-                <!-- Если это первая карточка новостей, выводим расширенную информацию прямо поверх картинки -->
-                {% if forloop.first %}
-                <!-- Текстовый оверлей снизу карточки, отступы (p-4), индекс z (z-2) для отображения поверх картинки -->
-                <div class="position-absolute bottom-0 start-0 w-100 p-4 z-2">
-                    
-                    <!-- Блок мета-информации с использованием flexbox (d-flex, align-items-center, gap-3) и белым текстом -->
-                    <div class="d-flex align-items-center gap-3 mb-3 small text-white text-opacity-75">
-                        <!-- Вывод даты новости с иконкой календаря (bi-calendar3) -->
-                        <span><i class="bi bi-calendar3 text-primary me-1"></i> {{ news.news_date|date:"d M Y" }}</span>
-                        <!-- Вывод количества просмотров с иконкой глаза (bi-eye) -->
-                        <span><i class="bi bi-eye text-primary me-1"></i> {{ news.views|default:"0" }}</span>
-                    </div>
-                    
-                    <!-- Заголовок новости поверх изображения (h2, полужирный fw-bold, отступ снизу mb-3) -->
-                    <h3 class="h2 mb-3 fw-bold">
-                        <!-- Ссылка, занимающая все пространство родителя (stretched-link) для кликабельности всей карточки -->
-                        <a href="{% url 'news:detail' news.slug %}" class="text-white text-decoration-none stretched-link hover-primary transition-all">
-                            {{ news.title }}
-                        </a>
-                    </h3>
-                    
-                    <!-- Краткое описание новости, скрытое на мобильных экранах (d-none) и видимое начиная со средних (d-md-block) -->
-                    <!-- Ограничено 25 словами (truncatewords:25) -->
-                    <p class="text-white text-opacity-75 mb-0 d-none d-md-block">
-                        {{ news.meta_description|default:news.content|striptags|truncatewords:25 }}
-                    </p>
-                </div>
-                {% endif %}
             </div>
             
-            <!-- Если это НЕ первая новость, то описание выводится под картинкой (классическая карточка) -->
-            {% if not forloop.first %}
             <!-- Контент под изображением, использует flexbox для заполнения свободного пространства (flex-grow-1) -->
             <div class="p-4 d-flex flex-column flex-grow-1 position-relative z-2">
                 
@@ -121,7 +89,6 @@
                     </span>
                 </div>
             </div>
-            {% endif %}
         </div>
         {% endfor %}
     </div>
