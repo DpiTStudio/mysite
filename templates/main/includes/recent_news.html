@@ -17,41 +17,25 @@
         <!-- Цикл для перебора всех новостей в списке recent_news -->
         {% for news in recent_news %}
         
-        <div class="bento-item animate-up delay-{{ forloop.counter }}00 d-flex flex-column p-0">
+        <div class="bento-item animate-up delay-{{ forloop.counter }}00 d-flex flex-column p-0 card-premium">
             
-            <!-- Обертка для изображения с относительным позиционированием и скрытием выхода за границы -->
-            <!-- Унифицированная высота 220px для всех новостей -->
-            <div class="news-img-wrapper position-relative overflow-hidden" style="height: 220px;">
+            <div class="news-img-wrapper position-relative overflow-hidden" style="height: 220px; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
                 
-                <!-- Если у новости есть собственное изображение -->
                 {% if news.image %} 
-                    <!-- Вывод изображения (w-100 h-100 для заполнения родителя), object-fit для сохранения пропорций -->
                     <img src="{{ news.image.url }}" class="w-100 h-100 news-img" alt="{{ news.title }}" style="object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);" loading="lazy">
-                
-                <!-- Если изображения нет, проверяем наличие изображения у категории -->
                 {% elif news.category and news.category.image %}
-                    <!-- Вывод изображения категории, те же стили Bootstrap и CSS -->
                     <img src="{{ news.category.image.url }}" class="w-100 h-100 news-img" alt="{{ news.category.name }}" style="object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);" loading="lazy">
-                
-                <!-- Если изображений нигде нет, выводим заглушку -->
                 {% else %}
-                    <!-- Заглушка: контейнер 100% ширины и высоты, темный градиент и центрирование (d-flex, align-items-center, justify-content-center) -->
                     <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-gradient news-img" style="transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);">
-                        <!-- Иконка Bootstrap Icons, увеличенная (display-1) и полупрозрачная (opacity-25) -->
                         <i class="bi bi-newspaper display-1 text-white opacity-25"></i>
                     </div>
                 {% endif %}
                 
-                <!-- Абсолютно позиционированный градиентный оверлей снизу вверх для читаемости текста -->
                 <div class="position-absolute bottom-0 start-0 w-100 h-100" style="background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);"></div>
 
-                <!-- Если у новости указана категория, выводим бейдж -->
                 {% if news.category %}
-                <!-- Абсолютное позиционирование сверху слева (top-0 start-0), отступы (m-3), поверх других слоев (z-2) -->
                 <div class="position-absolute top-0 start-0 m-3 z-2">
-                    <!-- Bootstrap бейдж (badge) с основным цветом, прозрачностью (bg-opacity-75), белым текстом, круглыми краями (rounded-pill) -->
-                    <!-- Применяется backdrop-filter для размытия фона под бейджем -->
-                    <span class="badge bg-primary bg-opacity-75 text-white px-3 py-2 rounded-pill shadow-sm" style="backdrop-filter: blur(4px);">
+                    <span class="badge bg-primary bg-opacity-75 text-white px-3 py-2 rounded-pill shadow-sm fw-bold" style="backdrop-filter: blur(4px);">
                         {{ news.category.name }}
                     </span>
                 </div>
@@ -59,31 +43,23 @@
 
             </div>
             
-            <!-- Контент под изображением, использует flexbox для заполнения свободного пространства (flex-grow-1) -->
             <div class="p-4 d-flex flex-column flex-grow-1 position-relative z-2">
-                
-                <!-- Мета-информация: дата публикации и количество просмотров, выравнивание по центру, отступ gap-3 -->
                 <div class="d-flex align-items-center gap-3 mb-3 small text-muted">
                     <span><i class="bi bi-calendar3 text-primary me-1"></i> {{ news.news_date|date:"d M Y" }}</span>
                     <span><i class="bi bi-eye text-primary me-1"></i> {{ news.views|default:"0" }}</span>
                 </div>
                 
-                <!-- Заголовок новости (h5, полужирный fw-bold, отступ mb-3) -->
                 <h4 class="h5 mb-3 fw-bold">
-                    <!-- Ссылка, растянутая на всю высоту блока (stretched-link) -->
-                    <a href="{% url 'news:detail' news.slug %}" class="text-dark text-decoration-none stretched-link hover-primary transition-all">
+                    <a href="{% url 'news:detail' news.slug %}" class="text-white text-decoration-none stretched-link hover-primary transition-all">
                         {{ news.title }}
                     </a>
                 </h4>
                 
-                <!-- Краткое описание новости, урезанное до 12 слов, flex-grow-1 прижимает футер вниз  -->
                 <p class="small text-muted mb-4 flex-grow-1">
                     {{ news.meta_description|default:news.content|striptags|truncatewords:12 }}
                 </p>
 
-                <!-- Футер карточки с кнопкой 'Читать'. Прижимается вниз за счет mt-auto, обводка сверху border-top -->
                 <div class="mt-auto pt-3 border-top border-secondary border-opacity-10">
-                    <!-- Текст "Читать" с primary цветом, в верхнем регистре (text-uppercase) и отступом между буквами -->
                     <span class="text-primary text-uppercase fw-bold small letter-spacing-1 d-flex align-items-center news-read-more">
                         Читать <i class="bi bi-arrow-right ms-2 transition-all"></i>
                     </span>

@@ -81,6 +81,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         null=True,
         help_text=_("Рекомендуемый размер: 64x64 или 128x128 пикселей")
     )
+
     short_description = HTMLField(
         verbose_name=_("Краткое описание"),
         blank=True,
@@ -91,6 +92,23 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         default=_("<p>Описание услуги</p>"),
         help_text=_("Подробное описание профиля услуги с использованием форматирования")
     )
+    
+    category = models.ForeignKey(
+        ServiceCategory,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='services',
+        verbose_name=_("Категория")
+    )
+    # Поле для обратной совместимости или временного хранения старой категории
+    old_category_tag = models.CharField(
+        max_length=100,
+        verbose_name=_("Старый Тег (архив)"),
+        blank=True,
+        help_text=_("Старое текстовое поле категории")
+    )
+    
     
     # --- Технологии ---
     TECHNOLOGY_CHOICES = [
@@ -205,21 +223,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         verbose_name=_("Просмотры"),
         editable=False
     )
-    category = models.ForeignKey(
-        ServiceCategory,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='services',
-        verbose_name=_("Категория")
-    )
-    # Поле для обратной совместимости или временного хранения старой категории
-    old_category_tag = models.CharField(
-        max_length=100,
-        verbose_name=_("Старый Тег (архив)"),
-        blank=True,
-        help_text=_("Старое текстовое поле категории")
-    )
+
     
     # --- Связь с портфолио ---
     related_portfolio = models.ManyToManyField(

@@ -53,8 +53,8 @@
         <div class="row g-4">
             {% for service in services %}
             <div class="col-lg-4 col-md-6">
-                <div class="card-premium p-4 border-0 h-100 d-flex flex-column text-center">
-                    <div class="service-icon mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px; background: var(--color-primary-alpha); border-radius: var(--radius-md);">
+                <div class="glass-card-premium p-4 border-0 h-100 d-flex flex-column text-center" style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                    <div class="service-icon mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px; background: rgba(var(--bs-primary-rgb), 0.1); border-radius: 20px;">
                         {% if service.icon %}
                             <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 60px; height: 60px; object-fit: contain;">
                         {% else %}
@@ -106,4 +106,10 @@
 {% endblock %}
 
 {% block extra_js %}
+<style>
+    /* Анимации при наведении для карточек услуг */
+    .glass-card-premium { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .glass-card-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0,0,0,0.3) !important; }
+    .glass-card-premium:hover .service-icon { transform: scale(1.1) rotate(5deg); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+</style>
 {% endblock %}

@@ -11,7 +11,7 @@
             <!-- Контейнер с отступами, использующий Flexbox для горизонтального распределения элементов -->
             <!-- Левая часть: Информационная зона (скрыта на мобильных устройствах d-none d-lg-flex) -->
             <div class="d-none d-lg-flex align-items-center gap-4">
-                <span class="logo-info-zone-time text-muted">
+                <span class="logo-info-zone-time">
                     <!-- Иконки Bootstrap Icons для визуализации контактов -->
                     <i class="bi bi-geo-alt-fill text-primary me-1" aria-hidden="true"></i>По всему миру / 
                     <i class="bi bi-envelope-fill text-primary me-2 ms-2" aria-hidden="true"></i>24/7 поддержка
@@ -27,7 +27,7 @@
                         <!-- Аватарка, генерируемая сервисом ui-avatars на лету -->
                         <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=6366f1&color=fff" class="rounded-circle shadow-sm" width="30" height="30" alt="Пользователь">
                         <!-- Имя пользователя (скрыто на маленьких экранах d-none d-xl-inline) -->
-                        <span class="d-none d-xl-inline text-muted small fw-medium">{{ user.get_full_name|default:user.username|truncatechars:15 }}</span>
+                        <span class="d-none d-xl-inline text-main small fw-bold">{{ user.get_full_name|default:user.username|truncatechars:15 }}</span>
                         <i class="bi bi-chevron-down text-muted small" aria-hidden="true"></i>
                     </a>
                     <!-- Список действий в личном кабинете -->

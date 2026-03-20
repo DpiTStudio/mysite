@@ -35,6 +35,15 @@ class ServiceListView(ListView):
         if active_filters:
             queryset = queryset.filter(**active_filters)
             
+        # Применяем сортировку
+        sort_param = self.request.GET.get('sort')
+        if sort_param == 'price_asc':
+            queryset = queryset.order_by('price_min', 'price_fixed', 'order')
+        elif sort_param == 'price_desc':
+            queryset = queryset.order_by('-price_fixed', '-price_max', 'order')
+        elif sort_param == 'views_desc':
+            queryset = queryset.order_by('-views', 'order')
+            
         return queryset
     
     def get_context_data(self, **kwargs):
@@ -141,6 +150,7 @@ class ServiceOrderView(View):
                 f"✅ Заказ на «{service.title}» успешно оформлен! "
                 f"Ваш номер заказа: {order.short_id}. Ожидайте звонка менеджера."
             )
+            
             return redirect('services:detail', slug=slug)
             
         messages.error(
