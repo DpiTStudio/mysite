@@ -310,6 +310,11 @@ body {
     border: 1px solid var(--glass-border) !important;
 }
 
+/* Hide Jazzmin version in footer */
+.main-footer .float-right.d-none.d-sm-inline {
+    display: none !important;
+}
+
 /* Animation for content loading */
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(20px); }

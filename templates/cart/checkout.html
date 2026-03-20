@@ -3,90 +3,220 @@
 
 {% block title %}Оформление заказа | {{ site_settings.site_title }}{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="animate-up">
+
+    {# Хлебные крошки #}
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:home' %}" class="text-white-50 text-decoration-none">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'cart:cart_detail' %}" class="text-white-50 text-decoration-none">Корзина</a></li>
+            <li class="breadcrumb-item active text-white">Оформление заказа</li>
+        </ol>
+    </nav>
+
     <div class="row gx-5">
+
+        {# ── Левая колонка: форма ────────────────────────────────────── #}
         <div class="col-lg-8 mb-5 animate-left">
+
+            {# Блок авторизации для гостей #}
+            {% if not user.is_authenticated %}
+            <div class="glass-card mb-4 border border-primary border-opacity-25">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="bi bi-person-circle text-primary fs-2 flex-shrink-0"></i>
+                        <div>
+                            <h6 class="text-white mb-1">Уже есть аккаунт?</h6>
+                            <p class="text-white-50 small mb-2">
+                                Войдите, чтобы не заполнять форму вручную — данные подтянутся автоматически,
+                                а заказ сохранится в вашем личном кабинете.
+                            </p>
+                            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Войти в аккаунт
+                            </a>
+                            <a href="{% url 'accounts:register' %}" class="btn btn-sm btn-outline-light rounded-pill px-3 ms-2">
+                                <i class="bi bi-person-plus me-1"></i> Зарегистрироваться
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {# Основная форма #}
             <div class="glass-card mb-5">
                 <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
-                    <h2 class="h4 mb-0 text-white"><i class="bi bi-file-earmark-text text-primary me-2"></i> Данные для оформления</h2>
+                    <h2 class="h4 mb-0 text-white">
+                        <i class="bi bi-file-earmark-text text-primary me-2"></i> Данные для оформления
+                    </h2>
                 </div>
                 <div class="card-body p-4 p-md-5">
-                    <form method="post" class="needs-validation">
+                    <form method="post" class="needs-validation" id="checkout-form" novalidate>
                         {% csrf_token %}
-                        
+
+                        {# Общие ошибки формы #}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger border-0 rounded-3 mb-4">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
                         <div class="row g-4">
+                            {# Имя #}
                             <div class="col-md-6">
-                                <label class="form-label text-white-50">Имя <span class="text-danger">*</span></label>
+                                <label class="form-label text-white-50" for="{{ form.first_name.id_for_label }}">
+                                    Имя <span class="text-danger">*</span>
+                                </label>
                                 {{ form.first_name }}
                                 {% if form.first_name.errors %}
-                                    <div class="text-danger small mt-1">{{ form.first_name.errors|striptags }}</div>
+                                <div class="text-danger small mt-1">
+                                    <i class="bi bi-exclamation-circle me-1"></i>{{ form.first_name.errors|striptags }}
+                                </div>
                                 {% endif %}
                             </div>
+
+                            {# Фамилия #}
                             <div class="col-md-6">
-                                <label class="form-label text-white-50">Фамилия</label>
+                                <label class="form-label text-white-50" for="{{ form.last_name.id_for_label }}">Фамилия</label>
                                 {{ form.last_name }}
                             </div>
-                            
+
+                            {# Email #}
                             <div class="col-md-6">
-                                <label class="form-label text-white-50">Email <span class="text-danger">*</span></label>
+                                <label class="form-label text-white-50" for="{{ form.email.id_for_label }}">
+                                    Email <span class="text-danger">*</span>
+                                </label>
                                 {{ form.email }}
                                 {% if form.email.errors %}
-                                    <div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>
+                                <div class="text-danger small mt-1">
+                                    <i class="bi bi-exclamation-circle me-1"></i>{{ form.email.errors|striptags }}
+                                </div>
                                 {% endif %}
                             </div>
+
+                            {# Телефон #}
                             <div class="col-md-6">
-                                <label class="form-label text-white-50">Телефон <span class="text-danger">*</span></label>
+                                <label class="form-label text-white-50" for="{{ form.phone.id_for_label }}">
+                                    Телефон <span class="text-danger">*</span>
+                                </label>
                                 {{ form.phone }}
                                 {% if form.phone.errors %}
-                                    <div class="text-danger small mt-1">{{ form.phone.errors|striptags }}</div>
+                                <div class="text-danger small mt-1">
+                                    <i class="bi bi-exclamation-circle me-1"></i>{{ form.phone.errors|striptags }}
+                                </div>
                                 {% endif %}
                             </div>
-                            
+
+                            {# Компания #}
                             <div class="col-12">
-                                <label class="form-label text-white-50">Компания</label>
+                                <label class="form-label text-white-50" for="{{ form.company.id_for_label }}">Компания</label>
                                 {{ form.company }}
                             </div>
-                            
+
+                            {# Комментарий #}
                             <div class="col-12">
-                                <label class="form-label text-white-50">Комментарий к заказу (необязательно)</label>
+                                <label class="form-label text-white-50" for="{{ form.comment.id_for_label }}">
+                                    Комментарий к заказу <span class="text-white-50 small">(необязательно)</span>
+                                </label>
                                 {{ form.comment }}
                             </div>
                         </div>
-                        
+
+                        {# Блок авторегистрации (только для гостей) #}
+                        {% if not user.is_authenticated %}
+                        <div class="mt-4 pt-4 border-top border-secondary border-opacity-25">
+                            <div class="glass-card p-3 border border-success border-opacity-25">
+                                <div class="form-check d-flex align-items-start gap-3">
+                                    {{ form.auto_register }}
+                                    <div>
+                                        <label class="form-check-label text-white fw-medium" for="auto_register_check">
+                                            <i class="bi bi-person-check text-success me-2"></i>
+                                            {{ form.auto_register.label }}
+                                        </label>
+                                        <p class="text-white-50 small mb-0 mt-1">
+                                            {{ form.auto_register.help_text }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {# Кнопка отправки #}
                         <div class="mt-5 pt-4 border-top border-secondary border-opacity-25">
-                            <button class="btn btn-primary btn-lg w-100 shadow-glow shine-effect" type="submit">
+                            <button class="btn btn-primary btn-lg w-100 shadow-glow shine-effect" type="submit" id="submit-order-btn">
                                 <i class="bi bi-check-circle me-2"></i> Разместить заказ
                             </button>
                             <div class="text-white-50 small mt-3 text-center">
-                                Нажимая на кнопку "Разместить заказ", вы соглашаетесь с условиями обработки персональных данных.
+                                Нажимая «Разместить заказ», вы соглашаетесь с условиями обработки персональных данных.
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
-        
+
+        </div>{# /col-lg-8 #}
+
+        {# ── Правая колонка: сводка заказа ───────────────────────────── #}
         <div class="col-lg-4 animate-right">
             <div class="glass-card p-0 sticky-top" style="top: 130px;">
                 <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
-                    <h4 class="h5 mb-0 text-white"><i class="bi bi-bag-check text-primary me-2"></i> Ваш заказ</h4>
+                    <h4 class="h5 mb-0 text-white">
+                        <i class="bi bi-bag-check text-primary me-2"></i> Ваш заказ
+                    </h4>
                 </div>
                 <div class="card-body p-4">
+
+                    {# Список позиций #}
                     <ul class="list-group list-group-flush mb-3 border-0 bg-transparent">
                         {% for item in cart %}
                         <li class="list-group-item d-flex justify-content-between lh-sm bg-transparent border-bottom border-secondary border-opacity-25 text-white py-3 px-0">
                             <div>
                                 <h6 class="my-0 text-white">{{ item.item_obj.title }}</h6>
-                                <small class="text-white-50">Кол-во: {{ item.quantity }}</small>
+                                <small class="text-white-50">
+                                    Кол-во: {{ item.quantity }}
+                                    {% if item.item_type == 'service' %}<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 ms-2 rounded-pill">Услуга</span>{% else %}<span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 ms-2 rounded-pill">Работа</span>{% endif %}
+                                </small>
                             </div>
-                            <span class="text-white fw-medium">{{ item.total_price_display }}</span>
+                            <span class="text-white fw-medium ms-2 text-nowrap">{{ item.total_price_display }}</span>
                         </li>
                         {% endfor %}
-                        <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 fs-5 mt-2">
-                            <span>Итого (RUR, фикс)</span>
-                            <strong class="text-gradient fw-bold">{{ cart.get_total_price }} ₽</strong>
+
+                        {# Итого (до скидки) #}
+                        <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 mt-1">
+                            <span class="text-white-50">Сумма:</span>
+                            <strong class="text-white">{{ cart.get_total_price }} ₽</strong>
                         </li>
+
+                        {# Скидка по промокоду #}
+                        {% if promo_obj and promo_discount %}
+                        <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-1 px-0" id="promo-summary-row">
+                            <span class="text-success small">
+                                <i class="bi bi-tag me-1"></i> {{ promo_obj.code }}
+                            </span>
+                            <strong class="text-success small">−{{ promo_discount }} ₽</strong>
+                        </li>
+                        {% endif %}
+
+                        {# Итого (со скидкой) #}
+                        <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 fs-5">
+                            <span class="fw-bold">Итого:</span>
+                            <strong class="text-gradient fw-bold" id="total-final-display">
+                                {% if promo_discount %}
+                                    {{ cart.get_total_price|floatformat:2 }} ₽
+                                    <span class="text-success small d-block">−{{ promo_discount }} ₽ скидка</span>
+                                {% else %}
+                                    {{ cart.get_total_price }} ₽
+                                {% endif %}
+                            </strong>
+                        </li>
+
                         {% if cart.has_flexible_prices %}
                         <li class="list-group-item bg-transparent text-white-50 small px-0 border-0 pt-0">
                             * Окончательная цена будет указана после согласования.
@@ -94,8 +224,8 @@
                         {% endif %}
                     </ul>
 
-                    <!-- ===== Блок промокода ===== -->
-                    <div class="mt-3 mb-3" id="promo-section">
+                    {# Блок промокода #}
+                    <div class="mt-2 mb-1" id="promo-section">
                         <label class="form-label text-white-50 small">Промокод</label>
                         <div class="input-group input-group-sm">
                             <input type="text" id="promo-input" class="form-control bg-transparent border-secondary text-white"
@@ -105,11 +235,12 @@
                             </button>
                         </div>
                         <div id="promo-status" class="mt-2 small" style="display:none;"></div>
-                        <div id="promo-applied" class="mt-2 d-none">
+                        <div id="promo-applied" class="mt-2 {% if not promo_obj %}d-none{% endif %}">
                             <div class="d-flex align-items-center justify-content-between glass-card p-2 px-3">
                                 <span class="text-success small">
                                     <i class="bi bi-check-circle me-1"></i>
-                                    <span id="promo-code-label"></span> — скидка <span id="promo-discount-label"></span>
+                                    <span id="promo-code-label">{% if promo_obj %}{{ promo_obj.code }}{% endif %}</span>
+                                    — скидка <span id="promo-discount-label">{% if promo_obj %}{{ promo_discount }} ₽{% endif %}</span>
                                 </span>
                                 <button type="button" class="btn btn-sm btn-link text-danger p-0" id="promo-remove-btn">
                                     <i class="bi bi-x-circle"></i>
@@ -117,28 +248,25 @@
                             </div>
                         </div>
                     </div>
-                    <!-- ===== /промокод ===== -->
 
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        </div>{# /col-lg-4 #}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/cart.css' %}">
-{% endblock %}
+    </div>{# /row #}
+</div>
 
 {% block extra_js %}
 <script>
 (function() {
-    const applyBtn = document.getElementById('promo-apply-btn');
+    const applyBtn  = document.getElementById('promo-apply-btn');
     const removeBtn = document.getElementById('promo-remove-btn');
-    const input = document.getElementById('promo-input');
-    const statusEl = document.getElementById('promo-status');
+    const input     = document.getElementById('promo-input');
+    const statusEl  = document.getElementById('promo-status');
     const appliedEl = document.getElementById('promo-applied');
     const codeLabel = document.getElementById('promo-code-label');
     const discountLabel = document.getElementById('promo-discount-label');
+    const submitBtn = document.getElementById('submit-order-btn');
 
     function getCsrf() {
         return document.cookie.match(/csrftoken=([^;]+)/)?.[1] || '';
@@ -160,7 +288,7 @@
             if (!code) { showStatus('Введите промокод', 'warning'); return; }
 
             applyBtn.disabled = true;
-            applyBtn.textContent = '...';
+            applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
             fetch('{% url "cart:apply_promo" %}', {
                 method: 'POST',
@@ -179,6 +307,8 @@
                     appliedEl.classList.remove('d-none');
                     input.value = '';
                     showStatus(data.message, 'success');
+                    // Перезагрузить страницу, чтобы показать итог со скидкой
+                    setTimeout(() => location.reload(), 800);
                 } else {
                     showStatus(data.error || 'Ошибка', 'danger');
                 }
@@ -200,6 +330,7 @@
             .then(() => {
                 appliedEl.classList.add('d-none');
                 hideStatus();
+                location.reload();
             });
         });
     }
@@ -210,7 +341,17 @@
             if (e.key === 'Enter') { e.preventDefault(); applyBtn?.click(); }
         });
     }
+
+    // Индикатор загрузки при отправке формы
+    const form = document.getElementById('checkout-form');
+    if (form && submitBtn) {
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Оформляем заказ...';
+        });
+    }
 })();
 </script>
 {% endblock %}
+
 {% endblock %}

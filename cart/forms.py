@@ -25,21 +25,58 @@ def validate_phone(value):
 
 
 class OrderCreateForm(forms.ModelForm):
+    """
+    Форма оформления заказа.
+    Для незарегистрированных пользователей показывает опцию авторегистрации.
+    """
+
+    auto_register = forms.BooleanField(
+        required=False,
+        initial=True,
+        label="Создать личный кабинет автоматически",
+        help_text="Мы автоматически создадим аккаунт и пришлём данные для входа на указанный email.",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'id': 'auto_register_check'}),
+    )
+
     class Meta:
         model = Order
         fields = ['first_name', 'last_name', 'email', 'phone', 'company', 'comment']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваше имя'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваша фамилия (необязательно)'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ваш email (example@mail.com)'}),
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ваше имя',
+                'autocomplete': 'given-name',
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ваша фамилия (необязательно)',
+                'autocomplete': 'family-name',
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ваш email (example@mail.com)',
+                'autocomplete': 'email',
+            }),
             'phone': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '+7 (___) ___-__-__',
                 'inputmode': 'tel',
+                'autocomplete': 'tel',
             }),
-            'company': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название компании (если есть)'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Дополнительная информация о проекте или пожелания'}),
+            'company': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Название компании (если есть)',
+                'autocomplete': 'organization',
+            }),
+            'comment': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Дополнительная информация о проекте или пожелания',
+            }),
         }
 
     def clean_phone(self):
         return validate_phone(self.cleaned_data.get('phone', ''))
+
+    def clean_email(self):
+        return self.cleaned_data.get('email', '').strip().lower()

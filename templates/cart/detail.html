@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
 {% block title %}Корзина | {{ site_settings.site_title }}{% endblock %}
 
 {% block content %}
@@ -107,7 +111,4 @@
     </div>
 </div>
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/cart.css' %}">
-{% endblock %}
 {% endblock %}

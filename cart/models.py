@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from decimal import Decimal
 from services.models import Service
 from accounts.models import User
+
 
 class Order(models.Model):
     first_name = models.CharField(max_length=50, verbose_name=_("Имя"))
@@ -10,14 +12,41 @@ class Order(models.Model):
     email = models.EmailField(verbose_name=_("Email"))
     phone = models.CharField(max_length=20, verbose_name=_("Телефон"))
     company = models.CharField(max_length=100, blank=True, verbose_name=_("Компания"))
-    comment = models.TextField(blank=True, verbose_name=_("Комментарий к заказу"), help_text=_("Дополнительная информация о проекте или пожелания"))
-    
+    comment = models.TextField(
+        blank=True,
+        verbose_name=_("Комментарий к заказу"),
+        help_text=_("Дополнительная информация о проекте или пожелания")
+    )
+
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Создан"))
     updated = models.DateTimeField(auto_now=True, verbose_name=_("Обновлен"))
     paid = models.BooleanField(default=False, verbose_name=_("Оплачен"))
-    
-    # Optional connection to registered user
-    user = models.ForeignKey(User, related_name='orders', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_("Покупатель/Клиент"))
+
+    # Поля для промокода
+    promo_code_applied = models.CharField(
+        max_length=50, blank=True, verbose_name=_("Применённый промокод")
+    )
+    discount_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=Decimal('0.00'),
+        verbose_name=_("Сумма скидки")
+    )
+
+    # Флаг автоматической регистрации
+    auto_registered = models.BooleanField(
+        default=False,
+        verbose_name=_("Авторегистрация"),
+        help_text=_("Клиент был автоматически зарегистрирован при оформлении заказа")
+    )
+
+    # Связь с зарегистрированным пользователем
+    user = models.ForeignKey(
+        User,
+        related_name='orders',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Покупатель/Клиент")
+    )
 
     STATUS_CHOICES = [
         ("new", _("Новый")),
@@ -39,15 +68,26 @@ class Order(models.Model):
         verbose_name_plural = _("Заказы сайтов/услуг")
 
     def __str__(self):
-        return f'Заказ #{self.id}'
+        return f'Заказ #{self.id} — {self.first_name} {self.last_name or ""}'.strip()
 
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
 
+    def get_final_cost(self):
+        """Итоговая стоимость с учётом скидки."""
+        return max(self.get_total_cost() - self.discount_amount, Decimal('0.00'))
+
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name=_("Заказ"))
-    service = models.ForeignKey(Service, related_name='order_items', on_delete=models.PROTECT, verbose_name=_("Услуга"), null=True, blank=True)
-    portfolio = models.ForeignKey('portfolio.Portfolio', related_name='order_items', on_delete=models.PROTECT, verbose_name=_("Работа (Портфолио)"), null=True, blank=True)
+    service = models.ForeignKey(
+        Service, related_name='order_items', on_delete=models.PROTECT,
+        verbose_name=_("Услуга"), null=True, blank=True
+    )
+    portfolio = models.ForeignKey(
+        'portfolio.Portfolio', related_name='order_items', on_delete=models.PROTECT,
+        verbose_name=_("Работа (Портфолио)"), null=True, blank=True
+    )
     price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена (фикс)"), null=True, blank=True)
     price_type = models.CharField(max_length=10, default='fixed', verbose_name=_("Тип цены"))
     price_min = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name=_("Начальная цена"))
@@ -59,12 +99,13 @@ class OrderItem(models.Model):
         verbose_name_plural = _("Товары/Услуги в заказах")
 
     def __str__(self):
-        return str(self.id)
+        name = self.service.title if self.service else (self.portfolio.title if self.portfolio else '—')
+        return f'{name} (Заказ #{self.order_id})'
 
     def get_cost(self):
         if self.price_type == 'fixed' and self.price is not None:
             return self.price * self.quantity
-        return 0
+        return Decimal('0.00')
 
     def get_price_display(self):
         if self.price_type == 'fixed' and self.price is not None:
@@ -73,6 +114,13 @@ class OrderItem(models.Model):
             return f"от {self.price_min} до {self.price_max} ₽"
         else:
             return "По договоренности"
+
+    def get_item_title(self):
+        if self.service:
+            return self.service.title
+        if self.portfolio:
+            return self.portfolio.title
+        return '—'
 
 
 class PromoCode(models.Model):
@@ -153,7 +201,6 @@ class PromoCode(models.Model):
 
     def apply_discount(self, total):
         """Returns сумму скидки (decimal) для данной стоимости."""
-        from decimal import Decimal
         if self.discount_type == 'percent':
             return (total * self.discount_value / Decimal('100')).quantize(Decimal('0.01'))
         else:  # fixed
@@ -161,7 +208,7 @@ class PromoCode(models.Model):
 
 
 class PromoCodeUsage(models.Model):
-    """Oтслеживает кто и когда использовал промокод."""
+    """Отслеживает кто и когда использовал промокод."""
     promo_code = models.ForeignKey(
         PromoCode,
         on_delete=models.CASCADE,

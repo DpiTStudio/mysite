@@ -29,9 +29,12 @@
             </div>
         </div>
         
-        <a href="#" hx-post="{% url 'cart:cart_remove' type obj.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" class="btn btn-sm btn-outline-danger ms-3 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" aria-label="Удалить">
-            <i class="bi bi-trash"></i>
-        </a>
+        <form action="{% url 'cart:cart_remove' type obj.id %}" method="post" class="ms-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" aria-label="Удалить">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
     </div>
     {% endwith %}
     {% endfor %}
@@ -54,7 +57,7 @@
         <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-light btn-lg rounded-pill">
             Перейти в корзину
         </a>
-        <a href="#" class="btn btn-primary btn-lg rounded-pill shadow-glow shine-effect">
+        <a href="{% url 'cart:order_create' %}" class="btn btn-primary btn-lg rounded-pill shadow-glow shine-effect">
             Оформить заказ
         </a>
     </div>

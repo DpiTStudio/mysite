@@ -123,12 +123,12 @@
                 </form>
             </div>
 
-            <!-- История заказов услуг -->
+            <!-- История заказов (cart) -->
             <div class="glass-card mt-4">
                 <div class="card-header border-bottom border-secondary border-opacity-25 p-4 d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0 text-white"><i class="fas fa-handshake text-success me-2"></i> Мои заказы</h4>
+                    <h4 class="mb-0 text-white"><i class="bi bi-bag-check text-success me-2"></i> Мои заказы</h4>
                     <span class="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-2 border border-primary border-opacity-25">
-                        Всего: {{ user.service_orders.count|default:0 }}
+                        Всего: {{ user.orders.count|default:0 }}
                     </span>
                 </div>
                 <div class="card-body p-0">
@@ -136,46 +136,59 @@
                         <table class="table table-dark table-hover mb-0 glass-table border-0 text-white-50 align-middle">
                             <thead class="bg-dark bg-opacity-50 text-white">
                                 <tr>
-                                    <th class="ps-4 py-3 font-weight-bold opacity-75">Услуга</th>
-                                    <th class="py-3 font-weight-bold opacity-75">Дата</th>
-                                    <th class="py-3 font-weight-bold opacity-75">Статус</th>
-                                    <th class="pe-4 py-3 font-weight-bold opacity-75">Цена</th>
+                                    <th class="ps-4 py-3 opacity-75">#</th>
+                                    <th class="py-3 opacity-75">Состав</th>
+                                    <th class="py-3 opacity-75">Дата</th>
+                                    <th class="py-3 opacity-75">Статус</th>
+                                    <th class="pe-4 py-3 opacity-75 text-end">Сумма</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for order in user.service_orders.all %}
+                                {% for order in user.orders.all %}
                                 <tr class="border-bottom border-secondary border-opacity-25">
-                                    <td class="ps-4 py-3">
-                                        <h6 class="mb-0"><a href="{% url 'services:detail' order.service.slug %}" class="text-white hover-primary text-decoration-none">{{ order.service.title }}</a></h6>
+                                    <td class="ps-4 py-3 text-white-50 small">{{ order.id }}</td>
+                                    <td class="py-3">
+                                        {% for item in order.items.all|slice:":2" %}
+                                            <div class="text-white small">{{ item.get_item_title }}</div>
+                                        {% endfor %}
+                                        {% if order.items.count > 2 %}
+                                        <div class="text-white-50" style="font-size:0.78rem">+ ещё {{ order.items.count|add:"-2" }}</div>
+                                        {% endif %}
                                     </td>
-                                    <td class="py-3">{{ order.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td class="py-3 small">{{ order.created|date:"d.m.Y H:i" }}</td>
                                     <td class="py-3">
                                         {% if order.status == 'new' %}
                                             <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 rounded-pill px-2 py-1">Новый</span>
-                                        {% elif order.status == 'processing' %}
-                                            <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-25 rounded-pill px-2 py-1">В обработке</span>
+                                        {% elif order.status == 'confirmed' %}
+                                            <span class="badge bg-info bg-opacity-25 text-info border border-info border-opacity-25 rounded-pill px-2 py-1">Подтверждён</span>
+                                        {% elif order.status == 'in_progress' %}
+                                            <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-25 rounded-pill px-2 py-1">В работе</span>
                                         {% elif order.status == 'completed' %}
                                             <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Выполнен</span>
                                         {% elif order.status == 'cancelled' %}
-                                            <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25 rounded-pill px-2 py-1">Отменен</span>
+                                            <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25 rounded-pill px-2 py-1">Отменён</span>
                                         {% else %}
                                             <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary border-opacity-25 rounded-pill px-2 py-1">{{ order.get_status_display }}</span>
                                         {% endif %}
                                     </td>
-                                    <td class="pe-4 py-3 text-white fw-medium">
-                                        {% if order.service.price_type == 'fixed' %}
-                                            {{ order.service.price_fixed|floatformat:0 }} {{ order.service.currency }}
+                                    <td class="pe-4 py-3 text-white fw-medium text-end">
+                                        {% if order.discount_amount %}
+                                            <span class="text-success">{{ order.get_final_cost }} ₽</span>
+                                            <small class="d-block text-white-50" style="font-size:0.75rem">−{{ order.discount_amount }} ₽</small>
                                         {% else %}
-                                            От {{ order.service.price_min|floatformat:0 }}
+                                            {{ order.get_total_cost }} ₽
                                         {% endif %}
                                     </td>
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="4" class="text-center py-5">
+                                    <td colspan="5" class="text-center py-5">
                                         <div class="text-white-50">
                                             <i class="bi bi-inbox display-4 mb-3 d-block opacity-50"></i>
-                                            <p class="mb-0">Вы пока не заказывали услуг.</p>
+                                            <p class="mb-0">Вы пока не оформляли заказов.</p>
+                                            <a href="{% url 'services:list' %}" class="btn btn-outline-primary btn-sm mt-3 rounded-pill px-3">
+                                                Перейти к услугам
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
