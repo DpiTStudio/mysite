@@ -2,8 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    text-shadow: 1px 1px 3px rgba(207, 233, 5, 0.107);
+    font-family: var(--font-family-base);
     color: var(--color-text-main);
+    text-shadow: none !important;
+    -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Изменено: Улучшенное выделение текста */
@@ -19,9 +21,10 @@ html {
 }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-family-base);
     background-color: var(--color-dark-bg);
     color: var(--color-text-main);
+    font-size: var(--text-md);
     line-height: 1.6;
     padding-top: 114px; /* Space for fixed navbar (34px top bar + ~80px navbar) */
     overflow-x: hidden;
