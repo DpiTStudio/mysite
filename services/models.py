@@ -270,7 +270,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
     def can_be_ordered(self):
         if not self.is_available_for_order:
             return False
-        if self.price_type == 'fixed' and not self.price_fixed:
+        if self.price_type == 'fixed' and self.price_fixed is None:
             return False
         return True
 
@@ -285,7 +285,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
             self.price_min = None
             self.price_max = None
             
-        if self.price_type == 'fixed' and not self.price_fixed:
+        if self.price_type == 'fixed' and self.price_fixed is None:
             raise ValidationError({'price_fixed': _('Обязательно укажите фиксированную цену.')})
             
         elif self.price_type == 'range':

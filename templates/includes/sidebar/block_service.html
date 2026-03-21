@@ -62,11 +62,7 @@
                                 <i class="bi bi-info-circle"></i> Подробнее
                             </a>
                             {% if service.can_be_ordered %}
-                            <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" 
-                                hx-target="#cart-offcanvas-body" 
-                                hx-swap="innerHTML" 
-                                class="flex-grow-1"
-                                onclick="new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show()">
+                            <form action="{% url 'cart:cart_add' 'service' service.id %}" method="post" class="flex-grow-1">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-primary w-100 py-1">
                                     <i class="bi bi-cart-plus"></i> Заказать

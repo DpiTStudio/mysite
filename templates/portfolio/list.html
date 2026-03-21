@@ -118,15 +118,43 @@
             </div>
             {% endfor %}
             
-            {% if portfolio_list.has_next %}
-            <div id="infinite-scroll-trigger" class="col-12 text-center my-5"
-                 hx-get="?page={{ portfolio_list.next_page_number }}"
-                 hx-trigger="revealed"
-                 hx-swap="outerHTML"
-                 hx-select=".portfolio-grid > .portfolio-item, #infinite-scroll-trigger">
-                 <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent" speed="1" style="width: 80px; height: 80px; margin: 0 auto;" loop autoplay></lottie-player>
-                 <p class="text-muted small mt-2">Загружаем еще проекты...</p>
-            </div>
+            <!-- Пагинация -->
+            {% if portfolio_list.has_other_pages %}
+                <nav aria-label="Навигация по страницам" class="col-12 mt-5">
+                    <ul class="pagination justify-content-center mb-0 custom-pagination">
+                        {% if portfolio_list.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link shadow-none" href="?page={{ portfolio_list.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Предыдущая</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link shadow-none">Предыдущая</span>
+                            </li>
+                        {% endif %}
+                        
+                        {% for num in portfolio_list.paginator.page_range %}
+                            {% if portfolio_list.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link shadow-none">{{ num }}</span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link shadow-none" href="?page={{ num }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if portfolio_list.has_next %}
+                            <li class="page-item">
+                                <a class="page-link shadow-none" href="?page={{ portfolio_list.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Следующая</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link shadow-none">Следующая</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             {% endif %}
         </div>
     </div>

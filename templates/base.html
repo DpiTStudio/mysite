@@ -119,11 +119,6 @@
     <!-- Ссылка для быстрого перехода к контенту (улучшает доступность для экранных дикторов) -->
     <a href="#main-content" class="visually-hidden-focusable">Перейти к основному содержимому</a>
 
-    <!-- Экран загрузки (Preloader) -->
-    <div id="preloader" class="page-preloader d-flex justify-content-center align-items-center z-3">
-        <!-- Lottie анимация загрузки -->
-        <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent" speed="1" style="width: 150px; height: 150px;" loop autoplay aria-hidden="true"></lottie-player>
-    </div>
 
     <!-- Индикатор прогресса HTMX (при AJAX запросах) -->
     <div id="htmx-progress" aria-hidden="true"></div>
@@ -250,29 +245,9 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Закрыть корзину"></button>
         </div>
         <div class="offcanvas-body" id="cart-offcanvas-body">
-            <!-- Автоматическая подгрузка содержимого корзины через HTMX -->
-            <div class="my-4" hx-get="{% url 'cart:cart_detail' %}?partial=true" hx-trigger="load, cartUpdated from:body" hx-target="this">
-                <!-- Скелетная загрузка (Skeleton Loader) пока данные подгружаются -->
-                <div class="skeleton-loader w-100 placeholder-glow" aria-hidden="true">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="placeholder rounded" style="width: 70px; height: 70px;"></div>
-                        <div class="ms-3 w-100">
-                            <div class="placeholder rounded w-75 mb-2" style="height: 14px;"></div>
-                            <div class="placeholder rounded w-50" style="height: 14px;"></div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="placeholder rounded" style="width: 70px; height: 70px;"></div>
-                        <div class="ms-3 w-100">
-                            <div class="placeholder rounded w-100 mb-2" style="height: 14px;"></div>
-                            <div class="placeholder rounded w-50" style="height: 14px;"></div>
-                        </div>
-                    </div>
-                    <div class="mt-5 pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between">
-                        <div class="placeholder rounded w-25" style="height: 24px;"></div>
-                        <div class="placeholder rounded w-25" style="height: 24px;"></div>
-                    </div>
-                </div>
+            <!-- Вывод содержимого корзины -->
+            <div class="my-4">
+                {% include 'cart/detail_partial.html' %}
             </div>
         </div>
     </div>

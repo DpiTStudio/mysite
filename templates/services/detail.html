@@ -225,7 +225,7 @@
 
                 <div class="text-center mt-4 pt-2">
                     <div class="text-muted small mb-3">Или добавьте услугу в общую корзину:</div>
-                    <form hx-post="{% url 'cart:cart_add' 'service' service.id %}" hx-target="#cart-offcanvas-body" hx-swap="innerHTML" onclick="bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('cartOffcanvas')).show()">
+                    <form action="{% url 'cart:cart_add' 'service' service.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-success btn-lg w-100 shine-effect">
                             <i class="bi bi-cart-plus me-2"></i> В корзину

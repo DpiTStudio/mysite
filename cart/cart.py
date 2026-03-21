@@ -37,6 +37,7 @@ class Cart:
 
     def save(self):
         # пометить сессию как "измененную", чтобы обеспечить ее сохранение
+        self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
 
     def remove(self, item_type, item_id):

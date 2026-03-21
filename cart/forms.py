@@ -40,17 +40,12 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'email', 'phone', 'company', 'comment']
+        fields = ['first_name', 'email', 'phone', 'comment']
         widgets = {
             'first_name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ваше имя',
                 'autocomplete': 'given-name',
-            }),
-            'last_name': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Ваша фамилия (необязательно)',
-                'autocomplete': 'family-name',
             }),
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
@@ -62,11 +57,6 @@ class OrderCreateForm(forms.ModelForm):
                 'placeholder': '+7 (___) ___-__-__',
                 'inputmode': 'tel',
                 'autocomplete': 'tel',
-            }),
-            'company': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Название компании (если есть)',
-                'autocomplete': 'organization',
             }),
             'comment': forms.Textarea(attrs={
                 'class': 'form-control',
