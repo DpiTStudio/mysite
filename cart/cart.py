@@ -115,17 +115,32 @@ class Cart:
             quantity = item.get('quantity', 1)
             item['quantity'] = quantity
             
+            # Извлечение символа валюты через get_price_display() если возможно
+            if hasattr(obj, 'get_price_display'):
+                item['price_display'] = obj.get_price_display()
+            else:
+                item['price_display'] = f"{item['price'].normalize():g} ₽" if item['price'] else "0 ₽"
+            
+            # Определяем символ валюты для total
+            currency_symbols = {'RUB': '₽', 'USD': '$', 'EUR': '€', 'KZT': '₸'}
+            symbol = currency_symbols.get(getattr(obj, 'currency', 'RUB'), '₽')
+                
             if item['price_type'] == 'fixed':
                 item['total_price'] = item['price'] * quantity
-                item['price_display'] = f"{item['price'].normalize():g} ₽" if item['price'] else "0 ₽"
-                item['total_price_display'] = f"{item['total_price'].normalize():g} ₽" if item['total_price'] else "0 ₽"
+                
+                formatted_total = f"{item['total_price']:,.0f}".replace(',', ' ') if item['total_price'] else "0"
+                item['total_price_display'] = f"{formatted_total} {symbol}"
             elif item['price_type'] == 'range':
                 item['total_price'] = Decimal('0')
-                item['price_display'] = f"от {item['price_min'].normalize():g} до {item['price_max'].normalize():g} ₽"
-                item['total_price_display'] = f"от {(item['price_min'] * quantity).normalize():g} до {(item['price_max'] * quantity).normalize():g} ₽"
+                
+                # Формируем диапазон с количеством
+                t_min = item['price_min'] * quantity
+                t_max = item['price_max'] * quantity
+                fmt_min = f"{t_min:,.0f}".replace(',', ' ')
+                fmt_max = f"{t_max:,.0f}".replace(',', ' ')
+                item['total_price_display'] = f"от {fmt_min} до {fmt_max} {symbol}"
             else:
                 item['total_price'] = Decimal('0')
-                item['price_display'] = "По договоренности"
                 item['total_price_display'] = "По договоренности"
             
             item['has_flexible_price'] = item['price_type'] != 'fixed'
@@ -153,6 +168,16 @@ class Cart:
             if item.get('price_type', 'fixed') == 'fixed':
                 total += item.get('total_price', Decimal('0'))
         return total
+
+    def get_total_price_display(self):
+        """
+        Отформатированная строка общей стоимости.
+        """
+        total = self.get_total_price()
+        # В идеале нужно учитывать мультивалютность общей суммы, но 
+        # здесь выводим красиво с пробелами и символом валюты по умолчанию.
+        formatted = f"{total:,.0f}".replace(',', ' ')
+        return f"{formatted} ₽"
 
     def has_flexible_prices(self):
         """

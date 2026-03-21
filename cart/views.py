@@ -3,6 +3,7 @@ import logging
 import secrets
 import string
 
+from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import login
 from django.http import JsonResponse
@@ -301,11 +302,24 @@ def order_create(request):
             }
         form = OrderCreateForm(initial=initial_data)
 
+    final_price = cart.get_total_price()
+    if promo_discount:
+        final_price -= promo_discount
+        if final_price < 0:
+            final_price = Decimal('0')
+
+    # Форматирование итоговой цены (можно использовать логику из cart.get_total_price_display)
+    final_price_display = f"{final_price:,.0f}".replace(',', ' ') + " ₽"
+    # Для promo_discount тоже сделаем красивое форматирование
+    promo_discount_display = f"{promo_discount:,.0f}".replace(',', ' ') + " ₽" if promo_discount else ""
+
     context = {
         'cart': cart,
         'form': form,
         'promo_obj': promo_obj,
         'promo_discount': promo_discount,
+        'promo_discount_display': promo_discount_display,
+        'final_price_display': final_price_display,
     }
     return render(request, 'cart/checkout.html', context)
 

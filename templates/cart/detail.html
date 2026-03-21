@@ -74,7 +74,7 @@
                         <tfoot>
                             <tr class="fs-4">
                                 <td colspan="3" class="text-end border-0 pt-4">Всего к оплате (фикс):</td>
-                                <td colspan="2" class="text-gradient border-0 fw-bold pt-4 pe-4">{{ cart.get_total_price }} ₽</td>
+                                <td colspan="2" class="text-gradient border-0 fw-bold pt-4 pe-4">{{ cart.get_total_price_display }}</td>
                             </tr>
                             {% if cart.has_flexible_prices %}
                             <tr>

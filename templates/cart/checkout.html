@@ -179,7 +179,7 @@
                         {# Итого (до скидки) #}
                         <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 mt-1">
                             <span class="text-white-50">Сумма:</span>
-                            <strong class="text-white">{{ cart.get_total_price }} ₽</strong>
+                            <strong class="text-white">{{ cart.get_total_price_display }}</strong>
                         </li>
 
                         {# Скидка по промокоду #}
@@ -188,7 +188,7 @@
                             <span class="text-success small">
                                 <i class="bi bi-tag me-1"></i> {{ promo_obj.code }}
                             </span>
-                            <strong class="text-success small">−{{ promo_discount }} ₽</strong>
+                            <strong class="text-success small">−{{ promo_discount_display }}</strong>
                         </li>
                         {% endif %}
 
@@ -196,12 +196,7 @@
                         <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 fs-5">
                             <span class="fw-bold">Итого:</span>
                             <strong class="text-gradient fw-bold" id="total-final-display">
-                                {% if promo_discount %}
-                                    {{ cart.get_total_price|floatformat:2 }} ₽
-                                    <span class="text-success small d-block">−{{ promo_discount }} ₽ скидка</span>
-                                {% else %}
-                                    {{ cart.get_total_price }} ₽
-                                {% endif %}
+                                {{ final_price_display }}
                             </strong>
                         </li>
 
