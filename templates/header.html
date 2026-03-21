@@ -91,7 +91,7 @@
             <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'main:home' %}" aria-label="На главную">
                 {% if site_settings and site_settings.logo %}
                     <!-- Если логотип загружен в БД -->
-                    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_title }}" height="48" class="rounded-3 shadow-sm" style="object-fit: contain;">
+                    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_title }}" height="58" class="rounded-3 shadow-sm" style="object-fit: contain;">
                 {% else %}
                     <!-- Заглушка, если логотип не настроен -->
                     <div class="bg-gradient bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 48px; height: 48px; font-size: 1.2rem;">
@@ -107,7 +107,7 @@
                             {{ request.get_host|upper }}
                         {% endif %}
                     </span>
-                    <span class="text-body-secondary small text-uppercase fw-semibold tracking-wider" style="font-size: 0.55rem; letter-spacing: 1px;">
+                    <span class="site-title-text">
                         {{ site_settings.site_title|upper }}
                     </span>
                 </div>

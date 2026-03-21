@@ -18,7 +18,10 @@
 
 /* Зум картинки при наведении */
 .news-img { 
-    transition: transform 0.6s ease; 
+    transition: transform 0.6s ease;
+    width: 100% !important; 
+    height: 100% !important;
+    object-fit: cover !important;
 }
 .bento-item:hover .news-img { transform: scale(1.05); }
 
@@ -271,16 +274,20 @@
 }
 
 /* Badge count */
-
 .badge-count {
-    background: rgba(99, 102, 241, 0.3);
-    color: #fff;
+    background: rgba(99, 102, 241, 0.3) !important;
+    color: #fff !important;
     padding: 0.15em 0.5em;
     border-radius: 50px;
     font-size: 0.75em;
     font-weight: 600;
 }
-
+.badge-category-news {
+    color: #fff !important;
+    text-shadow: 1px 1px 1px #000 !important;
+    font-size: 0.75em;
+    font-weight: 600;
+}
 /* Responsive */
 @media (max-width: 992px) {
     .news-detail-header h1 {

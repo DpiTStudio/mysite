@@ -32,7 +32,7 @@
             {% elif current_category %}
                 {{ current_category.name }}
             {% else %}
-                Наши Публикации
+                Новости
             {% endif %}
         </h1>
 
@@ -94,7 +94,7 @@
                     <!-- Изображение новости -->
                     <div class="news-image-container mb-4 d-flex align-items-center justify-content-center mx-auto overflow-hidden" style="width: 100px; height: 100px; background: var(--color-primary-alpha); border-radius: var(--radius-md);">
                         {% if news.image %}
-                            <img src="{{ news.image.url }}" class="w-100 h-100 object-fit-cover news-img" alt="{{ news.title }}">
+                            <img src="{{ news.image.url }}" class="object-fit-cover news-img" alt="{{ news.title }}">
                         {% else %}
                             <div class="text-primary">
                                 <i class="bi bi-newspaper fs-1"></i>
@@ -104,7 +104,7 @@
 
                     <!-- Категория -->
                     <div class="mb-2">
-                        <a href="{% url 'news:by_category' news.category.slug %}" class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 small fw-bold text-decoration-none">
+                        <a href="{% url 'news:by_category' news.category.slug %}" class="badge badge-category-news bg-primary bg-opacity-10 text-primary px-3 py-1 small text-decoration-none">
                             <i class="bi bi-tag me-1"></i>{{ news.category.name }}
                         </a>
                     </div>
