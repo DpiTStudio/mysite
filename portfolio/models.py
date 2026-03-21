@@ -116,7 +116,7 @@ class Portfolio(ActiveModel, SEOModel, TimestampModel):
         elif self.price_type == 'range' and self.price_min and self.price_max:
             min_fmt = f"{self.price_min:,.0f}".replace(',', ' ')
             max_fmt = f"{self.price_max:,.0f}".replace(',', ' ')
-            return f"от {min_fmt} до {max_fmt} ₽"
+            return f"от {min_fmt}\nдо {max_fmt} ₽"
             
         elif self.price_type == 'contact':
             return "По договоренности"

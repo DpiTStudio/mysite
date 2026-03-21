@@ -172,14 +172,14 @@
                                     {% if item.item_type == 'service' %}<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 ms-2 rounded-pill">Услуга</span>{% else %}<span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 ms-2 rounded-pill">Работа</span>{% endif %}
                                 </small>
                             </div>
-                            <span class="text-white fw-medium ms-2 text-nowrap">{{ item.total_price_display }}</span>
+                            <span class="text-white fw-medium ms-2 text-nowrap price-display">{{ item.total_price_display|linebreaksbr }}</span>
                         </li>
                         {% endfor %}
 
                         {# Итого (до скидки) #}
                         <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 mt-1">
                             <span class="text-white-50">Сумма:</span>
-                            <strong class="text-white">{{ cart.get_total_price_display }}</strong>
+                            <strong class="text-white price-display text-end">{{ cart.get_total_price_display|linebreaksbr }}</strong>
                         </li>
 
                         {# Скидка по промокоду #}
@@ -195,8 +195,8 @@
                         {# Итого (со скидкой) #}
                         <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-white py-3 px-0 fs-5">
                             <span class="fw-bold">Итого:</span>
-                            <strong class="text-gradient fw-bold" id="total-final-display">
-                                {{ final_price_display }}
+                            <strong class="text-gradient fw-bold price-display text-end" id="total-final-display">
+                                {{ final_price_display|linebreaksbr }}
                             </strong>
                         </li>
 

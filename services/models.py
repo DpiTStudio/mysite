@@ -306,7 +306,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         elif self.price_type == 'range' and self.price_min and self.price_max:
             min_fmt = f"{self.price_min:,.0f}".replace(',', ' ')
             max_fmt = f"{self.price_max:,.0f}".replace(',', ' ')
-            return f"от {min_fmt} до {max_fmt} {symbol}"
+            return f"от {min_fmt}\nдо {max_fmt} {symbol}"
             
         elif self.price_type == 'contact':
             return _("Определяется индивидуально")
@@ -417,6 +417,23 @@ class ServiceOrder(TimestampModel):
         if self.estimated_budget is not None and self.estimated_budget < 0:
             raise ValidationError({'estimated_budget': _('Цена бюджета не может быть числом со знаком минус.')})
 
+    def get_status_display_with_color(self):
+        """Возвращает защищенный HTML-тег для вывода подсвеченного статуса."""
+        colors = {
+            'new': '#3498db',         # синий
+            'confirmed': '#27ae60',   # зеленый-спокойный
+            'in_progress': '#f39c12', # оранжевый
+            'completed': '#8e44ad',   # фиолетовый
+            'cancelled': '#e74c3c',   # ярко-красный
+        }
+        
+        color = colors.get(self.status, '#7f8c8d')
+        return format_html(
+            '<span style="background-color: {}; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase;">{}</span>',
+            color,
+            self.get_status_display()
+        )
+
 
 class ServiceBenefit(models.Model):
     """Преимущества/особенности конкретной услуги."""
@@ -498,20 +515,4 @@ class ServicePricePlan(models.Model):
         """Возвращает список возможностей в виде массива."""
         return [f.strip() for f in self.features_list.split('\n') if f.strip()]
 
-
-    def get_status_display_with_color(self):
-        """Возвращает защищенный HTML-тег для вывода подсвеченного статуса."""
-        colors = {
-            'new': '#3498db',         # синий
-            'confirmed': '#27ae60',   # зеленый-спокойный
-            'in_progress': '#f39c12', # оранжевый
-            'completed': '#8e44ad',   # фиолетовый
-            'cancelled': '#e74c3c',   # ярко-красный
-        }
-        
-        color = colors.get(self.status, '#7f8c8d')
-        return format_html(
-            '<span style="background-color: {}; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase;">{}</span>',
-            color,
-            self.get_status_display()
-        )
+

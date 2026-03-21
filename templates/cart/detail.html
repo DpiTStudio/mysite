@@ -12,17 +12,18 @@
     <div class="glass-card mb-5">
         <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
             <h1 class="h3 mb-0 text-white"><i class="bi bi-cart3 text-primary me-2"></i> Ваша корзина</h1>
+            <p class="h3 mb-0 text-primary small">{{ user.first_name }} {{ user.last_name }} {{ user.id }}</p>
         </div>
         <div class="card-body p-4 p-md-5">
 
             {% if cart %}
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover align-middle custom-table border-0 text-white-50">
-                        <thead class="bg-dark bg-opacity-50 text-white">
+                    <table class="table table-hover align-middle custom-table border-0 text-white-50">
+                        <thead class="bg-opacity-50 text-white">
                             <tr>
                                 <th scope="col" class="py-3 ps-4 opacity-75">Услуга</th>
                                 <th scope="col" class="py-3 opacity-75">Цена</th>
-                                <th scope="col" class="text-center py-3 opacity-75">Кол-во</th>
+                                <th scope="col" class="py-3 text-center opacity-75" nowrap>Кол-во</th>
                                 <th scope="col" class="py-3 opacity-75">Итого</th>
                                 <th scope="col" class="text-end py-3 pe-4 opacity-75">Действие</th>
                             </tr>
@@ -56,9 +57,9 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-white fw-medium">{{ item.price_display }}</td>
+                                        <td class="text-white fw-medium price-display">{{ item.price_display|linebreaksbr }}</td>
                                         <td class="text-center text-white">{{ item.quantity }}</td>
-                                        <td class="fw-bold text-primary">{{ item.total_price_display }}</td>
+                                        <td class="fw-bold text-primary price-display">{{ item.total_price_display|linebreaksbr }}</td>
                                         <td class="text-end pe-4">
                                             <form action="{% url 'cart:cart_remove' type obj.id %}" method="post" class="d-inline">
                                                 {% csrf_token %}
@@ -73,12 +74,12 @@
                         </tbody>
                         <tfoot>
                             <tr class="fs-4">
-                                <td colspan="3" class="text-end border-0 pt-4">Всего к оплате (фикс):</td>
-                                <td colspan="2" class="text-gradient border-0 fw-bold pt-4 pe-4">{{ cart.get_total_price_display }}</td>
+                                <td colspan="3" class="text-end border-0 pt-4">Всего к оплате:</td>
+                                <td colspan="2" class="text-gradient border-0 fw-bold pt-4 pe-4 price-display">{{ cart.get_total_price_display|linebreaksbr }}</td>
                             </tr>
                             {% if cart.has_flexible_prices %}
                             <tr>
-                                <td colspan="5" class="text-end border-0 text-white-50 small pb-3 pe-4">
+                                <td colspan="5" class="text-end border-0 small pb-3 pe-4">
                                     * Окончательная цена по некоторым позициям будет указана после согласования.
                                 </td>
                             </tr>

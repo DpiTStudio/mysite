@@ -138,7 +138,7 @@ class Cart:
                 t_max = item['price_max'] * quantity
                 fmt_min = f"{t_min:,.0f}".replace(',', ' ')
                 fmt_max = f"{t_max:,.0f}".replace(',', ' ')
-                item['total_price_display'] = f"от {fmt_min} до {fmt_max} {symbol}"
+                item['total_price_display'] = f"от {fmt_min}\nдо {fmt_max} {symbol}"
             else:
                 item['total_price'] = Decimal('0')
                 item['total_price_display'] = "По договоренности"

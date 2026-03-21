@@ -862,6 +862,12 @@ body.light-mode input:-webkit-autofill:active {
 .alert-danger { background: rgba(239, 68, 68, 0.2); color: #fee2e2; border: 1px solid rgba(239, 68, 68, 0.3); }
 
 /* --- Бейджи категорий и Фильтры --- */
+.badge-category-name {
+    background: rgba(99, 241, 175, 0.3) !important;
+    color: #fff !important;
+    font-size: 0.75em !important;
+    font-weight: 600 !important;
+}
 .badge-category {
     padding: 0.4rem 1rem;
     border-radius: 50px;
