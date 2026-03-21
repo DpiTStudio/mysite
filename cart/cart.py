@@ -23,18 +23,10 @@ class Cart:
         cart_key = f"{item_type}_{item_id}"
         
         if cart_key not in self.cart:
-            price_val = getattr(item, 'price_fixed', getattr(item, 'price', 0))
-            if price_val is None:
-                price_val = 0
-                
             self.cart[cart_key] = {
                 'item_type': item_type,
                 'item_id': item_id,
                 'quantity': 0,
-                'price': str(price_val),
-                'price_type': getattr(item, 'price_type', 'fixed'),
-                'price_min': str(getattr(item, 'price_min', 0) or 0),
-                'price_max': str(getattr(item, 'price_max', 0) or 0),
             }
             
         if override_quantity:
@@ -59,6 +51,7 @@ class Cart:
     def __iter__(self):
         """
         Перебор элементов в корзине и получение услуг из базы данных.
+        Рассчитывает цены "на лету", чтобы предотвратить рассинхрон с БД.
         """
         # Сбор ID для каждого типа
         service_ids = [int(v['item_id']) for k, v in self.cart.items() if v.get('item_type') == 'service']
@@ -76,46 +69,61 @@ class Cart:
         cart = copy.deepcopy(self.cart)
         
         # Заполнение данными объекта из БД
-        for key, item in cart.items():
+        for cart_key, item in list(cart.items()):
             item_type = item.get('item_type', 'service')
             item_id = int(item['item_id'])
             
             if item_type == 'service':
-                item['item_obj'] = service_dict.get(item_id)
+                obj = service_dict.get(item_id)
             elif item_type == 'portfolio':
-                item['item_obj'] = portfolio_dict.get(item_id)
+                obj = portfolio_dict.get(item_id)
+            else:
+                obj = None
                 
-            # Пропускаем, если объект был удален из БД, чтобы не падать на расчетах
-            if not item.get('item_obj'):
+            # Пропускаем, если объект был удален из БД (и заодно очищаем из сессии)
+            if not obj:
+                if cart_key in self.cart:
+                    del self.cart[cart_key]
+                    self.save()
                 continue
                 
+            item['item_obj'] = obj
+            
+            # Извлекаем актуальную цену из базы
+            item['price_type'] = getattr(obj, 'price_type', 'fixed')
+            
             try:
-                item['price'] = Decimal(item.get('price', 0))
+                price_val = getattr(obj, 'price_fixed', getattr(obj, 'price', 0))
+                item['price'] = Decimal(str(price_val or 0))
             except Exception:
                 item['price'] = Decimal('0')
                 
             try:
-                item['price_min'] = Decimal(item.get('price_min', 0))
+                price_min = getattr(obj, 'price_min', 0)
+                item['price_min'] = Decimal(str(price_min or 0))
             except Exception:
                 item['price_min'] = Decimal('0')
                 
             try:
-                item['price_max'] = Decimal(item.get('price_max', 0))
+                price_max = getattr(obj, 'price_max', 0)
+                item['price_max'] = Decimal(str(price_max or 0))
             except Exception:
                 item['price_max'] = Decimal('0')
                 
-            item['price_type'] = item.get('price_type', 'fixed')
+            # Рассчитываем итоговую цену на основе количества
+            quantity = item.get('quantity', 1)
+            item['quantity'] = quantity
             
             if item['price_type'] == 'fixed':
-                item['total_price'] = item['price'] * item['quantity']
-                item['price_display'] = f"{item['price'].normalize():g} ₽"
-                item['total_price_display'] = f"{item['total_price'].normalize():g} ₽"
+                item['total_price'] = item['price'] * quantity
+                item['price_display'] = f"{item['price'].normalize():g} ₽" if item['price'] else "0 ₽"
+                item['total_price_display'] = f"{item['total_price'].normalize():g} ₽" if item['total_price'] else "0 ₽"
             elif item['price_type'] == 'range':
-                item['total_price'] = 0
+                item['total_price'] = Decimal('0')
                 item['price_display'] = f"от {item['price_min'].normalize():g} до {item['price_max'].normalize():g} ₽"
-                item['total_price_display'] = f"от {(item['price_min'] * item['quantity']).normalize():g} до {(item['price_max'] * item['quantity']).normalize():g} ₽"
+                item['total_price_display'] = f"от {(item['price_min'] * quantity).normalize():g} до {(item['price_max'] * quantity).normalize():g} ₽"
             else:
-                item['total_price'] = 0
+                item['total_price'] = Decimal('0')
                 item['price_display'] = "По договоренности"
                 item['total_price_display'] = "По договоренности"
             
@@ -123,28 +131,39 @@ class Cart:
             
             yield item
 
+    def get_items(self):
+        """Кэширует итератор для использования внутри класса."""
+        if not hasattr(self, '_items_cache'):
+            self._items_cache = list(self.__iter__())
+        return self._items_cache
+
     def __len__(self):
         """
         Подсчет всех товаров в корзине.
         """
-        return sum(item['quantity'] for item in self.cart.values())
+        return sum(item['quantity'] for item in self.get_items())
 
     def get_total_price(self):
+        """
+        Подсчет общей стоимости (только для фиксированных цен).
+        """
         total = Decimal('0')
-        for item in self.cart.values():
-            if item.get('price_type', 'fixed') != 'fixed':
-                continue
-            try:
-                price = Decimal(item.get('price', 0))
-                total += price * item.get('quantity', 1)
-            except Exception:
-                pass
+        for item in self.get_items():
+            if item.get('price_type', 'fixed') == 'fixed':
+                total += item.get('total_price', Decimal('0'))
         return total
 
     def has_flexible_prices(self):
-        return any(item.get('price_type', 'fixed') != 'fixed' for item in self.cart.values())
+        """
+        Проверка наличия товаров с нефиксированной ценой.
+        """
+        return any(item.get('has_flexible_price', False) for item in self.get_items())
 
     def clear(self):
         # удаление корзины из сессии
-        del self.session[settings.CART_SESSION_ID]
-        self.save()
+        if settings.CART_SESSION_ID in self.session:
+            del self.session[settings.CART_SESSION_ID]
+            self.save()
+            
+        if hasattr(self, '_items_cache'):
+            del self._items_cache
