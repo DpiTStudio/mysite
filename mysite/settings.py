@@ -24,9 +24,9 @@ environ.Env.read_env(BASE_DIR / ".env")
 # Безопасность
 # ------------------------------------------------------------
 # Секретный ключ (обязательно в .env, fallback только для тестов)
-SECRET_KEY = env.str("SECRET_KEY", default="django-insecure-fallback-key-replace-in-production")
+SECRET_KEY = env.str("SECRET_KEY")
 # Режим отладки – НЕ включать в продакшн! (по умолчанию False — безопасно)
-DEBUG = env.bool("DEBUG", default=True)
+DEBUG = env.bool("DEBUG")
 
 # Доступные хосты: базовые всегда включены + дополнительные из .env
 domains = ['dpit-cms.ru:4234', 'www.dpit-cms.ru:4234']
