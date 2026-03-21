@@ -37,20 +37,37 @@ def breadcrumbs(context):
         title = part.replace("-", " ").replace("_", " ").title()
         
         # Специальные случаи
-        if part == "news":
-            title = "Новости"
-        elif part == "portfolio":
-            title = "Портфолио"
-        elif part == "reviews":
-            title = "Отзывы"
-        elif part == "search":
-            title = "Поиск"
-        elif part == "category":
+        translations = {
+            "news": "Новости",
+            "portfolio": "Портфолио",
+            "reviews": "Отзывы",
+            "search": "Поиск",
+            "feed": "RSS лента",
+            "services": "Услуги",
+            "cart": "Корзина",
+            "favorites": "Избранное",
+            "knowledge-base": "База знаний",
+            "accounts": "Аккаунт",
+            "login": "Вход",
+            "logout": "Выход",
+            "signup": "Регистрация",
+            "profile": "Профиль",
+            "tickets": "Поддержка",
+            "checkout": "Оформление заказа",
+            "password-reset": "Сброс пароля",
+            "password-change": "Изменение пароля",
+            "password_reset": "Сброс пароля",
+            "password_change": "Изменение пароля",
+            "admin": "Панель администратора",
+            "mail": "Почта",
+        }
+        
+        if part == "category":
             # Пропускаем "category", следующая часть будет названием категории
             skip_next = True
             continue
-        elif part == "feed":
-            title = "RSS лента"
+        elif part in translations:
+            title = translations[part]
         
         breadcrumbs_list.append({
             "title": title,
