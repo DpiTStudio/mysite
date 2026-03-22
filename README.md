@@ -112,7 +112,7 @@
 
 ## 🛠 Технологический стек
 
-- **Backend**: Django 4.x, Python 3.10+
+- **Backend**: Django 5.2.9, Python 3.14.1
 - **Database**: SQLite (разработка) / PostgreSQL (продакшн)
 - **Frontend**: Bootstrap 5, HTMX, TinyMCE
 - **Async & Tasks**: Redis, Celery (резервное копирование)
@@ -131,6 +131,7 @@
 3. **Миграции**:
    ```bash
    python manage.py migrate
+   python manage.py makemigrations
    ```
 4. **Запуск**:
    ```bash
