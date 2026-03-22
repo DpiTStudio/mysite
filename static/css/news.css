@@ -283,10 +283,20 @@
     font-weight: 600;
 }
 .badge-category-news {
-    color: #fff !important;
-    text-shadow: 1px 1px 1px #000 !important;
+    background: var(--color-primary-alpha);
+    color: var(--color-primary);
+    border: 1px solid rgba(99, 102, 241, 0.2);
     font-size: 0.75em;
     font-weight: 600;
+    padding: 0.5rem 1rem;
+    transition: var(--transition-normal);
+}
+
+.badge-category-news:hover {
+    background: var(--color-primary);
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
 }
 /* Responsive */
 @media (max-width: 992px) {

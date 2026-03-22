@@ -54,9 +54,9 @@
             {% for service in services %}
             <div class="col-lg-4 col-md-6">
                 <div class="card-premium p-4 border-0 h-100 d-flex flex-column text-center">
-                    <div class="service-icon mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px; background: var(--color-primary-alpha); border-radius: var(--radius-md);">
+                    <div class="service-icon mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 100%; height: 200px; background: var(--color-primary-alpha); border-radius: var(--radius-md);">
                         {% if service.icon %}
-                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 60px; height: 60px; object-fit: contain;">
+                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 100%; height: 200px; object-fit: contain;">
                         {% else %}
                             <div class="text-primary">
                                 <i class="bi bi-cpu fs-1"></i>
