@@ -4,15 +4,15 @@
 {% block title %}Создать тикет{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6 animate-up">
-        <div class="mb-4 text-center animate-left">
+<div class="row justify-content-left">
+    <div class="col-md-12 col-lg-12 animate-up">
+        <div class="mb-4 text-left animate-left">
             <h1 class="display-5 fw-bold text-white mb-2">Создать тикет</h1>
             <p class="text-muted">Опишите вашу проблему или задайте вопрос поддержке</p>
         </div>
         
         <div class="glass-card mb-5">
-            <div class="card-header border-bottom border-secondary border-opacity-25 p-4 text-center">
+            <div class="card-header border-bottom border-secondary border-opacity-25 p-4 text-left">
                 <h3 class="h5 mb-0 text-white"><i class="bi bi-plus-circle text-primary me-2"></i> Новое обращение</h3>
             </div>
             <div class="card-body p-4 p-md-5">
@@ -50,7 +50,7 @@
                     </div>
                     
                     <div class="mb-4">
-                        <label for="{{ form.captcha.id_for_label }}" class="form-label text-white-50">{{ form.captcha.label }}</label>
+                        <label for="{{ form.captcha.id_for_label }}" class="form-label text-white-70">{{ form.captcha.label }}</label>
                         {{ form.captcha }}
                         {% if form.captcha.errors %}
                             <div class="text-danger small mt-1">{{ form.captcha.errors }}</div>
