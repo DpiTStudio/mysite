@@ -26,8 +26,9 @@
     --text-muted: #64748b;
     
     /* Layout */
-    --sidebar-width: 260px;
-    --header-height: 60px;
+    --sidebar-width: 300px;
+    --sidebar-collapsed-width: 73px;
+    --header-height: 50px;
 }
 
 /* Global Styles */
@@ -54,12 +55,62 @@ body {
     background: var(--p-surface) !important;
     border-right: 1px solid var(--glass-border) !important;
     box-shadow: none !important;
+    width: var(--sidebar-width) !important;
+    overflow-x: hidden !important;
+    transition: width 0.3s ease-in-out, margin-left 0.3s ease-in-out !important;
+}
+
+.main-sidebar::before {
+    width: var(--sidebar-width) !important;
+    transition: width 0.3s ease-in-out !important;
+}
+
+/* Layout adjustments for the new width */
+@media (min-width: 992px) {
+    .content-wrapper, .main-header, .main-footer {
+        margin-left: var(--sidebar-width) !important;
+        transition: margin-left 0.3s ease-in-out !important;
+    }
+
+    /* Support for AdminLTE collapsed state */
+    body.sidebar-collapse .main-sidebar,
+    body.sidebar-collapse .main-sidebar::before {
+        width: var(--sidebar-collapsed-width) !important;
+    }
+    
+    body.sidebar-collapse .content-wrapper,
+    body.sidebar-collapse .main-header,
+    body.sidebar-collapse .main-footer {
+        margin-left: var(--sidebar-collapsed-width) !important;
+    }
+}
+
+/* Responsive (Mobile/Tablet) */
+@media (max-width: 991.98px) {
+    .main-sidebar {
+        margin-left: calc(var(--sidebar-width) * -1) !important;
+    }
+    
+    body.sidebar-open .main-sidebar {
+        margin-left: 0 !important;
+    }
+    
+    .content-wrapper, .main-header, .main-footer {
+        margin-left: 0 !important;
+    }
+}
+
+/* Remove internal sidebar scroll */
+.sidebar {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    overflow-x: hidden !important;
 }
 
 .brand-link {
     background: transparent !important;
     border-bottom: 1px solid var(--glass-border) !important;
-    padding: 1.5rem 1rem !important;
+    padding: 1rem 0.75rem !important;
 }
 
 .brand-text {
@@ -73,21 +124,25 @@ body {
 }
 
 .nav-sidebar .nav-item {
-    margin: 4px 12px;
+    width: var(--sidebar-width) !important;
+    margin: 2px 8px;
 }
 
 .nav-sidebar .nav-link {
-    border-radius: 12px !important;
+    width: var(--sidebar-width) !important;
+    border-radius: 8px !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    padding: 10px 15px !important;
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
 }
 
 .nav-sidebar .nav-link i {
-    font-size: 1.1rem;
-    margin-right: 12px !important;
+    font-size: 1rem;
+    margin-right: 8px !important;
 }
 
 .nav-sidebar .nav-link:hover {
+    width: var(--sidebar-width) !important;
     background: var(--glass-bg) !important;
     color: #fff !important;
     transform: translateX(3px);
@@ -159,7 +214,7 @@ body {
 .table tbody td {
     border-top: 1px solid var(--glass-border) !important;
     vertical-align: middle;
-    padding: 1rem 0.75rem !important;
+    padding: 0.6rem 0.75rem !important;
 }
 
 .table tbody tr:hover {
@@ -253,6 +308,11 @@ body {
     backdrop-filter: blur(20px);
     border-radius: 24px !important;
     border: 1px solid var(--glass-border) !important;
+}
+
+/* Hide Jazzmin version in footer */
+.main-footer .float-right.d-none.d-sm-inline {
+    display: none !important;
 }
 
 /* Animation for content loading */

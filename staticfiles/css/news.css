@@ -6,6 +6,29 @@
     border-bottom: 1px solid var(--color-glass-border);
 }
 
+/* Плавная анимация наведения на карточки через CSS Transition */
+.bento-item { 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+/* Поднимаем карточку (translateY) и усиливаем тень (box-shadow) */
+.bento-item:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important; 
+}
+
+/* Зум картинки при наведении */
+.news-img { 
+    transition: transform 0.6s ease;
+    width: 100% !important; 
+    height: 100% !important;
+    object-fit: cover !important;
+}
+.bento-item:hover .news-img { transform: scale(1.05); }
+
+/* Сдвиг стрелки */
+.bi-arrow-right { transition: transform 0.3s ease; }
+.bento-item:hover .bi-arrow-right { transform: translateX(5px); }
+    
 .news-image-detail {
     width: 100%;
     max-height: 500px;
@@ -252,14 +275,29 @@
 
 /* Badge count */
 .badge-count {
-    background: rgba(99, 102, 241, 0.3);
-    color: #fff;
+    background: rgba(99, 102, 241, 0.3) !important;
+    color: #fff !important;
     padding: 0.15em 0.5em;
     border-radius: 50px;
     font-size: 0.75em;
     font-weight: 600;
 }
+.badge-category-news {
+    background: var(--color-primary-alpha);
+    color: var(--color-primary);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    font-size: 0.75em;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    transition: var(--transition-normal);
+}
 
+.badge-category-news:hover {
+    background: var(--color-primary);
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+}
 /* Responsive */
 @media (max-width: 992px) {
     .news-detail-header h1 {

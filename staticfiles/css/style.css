@@ -1,25 +1,30 @@
-/* --- Базовый сброс стилей и Типографика --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    text-shadow: 0px 0px 1px #390505;
+    font-family: var(--font-family-base);
+    color: var(--color-text-main);
+    text-shadow: none !important;
+    -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Изменено: Улучшенное выделение текста */
+::selection {
+    background: var(--color-selection-bg);
+    color: var(--color-selection-text);
 }
 
 html {
-    scroll-behavior: smooth;
+    /* Lenis Smooth Scroll handling: we disable native smooth scroll to avoid conflicts with JS */
+    scroll-behavior: auto !important;
     scroll-padding-top: 114px;
-    scroll-padding-bottom: 114px;
-    scroll-padding-left: 114px;
-    scroll-padding-right: 114px;
-    scroll-padding: 114px;
-    scroll-margin: 114px;
 }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-family-base);
     background-color: var(--color-dark-bg);
     color: var(--color-text-main);
+    font-size: var(--text-md);
     line-height: 1.6;
     padding-top: 114px; /* Space for fixed navbar (34px top bar + ~80px navbar) */
     overflow-x: hidden;
@@ -44,21 +49,31 @@ body {
     display: flex;
     flex-direction: column;
 }
-.site-domain {
-    font-size: 2.5rem !important;
-    text-shadow: 0px 0px 1px hsla(0, 92%, 34%, 0.359);
+.logo-info-zone-time {
+    font-size: 1rem !important;
+    text-shadow: 1px 1px 3px hsla(0, 92%, 34%, 0.359);
+    color: var(--color-text-muted);
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-family-headings);
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: var(--color-text-main);
     margin-bottom: 1rem;
+    text-wrap: balance; /* Современная переноска заголовков */
 }
+
+h1 { font-size: var(--text-4xl); line-height: 1.1; }
+h2 { font-size: var(--text-3xl); line-height: 1.2; }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-md); }
 
 p {
     margin-bottom: 1.25rem;
     color: var(--color-text-muted);
+    font-size: var(--text-md);
 }
 
 /* Ссылки по умолчанию (Links default styles) */
@@ -74,6 +89,45 @@ a {
 a:hover {
     /* Цвет ссылки при наведении меняется на вторичный цвет */
     color: var(--color-secondary);
+}
+
+/* Премиум-стили заголовков в шапке */
+.site-domain {
+    font-size: 2.4rem !important;
+    font-family: var(--font-family-headings);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: var(--gradient-premium);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 1px hsla(269, 96%, 27%, 0.533);
+}
+a.site-domain:hover {
+    color: #a70808d6 !important;
+    text-shadow: 1px 1px 1px hsla(0, 0%, 100%, 0.533);
+}
+.site-title-text {
+    font-size: 0.6rem !important;
+    font-family: var(--font-family-headings);
+    font-weight: 200;
+    letter-spacing: -1.5px;
+    background: var(--gradient-premium);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 1px hsl(0, 96%, 10%);
+}
+.site-domain-mobile {
+    font-size: var(--text-3xl) !important;
+    font-family: var(--font-family-headings);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: var(--gradient-premium);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 1px hsl(0, 96%, 10%);
 }
 
 /* --- Улучшения читаемости текста --- */
@@ -197,6 +251,9 @@ a:hover {
 .delay-300 { animation-delay: 0.3s !important; }
 .delay-400 { animation-delay: 0.4s !important; }
 .delay-500 { animation-delay: 0.5s !important; }
+.delay-600 { animation-delay: 0.6s !important; }
+.delay-700 { animation-delay: 0.7s !important; }
+.delay-800 { animation-delay: 0.8s !important; }
 
 /* --- Продвинутый Глассморфизм (Эффект стекла) --- */
 .glass-card-premium {
@@ -453,20 +510,39 @@ a:hover {
 /* --- Современные карточки и их интерактивность --- */
 .card, .glass-card {
     background: var(--color-glass);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--color-glass-border);
     border-radius: var(--radius-lg);
     overflow: hidden;
     transition: var(--transition-normal);
     box-shadow: var(--shadow-md);
     height: 100%;
+    will-change: transform;
 }
 
-.card:hover, .glass-card:hover {
+.card-premium {
+    background: var(--color-glass);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-normal);
+}
+
+.card-premium:hover {
     transform: translateY(-8px);
-    background: var(--color-glass-hover);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
     border-color: var(--color-glass-border-bright);
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+/* На мобильных устройствах отключаем тяжелые фильтры */
+@media (max-width: 768px) {
+    .card, .glass-card, .glass-card-premium, .navbar, .user-top-bar {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(15, 23, 42, 0.95) !important;
+    }
 }
 
 .card-body {
@@ -606,6 +682,7 @@ body.light-mode input:-webkit-autofill:active {
 }
 
 .form-label {
+    display: block;
     color: var(--color-text-main);
     font-weight: 500;
     margin-bottom: 0.5rem;
@@ -641,12 +718,15 @@ body.light-mode input:-webkit-autofill:active {
 
 /* --- Подвал сайта (Footer) --- */
 .footer {
-    background: var(--color-background);
+    background: var(--color-dark-bg);
     padding-top: 5rem;
     padding-bottom: 3rem;
     border-top: 1px solid var(--color-glass-border);
     color: var(--color-text-muted);
     margin-top: auto;
+    /* Optimization: render only when visible */
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 400px;
 }
 
 .footer h5 {
@@ -693,24 +773,42 @@ body.light-mode input:-webkit-autofill:active {
 }
 
 /* --- Хлебные крошки (Навигация) --- */
+.breadcrumb-fon {
+    background: var(--color-glass);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-glass-border);
+    backdrop-filter: blur(5px);
+}
+
 .breadcrumb {
-    padding: 1rem 0;
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
+    margin-bottom: 0;
+    align-items: center;
 }
 
 .breadcrumb-item a {
     color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: 500;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--color-primary);
+    transform: none;
 }
 
 .breadcrumb-item.active {
-    color: var(--color-primary);
+    color: var(--color-text-main);
+    font-weight: 600;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--color-text-dim);
     content: "\F285"; /* bi-chevron-right icon code */
     font-family: "bootstrap-icons";
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    padding: 0 0.5rem;
 }
 
 /* --- Основная обертка для баннера-героя (Hero wrapper) --- */
@@ -800,6 +898,12 @@ body.light-mode input:-webkit-autofill:active {
 .alert-danger { background: rgba(239, 68, 68, 0.2); color: #fee2e2; border: 1px solid rgba(239, 68, 68, 0.3); }
 
 /* --- Бейджи категорий и Фильтры --- */
+.badge-category-name {
+    background: rgba(99, 241, 175, 0.3) !important;
+    color: #fff !important;
+    font-size: 0.75em !important;
+    font-weight: 600 !important;
+}
 .badge-category {
     padding: 0.4rem 1rem;
     border-radius: 50px;
@@ -1183,5 +1287,288 @@ body.light-mode::after {
     width: 60px;
 }
 
-/* --- FIX: Убраны сломанные переопределения Bootstrap утилит .fs-2 / .fs-6 ---
-   (ранее font-size: 0.5rem!important ломал строку поиска и другие элементы) --- */
+/* --- 9. Bento Grid System (Premium Layouts) --- */
+.bento-grid-services {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-auto-rows: auto;
+    gap: var(--spacing-6);
+}
+
+
+.bento-grid-portfolio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(250px, auto);
+    gap: var(--spacing-6);
+}
+
+.bento-grid-news {
+    display: grid;
+    /* 3 колонки равной ширины (1fr = одна часть свободного пространства) */
+    grid-template-columns: repeat(3, 1fr);
+    /* Запрещаем создание новых рядов (все будет в одной строке) */
+    grid-auto-rows: minmax(250px, auto);
+    gap: var(--spacing-6);
+}
+
+.bento-grid-reviews {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(250px, auto);
+    gap: var(--spacing-6);
+}
+
+.bento-item {
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.bento-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3), var(--shadow-glow);
+    transform: translateY(-8px);
+}
+
+.bento-item:hover .news-img { transform: scale(1.1); }
+.bento-item:hover .portfolio-img { transform: scale(1.1); }
+.bento-item:hover .news-read-more i { transform: translateX(8px); }
+.bento-item:hover .hover-primary { color: var(--color-primary) !important; }
+
+/* Варианты размеров элементов бенто-сетки */
+.bento-lg { grid-column: span 2; grid-row: span 2; }
+.bento-wide { grid-column: span 2; }
+.bento-tall { grid-row: span 2; }
+.bento-item-wide { grid-column: span 2; }
+.bento-item-tall { grid-row: span 2; }
+
+@media (max-width: 991px) {
+    .bento-grid { grid-template-columns: repeat(2, 1fr); }
+    .bento-grid-services { grid-template-columns: repeat(1, 1fr); }
+    .bento-grid-portfolio { grid-template-columns: repeat(2, 1fr); }
+    .bento-grid-news { grid-template-columns: repeat(2, 1fr); }
+    .bento-grid-reviews { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 575px) {
+    .bento-grid { grid-template-columns: 1fr; }
+    .bento-lg, .bento-wide, .bento-tall { grid-column: span 1; grid-row: span 1; }
+    .bento-grid-services { grid-template-columns: repeat(1, 1fr); }
+    .bento-grid-portfolio { grid-template-columns: repeat(1, 1fr); }
+    .bento-grid-news { grid-template-columns: repeat(1, 1fr); }
+    .bento-grid-reviews { grid-template-columns: repeat(1, 1fr); }
+}
+
+/* --- 11. HTMX & Page Progress Bar --- */
+#htmx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--gradient-premium);
+    z-index: var(--z-toast);
+    transition: width 0.4s ease, opacity 0.4s ease;
+    box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+/* --- 12. Floating Action Button (FAB) --- */
+.fab-container {
+    position: fixed;
+    bottom: var(--spacing-8);
+    right: var(--spacing-8);
+    z-index: var(--z-sticky);
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--spacing-4);
+    align-items: center;
+}
+
+.fab-main {
+    width: 56px;
+    height: 56px;
+    background: var(--gradient-premium);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    transition: var(--transition-normal);
+    border: none;
+}
+
+.fab-main:hover {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.fab-item {
+    width: 45px;
+    height: 45px;
+    background: var(--color-dark-surface);
+    border: 1px solid var(--color-glass-border);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.fab-container:hover .fab-item {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* --- 13. Glass Card Overhaul --- */
+.glass-card, .card {
+    background: var(--color-glass);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+}
+
+.glass-card:hover, .card:hover {
+    background: var(--color-glass-hover);
+    border-color: var(--color-glass-border-bright);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+/* --- 14. Linear Service Lists --- */
+.service-linear-card {
+    transition: var(--transition-normal);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--color-glass-border);
+}
+
+.service-linear-card:hover {
+    transform: translateY(-5px);
+    background: var(--color-glass-hover);
+    border-color: var(--color-glass-border-bright);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+.service-id-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: var(--color-text-dim);
+}
+
+.service-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-glass-border);
+    padding: 10px;
+}
+
+.service-icon-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.3));
+}
+
+.service-meta-line {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.service-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: var(--gradient-premium);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.price-highlight-box {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-glass-border);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.price-label-text {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.price-value-text {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.stat-item {
+    padding: 0 0.75rem;
+}
+
+.stat-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-top: 4px;
+}
+
+.border-glass {
+    border-color: var(--color-glass-border) !important;
+}
+
+.text-gradient-gold {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#scroll-progress {
+    height: 3px;
+    background: var(--gradient-premium);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-toast);
+    transition: width 0.1s;
+}
