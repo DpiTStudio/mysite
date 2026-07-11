@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Управление почтой - DPIT-CMS{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'mail/css/mail.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mail-card">
+                <div class="mail-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1"><i class="bi bi-envelope-fill me-2"></i>Почтовый центр</h2>
+                        <div class="d-flex mt-2">
+                            <span class="settings-badge">SMTP: {{ smtp_host }}</span>
+                            <span class="settings-badge">IMAP: {{ imap_host }}</span>
+                            <span class="settings-badge">User: {{ user_email }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <!-- Список писем -->
+                        <div class="col-lg-8 border-end">
+                            <div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Последние сообщения (Входящие)</h5>
+                                <button class="btn btn-sm btn-outline-primary" onclick="location.reload()">
+                                    <i class="bi bi-arrow-clockwise"></i> Обновить
+                                </button>
+                            </div>
+                            
+                            <div class="mail-list">
+                                {% if error %}
+                                    <div class="alert alert-danger m-3">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Ошибка подключения: {{ error }}
+                                    </div>
+                                {% elif emails %}
+                                    {% for email in emails %}
+                                        <div class="mail-item">
+                                            <span class="mail-date">{{ email.date }}</span>
+                                            <div class="mail-subject">{{ email.subject }}</div>
+                                            <div class="mail-from">От: {{ email.from }}</div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="text-center py-5 text-muted">
+                                        <i class="bi bi-inbox-fill display-4 mb-3 d-block"></i>
+                                        Писем не найдено или доступ ограничен
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Боковая панель действий -->
+                        <div class="col-lg-4 p-4">
+                            <h5>Действия</h5>
+                            <div class="test-mail-form">
+                                <h6>Проверка SMTP</h6>
+                                <p class="small text-muted">Отправьте тестовое письмо, чтобы убедиться в правильности настроек.</p>
+                                <form action="{% url 'mail:send_test' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="recipient" class="form-label small">Email получателя</label>
+                                        <input type="email" class="form-control form-control-sm" id="recipient" name="recipient" required placeholder="example@mail.ru">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm w-100">Отправить тест</button>
+                                </form>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h6>Веб-интерфейс</h6>
+                                <p class="small text-muted">Для полноценной работы с почтой используйте Timeweb Webmail.</p>
+                                <a href="https://mail.timeweb.com" target="_blank" class="btn btn-outline-dark btn-sm w-100">
+                                    <i class="bi bi-box-arrow-up-right me-2"></i> mail.timeweb.com
+                                </a>
+                            </div>
+
+                            {% if messages %}
+                                <div class="mt-4">
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show small" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -6,11 +6,22 @@
 
 ## 📂 Структура каталога
 
-### 1. `css/` — Каскадные таблицы стилей
+### 1. `css/` — Глобальные каскадные таблицы стилей
 - `main.css`: Главный файл стилей проекта с переменными дизайна (цвета, отступы).
 - `bootstrap.min.css`: Скомпилированная версия фреймворка Bootstrap 5.
 - `responsive.css`: Настройки адаптивности под мобильные устройства и планшеты.
 - `themes/`: Подкаталог для сезонных тем оформления (зима, лето и др.).
+
+### 1.1. Статические файлы приложений (App-specific Static Files)
+Стили, относящиеся к конкретным приложениям, перенесены в соответствующие каталоги внутри приложений для обеспечения модульности:
+- **`accounts`** ➔ `accounts/static/accounts/css/accounts.css`
+- **`cart`** ➔ `cart/static/cart/css/cart.css`
+- **`mail`** ➔ `mail/static/mail/css/mail.css`
+- **`news`** ➔ `news/static/news/css/news.css`
+- **`portfolio`** ➔ `portfolio/static/portfolio/css/portfolio.css`
+- **`services`** ➔ `services/static/services/css/services.css`
+- **`tickets`** ➔ `tickets/static/tickets/css/tickets.css`
+- **`main`** ➔ `main/static/main/css/pages.css`, `main/static/main/css/admin_dashboard.css`
 
 ### 2. `js/` — Скрипты JavaScript
 - `main.js`: Основная логика интерфейса (инициализация плагинов, анимации).

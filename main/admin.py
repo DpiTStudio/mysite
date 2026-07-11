@@ -238,5 +238,5 @@ class PageAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            "all": ("css/pages.css",),
+            "all": ("main/css/pages.css",),
         }

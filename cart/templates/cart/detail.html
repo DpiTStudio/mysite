@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
+{% endblock %}
+
+{% block title %}Корзина | {{ site_settings.site_title }}{% endblock %}
+
+{% block content %}
+<div class="animate-up">
+    <div class="glass-card mb-5">
+        <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
+            <h1 class="h3 mb-0 text-white"><i class="bi bi-cart3 text-primary me-2"></i> Ваша корзина</h1>
+            <p class="h3 mb-0 text-primary small">{{ user.first_name }} {{ user.last_name }} {{ user.id }}</p>
+        </div>
+        <div class="card-body p-4 p-md-5">
+
+            {% if cart %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle custom-table border-0 text-white-50">
+                        <thead class="bg-opacity-50 text-white">
+                            <tr>
+                                <th scope="col" class="py-3 ps-4 opacity-75">Услуга</th>
+                                <th scope="col" class="py-3 opacity-75">Цена</th>
+                                <th scope="col" class="py-3 text-center opacity-75" nowrap>Кол-во</th>
+                                <th scope="col" class="py-3 opacity-75">Итого</th>
+                                <th scope="col" class="text-end py-3 pe-4 opacity-75">Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart %}
+                                {% with obj=item.item_obj type=item.item_type %}
+                                    <tr class="border-bottom border-secondary border-opacity-25">
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center">
+                                                {% if type == 'service' %}
+                                                    {% if obj.icon %}
+                                                        <img src="{{ obj.icon.url }}" alt="{{ obj.title }}" class="me-3 rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    {% else %}
+                                                        <div class="me-3 bg-secondary bg-opacity-25 border border-secondary border-opacity-50 rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="bi bi-gear text-white-50"></i>
+                                                        </div>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if obj.image %}
+                                                        <img src="{{ obj.image.url }}" alt="{{ obj.title }}" class="me-3 rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    {% else %}
+                                                        <div class="me-3 bg-secondary bg-opacity-25 border border-secondary border-opacity-50 rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="bi bi-briefcase text-white-50"></i>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <div>
+                                                    <h5 class="mb-0 text-white">{{ obj.title }}</h5>
+                                                    <small class="text-muted">{{ obj.category }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-white fw-medium price-display">{{ item.price_display|linebreaksbr }}</td>
+                                        <td class="text-center text-white">{{ item.quantity }}</td>
+                                        <td class="fw-bold text-primary price-display">{{ item.total_price_display|linebreaksbr }}</td>
+                                        <td class="text-end pe-4">
+                                            <form action="{% url 'cart:cart_remove' type obj.id %}" method="post" class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill transition hover-danger">
+                                                    <i class="bi bi-trash"></i> Удалить
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="fs-4">
+                                <td colspan="3" class="text-end border-0 pt-4">Всего к оплате:</td>
+                                <td colspan="2" class="text-gradient border-0 fw-bold pt-4 pe-4 price-display">{{ cart.get_total_price_display|linebreaksbr }}</td>
+                            </tr>
+                            {% if cart.has_flexible_prices %}
+                            <tr>
+                                <td colspan="5" class="text-end border-0 small pb-3 pe-4">
+                                    * Окончательная цена по некоторым позициям будет указана после согласования.
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-5 pt-4 border-top border-secondary border-opacity-25 gap-3">
+                    <a href="{% url 'services:list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-2"></i> Продолжить выбор
+                    </a>
+                    <a href="{% url 'cart:order_create' %}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-glow shine-effect">
+                        Оформить заказ <i class="bi bi-check-circle ms-2"></i>
+                    </a>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="display-1 text-muted opacity-50 mb-4">
+                        <i class="bi bi-cart-x"></i>
+                    </div>
+                    <h3 class="text-white">Ваша корзина пуста</h3>
+                    <p class="text-muted mb-5">Самое время добавить в неё услуги для вашего бизнеса!</p>
+                    <a href="{% url 'services:list' %}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-glow shine-effect">
+                        Перейти к услугам
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
