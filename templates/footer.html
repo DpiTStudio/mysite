@@ -26,10 +26,10 @@
                         Условия использования
                     {% else %}
                         <!-- TODO: Сделать ссылки на страницы -->
-                        <a href="#" class="footer-link d-inline-block me-3 small">
+                        <a href="{% url 'main:page_detail' 'politika-konfidentsialnosti' %}" class="footer-link d-inline-block me-3 small">
                             Политика конфиденциальности
                         </a>
-                        <a href="#" class="footer-link d-inline-block small">
+                        <a href="{% url 'main:page_detail' 'usloviya-ispolzovaniya-materialov-s-sajta' %}" class="footer-link d-inline-block small">
                             Условия использования
                         </a>
                     {% endif %}
