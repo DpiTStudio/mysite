@@ -20,13 +20,12 @@
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <div class="footer-links">
-                    {% if page.title == "Политика конфиденциальности" %}
+                    {% if page.slug == 'politiki-konfidencialnosti' %}
                         Политика конфиденциальности
-                    {% elif page.title == "Условия использования" %}
+                    {% elif page.slug == 'usloviya-ispolzovaniya-materialov-s-sajta' %}
                         Условия использования
                     {% else %}
-                        <!-- TODO: Сделать ссылки на страницы -->
-                        <a href="{% url 'main:page_detail' 'politika-konfidentsialnosti' %}" class="footer-link d-inline-block me-3 small">
+                        <a href="{% url 'main:page_detail' 'politiki-konfidencialnosti' %}" class="footer-link d-inline-block me-3 small">
                             Политика конфиденциальности
                         </a>
                         <a href="{% url 'main:page_detail' 'usloviya-ispolzovaniya-materialov-s-sajta' %}" class="footer-link d-inline-block small">
