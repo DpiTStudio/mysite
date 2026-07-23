@@ -351,4 +351,36 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.style.transform = window.scrollY > 300 ? 'translateY(0)' : 'translateY(10px)';
         });
     })();
+
+    // ============================================================
+    // 15. Theme Switcher (Светлая / Темная тема)
+    // ============================================================
+    (function initThemeSwitcher() {
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        if (!themeToggleBtn || !themeIcon) return;
+
+        const savedTheme = localStorage.getItem('app-theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeIcon.className = 'bi bi-sun-fill fs-5 text-warning';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'bi bi-moon-stars-fill fs-5';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('app-theme', 'dark');
+                themeIcon.className = 'bi bi-moon-stars-fill fs-5';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('app-theme', 'light');
+                themeIcon.className = 'bi bi-sun-fill fs-5 text-warning';
+            }
+        });
+    })();
 });
+

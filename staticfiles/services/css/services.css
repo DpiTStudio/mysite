@@ -2,3 +2,15 @@
     text-decoration: none;
     text-align: left;
 }
+
+.tech-badge {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tech-badge:hover {
+    background: rgba(13, 202, 240, 0.25) !important;
+    border-color: rgba(13, 202, 240, 0.6) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 202, 240, 0.25);
+}
