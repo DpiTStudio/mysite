@@ -189,3 +189,70 @@ class RenameUploadTo:
         # os.path.join корректно обрабатывает разделители путей для разных ОС
         # Результат: "avatars/novosti_2023-01-15_14-30-45.jpg"
         return os.path.join(self.base_path, new_filename)
+
+
+def optimize_image(image_field, max_width=1920, max_height=1080, quality=85):
+    """
+    Оптимизирует изображение: изменяет размер, если он превышает допустимый, 
+    и сжимает его в формат WebP для высокой скорости загрузки.
+    
+    Args:
+        image_field: Поле модели ImageField / FileField
+        max_width (int): Максимальная ширина
+        max_height (int): Максимальная высота
+        quality (int): Качество сжатия WebP (1-100)
+    """
+    if not image_field or not hasattr(image_field, 'path') or not os.path.exists(image_field.path):
+        return
+
+    try:
+        from PIL import Image
+        
+        filepath = image_field.path
+        ext = os.path.splitext(filepath)[1].lower()
+        
+        # Пропускаем SVG и GIF (с анимацией)
+        if ext in ['.svg', '.gif']:
+            return
+            
+        with Image.open(filepath) as img:
+            # Конвертируем в RGB если файл в RGBA/P и без альфа-канала
+            if img.mode in ('P', 'RGBA'):
+                img = img.convert('RGB')
+                
+            # Изменение размера с сохранением пропорций
+            img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
+            
+            # Сохранение в оптимизированный WebP или JPEG
+            if ext != '.webp':
+                webp_filepath = os.path.splitext(filepath)[0] + '.webp'
+                img.save(webp_filepath, 'WEBP', quality=quality, optimize=True)
+                
+                # Если исходный файл не webp, можем обновить путь или оставить как оптимизированный webp
+                if os.path.exists(filepath) and filepath != webp_filepath:
+                    os.remove(filepath)
+            else:
+                img.save(filepath, 'WEBP', quality=quality, optimize=True)
+    except Exception:
+        # В случае ошибки Pillow (например, не картинка) игнорируем без падения
+        pass
+
+
+def validate_file_upload(file_obj, max_size_mb=10, allowed_extensions=None):
+    """
+    Валидатор для загружаемых файлов по размеру и расширению.
+    """
+    from django.core.exceptions import ValidationError
+
+    if allowed_extensions is None:
+        allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'svg', 'gif', 'pdf', 'doc', 'docx', 'zip']
+
+    # Проверка размера
+    if file_obj.size > max_size_mb * 1024 * 1024:
+        raise ValidationError(f"Размер файла не должен превышать {max_size_mb} МБ.")
+
+    # Проверка расширения
+    ext = os.path.splitext(file_obj.name)[1][1:].lower()
+    if ext not in allowed_extensions:
+        raise ValidationError(f"Недопустимый формат файла .{ext}. Разрешенные: {', '.join(allowed_extensions)}")
+

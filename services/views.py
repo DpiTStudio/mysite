@@ -20,8 +20,8 @@ class ServiceListView(ListView):
     paginate_by = 12
     
     def get_queryset(self):
-        """Возвращает отфильтрованный набор данных услуг"""
-        queryset = Service.objects.filter(is_active=True).order_by('order')
+        """Возвращает отфильтрованный набор данных услуг с оптимизацией ORM-запросов"""
+        queryset = Service.objects.filter(is_active=True).select_related('category').prefetch_related('technologies').order_by('order')
         
         filters = {
             'category': self.request.GET.get('category'),
@@ -29,7 +29,6 @@ class ServiceListView(ListView):
             'technologies': self.request.GET.get('tech'),
         }
 
-        
         # Применяем только те фильтры, значения которых были переданы
         active_filters = {k: v for k, v in filters.items() if v}
         if active_filters:
@@ -56,11 +55,10 @@ class ServiceListView(ListView):
             .order_by('order')
         )
 
-        
         context['popular_services'] = Service.objects.filter(
             is_active=True, 
             is_popular=True
-        ).order_by('order')[:6]
+        ).select_related('category').prefetch_related('technologies').order_by('order')[:6]
         
         return context
 
