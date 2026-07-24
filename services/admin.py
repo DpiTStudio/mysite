@@ -39,9 +39,11 @@ class ServicePricePlanInline(admin.TabularInline):
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
+        'icon_preview',
         'title', 
         'category', 
         'price_display', 
+        'stats_badges',
         'is_active', 
         'is_popular', 
         'is_available_for_order', 
@@ -72,7 +74,6 @@ class ServiceAdmin(admin.ModelAdmin):
     filter_horizontal = ('technologies', 'related_portfolio')
     inlines = [ServiceBenefitInline, ServiceStepInline, ServiceFAQInline, ServicePricePlanInline]
     save_on_top = True
-
     save_as = True
     
     readonly_fields = ('get_tech_display', 'views')
@@ -82,23 +83,34 @@ class ServiceAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Основная информация', {
             'fields': (
-                'title', 'slug', 'category', 'old_category_tag', 'icon', 
-                'short_description', 'description', 'technologies', 'related_portfolio'
+                ('title', 'slug'),
+                ('category', 'old_category_tag'),
+                'icon', 
+                'short_description', 
+                'description', 
+                'technologies', 
+                'related_portfolio'
             )
         }),
-
         ('Что получит клиент', {
-            'fields': ('deliverables', 'estimated_time'),
+            'fields': (
+                ('complexity_level', 'estimated_time'),
+                'deliverables'
+            ),
             'classes': ('collapse', 'wide'),
         }),
         ('Ценообразование', {
-            'fields': ('price_type', 'price_fixed', 'price_min', 'price_max', 'currency'),
+            'fields': (
+                ('price_type', 'currency'),
+                ('price_fixed', 'price_min', 'price_max')
+            ),
             'classes': ('wide',),
         }),
         ('Настройки и SEO', {
             'fields': (
-                'order', 'is_active', 'is_popular', 'is_available_for_order', 'complexity_level',
-                'meta_title', 'meta_description', 'meta_keywords', 'views'
+                ('order', 'views'),
+                ('is_active', 'is_popular', 'is_available_for_order'),
+                'meta_title', 'meta_description', 'meta_keywords'
             ),
             'classes': ('wide',),
         }),
@@ -108,10 +120,48 @@ class ServiceAdmin(admin.ModelAdmin):
         }),
     )
     
+    @admin.display(description='Иконка')
+    def icon_preview(self, obj):
+        if obj.icon:
+            return format_html('<img src="{}" style="height: 28px; width: 28px; object-fit: contain; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 2px;" />', obj.icon.url)
+        return format_html('<span style="color: var(--text-muted); font-size: 14px;">—</span>')
+
+    @admin.display(description='Инфо (кол-во)')
+    def stats_badges(self, obj):
+        benefits = obj.benefits.count()
+        steps = obj.steps.count()
+        faqs = obj.faqs.count()
+        plans = obj.price_plans.count()
+        
+        return format_html(
+            '<div class="admin-stats-badges" style="display: flex; gap: 4px; font-weight: 600;">'
+            '<span class="badge badge-info" title="Преимущества" style="background: rgba(14,165,233,0.15) !important; color: #0ea5e9 !important; border: 1px solid rgba(14,165,233,0.3);"><i class="fas fa-gift"></i> {}</span>'
+            '<span class="badge badge-warning" title="Этапы" style="background: rgba(245,158,11,0.15) !important; color: #f59e0b !important; border: 1px solid rgba(245,158,11,0.3);"><i class="fas fa-arrow-right"></i> {}</span>'
+            '<span class="badge badge-danger" title="FAQ" style="background: rgba(239,68,68,0.15) !important; color: #ef4444 !important; border: 1px solid rgba(239,68,68,0.3);"><i class="fas fa-question"></i> {}</span>'
+            '<span class="badge badge-success" title="Тарифы" style="background: rgba(16,185,129,0.15) !important; color: #10b981 !important; border: 1px solid rgba(16,185,129,0.3);"><i class="fas fa-tags"></i> {}</span>'
+            '</div>',
+            benefits, steps, faqs, plans
+        )
+
     @admin.display(description='Цена', ordering='price_fixed')
     def price_display(self, obj):
         """Информативное отображение цены в списке"""
-        return obj.get_price_display()
+        currency_symbols = {'RUB': '₽', 'USD': '$', 'EUR': '€', 'KZT': '₸'}
+        symbol = currency_symbols.get(obj.currency, obj.currency)
+        
+        if obj.price_type == 'fixed' and obj.price_fixed:
+            formatted = f"{obj.price_fixed:,.0f}".replace(',', ' ')
+            return format_html('<span class="price-tag fixed" style="background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">{} {}</span>', formatted, symbol)
+        
+        elif obj.price_type == 'range' and obj.price_min and obj.price_max:
+            min_fmt = f"{obj.price_min:,.0f}".replace(',', ' ')
+            max_fmt = f"{obj.price_max:,.0f}".replace(',', ' ')
+            return format_html('<span class="price-tag range" style="background: rgba(14,165,233,0.15); color: #38bdf8; border: 1px solid rgba(14,165,233,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">{} - {} {}</span>', min_fmt, max_fmt, symbol)
+            
+        elif obj.price_type == 'contact':
+            return format_html('<span class="price-tag contact" style="background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">Договорная</span>')
+            
+        return format_html('<span class="price-tag contact" style="background: rgba(148,163,184,0.15); color: #cbd5e1; border: 1px solid rgba(148,163,184,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">Уточняйте</span>')
     
     @admin.display(description='Выбранные технологии')
     def get_tech_display(self, obj):

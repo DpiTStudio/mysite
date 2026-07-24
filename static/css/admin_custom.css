@@ -324,3 +324,80 @@ body {
 .content-header, .content {
     animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
+/* Custom adjustments for compact list view and change forms */
+.table td input[name$="-order"], .table td input[name="order"] {
+    width: 65px !important;
+    padding: 3px 6px !important;
+    font-size: 0.85rem !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    background: rgba(255,255,255,0.03) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+}
+
+.table td input[name$="-order"]:focus, .table td input[name="order"]:focus {
+    border-color: var(--p-accent) !important;
+    box-shadow: 0 0 0 2px var(--p-accent-glow) !important;
+}
+
+/* Adjustments for checkbox alignment and size in list view */
+.table td input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--p-accent);
+}
+
+/* Compact style for inline groups */
+.inline-group {
+    background: transparent !important;
+    border: none !important;
+}
+
+.inline-group .card {
+    border-radius: 12px !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.inline-group .card-header {
+    padding: 0.75rem 1.25rem !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.inline-group .card-body {
+    padding: 0.75rem !important;
+}
+
+.inline-group table thead th {
+    padding: 6px 12px !important;
+    font-size: 0.7rem !important;
+}
+
+.inline-group table tbody td {
+    padding: 6px 12px !important;
+}
+
+.inline-group table tbody td input,
+.inline-group table tbody td select,
+.inline-group table tbody td textarea {
+    padding: 6px 10px !important;
+    font-size: 0.85rem !important;
+    border-radius: 8px !important;
+}
+
+/* Style for statistics badges hover state */
+.admin-stats-badges .badge {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+    font-size: 11px !important;
+}
+
+.admin-stats-badges .badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
