@@ -56,6 +56,10 @@ class ServiceCategory(ActiveModel, SEOModel, TimestampModel):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return f"{reverse('services:list')}?category={self.id}"
+
 
 class Service(ActiveModel, SEOModel, TimestampModel):
     """

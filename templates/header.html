@@ -153,11 +153,9 @@
                             <li><a class="dropdown-item rounded fw-bold text-primary" href="{% url 'services:list' %}"><i class="bi bi-grid-fill me-2"></i> Все услуги</a></li>
                             {% if nav_categories.services %}
                             <li><hr class="dropdown-divider opacity-10"></li>
-                            {% comment %}
                             {% for cat in nav_categories.services %}
-                            <li><a class="dropdown-item rounded" href="{{ cat.get_absolute_url }}">{{ cat.title }}</a></li>
+                            <li><a class="dropdown-item rounded" href="{{ cat.get_absolute_url }}"><i class="bi bi-tag-fill text-primary me-2 opacity-50"></i> {{ cat.name }}</a></li>
                             {% endfor %}
-                            {% endcomment %}
                             {% endif %}
                         </ul>
                     </li>

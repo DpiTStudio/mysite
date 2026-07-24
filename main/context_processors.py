@@ -1,8 +1,9 @@
-from .models import Page, SiteSettings, AnalyticsScript
+from knowledge_base.models import Category as KBCategory
 from news.models import NewsCategory
 from portfolio.models import PortfolioCategory
-from services.models import Service
-from knowledge_base.models import Category as KBCategory
+from services.models import ServiceCategory
+
+from .models import AnalyticsScript, Page, SiteSettings
 
 
 def main_context(request):
@@ -118,7 +119,7 @@ def main_context(request):
         "nav_categories": {
             "news": NewsCategory.objects.filter(is_active=True),
             "portfolio": PortfolioCategory.objects.filter(is_active=True),
-            "services": Service.objects.filter(is_active=True).values_list('category', flat=True).distinct(),
+            "services": ServiceCategory.objects.filter(is_active=True),
             "knowledge_base": KBCategory.objects.all(),
         }
     }
