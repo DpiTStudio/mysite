@@ -111,11 +111,10 @@ class ServiceFAQAdmin(admin.ModelAdmin):
 
 @admin.register(ServicePricePlan)
 class ServicePricePlanAdmin(admin.ModelAdmin):
-    list_display = ("title", "service", "price", "is_recommended", "order")
-    list_filter = ("service", "is_recommended")
+    list_display = ("title", "service", "price", "is_recommended", "is_available_for_order", "order")
+    list_filter = ("service", "is_recommended", "is_available_for_order")
     search_fields = ("title", "description", "features_list", "service__title")
-    list_editable = ("price", "is_recommended", "order")
-
+    list_editable = ("price", "is_recommended", "is_available_for_order", "order")
 
 
 @admin.register(Service)
@@ -162,7 +161,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
     readonly_fields = ("get_tech_display", "views")
 
-    actions = ["make_active", "make_inactive"]
+    actions = ["make_active", "make_inactive", "enable_order", "disable_order"]
 
     fieldsets = (
         (
@@ -335,18 +334,29 @@ class ServiceAdmin(admin.ModelAdmin):
         updated = queryset.update(is_active=False)
         self.message_user(request, f"Деактивировано услуг: {updated}")
 
+    @admin.action(description="Разрешить заказ для выбранных услуг")
+    def enable_order(self, request, queryset):
+        updated = queryset.update(is_available_for_order=True)
+        self.message_user(request, f"Разрешен заказ для услуг: {updated}")
+
+    @admin.action(description="Запретить заказ для выбранных услуг")
+    def disable_order(self, request, queryset):
+        updated = queryset.update(is_available_for_order=False)
+        self.message_user(request, f"Запрещен заказ для услуг: {updated}")
+
 
 @admin.register(ServiceOrder)
 class ServiceOrderAdmin(admin.ModelAdmin):
     list_display = (
         "short_id",
         "service",
+        "selected_plan",
         "full_name",
         "status_display",
         "created_at",
         "contact_info",
     )
-    list_filter = ("status", "service", "created_at")
+    list_filter = ("status", "service", "selected_plan", "created_at")
     search_fields = ("full_name", "email", "phone", "service__title", "short_id")
     readonly_fields = ("created_at", "updated_at", "short_id")
     list_per_page = 25
@@ -359,7 +369,7 @@ class ServiceOrderAdmin(admin.ModelAdmin):
     ]
 
     fieldsets = (
-        ("Основная информация", {"fields": ("short_id", "service", "user", "status")}),
+        ("Основная информация", {"fields": ("short_id", "service", "selected_plan", "user", "status")}),
         ("Контактные данные", {"fields": ("full_name", "phone", "email", "message")}),
         (
             "Детали заказа",

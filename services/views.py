@@ -9,8 +9,10 @@ from .models import Service, ServiceCategory
 from .forms import ServiceOrderForm
 
 
-def _build_service_detail_context(service, form=None, user=None):
+def _build_service_detail_context(service, form=None, user=None, initial_plan_id=None):
     """Формирует полный контекст для лендинга услуги."""
+    available_plans = service.price_plans.filter(is_available_for_order=True).order_by('order')
+    
     if form is None:
         initial_data = {}
         if user and user.is_authenticated:
@@ -20,8 +22,17 @@ def _build_service_detail_context(service, form=None, user=None):
                 'email': user.email,
                 'phone': getattr(user, 'phone', ''),
             })
+        if initial_plan_id:
+            try:
+                plan_pk = int(initial_plan_id)
+                if available_plans.filter(pk=plan_pk).exists():
+                    initial_data['selected_plan'] = plan_pk
+            except (ValueError, TypeError):
+                pass
+                
         form = ServiceOrderForm(initial=initial_data)
-        form.fields['selected_plan'].queryset = service.price_plans.all()
+
+    form.fields['selected_plan'].queryset = available_plans
 
     related_services = Service.objects.none()
     if service.category:
@@ -110,13 +121,21 @@ class ServiceDetailView(DetailView):
     model = Service
     template_name = 'services/detail.html'
     context_object_name = 'service'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user.is_staff:
+            qs = qs.filter(is_active=True)
+        return qs
     
     def get_context_data(self, **kwargs):
         """Подготавливает контекст: форма заказа и похожие услуги"""
         context = super().get_context_data(**kwargs)
+        initial_plan_id = self.request.GET.get('plan')
         detail_context = _build_service_detail_context(
             service=self.object,
-            user=self.request.user
+            user=self.request.user,
+            initial_plan_id=initial_plan_id
         )
         context.update(detail_context)
         return context
@@ -139,8 +158,13 @@ class ServiceOrderView(View):
     """
     def post(self, request, slug):
         service = get_object_or_404(Service, slug=slug)
+
+        if not service.can_be_ordered:
+            messages.error(request, "❌ К сожалению, эта услуга в данный момент недоступна для заказа.")
+            return redirect('services:detail', slug=slug)
+
         form = ServiceOrderForm(request.POST)
-        form.fields['selected_plan'].queryset = service.price_plans.all()
+        form.fields['selected_plan'].queryset = service.price_plans.filter(is_available_for_order=True)
 
         if form.is_valid():
             order = form.save(commit=False)

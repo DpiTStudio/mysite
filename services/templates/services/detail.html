@@ -35,6 +35,7 @@
 <div class="glass-card mb-5 animate-left">
     <div class="card-body p-4 p-md-5">
         {% include 'services/includes/_hero.html' %}
+        {% include 'services/includes/_deliverables.html' %}
         {% include 'services/includes/_benefits.html' %}
         {% include 'services/includes/_price_plans.html' %}
         {% include 'services/includes/_steps.html' %}
@@ -105,3 +106,32 @@
 {% include 'includes/sidebar/block_portfolio.html' %}
 {% include 'includes/sidebar/block_reviews.html' %}
 {% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const planButtons = document.querySelectorAll('.select-plan-btn');
+    const planSelect = document.getElementById('id_selected_plan');
+    const orderWidget = document.getElementById('order-form-widget');
+
+    planButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            const planId = this.getAttribute('data-plan-id');
+            if (planId && planSelect) {
+                planSelect.value = planId;
+                
+                // Визуальный акцент на поле выбора
+                planSelect.classList.add('is-valid');
+                setTimeout(() => planSelect.classList.remove('is-valid'), 2000);
+
+                if (orderWidget) {
+                    e.preventDefault();
+                    orderWidget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+

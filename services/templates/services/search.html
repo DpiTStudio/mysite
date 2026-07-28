@@ -33,7 +33,15 @@
         <div class="row g-4">
             {% for service in services %}
             <div class="col-lg-4 col-md-6">
-                <div class="card-premium p-4 border-0 h-100 d-flex flex-column text-center">
+                <div class="card-premium p-4 border-0 h-100 d-flex flex-column text-center position-relative {% if not service.can_be_ordered %}opacity-90{% endif %}">
+                    {% if not service.can_be_ordered %}
+                    <div class="position-absolute top-0 end-0 m-3 z-2">
+                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25 px-3 py-1 rounded-pill small fw-semibold">
+                            <i class="bi bi-slash-circle me-1"></i> Недоступно
+                        </span>
+                    </div>
+                    {% endif %}
+
                     <div class="service-icon mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 100%; height: 180px; background: var(--color-primary-alpha); border-radius: var(--radius-md);">
                         {% if service.icon %}
                             <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="max-width: 100%; max-height: 160px; object-fit: contain;">

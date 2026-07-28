@@ -248,9 +248,11 @@ class Service(ActiveModel, SEOModel, TimestampModel):
 
     @property
     def can_be_ordered(self):
+        if not self.is_active:
+            return False
         if not self.is_available_for_order:
             return False
-        if self.price_type == 'fixed' and self.price_fixed is None:
+        if self.price_type == 'fixed' and (self.price_fixed is None or self.price_fixed <= 0):
             return False
         return True
 
@@ -480,6 +482,11 @@ class ServicePricePlan(models.Model):
         help_text=_("Каждая возможность с новой строки")
     )
     is_recommended = models.BooleanField(default=False, verbose_name=_("Рекомендуемый тариф"))
+    is_available_for_order = models.BooleanField(
+        default=True,
+        verbose_name=_("Доступно для заказа"),
+        help_text=_("Если отключено, этот тариф нельзя выбрать или заказать")
+    )
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок"))
 
     class Meta:
@@ -489,6 +496,10 @@ class ServicePricePlan(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.service.title}"
+
+    @property
+    def can_be_ordered(self):
+        return self.is_available_for_order and self.service.can_be_ordered
 
     def get_features(self):
         """Возвращает список возможностей в виде массива."""

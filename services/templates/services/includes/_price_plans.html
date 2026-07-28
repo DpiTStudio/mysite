@@ -25,10 +25,14 @@
                     {% endfor %}
                 </ul>
 
-                {% if service.can_be_ordered %}
-                <a href="#order-form-widget" class="btn {% if plan.is_recommended %}btn-primary shine-effect{% else %}btn-outline-light{% endif %} w-100 rounded-pill py-2 fw-medium mt-auto">
-                    Выбрать тариф
+                {% if plan.can_be_ordered %}
+                <a href="?plan={{ plan.id }}#order-form-widget" data-plan-id="{{ plan.id }}" class="btn select-plan-btn {% if plan.is_recommended %}btn-primary shine-effect{% else %}btn-outline-light{% endif %} w-100 rounded-pill py-2 fw-medium mt-auto">
+                    <i class="fas fa-check me-1"></i> Выбрать тариф
                 </a>
+                {% else %}
+                <button disabled class="btn btn-outline-secondary opacity-50 w-100 rounded-pill py-2 fw-medium mt-auto" style="cursor: not-allowed;">
+                    <i class="fas fa-ban me-1"></i> Недоступен для заказа
+                </button>
                 {% endif %}
             </div>
         </div>
