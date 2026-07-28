@@ -15,6 +15,14 @@ from accounts.models import User
 # Регулярное выражение для контактных телефонов вынесено на уровень модуля
 PHONE_PATTERN = re.compile(r'^\+?[1-9][\d\-\(\)\.\s]{9,20}$')
 
+# Словарь символов валют для отображения цен в каталоге и админке
+CURRENCY_SYMBOLS = {
+    'RUB': '₽',
+    'USD': '$',
+    'EUR': '€',
+    'KZT': '₸',
+}
+
 class Technology(models.Model):
     """Модель для хранения неограниченного стека технологий (веб-разработка, графика и т.д.)."""
     name = models.CharField(
@@ -112,32 +120,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         blank=True,
         help_text=_("Старое текстовое поле категории")
     )
-    
-    
     # --- Технологии ---
-    TECHNOLOGY_CHOICES = [
-        ('web-design', _('Веб-дизайн')),
-        ('web-development', _('Веб-разработка')),
-        ('graphic-design', _('Графический дизайн')),
-        ('digital-marketing', _('Цифровой маркетинг')),
-        ('seo', _('SEO')),
-        ('crm', _('CRM-системы')),
-        ('mobile-development', _('Мобильная разработка')),
-        ('iot', _('Интернет вещей')),
-        ('testing', _('Тестирование')),
-        ('support-maintenance', _('Поддержка и обслуживание')),
-        ('training', _('Обучение')),
-        ('shop-development', _('Разработка интернет-магазинов')),
-        ('landing-page', _('Разработка лендингов')),
-        ('corporate-website', _('Разработка корпоративных сайтов')),
-        ('php', _('PHP')),
-        ('python', _('Python')),
-        ('javascript', _('JavaScript')),
-        ('html-css', _('HTML/CSS')),
-        ('other', _('Другое')),
-    ]
-    # Можно выбирать несколько техналогии из списка в которую можно добавить свои
-    # 
     technologies = models.ManyToManyField(
         Technology,
         related_name='services',
@@ -145,14 +128,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         blank=True,
         help_text=_("Выберите стек технологий")
     )
-    # technologies = models.CharField(
-    #     max_length=100,
-    #     verbose_name=_("Стек технологий"),
-    #     choices=TECHNOLOGY_CHOICES,
-    #     default='web-development',
-    #     help_text=_("Выберите стек технологий")
-    # )
-    
+
     PRICE_TYPE_CHOICES = [
         ('fixed', _('Фиксированная')),
         ('range', _('От и До')),
@@ -300,8 +276,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
 
     def get_price_display(self):
         """Возвращает строку с красиво отформатированной ценой на основе типа."""
-        currency_symbols = {'RUB': '₽', 'USD': '$', 'EUR': '€', 'KZT': '₸'}
-        symbol = currency_symbols.get(self.currency, self.currency)
+        symbol = CURRENCY_SYMBOLS.get(self.currency, self.currency)
         
         if self.price_type == 'fixed' and self.price_fixed:
             formatted = f"{self.price_fixed:,.0f}".replace(',', ' ')

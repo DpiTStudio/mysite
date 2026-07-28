@@ -9,6 +9,40 @@ from .models import Service, ServiceCategory
 from .forms import ServiceOrderForm
 
 
+def _build_service_detail_context(service, form=None, user=None):
+    """Формирует полный контекст для лендинга услуги."""
+    if form is None:
+        initial_data = {}
+        if user and user.is_authenticated:
+            full_name = f"{user.first_name} {user.last_name}".strip() or user.username
+            initial_data.update({
+                'full_name': full_name,
+                'email': user.email,
+                'phone': getattr(user, 'phone', ''),
+            })
+        form = ServiceOrderForm(initial=initial_data)
+        form.fields['selected_plan'].queryset = service.price_plans.all()
+
+    related_services = Service.objects.none()
+    if service.category:
+        related_services = Service.objects.filter(
+            is_active=True,
+            category=service.category
+        ).exclude(pk=service.pk).order_by('?')[:4]
+
+    return {
+        'service': service,
+        'form': form,
+        'related_services': related_services,
+        'related_portfolio': service.related_portfolio.filter(is_active=True),
+        'benefits': service.benefits.all().order_by('order'),
+        'steps': service.steps.all().order_by('step_number', 'order'),
+        'faqs': service.faqs.all().order_by('order'),
+        'price_plans': service.price_plans.all().order_by('order'),
+        'tech_list': service.get_tech_requirements_display(),
+    }
+
+
 class ServiceListView(ListView):
     """
     Отображает список всех доступных услуг с возможностью фильтрации
@@ -26,13 +60,18 @@ class ServiceListView(ListView):
         filters = {
             'category': self.request.GET.get('category'),
             'complexity_level': self.request.GET.get('complexity'),
-            'technologies': self.request.GET.get('tech'),
         }
 
-        # Применяем только те фильтры, значения которых были переданы
         active_filters = {k: v for k, v in filters.items() if v}
         if active_filters:
             queryset = queryset.filter(**active_filters)
+
+        tech_param = self.request.GET.get('tech')
+        if tech_param:
+            if tech_param.isdigit():
+                queryset = queryset.filter(technologies__id=tech_param)
+            else:
+                queryset = queryset.filter(technologies__name__iexact=tech_param)
             
         # Применяем сортировку
         sort_param = self.request.GET.get('sort')
@@ -75,45 +114,13 @@ class ServiceDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """Подготавливает контекст: форма заказа и похожие услуги"""
         context = super().get_context_data(**kwargs)
-        user = self.request.user
-        initial_data = {}
-        
-        # Предзаполняем поля, если пользователь авторизован
-        if user.is_authenticated:
-            full_name = f"{user.first_name} {user.last_name}".strip() or user.username
-            initial_data.update({
-                'full_name': full_name,
-                'email': user.email,
-                'phone': getattr(user, 'phone', ''),
-            })
-        
-        form = ServiceOrderForm(initial=initial_data)
-        form.fields['selected_plan'].queryset = self.object.price_plans.all()
-        context['form'] = form
-
-        
-        # Похожие услуги из той же категории
-        if self.object.category:
-            context['related_services'] = Service.objects.filter(
-                is_active=True,
-                category=self.object.category
-            ).exclude(pk=self.object.pk).order_by('?')[:4]
-        else:
-            context['related_services'] = Service.objects.none()
-        
-        # Интеграция с портфолио
-        context['related_portfolio'] = self.object.related_portfolio.filter(is_active=True)
-        
-        # Дополнительный контент
-        context['benefits'] = self.object.benefits.all().order_by('order')
-        context['steps'] = self.object.steps.all().order_by('step_number', 'order')
-        context['faqs'] = self.object.faqs.all().order_by('order')
-        context['price_plans'] = self.object.price_plans.all().order_by('order')
-        
-        context['tech_list'] = self.object.get_tech_requirements_display()
+        detail_context = _build_service_detail_context(
+            service=self.object,
+            user=self.request.user
+        )
+        context.update(detail_context)
         return context
 
-    
     def get(self, request, *args, **kwargs):
         """Увеличиваем счетчик просмотров при каждом GET-запросе"""
         self.object = self.get_object()
@@ -135,7 +142,6 @@ class ServiceOrderView(View):
         form = ServiceOrderForm(request.POST)
         form.fields['selected_plan'].queryset = service.price_plans.all()
 
-        
         if form.is_valid():
             order = form.save(commit=False)
             order.service = service
@@ -156,18 +162,9 @@ class ServiceOrderView(View):
             "❌ Возникла ошибка при оформлении заказа. Пожалуйста, проверьте корректность данных."
         )
         
-        related_services = Service.objects.none()
-        if service.category:
-            related_services = Service.objects.filter(
-                is_active=True, category=service.category
-            ).exclude(pk=service.pk).order_by('?')[:4]
-            
-        return render(request, 'services/detail.html', {
-            'service': service, 
-            'form': form,
-            'related_services': related_services,
-            'tech_list': service.get_tech_requirements_display()
-        })
+        context = _build_service_detail_context(service=service, form=form, user=request.user)
+        return render(request, 'services/detail.html', context)
+
 
 
 class ServiceSearchView(ListView):

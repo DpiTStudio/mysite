@@ -1,0 +1,17 @@
+{% if tech_list %}
+<div class="mb-5">
+    <h4 class="fw-bold mb-4 text-white">
+        <i class="fas fa-layer-group text-info me-2"></i>Используемый стек / Технологии
+    </h4>
+    <div class="tech-stack-container p-4 rounded-4" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px);">
+        <div class="d-flex flex-wrap gap-2">
+            {% for tech in tech_list %}
+            <div class="tech-badge d-inline-flex align-items-center px-3 py-2 rounded-pill" style="background: rgba(13, 202, 240, 0.12); border: 1px solid rgba(13, 202, 240, 0.3); color: #0dcaf0; transition: all 0.3s ease;">
+                <i class="fas fa-code-branch me-2 fs-6 opacity-75"></i>
+                <span class="fw-semibold" style="letter-spacing: 0.3px; font-size: 0.95rem;">{{ tech }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

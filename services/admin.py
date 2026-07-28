@@ -12,6 +12,7 @@ from .models import (
     ServiceStep,
     ServiceFAQ,
     ServicePricePlan,
+    CURRENCY_SYMBOLS,
 )
 
 
@@ -115,10 +116,8 @@ class ServiceAdmin(admin.ModelAdmin):
             "Что получит клиент",
             {
                 "fields": (
-                    (
-                        "complexity_level",
-                        "estimated_time",
-                    ),
+                    "complexity_level",
+                    "estimated_time",
                     "deliverables",
                 ),
                 "classes": ("collapse", "wide"),
@@ -128,8 +127,11 @@ class ServiceAdmin(admin.ModelAdmin):
             "Ценообразование",
             {
                 "fields": (
-                    ("price_type", "currency"),
-                    ("price_fixed", "price_min", "price_max"),
+                    "price_type",
+                    "currency",
+                    "price_fixed",
+                    "price_min",
+                    "price_max",
                 ),
                 "classes": ("wide",),
             },
@@ -138,8 +140,11 @@ class ServiceAdmin(admin.ModelAdmin):
             "Настройки и SEO",
             {
                 "fields": (
-                    ("order", "views"),
-                    ("is_active", "is_popular", "is_available_for_order"),
+                    "order",
+                    "views",
+                    "is_active",
+                    "is_popular",
+                    "is_available_for_order",
                     "meta_title",
                     "meta_description",
                     "meta_keywords",
@@ -204,8 +209,7 @@ class ServiceAdmin(admin.ModelAdmin):
     def category_price_display(self, obj):
         """Объединённое отображение категории и цены в списке"""
         category_name = obj.category.name if obj.category else "Без категории"
-        currency_symbols = {"RUB": "₽", "USD": "$", "EUR": "€", "KZT": "₸"}
-        symbol = currency_symbols.get(obj.currency, obj.currency)
+        symbol = CURRENCY_SYMBOLS.get(obj.currency, obj.currency)
 
         if obj.price_type == "fixed" and obj.price_fixed:
             formatted = f"{obj.price_fixed:,.0f}".replace(",", " ")
