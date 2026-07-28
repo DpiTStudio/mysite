@@ -126,6 +126,7 @@
    Создайте файл `.env` на основе примера и заполните секретные ключи и настройки почты.
 2. **Зависимости**:
    ```bash
+   pip freeze > requirements.txt
    pip install -r requirements.txt
    ```
 3. **Миграции**:

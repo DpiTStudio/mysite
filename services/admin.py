@@ -40,7 +40,7 @@ class ServicePricePlanInline(admin.TabularInline):
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
         'icon_preview',
-        'title', 
+        'title_display',
         'category', 
         'price_display', 
         'stats_badges',
@@ -75,6 +75,9 @@ class ServiceAdmin(admin.ModelAdmin):
     inlines = [ServiceBenefitInline, ServiceStepInline, ServiceFAQInline, ServicePricePlanInline]
     save_on_top = True
     save_as = True
+    list_per_page = 25
+    list_display_links = ('title_display',)
+    ordering = ('order', 'title')
     
     readonly_fields = ('get_tech_display', 'views')
     
@@ -125,6 +128,19 @@ class ServiceAdmin(admin.ModelAdmin):
         if obj.icon:
             return format_html('<img src="{}" style="height: 28px; width: 28px; object-fit: contain; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 2px;" />', obj.icon.url)
         return format_html('<span style="color: var(--text-muted); font-size: 14px;">—</span>')
+
+    @admin.display(description='Услуга')
+    def title_display(self, obj):
+        status = 'Активна' if obj.is_active else 'Неактивна'
+        category_name = obj.category.name if obj.category else 'Без категории'
+        return format_html(
+            '<div style="line-height: 1.25; min-width: 220px;">'
+            '<div style="font-weight: 700; color: #f8fafc;">{}</div>'
+            '<div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">{}</div>'
+            '</div>',
+            obj.title,
+            f'{category_name} • {status}'
+        )
 
     @admin.display(description='Инфо (кол-во)')
     def stats_badges(self, obj):
