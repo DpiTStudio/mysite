@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.html import format_html, format_html_join
 from django.http import HttpResponse
+from django import forms
+from django.db import models
 import csv
 
 from .models import (
@@ -32,21 +34,88 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 class ServiceBenefitInline(admin.TabularInline):
     model = ServiceBenefit
     extra = 1
+    show_change_link = True
+    formfield_overrides = {
+        models.TextField: {
+            "widget": forms.Textarea(
+                attrs={"rows": 2, "cols": 40, "style": "width: 100%; min-width: 200px;"}
+            )
+        },
+    }
 
 
 class ServiceStepInline(admin.TabularInline):
     model = ServiceStep
     extra = 1
+    show_change_link = True
+    formfield_overrides = {
+        models.TextField: {
+            "widget": forms.Textarea(
+                attrs={"rows": 2, "cols": 40, "style": "width: 100%; min-width: 200px;"}
+            )
+        },
+    }
 
 
 class ServiceFAQInline(admin.TabularInline):
     model = ServiceFAQ
     extra = 1
+    show_change_link = True
+    formfield_overrides = {
+        models.TextField: {
+            "widget": forms.Textarea(
+                attrs={"rows": 2, "cols": 40, "style": "width: 100%; min-width: 200px;"}
+            )
+        },
+    }
 
 
 class ServicePricePlanInline(admin.TabularInline):
     model = ServicePricePlan
     extra = 1
+    show_change_link = True
+    formfield_overrides = {
+        models.TextField: {
+            "widget": forms.Textarea(
+                attrs={"rows": 2, "cols": 40, "style": "width: 100%; min-width: 200px;"}
+            )
+        },
+    }
+
+
+@admin.register(ServiceStep)
+class ServiceStepAdmin(admin.ModelAdmin):
+    list_display = ("step_number", "title", "service", "order")
+    list_display_links = ("title",)
+    list_filter = ("service",)
+    search_fields = ("title", "description", "service__title")
+    list_editable = ("step_number", "order")
+    ordering = ("service", "step_number", "order")
+
+
+@admin.register(ServiceBenefit)
+class ServiceBenefitAdmin(admin.ModelAdmin):
+    list_display = ("title", "service", "icon_code", "order")
+    list_filter = ("service",)
+    search_fields = ("title", "description", "service__title")
+    list_editable = ("order",)
+
+
+@admin.register(ServiceFAQ)
+class ServiceFAQAdmin(admin.ModelAdmin):
+    list_display = ("question", "service", "order")
+    list_filter = ("service",)
+    search_fields = ("question", "answer", "service__title")
+    list_editable = ("order",)
+
+
+@admin.register(ServicePricePlan)
+class ServicePricePlanAdmin(admin.ModelAdmin):
+    list_display = ("title", "service", "price", "is_recommended", "order")
+    list_filter = ("service", "is_recommended")
+    search_fields = ("title", "description", "features_list", "service__title")
+    list_editable = ("price", "is_recommended", "order")
+
 
 
 @admin.register(Service)

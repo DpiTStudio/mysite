@@ -81,6 +81,82 @@ class News(ActiveModel, SEOModel, TimestampModel):
         """Возвращает количество событий за день"""
         return self.events.count()
 
+    def validate_unique(self, exclude=None):
+        """
+        Переопределяем валидацию уникальности.
+        Если создается новая новость на дату и категорию, где уже есть запись,
+        исключаем уникальные проверки, чтобы добавить контент к существующей новости в save().
+        """
+        if exclude is None:
+            exclude = []
+        else:
+            exclude = list(exclude)
+
+        if self.pk is None and getattr(self, 'category_id', None) and getattr(self, 'news_date', None):
+            if News.objects.filter(category_id=self.category_id, news_date=self.news_date).exists():
+                exclude.extend(['slug', 'category', 'news_date', ('category', 'news_date')])
+
+        super().validate_unique(exclude=exclude)
+
+    def save(self, *args, **kwargs):
+        """
+        При сохранении новой новости:
+        Если новость в эту дату и категорию уже существует,
+        добавляем текущую новость как событие (DailyEvent) к существующей новости
+        и обновляем её контент.
+        """
+        if self.pk is None and getattr(self, 'category_id', None) and getattr(self, 'news_date', None):
+            existing_news = News.objects.filter(
+                category_id=self.category_id,
+                news_date=self.news_date
+            ).first()
+
+            if existing_news:
+                # Если у существующей новости ещё не было событий (создана напрямую ранее),
+                # создаем событие для её исходного заголовка и контента
+                if existing_news.events.count() == 0 and existing_news.content:
+                    DailyEvent.objects.create(
+                        news=existing_news,
+                        event_type='other',
+                        title=existing_news.title,
+                        description=existing_news.content,
+                        image=existing_news.image if existing_news.image else None,
+                        order=0
+                    )
+
+                # Добавляем новую новость как DailyEvent к существующей, если такого заголовка еще нет
+                if not existing_news.events.filter(title=self.title).exists():
+                    event_order = existing_news.events.count()
+                    DailyEvent.objects.create(
+                        news=existing_news,
+                        event_type='other',
+                        title=self.title,
+                        description=self.content,
+                        image=self.image if self.image else None,
+                        order=event_order
+                    )
+
+                # Изображение: если у существующей новости нет изображения, берем из новой
+                if not existing_news.image and self.image:
+                    existing_news.image = self.image
+
+                # Обновляем структуру и контент новости на основе событий
+                from news.signals import update_news_content
+                update_news_content(existing_news)
+
+                # Перенаправляем создание на обновление существующей новости
+                self.pk = existing_news.pk
+                self._state.adding = False
+                self.created_at = existing_news.created_at
+                self.updated_at = existing_news.updated_at
+                self.title = existing_news.title
+                self.slug = existing_news.slug
+                self.content = existing_news.content
+                if existing_news.image:
+                    self.image = existing_news.image
+
+        super().save(*args, **kwargs)
+
 
 class DailyEvent(TimestampModel):
     """
