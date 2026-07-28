@@ -38,11 +38,14 @@ class ServicePricePlanInline(admin.TabularInline):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
+    class Media:
+        css = {
+            'all': ('services/css/services.css',),
+        }
     list_display = (
         'icon_preview',
         'title_display',
-        'category', 
-        'price_display', 
+        'category_price_display',
         'stats_badges',
         'is_active', 
         'is_popular', 
@@ -159,25 +162,33 @@ class ServiceAdmin(admin.ModelAdmin):
             benefits, steps, faqs, plans
         )
 
-    @admin.display(description='Цена', ordering='price_fixed')
-    def price_display(self, obj):
-        """Информативное отображение цены в списке"""
+    @admin.display(description='Категория / Цена')
+    def category_price_display(self, obj):
+        """Объединённое отображение категории и цены в списке"""
+        category_name = obj.category.name if obj.category else 'Без категории'
         currency_symbols = {'RUB': '₽', 'USD': '$', 'EUR': '€', 'KZT': '₸'}
         symbol = currency_symbols.get(obj.currency, obj.currency)
-        
+
         if obj.price_type == 'fixed' and obj.price_fixed:
             formatted = f"{obj.price_fixed:,.0f}".replace(',', ' ')
-            return format_html('<span class="price-tag fixed" style="background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">{} {}</span>', formatted, symbol)
-        
+            price_html = format_html('<span style="color: #818cf8; font-weight: 600;">{} {}</span>', formatted, symbol)
         elif obj.price_type == 'range' and obj.price_min and obj.price_max:
             min_fmt = f"{obj.price_min:,.0f}".replace(',', ' ')
             max_fmt = f"{obj.price_max:,.0f}".replace(',', ' ')
-            return format_html('<span class="price-tag range" style="background: rgba(14,165,233,0.15); color: #38bdf8; border: 1px solid rgba(14,165,233,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">{} - {} {}</span>', min_fmt, max_fmt, symbol)
-            
+            price_html = format_html('<span style="color: #38bdf8; font-weight: 600;">{} - {} {}</span>', min_fmt, max_fmt, symbol)
         elif obj.price_type == 'contact':
-            return format_html('<span class="price-tag contact" style="background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">Договорная</span>')
-            
-        return format_html('<span class="price-tag contact" style="background: rgba(148,163,184,0.15); color: #cbd5e1; border: 1px solid rgba(148,163,184,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; white-space: nowrap;">Уточняйте</span>')
+            price_html = format_html('<span style="color: #fbbf24; font-weight: 600;">Договорная</span>')
+        else:
+            price_html = format_html('<span style="color: #cbd5e1; font-weight: 600;">Уточняйте</span>')
+
+        return format_html(
+            '<div style="line-height: 1.25; min-width: 180px;">'
+            '<div style="font-weight: 600; color: #f8fafc;">{}</div>'
+            '<div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">{}</div>'
+            '</div>',
+            category_name,
+            price_html
+        )
     
     @admin.display(description='Выбранные технологии')
     def get_tech_display(self, obj):
