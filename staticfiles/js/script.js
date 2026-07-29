@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function init3DTilt(root) {
         root.querySelectorAll('.card, .glass-card, .glass-card-premium').forEach(card => {
             if (window.matchMedia('(pointer: coarse)').matches) return;
+            if (card.tagName === 'ARTICLE' || card.classList.contains('no-hover') || card.classList.contains('no-tilt') || card.closest('article')) return;
 
             let ticking = false;
 

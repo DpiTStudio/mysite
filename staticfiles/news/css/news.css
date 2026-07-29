@@ -42,6 +42,15 @@
     font-size: 1.15rem;
     line-height: 1.8;
     color: var(--color-text-main);
+    transform: none !important;
+}
+
+.news-content:hover,
+article.news-content:hover {
+    transform: none !important;
+    background: var(--color-glass) !important;
+    border-color: var(--color-glass-border) !important;
+    box-shadow: var(--shadow-md) !important;
 }
 
 .news-content p {

@@ -1446,10 +1446,22 @@ body.light-mode::after {
     transition: var(--transition-normal);
 }
 
-.glass-card:hover, .card:hover {
+.glass-card:not(article):not(.no-hover):hover, .card:not(article):not(.no-hover):hover {
     background: var(--color-glass-hover);
     border-color: var(--color-glass-border-bright);
     box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+article,
+article.glass-card,
+article.card,
+.no-hover,
+.no-hover:hover {
+    transform: none !important;
+    background: var(--color-glass) !important;
+    border-color: var(--color-glass-border) !important;
+    box-shadow: var(--shadow-md) !important;
+    transition: none !important;
 }
 
 /* --- 14. Linear Service Lists --- */
