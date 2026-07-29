@@ -15,6 +15,10 @@
     box-shadow: 0 4px 12px rgba(13, 202, 240, 0.25);
 }
 
+.plan-description {
+    height: 150px;
+}
+
 /* Admin service form enhancements */
 body.change-form .module h2,
 body.change-form .inline-group h2,
@@ -57,7 +61,7 @@ body.change-form .fieldBox {
     gap: 16px;
 }
 
-body.change-form .fieldBox > .form-row {
+body.change-form .fieldBox>.form-row {
     flex: 1 1 min(280px, 100%);
 }
 
