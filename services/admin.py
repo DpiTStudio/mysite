@@ -111,10 +111,29 @@ class ServiceFAQAdmin(admin.ModelAdmin):
 
 @admin.register(ServicePricePlan)
 class ServicePricePlanAdmin(admin.ModelAdmin):
-    list_display = ("title", "service", "price", "is_recommended", "is_available_for_order", "order")
+    list_display = (
+        "title",
+        "service",
+        "price",
+        "is_recommended",
+        "is_available_for_order",
+        "order",
+    )
     list_filter = ("service", "is_recommended", "is_available_for_order")
     search_fields = ("title", "description", "features_list", "service__title")
     list_editable = ("price", "is_recommended", "is_available_for_order", "order")
+    actions = ["duplicate_selected"]
+
+    @admin.action(description="Копировать выбранные тарифные планы")
+    def duplicate_selected(self, request, queryset):
+        count = 0
+        for plan in queryset:
+            plan.pk = None
+            plan.title = f"{plan.title}"
+            plan.is_recommended = False
+            plan.save()
+            count += 1
+        self.message_user(request, f"Скопировано тарифных планов: {count}")
 
 
 @admin.register(Service)
@@ -369,7 +388,10 @@ class ServiceOrderAdmin(admin.ModelAdmin):
     ]
 
     fieldsets = (
-        ("Основная информация", {"fields": ("short_id", "service", "selected_plan", "user", "status")}),
+        (
+            "Основная информация",
+            {"fields": ("short_id", "service", "selected_plan", "user", "status")},
+        ),
         ("Контактные данные", {"fields": ("full_name", "phone", "email", "message")}),
         (
             "Детали заказа",
