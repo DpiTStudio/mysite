@@ -1,12 +1,12 @@
 <div class="d-flex align-items-center mb-4">
     {% if service.icon %}
-        <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="me-4 rounded-3 p-2 bg-white bg-opacity-10 border border-white border-opacity-10" style="width: 64px; height: 64px; object-fit: contain;">
+        <img src="{{ service.icon.url }}" alt="{{ service.title }}" class="me-4 rounded-3 p-2 bg-white bg-opacity-10 border border-white border-opacity-10" style="width: 114px; height: 114px; object-fit: contain;">
     {% endif %}
     <div>
         <h1 class="display-5 fw-bold mb-2 text-white">{{ service.title }}</h1>
         <div class="d-flex flex-wrap gap-2 align-items-center">
             {% if service.category %}
-                <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 px-3 py-1 rounded-pill small">
+                <span class="badge bg-primary bg-opacity-25 text-services-category border border-primary border-opacity-25 px-3 py-1 rounded-pill small">
                     <i class="fas fa-folder me-1"></i> {{ service.category.name }}
                 </span>
             {% endif %}
@@ -16,12 +16,12 @@
                 </span>
             {% endif %}
             {% if service.estimated_time %}
-                <span class="badge bg-info bg-opacity-25 text-info border border-info border-opacity-25 px-3 py-1 rounded-pill small">
+                <span class="badge bg-info bg-opacity-25 text-service-estimated-time border border-info border-opacity-25 px-3 py-1 rounded-pill small">
                     <i class="fas fa-clock me-1"></i> {{ service.estimated_time }}
                 </span>
             {% endif %}
             {% if service.complexity_level %}
-                <span class="badge bg-secondary bg-opacity-25 text-light border border-secondary border-opacity-25 px-3 py-1 rounded-pill small">
+                <span class="badge bg-secondary bg-opacity-25 text-service-complexity-level border border-secondary border-opacity-25 px-3 py-1 rounded-pill small">
                     <i class="fas fa-layer-group me-1"></i> Сложность: {{ service.get_complexity_level_display }}
                 </span>
             {% endif %}

@@ -15,8 +15,36 @@
     box-shadow: 0 4px 12px rgba(13, 202, 240, 0.25);
 }
 
+
+/* text & color of price box */
+.price-box {
+    font-size: 1.2em;
+    color: hsl(0, 0%, 96%) !important;
+    border-color: #0ea5e9 !important;
+}
+
+/* text & color of plan description */
 .plan-description {
-    height: 150px;
+    color: hsl(0, 0%, 96%) !important;
+    border-color: #0ea5e9 !important;
+}
+
+/* text & color service estimated time */
+.text-service-estimated-time {
+    color: hsl(0, 97%, 24%) !important;
+    border-color: #dc130c !important;
+}
+
+/* text & color services category */
+.text-services-category {
+    color: hsl(0, 0%, 96%) !important;
+    border-color: #0ea5e9 !important;
+}
+
+/* text color service complexity level */
+.text-service-complexity-level {
+    color: hsl(318, 100%, 49%) !important;
+    border-color: #00000075 !important;
 }
 
 /* Admin service form enhancements */
