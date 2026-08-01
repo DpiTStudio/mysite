@@ -8,7 +8,28 @@ register = template.Library()
 @register.filter
 def sum_news_count(categories):
     """Суммирует количество новостей во всех категориях"""
+    if not categories:
+        return 0
     return categories.aggregate(total=Sum("news_count"))["total"] or 0
+
+
+@register.simple_tag(takes_context=True)
+def param_replace(context, **kwargs):
+    """
+    Позволяет изменять или добавлять параметры GET в текущем URL,
+    сохраняя остальные существующие параметры.
+    """
+    request = context.get('request')
+    if not request:
+        return ''
+    dict_ = request.GET.copy()
+    for k, v in kwargs.items():
+        if v is None or v == '':
+            dict_.pop(k, None)
+        else:
+            dict_[k] = str(v)
+    return dict_.urlencode()
+
 
 
 @register.simple_tag
