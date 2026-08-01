@@ -437,6 +437,35 @@ class ServiceBenefit(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.icon_code:
+            text = f"{self.title} {self.description}".lower()
+            icon_map = [
+                ('конверси', 'fas fa-chart-line'),
+                ('адаптивн', 'fas fa-mobile-alt'),
+                ('запуск', 'fas fa-rocket'),
+                ('цена', 'fas fa-piggy-bank'),
+                ('стоимост', 'fas fa-piggy-bank'),
+                ('дизайн', 'fas fa-paint-brush'),
+                ('быстр', 'fas fa-bolt'),
+                ('скорост', 'fas fa-bolt'),
+                ('поддержк', 'fas fa-headset'),
+                ('защит', 'fas fa-shield-alt'),
+                ('безопасн', 'fas fa-lock'),
+                ('сео', 'fas fa-search'),
+                ('seo', 'fas fa-search'),
+                ('код', 'fas fa-code'),
+                ('качеств', 'fas fa-award'),
+                ('гарант', 'fas fa-user-shield'),
+            ]
+            matched = 'fas fa-star'
+            for kw, ic in icon_map:
+                if kw in text:
+                    matched = ic
+                    break
+            self.icon_code = matched
+        super().save(*args, **kwargs)
+
 
 class ServiceStep(models.Model):
     """Этапы выполнения услуги (Процесс работы)."""
@@ -471,15 +500,42 @@ class ServiceFAQ(models.Model):
         return self.question
 
 
+class PricePlanFeature(models.Model):
+    """Модель для элементов/дополнений тарифного плана."""
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name=_("Название пункта/дополнения"),
+        help_text=_("Например: Уникальный дизайн, Хостинг для сайта")
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок сортировки"))
+
+    class Meta:
+        verbose_name = _("Пункт тарифного плана")
+        verbose_name_plural = _("Пункты тарифных планов")
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name
+
+
 class ServicePricePlan(models.Model):
     """Тарифные планы для услуги (напр. Базовый, Стандарт, VIP)."""
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='price_plans', verbose_name=_("Услуга"))
     title = models.CharField(max_length=100, verbose_name=_("Название тарифа"))
     description = models.TextField(verbose_name=_("Краткое описание тарифа"), blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена тарифа"))
+    features = models.ManyToManyField(
+        PricePlanFeature,
+        blank=True,
+        related_name='price_plans',
+        verbose_name=_("Пункты/дополнения"),
+        help_text=_("Выберите пункты из списка или добавьте новые")
+    )
     features_list = models.TextField(
-        verbose_name=_("Список возможностей"), 
-        help_text=_("Каждая возможность с новой строки")
+        verbose_name=_("Список возможностей (текстом)"), 
+        blank=True,
+        help_text=_("Дополнительные текстовые пункты, каждая возможность с новой строки")
     )
     is_recommended = models.BooleanField(default=False, verbose_name=_("Рекомендуемый тариф"))
     is_available_for_order = models.BooleanField(
@@ -502,7 +558,15 @@ class ServicePricePlan(models.Model):
         return self.is_available_for_order and self.service.can_be_ordered
 
     def get_features(self):
-        """Возвращает список возможностей в виде массива."""
-        return [f.strip() for f in self.features_list.split('\n') if f.strip()]
+        """Возвращает список возможностей (как из M2M пунктов, так и из текстового поля)."""
+        m2m_features = [f.name for f in self.features.all()]
+        text_features = [f.strip() for f in self.features_list.split('\n') if f.strip()]
+        
+        combined = []
+        for item in m2m_features + text_features:
+            if item and item not in combined:
+                combined.append(item)
+        return combined
+
 
 

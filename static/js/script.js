@@ -186,28 +186,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedTheme = localStorage.getItem('theme');
     const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
     
-    if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
-        document.body.classList.add('light-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('bi-moon-stars');
-            themeIcon.classList.add('bi-sun');
+    function applyTheme(isLight) {
+        if (isLight) {
+            document.body.classList.add('light-mode');
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.body.setAttribute('data-theme', 'light');
+            if (themeIcon) {
+                themeIcon.classList.remove('bi-moon-stars');
+                themeIcon.classList.add('bi-sun');
+            }
+        } else {
+            document.body.classList.remove('light-mode');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.body.setAttribute('data-theme', 'dark');
+            if (themeIcon) {
+                themeIcon.classList.remove('bi-sun');
+                themeIcon.classList.add('bi-moon-stars');
+            }
         }
     }
+
+    const isInitiallyLight = savedTheme === 'light' || (!savedTheme && prefersLight);
+    applyTheme(isInitiallyLight);
     
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            document.body.classList.toggle('light-mode');
-            
-            if (document.body.classList.contains('light-mode')) {
-                localStorage.setItem('theme', 'light');
-                themeIcon.classList.remove('bi-moon-stars');
-                themeIcon.classList.add('bi-sun');
-            } else {
-                localStorage.setItem('theme', 'dark');
-                themeIcon.classList.remove('bi-sun');
-                themeIcon.classList.add('bi-moon-stars');
-            }
+            const isNowLight = !document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isNowLight ? 'light' : 'dark');
+            applyTheme(isNowLight);
         });
     }
 

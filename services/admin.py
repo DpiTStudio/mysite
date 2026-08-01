@@ -13,14 +13,24 @@ from .models import (
     ServiceBenefit,
     ServiceStep,
     ServiceFAQ,
+    PricePlanFeature,
     ServicePricePlan,
     CURRENCY_SYMBOLS,
 )
 
 
+@admin.register(PricePlanFeature)
+class PricePlanFeatureAdmin(admin.ModelAdmin):
+    list_display = ("name", "order")
+    list_editable = ("order",)
+    search_fields = ("name",)
+    ordering = ("order", "name")
+
+
 @admin.register(Technology)
 class TechnologyAdmin(admin.ModelAdmin):
     search_fields = ("name",)
+
 
 
 @admin.register(ServiceCategory)
@@ -31,8 +41,61 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     search_fields = ("name", "description")
 
 
+POPULAR_BENEFIT_ICONS = [
+    "fas fa-chart-line",
+    "fas fa-mobile-alt",
+    "fas fa-rocket",
+    "fas fa-piggy-bank",
+    "fas fa-shield-alt",
+    "fas fa-bolt",
+    "fas fa-headset",
+    "fas fa-search",
+    "fas fa-lock",
+    "fas fa-cogs",
+    "fas fa-laptop-code",
+    "fas fa-star",
+    "fas fa-award",
+    "fas fa-thumbs-up",
+    "fas fa-gem",
+    "fas fa-user-check",
+    "fas fa-clock",
+    "fas fa-layer-group",
+    "fas fa-bullseye",
+    "fas fa-paint-brush",
+    "fas fa-check-circle",
+]
+
+
+class IconSelectWidget(forms.TextInput):
+    def __init__(self, attrs=None):
+        default_attrs = {
+            "list": "benefit_icon_list",
+            "placeholder": "fas fa-rocket",
+            "style": "width: 100%; min-width: 180px;",
+        }
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(default_attrs)
+
+    def render(self, name, value, attrs=None, renderer=None):
+        input_html = super().render(name, value, attrs, renderer)
+        datalist_options = "".join(f'<option value="{icon}"></option>' for icon in POPULAR_BENEFIT_ICONS)
+        datalist_html = f'<datalist id="benefit_icon_list">{datalist_options}</datalist>'
+        return format_html('{}{}', input_html, format_html(datalist_html))
+
+
+class ServiceBenefitForm(forms.ModelForm):
+    class Meta:
+        model = ServiceBenefit
+        fields = "__all__"
+        widgets = {
+            "icon_code": IconSelectWidget(),
+        }
+
+
 class ServiceBenefitInline(admin.TabularInline):
     model = ServiceBenefit
+    form = ServiceBenefitForm
     extra = 1
     show_change_link = True
     formfield_overrides = {
@@ -95,10 +158,29 @@ class ServiceStepAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceBenefit)
 class ServiceBenefitAdmin(admin.ModelAdmin):
-    list_display = ("title", "service", "icon_code", "order")
+    form = ServiceBenefitForm
+    list_display = ("icon_preview", "title", "service", "icon_code", "order")
+    list_display_links = ("title",)
     list_filter = ("service",)
     search_fields = ("title", "description", "service__title")
-    list_editable = ("order",)
+    list_editable = ("icon_code", "order")
+    ordering = ("service", "order")
+
+    class Media:
+        css = {
+            "all": (
+                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+            )
+        }
+
+    @admin.display(description="Иконка")
+    def icon_preview(self, obj):
+        if obj.icon_code:
+            return format_html(
+                '<span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(75, 108, 183, 0.1); border: 1px solid rgba(75, 108, 183, 0.2); border-radius: 6px; color: #4b6cb7; font-size: 16px;"><i class="{}"></i></span>',
+                obj.icon_code,
+            )
+        return format_html('<span style="color: #999;">—</span>')
 
 
 @admin.register(ServiceFAQ)
@@ -120,7 +202,8 @@ class ServicePricePlanAdmin(admin.ModelAdmin):
         "order",
     )
     list_filter = ("service", "is_recommended", "is_available_for_order")
-    search_fields = ("title", "description", "features_list", "service__title")
+    search_fields = ("title", "description", "features_list", "features__name", "service__title")
+    filter_vertical = ("features",)
     list_editable = ("price", "is_recommended", "is_available_for_order", "order")
     actions = ["duplicate_selected"]
 

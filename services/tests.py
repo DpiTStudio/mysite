@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib import admin
 
-from .models import Service, ServiceStep, ServicePricePlan, ServiceOrder
+from .models import Service, ServiceStep, ServicePricePlan, ServiceOrder, PricePlanFeature
 from .admin import ServiceAdmin, ServiceStepAdmin, ServiceStepInline, ServicePricePlanAdmin
 from .forms import ServiceOrderForm
 
@@ -132,4 +132,30 @@ class ServiceAdminTests(TestCase):
         })
         self.assertEqual(response.status_code, 302)
         self.assertEqual(ServiceOrder.objects.filter(service=service).count(), 0)
+
+    def test_price_plan_feature_creation_and_m2m_features(self):
+        f1, _ = PricePlanFeature.objects.get_or_create(name="Уникальный дизайн.", defaults={'order': 10})
+        f2, _ = PricePlanFeature.objects.get_or_create(name="Хостинг для сайта.", defaults={'order': 20})
+        
+        service = Service.objects.create(
+            title="Услуга для тарифа с фичами",
+            slug="feature-service",
+            price_type="fixed",
+            price_fixed=10000,
+        )
+        plan = ServicePricePlan.objects.create(
+            service=service,
+            title="Премиум",
+            price=15000,
+            features_list="Дополнительный пункт\nУникальный дизайн.",
+        )
+        plan.features.add(f1, f2)
+
+        features = plan.get_features()
+        self.assertIn("Уникальный дизайн.", features)
+        self.assertIn("Хостинг для сайта.", features)
+        self.assertIn("Дополнительный пункт", features)
+        # Check no duplicates
+        self.assertEqual(len(features), len(set(features)))
+
 

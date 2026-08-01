@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.contrib import messages
-from django.db.models import Q, F
+from django.db.models import Q, F, Count
 
 
-from .models import Service, ServiceCategory
+from .models import Service, ServiceCategory, Technology
 
 from .forms import ServiceOrderForm
 
@@ -57,7 +57,8 @@ def _build_service_detail_context(service, form=None, user=None, initial_plan_id
 class ServiceListView(ListView):
     """
     Отображает список всех доступных услуг с возможностью фильтрации
-    по категории, сложности и используемым технологиям.
+    по категории, сложности, ключевым словам и используемым технологиям.
+    Оптимизирован для эффективной выборки из БД.
     """
     model = Service
     template_name = 'services/list.html'
@@ -66,51 +67,124 @@ class ServiceListView(ListView):
     
     def get_queryset(self):
         """Возвращает отфильтрованный набор данных услуг с оптимизацией ORM-запросов"""
-        queryset = Service.objects.filter(is_active=True).select_related('category').prefetch_related('technologies').order_by('order')
+        queryset = Service.objects.filter(is_active=True).select_related('category').prefetch_related('technologies').order_by('order', 'title')
         
-        filters = {
-            'category': self.request.GET.get('category'),
-            'complexity_level': self.request.GET.get('complexity'),
-        }
+        # 1. Фильтр по категории
+        category_id = self.request.GET.get('category')
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
 
-        active_filters = {k: v for k, v in filters.items() if v}
-        if active_filters:
-            queryset = queryset.filter(**active_filters)
+        # 2. Фильтр по сложности
+        complexity = self.request.GET.get('complexity')
+        if complexity:
+            queryset = queryset.filter(complexity_level=complexity)
 
+        # 3. Фильтр по технологии
         tech_param = self.request.GET.get('tech')
         if tech_param:
             if tech_param.isdigit():
                 queryset = queryset.filter(technologies__id=tech_param)
             else:
                 queryset = queryset.filter(technologies__name__iexact=tech_param)
-            
-        # Применяем сортировку
+
+        # 4. Фильтр по поисковому запросу
+        q = self.request.GET.get('q', '').strip()
+        if q:
+            queryset = queryset.filter(
+                Q(title__icontains=q) |
+                Q(short_description__icontains=q) |
+                Q(description__icontains=q) |
+                Q(technologies__name__icontains=q) |
+                Q(category__name__icontains=q)
+            ).distinct()
+
+        # 5. Сортировка
         sort_param = self.request.GET.get('sort')
         if sort_param == 'price_asc':
-            queryset = queryset.order_by('price_min', 'price_fixed', 'order')
+            queryset = queryset.order_by('price_fixed', 'price_min', 'order')
         elif sort_param == 'price_desc':
             queryset = queryset.order_by('-price_fixed', '-price_max', 'order')
         elif sort_param == 'views_desc':
             queryset = queryset.order_by('-views', 'order')
+        elif sort_param == 'popular':
+            queryset = queryset.order_by('-is_popular', 'order')
+        elif sort_param == 'title':
+            queryset = queryset.order_by('title')
             
         return queryset
     
     def get_context_data(self, **kwargs):
-        """Добавляет в контекст категории и блок популярных услуг для правой панели/фильтров"""
+        """Добавляет в контекст аннотированные категории, технологии и активные фильтры"""
         context = super().get_context_data(**kwargs)
         
-        context['service_categories'] = (
+        # Категории с подсчетом активных услуг в одной агрегированной выборке
+        categories = (
             ServiceCategory.objects
             .filter(is_active=True)
-            .order_by('order')
+            .annotate(service_count=Count('services', filter=Q(services__is_active=True)))
+            .order_by('order', 'name')
         )
+        
+        total_services_count = Service.objects.filter(is_active=True).count()
+        
+        # Выбранная категория для хлебных крошек/заголовка
+        category_id = self.request.GET.get('category')
+        selected_category = None
+        if category_id and category_id.isdigit():
+            selected_category = categories.filter(pk=category_id).first()
 
-        context['popular_services'] = Service.objects.filter(
-            is_active=True, 
-            is_popular=True
-        ).select_related('category').prefetch_related('technologies').order_by('order')[:6]
+        # Список активных технологий для быстрой фильтрации
+        technologies = Technology.objects.filter(services__is_active=True).distinct().order_by('name')
+
+        # Флаг наличия активных фильтров для кнопки сброса
+        active_complexity = self.request.GET.get('complexity')
+        active_tech = self.request.GET.get('tech')
+        search_query = self.request.GET.get('q', '').strip()
+        current_sort = self.request.GET.get('sort', '')
+        
+        has_active_filters = bool(category_id or active_complexity or active_tech or search_query or current_sort)
+
+        # Подготовка понятных метаданных для выбранной сложности, технологии и сортировки
+        complexity_dict = dict(Service.COMPLEXITY_CHOICES)
+        selected_complexity_label = complexity_dict.get(active_complexity, '') if active_complexity else ''
+        
+        sort_labels = {
+            'price_asc': 'Сначала дешевле',
+            'price_desc': 'Сначала дороже',
+            'views_desc': 'Популярные (по просмотрам)',
+            'title': 'По алфавиту',
+        }
+        selected_sort_label = sort_labels.get(current_sort, '')
+
+        selected_tech_obj = None
+        if active_tech:
+            if active_tech.isdigit():
+                selected_tech_obj = technologies.filter(pk=active_tech).first()
+            else:
+                selected_tech_obj = technologies.filter(name__iexact=active_tech).first()
+
+        context.update({
+            'service_categories': categories,
+            'total_services_count': total_services_count,
+            'selected_category': selected_category,
+            'technologies': technologies,
+            'complexity_choices': Service.COMPLEXITY_CHOICES,
+            'selected_complexity': active_complexity,
+            'selected_complexity_label': selected_complexity_label,
+            'selected_tech': active_tech,
+            'selected_tech_obj': selected_tech_obj,
+            'current_sort': current_sort,
+            'selected_sort_label': selected_sort_label,
+            'search_query': search_query,
+            'has_active_filters': has_active_filters,
+            'popular_services': Service.objects.filter(
+                is_active=True, 
+                is_popular=True
+            ).select_related('category').prefetch_related('technologies').order_by('order')[:6]
+        })
         
         return context
+
 
 
 class ServiceDetailView(DetailView):

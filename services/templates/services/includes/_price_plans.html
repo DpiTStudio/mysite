@@ -1,52 +1,40 @@
 {% if price_plans %}
 <div class="mb-5">
-    <h4 class="fw-bold mb-4 text-white"><i class="fas fa-tags text-info me-2"></i>Тарифные планы</h4>
+    <h4 class="fw-bold mb-4 service-heading"><i class="fas fa-tags text-info me-2"></i>Тарифные планы</h4>
     <div class="row g-4">
         {% for plan in price_plans %}
         <div class="col-md-4">
-            <div class="glass-card-premium p-4 h-100 border-0 rounded-4 position-relative d-flex flex-column {% if plan.is_recommended %}border-top border-primary border-4 shadow-lg{% endif %}" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);">
+            <div class="plan-card-modern p-4 h-100 position-relative d-flex flex-column {% if plan.is_recommended %}border-top border-primary border-4 shadow-lg{% endif %}">
                 {% if plan.is_recommended %}
-                <div class="badge bg-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill small fw-bold">
+                <div class="badge badge-popular position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill small fw-bold">
                     <i class="fas fa-fire me-1"></i> ХИТ ПРОДАЖ
                 </div>
                 {% endif %}
 
-                {% if plan.can_be_ordered %}
-                <a href="?plan={{ plan.id }}#order-form-widget" data-plan-id="{{ plan.id }}" class="btn select-plan-btn {% if plan.is_recommended %}btn-primary shine-effect{% else %}btn-outline-light{% endif %} w-100 rounded-pill py-2 fw-medium mt-auto">
-                    <i class="fas fa-check me-1"></i> Выбрать тариф
-                </a>
-                {% else %}
-                <button disabled class="btn btn-outline-secondary opacity-50 w-100 rounded-pill py-2 fw-medium mt-auto" style="cursor: not-allowed;">
-                    <i class="fas fa-ban me-1"></i> Недоступен для заказа
-                </button>
-                {% endif %}
-
-
-                <h5 class="fw-bold text-white mb-2">{{ plan.title }}</h5>
-                <div class="h3 fw-bold text-gradient mb-3">{{ plan.price|floatformat:0 }} ₽</div>
+                <h5 class="fw-bold service-heading mb-2 fs-5">{{ plan.title }}</h5>
+                <div class="h3 fw-bold price-display-lg mb-3">{{ plan.price|floatformat:0 }} ₽</div>
                 {% if plan.description %}
-                <p class="small text-muted mb-4 plan-description">{{ plan.description }}</p>
+                <p class="small text-subtle mb-4 plan-description">{{ plan.description }}</p>
                 {% endif %}
                 
                 <ul class="list-unstyled mb-4 flex-grow-1">
                     {% for feature in plan.get_features %}
-                    <li class="small text-white-50 mb-2.5 d-flex align-items-center">
+                    <li class="small text-subtle mb-2.5 d-flex align-items-center">
                         <i class="fas fa-check-circle text-success me-2 fs-6"></i>
-                        <span>{{ feature }}</span>
+                        <span class="fw-medium">{{ feature }}</span>
                     </li>
                     {% endfor %}
                 </ul>
-                {% comment %}
+
                 {% if plan.can_be_ordered %}
-                <a href="?plan={{ plan.id }}#order-form-widget" data-plan-id="{{ plan.id }}" class="btn select-plan-btn {% if plan.is_recommended %}btn-primary shine-effect{% else %}btn-outline-light{% endif %} w-100 rounded-pill py-2 fw-medium mt-auto">
+                <a href="?plan={{ plan.id }}#order-form-widget" data-plan-id="{{ plan.id }}" class="btn select-plan-btn {% if plan.is_recommended %}btn-primary{% else %}btn-outline-light{% endif %} w-100 rounded-pill py-2.5 fw-semibold mt-auto">
                     <i class="fas fa-check me-1"></i> Выбрать тариф
                 </a>
                 {% else %}
-                <button disabled class="btn btn-outline-secondary opacity-50 w-100 rounded-pill py-2 fw-medium mt-auto" style="cursor: not-allowed;">
+                <button disabled class="btn btn-outline-secondary opacity-50 w-100 rounded-pill py-2.5 fw-medium mt-auto" style="cursor: not-allowed;">
                     <i class="fas fa-ban me-1"></i> Недоступен для заказа
                 </button>
                 {% endif %}
-                {% endcomment %}
             </div>
         </div>
         {% endfor %}

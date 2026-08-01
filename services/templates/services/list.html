@@ -1,115 +1,393 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load services_extras %}
 
-{% block title %}Наши услуги | {{ block.super }}{% endblock %}
+{% block title %}{% if selected_category %}{{ selected_category.name }} — {% endif %}Наши услуги | {{ block.super }}{% endblock %}
 
 {% block extra_css %}
 <link href="{% static 'services/css/services.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="services-page-container row">
+    <!-- Заголовок и инфо-панель -->
     <div class="col-12 text-left mb-4 animate-left">
-        <h1 class="display-4 fw-bold text-gradient mb-3">Наши Услуги</h1>
-        <p class="lead text-muted">Профессиональные решения для вашего бизнеса</p>
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
+            <div>
+                <h1 class="display-4 fw-bold text-gradient mb-2">
+                    {% if selected_category %}
+                        {{ selected_category.name }}
+                    {% else %}
+                        Наши Услуги
+                    {% endif %}
+                </h1>
+                <p class="lead text-subtle mb-0">
+                    {% if selected_category and selected_category.description %}
+                        {{ selected_category.description }}
+                    {% else %}
+                        Профессиональные цифровые решения для роста вашего бизнеса
+                    {% endif %}
+                </p>
+            </div>
+            
+            <!-- Поисковая строка -->
+            <div class="services-search-wrapper position-relative" style="min-width: 280px; max-width: 400px;">
+                <form method="get" action="{% url 'services:list' %}" class="d-flex align-items-center">
+                    {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+                    {% if request.GET.complexity %}<input type="hidden" name="complexity" value="{{ request.GET.complexity }}">{% endif %}
+                    {% if request.GET.tech %}<input type="hidden" name="tech" value="{{ request.GET.tech }}">{% endif %}
+                    {% if request.GET.sort %}<input type="hidden" name="sort" value="{{ request.GET.sort }}">{% endif %}
+                    
+                    <i class="bi bi-search services-search-icon"></i>
+                    <input type="text" name="q" value="{{ search_query }}" class="form-control services-search-input py-2 shadow-none" placeholder="Поиск по услугам и стеку...">
+                    {% if search_query %}
+                    <a href="?{% param_replace q=None page=None %}" class="position-absolute end-0 me-3 text-info text-decoration-none" title="Очистить поиск">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </a>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
     </div>
 
-    <!-- Секция категорий (фильтрация) и сортировки -->
-    <div class="col-12 mb-5 animate-left">
-        <div class="category-filter-box">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-                <!-- Блок со списком категорий -->
+    <!-- Секция мульти-фильтров и сортировки -->
+    <div class="col-12 mb-4 animate-left">
+        <div class="services-filter-card p-4">
+            <div class="d-flex flex-column gap-3">
+                <!-- Блок категорий с счетчиками -->
                 <div>
-                    <h5 class="fw-semibold mb-3 text-muted small text-uppercase letter-spacing-1">Категории:</h5>
+                    <div class="d-flex align-items-center justify-content-between mb-2.5">
+                        <h6 class="services-filter-title text-uppercase letter-spacing-1 mb-0">
+                            <i class="bi bi-grid-3x3-gap me-2 text-primary"></i>Категории услуг:
+                        </h6>
+                    </div>
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="{% url 'services:list' %}" class="btn {% if not request.GET.category %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-4">Все</a>
+                        <a href="?{% param_replace category=None page=None %}" 
+                           class="btn service-cat-btn rounded-pill px-3.5 py-1.5 {% if not selected_category %}btn-primary shadow-sm{% else %}btn-cat-inactive{% endif %}">
+                            Все услуги <span class="badge rounded-pill badge-cat ms-1">{{ total_services_count }}</span>
+                        </a>
                         {% for cat in service_categories %}
-                        <a href="{% url 'services:list' %}?category={{ cat.id }}" class="btn {% if request.GET.category == cat.id|stringformat:'s' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-4">
-                            {{ cat.name }}
+                        <a href="?{% param_replace category=cat.id page=None %}" 
+                           class="btn service-cat-btn rounded-pill px-3.5 py-1.5 {% if selected_category and selected_category.id == cat.id %}btn-primary shadow-sm{% else %}btn-cat-inactive{% endif %}">
+                            {{ cat.name }} 
+                            <span class="badge rounded-pill badge-cat ms-1">{{ cat.service_count }}</span>
                         </a>
                         {% endfor %}
                     </div>
                 </div>
-                
-                <!-- Блок управления сортировкой -->
-                <div class="sort-controls">
-                    <h5 class="fw-semibold mb-3 text-muted small text-uppercase letter-spacing-1">Сортировка:</h5>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="?sort=price_asc{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="btn btn-sm btn-outline-secondary rounded-pill align-content-center {% if request.GET.sort == 'price_asc' %}active{% endif %}">
-                            <i class="bi bi-sort-numeric-down me-1"></i> Дешевле
-                        </a>
-                        <a href="?sort=price_desc{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="btn btn-sm btn-outline-secondary rounded-pill align-content-center {% if request.GET.sort == 'price_desc' %}active{% endif %}">
-                            <i class="bi bi-sort-numeric-up me-1"></i> Дороже
-                        </a>
-                        <a href="?sort=views_desc{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="btn btn-sm btn-outline-secondary rounded-pill align-content-center {% if request.GET.sort == 'views_desc' %}active{% endif %}">
-                            <i class="bi bi-eye me-1"></i> Популярные
-                        </a>
+
+                <!-- Строка с доп. фильтрами (Сложность + Технологии + Сортировка) -->
+                <div class="pt-3 border-top border-secondary border-opacity-30 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    
+                    <!-- Дополнительные фильтры: Сложность и Технологии -->
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <span class="services-filter-title text-uppercase letter-spacing-1 me-1">
+                            <i class="bi bi-funnel me-1 text-info"></i>Фильтры:
+                        </span>
+                        
+                        <!-- Дропдаун Сложность -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm services-dropdown-btn {% if selected_complexity %}btn-info text-dark fw-bold{% endif %} rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-bar-chart-steps me-1"></i>
+                                {% if selected_complexity_label %}{{ selected_complexity_label }}{% else %}Сложность{% endif %}
+                            </button>
+                            <ul class="dropdown-menu shadow-lg border-0">
+                                <li><a class="dropdown-item {% if not selected_complexity %}active{% endif %}" href="?{% param_replace complexity=None page=None %}">Все уровни</a></li>
+                                <li><hr class="dropdown-divider opacity-25"></li>
+                                {% for val, label in complexity_choices %}
+                                <li>
+                                    <a class="dropdown-item {% if selected_complexity == val %}active{% endif %}" href="?{% param_replace complexity=val page=None %}">
+                                        {{ label }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Дропдаун Технологии -->
+                        {% if technologies %}
+                        <div class="dropdown">
+                            <button class="btn btn-sm services-dropdown-btn {% if selected_tech %}btn-info text-dark fw-bold{% endif %} rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-code-slash me-1"></i>
+                                {% if selected_tech_obj %}{{ selected_tech_obj.name }}{% else %}Стек{% endif %}
+                            </button>
+                            <ul class="dropdown-menu shadow-lg border-0" style="max-height: 280px; overflow-y: auto;">
+                                <li><a class="dropdown-item {% if not selected_tech %}active{% endif %}" href="?{% param_replace tech=None page=None %}">Все технологии</a></li>
+                                <li><hr class="dropdown-divider opacity-25"></li>
+                                {% for tech in technologies %}
+                                <li>
+                                    <a class="dropdown-item {% if selected_tech == tech.id|stringformat:'s' or selected_tech == tech.name %}active{% endif %}" href="?{% param_replace tech=tech.id page=None %}">
+                                        {{ tech.name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Блок управления сортировкой -->
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="services-filter-title text-uppercase letter-spacing-1 me-1">
+                            <i class="bi bi-sort-down me-1 text-warning"></i>Сортировка:
+                        </span>
+                        <div class="d-flex flex-wrap gap-1.5" role="group">
+                            <a href="?{% param_replace sort=None page=None %}" 
+                               class="btn btn-sm services-sort-btn rounded-pill px-3 {% if not current_sort %}active{% endif %}" title="По порядку">
+                                По порядку
+                            </a>
+                            <a href="?{% param_replace sort='price_asc' page=None %}" 
+                               class="btn btn-sm services-sort-btn rounded-pill px-3 {% if current_sort == 'price_asc' %}active{% endif %}">
+                                <i class="bi bi-arrow-up me-1"></i> Дешевле
+                            </a>
+                            <a href="?{% param_replace sort='price_desc' page=None %}" 
+                               class="btn btn-sm services-sort-btn rounded-pill px-3 {% if current_sort == 'price_desc' %}active{% endif %}">
+                                <i class="bi bi-arrow-down me-1"></i> Дороже
+                            </a>
+                            <a href="?{% param_replace sort='views_desc' page=None %}" 
+                               class="btn btn-sm services-sort-btn rounded-pill px-3 {% if current_sort == 'views_desc' %}active{% endif %}">
+                                <i class="bi bi-fire me-1"></i> Популярные
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Активные плашки фильтров -->
+    {% if has_active_filters %}
+    <div class="col-12 mb-4">
+        <div class="active-filter-container d-flex align-items-center flex-wrap gap-2 p-3">
+            <span class="small text-subtle me-2 fw-semibold"><i class="bi bi-check2-circle me-1 text-success fs-6"></i>Примененные параметры:</span>
+            
+            {% if selected_category %}
+            <a href="?{% param_replace category=None page=None %}" class="active-filter-badge">
+                Категория: {{ selected_category.name }} <i class="bi bi-x-lg ms-1"></i>
+            </a>
+            {% endif %}
+
+            {% if selected_complexity_label %}
+            <a href="?{% param_replace complexity=None page=None %}" class="active-filter-badge">
+                Сложность: {{ selected_complexity_label }} <i class="bi bi-x-lg ms-1"></i>
+            </a>
+            {% endif %}
+
+            {% if selected_tech_obj %}
+            <a href="?{% param_replace tech=None page=None %}" class="active-filter-badge">
+                Стек: {{ selected_tech_obj.name }} <i class="bi bi-x-lg ms-1"></i>
+            </a>
+            {% endif %}
+
+            {% if search_query %}
+            <a href="?{% param_replace q=None page=None %}" class="active-filter-badge">
+                Поиск: «{{ search_query }}» <i class="bi bi-x-lg ms-1"></i>
+            </a>
+            {% endif %}
+
+            {% if selected_sort_label %}
+            <a href="?{% param_replace sort=None page=None %}" class="active-filter-badge active-filter-badge-sort">
+                Сортировка: {{ selected_sort_label }} <i class="bi bi-x-lg ms-1"></i>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'services:list' %}" class="btn btn-sm btn-outline-danger rounded-pill ms-auto px-3 py-1 text-decoration-none fw-semibold small">
+                <i class="bi bi-trash3 me-1"></i> Сбросить всё
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Карточки услуг -->
     <div class="col-12">
         <div class="row g-4">
             {% for service in services %}
             <div class="col-lg-4 col-md-6">
-                <div class="card-premium p-4 border-0 h-100 d-flex flex-column text-center position-relative {% if not service.can_be_ordered %}opacity-90{% endif %}">
-                    {% if not service.can_be_ordered %}
-                    <div class="position-absolute top-0 end-0 m-3 z-2">
-                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25 px-3 py-1 rounded-pill small fw-semibold">
-                            <i class="bi bi-slash-circle me-1"></i> Недоступно
-                        </span>
-                    </div>
-                    {% endif %}
-
-                    <div class="service-icon mb-4 d-flex align-items-center justify-content-center mx-auto" style="width: 100%; height: 200px; background: var(--color-primary-alpha); border-radius: var(--radius-md);">
-                        {% if service.icon %}
-                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="width: 100%; height: 200px; object-fit: contain;">
+                <div class="service-card-modern p-4 h-100 d-flex flex-column position-relative {% if not service.can_be_ordered %}opacity-85{% endif %}">
+                    
+                    <!-- Верхняя панель карточки: Категория и Статус/Просмотры -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 position-relative z-2">
+                        {% if service.category %}
+                        <a href="?{% param_replace category=service.category.id page=None %}" class="badge badge-category px-3 py-1.5 rounded-pill text-decoration-none small fw-semibold">
+                            {{ service.category.name }}
+                        </a>
                         {% else %}
-                            <div class="text-primary">
-                                <i class="bi bi-cpu fs-1"></i>
+                        <span></span>
+                        {% endif %}
+
+                        <div class="d-flex align-items-center gap-2">
+                            {% if service.is_popular %}
+                            <span class="badge badge-popular rounded-pill px-2.5 py-1 small" title="Популярная услуга">
+                                <i class="bi bi-star-fill me-1"></i>Хит
+                            </span>
+                            {% endif %}
+                            
+                            <span class="views-count-badge small d-inline-flex align-items-center ms-1" title="Количество просмотров">
+                                <i class="bi bi-eye me-1"></i>{{ service.views }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Иконка / Изображение услуги -->
+                    <div class="service-card-icon-wrapper mb-3 p-3 d-flex align-items-center justify-content-center" style="height: 160px;">
+                        {% if service.icon %}
+                            <img src="{{ service.icon.url }}" alt="{{ service.title }}" style="max-width: 100%; max-height: 140px; object-fit: contain;">
+                        {% else %}
+                            <div class="text-primary text-center">
+                                <i class="bi bi-cpu display-3 opacity-90"></i>
                             </div>
                         {% endif %}
                     </div>
 
-                    <h3 class="h4 fw-bold mb-3 text-white">{{ service.title }}</h3>
-                    
-                    <p class="small text-muted mb-4 flex-grow-1" style="line-height: 1.6;">
-                        {{ service.short_description|striptags|truncatewords:15 }}
+                    <!-- Заголовок -->
+                    <h3 class="service-card-title mb-2">
+                        <a href="{% url 'services:detail' service.slug %}">
+                            {{ service.title }}
+                        </a>
+                    </h3>
+
+                    <!-- Краткое описание -->
+                    <p class="service-desc mb-3 flex-grow-1">
+                        {{ service.short_description|striptags|truncatewords:16 }}
                     </p>
-                    
-                    <div class="price-tag mb-4 fs-4 text-gradient fw-bold">
-                        {{ service.get_price_display }}
-                    </div>
-                    
-                    <div class="d-flex flex-column gap-2 mt-auto">
-                        {% if service.can_be_ordered %}
-                        <form action="{% url 'cart:cart_add' 'service' service.id %}" method="post" class="w-100">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary w-100 rounded-pill shine-effect py-2 fw-medium">
-                                <i class="bi bi-cart-plus me-2"></i> В корзину
-                            </button>
-                        </form>
+
+                    <!-- Доп. характеристики: Сложность и Сроки -->
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                        {% if service.complexity_level == 'simple' %}
+                        <span class="badge badge-complexity-simple rounded-pill px-2.5 py-1 small">
+                            <i class="bi bi-speedometer2 me-1"></i>Простой
+                        </span>
+                        {% elif service.complexity_level == 'medium' %}
+                        <span class="badge badge-complexity-medium rounded-pill px-2.5 py-1 small">
+                            <i class="bi bi-speedometer2 me-1"></i>Средний
+                        </span>
+                        {% elif service.complexity_level == 'complex' %}
+                        <span class="badge badge-complexity-complex rounded-pill px-2.5 py-1 small">
+                            <i class="bi bi-speedometer2 me-1"></i>Сложный
+                        </span>
                         {% else %}
-                        <button type="button" class="btn btn-secondary w-100 rounded-pill py-2 opacity-50" disabled style="cursor: not-allowed;">
-                            <i class="bi bi-slash-circle me-2"></i> Заказ недоступен
-                        </button>
+                        <span class="badge badge-complexity-expert rounded-pill px-2.5 py-1 small">
+                            <i class="bi bi-speedometer2 me-1"></i>Ультра-кодинг
+                        </span>
                         {% endif %}
-                        <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-light btn-sm w-100 rounded-pill py-2 mt-1">Подробнее</a>
+
+                        {% if service.estimated_time %}
+                        <span class="badge badge-time rounded-pill px-2.5 py-1 small">
+                            <i class="bi bi-clock-history me-1 text-info"></i>{{ service.estimated_time }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Стек технологий (ManyToMany) -->
+                    {% if service.technologies.all %}
+                    <div class="d-flex flex-wrap gap-1 mb-4">
+                        {% for tech in service.technologies.all|slice:":4" %}
+                        <a href="?{% param_replace tech=tech.id page=None %}" class="tech-pill text-decoration-none">
+                            #{{ tech.name }}
+                        </a>
+                        {% endfor %}
+                        {% if service.technologies.count > 4 %}
+                        <span class="tech-pill opacity-90">+{{ service.technologies.count|add:"-4" }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Цена и Кнопка заказа -->
+                    <div class="pt-3 border-top border-secondary border-opacity-30 mt-auto">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="price-label">Стоимость:</span>
+                            <div class="price-display-lg text-end">
+                                {{ service.get_price_display|linebreaksbr }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {% if service.can_be_ordered %}
+                            <form action="{% url 'cart:cart_add' 'service' service.id %}" method="post" class="w-100">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold">
+                                    <i class="bi bi-cart-plus me-2"></i> В корзину
+                                </button>
+                            </form>
+                            {% else %}
+                            <button type="button" class="btn btn-secondary w-100 rounded-pill py-2 opacity-60" disabled style="cursor: not-allowed;">
+                                <i class="bi bi-slash-circle me-2"></i> Заказ недоступен
+                            </button>
+                            {% endif %}
+                            
+                            <a href="{% url 'services:detail' service.slug %}" class="btn btn-outline-light btn-sm w-100 rounded-pill py-2">
+                                Подробнее <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             {% empty %}
+            <!-- Сообщение при отсутствии результатов -->
             <div class="col-12">
-                <div class="glass-card p-5 text-center">
-                    <i class="bi bi-info-circle display-4 text-muted mb-4"></i>
-                    <h4 class="text-white">Услуги временно отсутствуют</h4>
-                    <p class="text-muted">Пожалуйста, загляните позже.</p>
+                <div class="services-filter-card p-5 text-center">
+                    <div class="mb-3 text-info">
+                        <i class="bi bi-search display-1"></i>
+                    </div>
+                    <h4 class="service-heading fw-bold mb-2">Услуги не найдены</h4>
+                    <p class="text-subtle mb-4">По заданным критериям фильтрации не нашлось ни одной подходящей услуги.</p>
+                    <a href="{% url 'services:list' %}" class="btn btn-primary rounded-pill px-4 py-2">
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>Сбросить фильтры
+                    </a>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
+
+    <!-- Пагинация списка услуг -->
+    {% if is_paginated %}
+    <div class="col-12 mt-5">
+        <nav aria-label="Навигация по услугам">
+            <ul class="pagination justify-content-center mb-0 gap-1">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link services-dropdown-btn rounded-pill px-3 shadow-none border-0" href="?{% param_replace page=page_obj.previous_page_number %}">
+                        <i class="bi bi-chevron-left me-1"></i>Назад
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link services-dropdown-btn rounded-pill px-3 shadow-none border-0 opacity-40">
+                        <i class="bi bi-chevron-left me-1"></i>Назад
+                    </span>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link rounded-pill px-3.5 shadow-sm border-0 bg-primary text-white fw-bold">{{ num }}</span>
+                    </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link services-dropdown-btn rounded-pill px-3.5 shadow-none border-0" href="?{% param_replace page=num %}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link services-dropdown-btn rounded-pill px-3 shadow-none border-0" href="?{% param_replace page=page_obj.next_page_number %}">
+                        Вперед<i class="bi bi-chevron-right ms-1"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link services-dropdown-btn rounded-pill px-3 shadow-none border-0 opacity-40">
+                        Вперед<i class="bi bi-chevron-right ms-1"></i>
+                    </span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
 
