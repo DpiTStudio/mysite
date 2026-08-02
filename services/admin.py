@@ -15,6 +15,7 @@ from .models import (
     ServiceFAQ,
     PricePlanFeature,
     ServicePricePlan,
+    Deliverable,
     CURRENCY_SYMBOLS,
 )
 
@@ -218,6 +219,12 @@ class ServicePricePlanAdmin(admin.ModelAdmin):
             count += 1
         self.message_user(request, f"Скопировано тарифных планов: {count}")
 
+@admin.register(Deliverable)
+class DeliverableAdmin(admin.ModelAdmin):
+    list_display = ("title", "order")
+    list_editable = ("order",)
+    search_fields = ("title", "items_list")
+    ordering = ("order", "title")
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -248,7 +255,7 @@ class ServiceAdmin(admin.ModelAdmin):
     search_fields = ("title", "description", "short_description", "technologies__name")
     prepopulated_fields = {"slug": ("title",)}
     list_editable = ("is_active", "is_popular", "is_available_for_order", "order")
-    filter_horizontal = ("technologies", "related_portfolio")
+    filter_horizontal = ("technologies", "related_portfolio", "deliverables_m2m")
     inlines = [
         ServiceBenefitInline,
         ServiceStepInline,
@@ -288,6 +295,7 @@ class ServiceAdmin(admin.ModelAdmin):
                 "fields": (
                     "complexity_level",
                     "estimated_time",
+                    "deliverables_m2m",
                     "deliverables",
                 ),
                 "classes": ("collapse", "wide"),

@@ -232,6 +232,13 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         blank=True,
         help_text=_("Результат который отправляется заказчику на руки (файлы, макеты, код)")
     )
+    deliverables_m2m = models.ManyToManyField(
+        'Deliverable',
+        blank=True,
+        related_name='services',
+        verbose_name=_("Что вы получите в результате (пункты)"),
+        help_text=_("Выберите готовые пункты с подпунктами для отображения в результатах работы")
+    )
     
     class Meta:
         verbose_name = _("Услуга")
@@ -567,6 +574,37 @@ class ServicePricePlan(models.Model):
             if item and item not in combined:
                 combined.append(item)
         return combined
+
+
+class Deliverable(models.Model):
+    """
+    Модель для результатов работы ("Что вы получите в результате").
+    Позволяет создавать пункты с подпунктами (редактировать в одном месте),
+    которые потом можно привязывать к услугам (и товарам).
+    """
+    title = models.CharField(
+        max_length=255, 
+        verbose_name=_("Заголовок результата"),
+        help_text=_("Например: 'Пакет документов', 'Настроенная CRM'")
+    )
+    items_list = models.TextField(
+        verbose_name=_("Список подпунктов"), 
+        blank=True,
+        help_text=_("Перечислите подпункты, каждый с новой строки.")
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок сортировки"))
+
+    class Meta:
+        verbose_name = _("Результат работы (Deliverable)")
+        verbose_name_plural = _("Результаты работы")
+        ordering = ['order', 'title']
+
+    def __str__(self):
+        return self.title
+
+    def get_items(self):
+        """Возвращает список подпунктов, разбивая по строкам."""
+        return [item.strip() for item in self.items_list.split('\n') if item.strip()]
 
 
 

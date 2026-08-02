@@ -84,7 +84,7 @@
             <!-- Краткое лид-описание если есть meta_description -->
             {% if news.meta_description %}
             <div class="lead-description p-4 rounded-4 mb-4 fs-5">
-                <i class="bi bi-quote me-2 text-primary fs-3 align-middle"></i>{{ news.meta_description }}
+                <i class="bi bi-quote me-2 text-primary fs-3 align-middle"></i>{{ news.meta_description|safe }}
             </div>
             {% endif %}
 
@@ -167,23 +167,59 @@
 
         <!-- Связанные новости -->
         {% if related_news %}
-        <div class="mt-5">
-            <h3 class="news-heading h4 mb-4"><i class="bi bi-collection me-2 text-primary"></i>Связанные новости</h3>
+        <div class="mt-5 border-top border-secondary border-opacity-30 pt-5">
+            <h3 class="news-heading h3 mb-4 fw-bold"><i class="bi bi-collection-play me-2 text-primary"></i>Связанные новости</h3>
             <div class="row g-4">
                 {% for related in related_news %}
-                <div class="col-lg-3 col-md-6">
-                    <div class="news-card-modern p-3.5 h-100 d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge badge-category px-2.5 py-1 rounded-pill small">{{ related.category.name }}</span>
-                            <span class="small text-subtle"><i class="bi bi-eye me-1"></i>{{ related.views }}</span>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="news-card-modern p-4 h-100 d-flex flex-column position-relative">
+                        <!-- Верхняя панель -->
+                        <div class="d-flex justify-content-between align-items-center mb-3 position-relative z-2">
+                            {% if related.category %}
+                            <a href="{% url 'news:by_category' related.category.slug %}" class="badge badge-category px-3 py-1.5 rounded-pill text-decoration-none small fw-semibold">
+                                {{ related.category.name }}
+                            </a>
+                            {% else %}
+                            <span></span>
+                            {% endif %}
+                            
+                            <span class="views-count-badge small d-inline-flex align-items-center ms-1" title="Количество просмотров">
+                                <i class="bi bi-eye me-1"></i>{{ related.views }}
+                            </span>
                         </div>
-                        <h4 class="news-card-title h6 mb-2">
-                            <a href="{% url 'news:detail' related.slug %}">{{ related.title|truncatechars:45 }}</a>
+
+                        <!-- Изображение -->
+                        <div class="news-card-icon-wrapper mb-3 overflow-hidden position-relative rounded" style="height: 140px;">
+                            {% if related.image %}
+                                <img src="{{ related.image.url }}" alt="{{ related.title }}" class="news-card-img object-fit-cover w-100 h-100">
+                            {% else %}
+                                <div class="d-flex align-items-center justify-content-center h-100 w-100 text-primary text-center bg-dark bg-opacity-25 rounded">
+                                    <i class="bi bi-newspaper display-4 opacity-50"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Заголовок -->
+                        <h4 class="news-card-title h6 mb-3 flex-grow-1">
+                            <a href="{% url 'news:detail' related.slug %}">{{ related.title|truncatechars:65 }}</a>
                         </h4>
-                        <span class="small text-subtle mb-3"><i class="bi bi-calendar-event me-1"></i>{{ related.news_date|date:"d.m.Y" }}</span>
-                        <a href="{% url 'news:detail' related.slug %}" class="btn btn-sm btn-outline-light rounded-pill mt-auto">
-                            Читать <i class="bi bi-arrow-right ms-1"></i>
-                        </a>
+
+                        <!-- Мета-плашки -->
+                        <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                            <a href="{% url 'news:by_date' related.news_date.year related.news_date.month related.news_date.day %}" class="badge badge-time rounded-pill px-2.5 py-1 small text-decoration-none">
+                                <i class="bi bi-calendar-event me-1 text-primary"></i>{{ related.news_date|date:"d.m.Y" }}
+                            </a>
+                        </div>
+
+                        <!-- Кнопка -->
+                        <div class="pt-3 border-top border-secondary border-opacity-30 mt-auto position-relative z-2">
+                            <a href="{% url 'news:detail' related.slug %}" class="btn btn-outline-primary w-100 rounded-pill py-1.5 fw-semibold small">
+                                Читать <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                        
+                        <!-- Растянутая ссылка для всей карточки -->
+                        <a href="{% url 'news:detail' related.slug %}" class="stretched-link z-1"></a>
                     </div>
                 </div>
                 {% endfor %}
