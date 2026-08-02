@@ -35,7 +35,7 @@
 
 {% block content %}
 <div class="news-detail-container row">
-    <div class="col-12 animate-up">
+    <div class="col-12">
         
         <!-- Карточка новости (Hero + Детали) -->
         <div class="news-detail-card p-4 p-md-5 mb-4 position-relative overflow-hidden">
@@ -90,8 +90,8 @@
             </div>
             {% endif %}
 
-            <!-- Содержание новости (только если нет событий, чтобы избежать дублирования с хронологией) -->
-            {% if not events %}
+            <!-- Содержание новости -->
+            {% if news.content %}
             <article class="content-body mb-5">
                 {{ news.content|safe }}
             </article>

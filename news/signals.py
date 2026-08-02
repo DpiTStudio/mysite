@@ -150,31 +150,11 @@ def add_event_to_daily_news(news, event_type, title, description, related_obj=No
 
 def update_news_content(news):
     """
-    Обновляет поле content новости на основе всех событий дня.
-    Генерирует сводный HTML-контент из заголовков и описаний DailyEvent.
+    Функция больше не перезаписывает поле content новости.
+    Оригинальный контент (написанный вручную) сохраняется.
+    Хронология событий выводится в шаблоне отдельным блоком.
     """
-    from news.models import DailyEvent
-
-    events = DailyEvent.objects.filter(news=news).order_by('order', '-created_at')
-    if not events.exists():
-        return
-
-    # Формируем сводный контент из событий
-    date_str = news.news_date.strftime('%d.%m.%Y')
-    content_parts = [f'<h2>События дня {date_str}</h2>']
-    content_parts.append(f'<p>В этот день произошли следующие события:</p>')
-
-    for event in events:
-        content_parts.append(f'<div class="news-event-summary">')
-        content_parts.append(f'<h3>{event.title}</h3>')
-        if event.description:
-            content_parts.append(f'{event.description}')
-        content_parts.append(f'</div>')
-
-    news.content = '\n'.join(content_parts)
-    # Сохраняем только поле content, чтобы избежать рекурсии сигналов
-    from news.models import News
-    News.objects.filter(pk=news.pk).update(content=news.content)
+    pass
 
 
 @receiver(post_save)

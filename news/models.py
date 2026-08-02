@@ -112,18 +112,6 @@ class News(ActiveModel, SEOModel, TimestampModel):
             ).first()
 
             if existing_news:
-                # Если у существующей новости ещё не было событий (создана напрямую ранее),
-                # создаем событие для её исходного заголовка и контента
-                if existing_news.events.count() == 0 and existing_news.content:
-                    DailyEvent.objects.create(
-                        news=existing_news,
-                        event_type='other',
-                        title=existing_news.title,
-                        description=existing_news.content,
-                        image=existing_news.image if existing_news.image else None,
-                        order=0
-                    )
-
                 # Добавляем новую новость как DailyEvent к существующей, если такого заголовка еще нет
                 if not existing_news.events.filter(title=self.title).exists():
                     event_order = existing_news.events.count()
