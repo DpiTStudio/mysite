@@ -49,42 +49,38 @@
 
 ## 🛠 Технологический стек
 
-- **Core**: Python 3.10+, Django 4.2+
-- **Database**: PostgreSQL (Production) / SQLite (Dev)
-- **Frontend**: Bootstrap 5, HTMX, Flatpickr, TinyMCE
-- **Queue/Async**: Redis & Celery (для рассылок и бэкапов)
-- **Security**: django-simple-captcha (защита форм), django-allauth
+- **Backend**: Django 5.x, Python 3.14+
+- **Database**: SQLite (разработка) / PostgreSQL (продакшн)
+- **Frontend**: Bootstrap 5, HTMX, TinyMCE, Flatpickr
+- **Async & Tasks**: Redis, Celery (рассылки и резервное копирование)
+- **Security**: django-simple-captcha, django-allauth
 - **UI Admin**: [django-jazzmin](https://github.com/farridav/django-jazzmin) (премиальный вид админки)
 
 ---
 
 ## 🔧 Инструкции по развертыванию
 
-1. **Подготовка окружения**:
-   - Убедитесь, что установлен Python 3.10 и Redis.
-   - Склонируйте репозиторий: `git clone <repo_url>`.
+1. **Окружение**:
+   - Убедитесь, что установлен Python 3.14+ и Redis.
+   - Создайте файл `.env` на основе примера (или с нуля) и заполните секретные ключи, `DEBUG`, и настройки БД/почты.
 
-2. **Настройка переменных**:
-   - Создайте файл `.env` в корне `mysite/`.
-   - Заполните `SECRET_KEY`, `DEBUG`, настройки базы данных и почтовых серверов.
-
-3. **Установка зависимостей**:
+2. **Зависимости**:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Миграции и База Данных**:
+3. **Миграции и База Данных**:
    ```bash
    python manage.py migrate
    python manage.py createsuperuser
    ```
 
-5. **Запуск проекта**:
+4. **Запуск проекта**:
    ```bash
    python manage.py runserver
    ```
 
-6. **Фоновые задачи (Celery)**:
+5. **Фоновые задачи (Celery)**:
    ```bash
    celery -A mysite worker --loglevel=info
    celery -A mysite beat --loglevel=info
@@ -93,50 +89,9 @@
 ---
 
 ## ⚡ Особенности реализации
+
 - **Единая SEO-система**: Каждая страница поддерживает управление Meta-тегами через миксины в `main`.
 - **Авто-транслитерация**: Все загружаемые файлы автоматически переименовываются в латиницу с добавлением даты для избежания конфликтов.
 - **Связанный контент**: Мощная система связей между услугами, портфолио и новостями.
 
 Подробную техническую документацию по каждому модулю можно найти во внутренних файлах `README.md` в соответствующих папках.
-.
-- **[favorites/](./favorites/)** — Система "Избранного" для любого типа контента.
-- **[reviews/](./reviews/)** — Сбор и модерация отзывов клиентов.
-
-### Системные ресурсы
-- **[static/](./static/)** — Стили (CSS), скрипты (JS) и статические изображения.
-- **[templates/](./templates/)** — HTML-шаблоны сайта (Django Template Language).
-- **[media/](./media/)** — Пользовательский контент (фото работ, аватары).
-- **[logfiles/](./logfiles/)** — Управление серверными логами через админку.
-
----
-
-## 🛠 Технологический стек
-
-- **Backend**: Django 5.2.9, Python 3.14.1
-- **Database**: SQLite (разработка) / PostgreSQL (продакшн)
-- **Frontend**: Bootstrap 5, HTMX, TinyMCE
-- **Async & Tasks**: Redis, Celery (резервное копирование)
-- **Security**: django-simple-captcha, django-allauth
-
----
-
-## 🔧 Быстрый старт
-
-1. **Окружение**:
-   Создайте файл `.env` на основе примера и заполните секретные ключи и настройки почты.
-2. **Зависимости**:
-   ```bash
-   pip freeze > requirements.txt
-   pip install -r requirements.txt
-   ```
-3. **Миграции**:
-   ```bash
-   python manage.py migrate
-   python manage.py makemigrations
-   ```
-4. **Запуск**:
-   ```bash
-   python manage.py runserver
-   ```
-
-Подробную информацию по каждому модулю ищите в соответствующих папках.

@@ -628,64 +628,122 @@ a.site-domain:hover {
     color: #fff;
 }
 
-/* --- Формы и поля ввода (Inputs) --- */
-.form-control, .form-select {
-    background: rgba(15, 23, 42, 0.4) !important;
-    border: 1px solid var(--color-glass-border);
+/* --- Формы и поля ввода (Form Controls & Inputs System) --- */
+.form-control, 
+.form-select, 
+form input:not([type="submit"]):not([type="button"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.search-input-huge), 
+form textarea:not(.bg-transparent), 
+form select:not(.bg-transparent) {
+    background-color: var(--form-input-bg) !important;
+    border: 1px solid var(--form-input-border) !important;
     border-radius: var(--radius-md);
-    color: #fff !important;
+    color: var(--form-input-text) !important;
     padding: 0.75rem 1rem;
-    transition: var(--transition-normal);
+    font-size: var(--text-md);
+    line-height: 1.5;
+    transition: var(--transition-fast);
 }
 
-.form-control:focus, .form-select:focus {
-    background: rgba(15, 23, 42, 0.7) !important;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+.form-control:focus, 
+.form-select:focus, 
+form input:focus:not([type="submit"]):not([type="button"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.search-input-huge), 
+form textarea:focus:not(.bg-transparent), 
+form select:focus:not(.bg-transparent) {
+    background-color: var(--form-input-focus-bg) !important;
+    border-color: var(--form-input-focus-border) !important;
+    box-shadow: 0 0 0 4px var(--form-input-focus-ring) !important;
     outline: none;
-    color: #fff !important;
+    color: var(--form-input-text) !important;
 }
 
-.form-control::placeholder {
-    color: var(--color-text-dim);
+.form-control::placeholder,
+form input::placeholder,
+form textarea::placeholder {
+    color: var(--form-input-placeholder) !important;
+    opacity: 0.85;
 }
 
-/* Fix browser autofill in dark mode */
+/* Native select option items styling for Dark and Light themes */
+select option,
+.form-select option {
+    background-color: var(--form-option-bg) !important;
+    color: var(--form-option-text) !important;
+    padding: 0.5rem;
+}
+
+/* Custom Checkbox & Radio Buttons */
+.form-check-input {
+    background-color: var(--form-input-bg);
+    border: 1px solid var(--form-input-border);
+    width: 1.2em;
+    height: 1.2em;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px var(--form-input-focus-ring);
+    border-color: var(--color-primary);
+}
+
+.form-check-label {
+    color: var(--color-text-main);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Form Validation Feedback */
+.is-invalid,
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+}
+
+.invalid-feedback {
+    color: #f87171 !important;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    margin-top: 0.4rem;
+}
+
+.is-valid,
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: var(--color-success) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
+}
+
+.valid-feedback {
+    color: #34d399 !important;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    margin-top: 0.4rem;
+}
+
+/* Browser Autofill Fix */
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
-    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0 30px var(--form-input-bg) inset !important;
+    -webkit-text-fill-color: var(--form-input-text) !important;
     transition: background-color 5000s ease-in-out 0s;
-}
-
-body.light-mode .form-control, body.light-mode .form-select {
-    background: #fff !important;
-    color: #212529 !important;
-    border-color: #ced4da;
-}
-
-body.light-mode .form-control:focus, body.light-mode .form-select:focus {
-    background: #fff !important;
-    color: #212529 !important;
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
-}
-
-body.light-mode input:-webkit-autofill,
-body.light-mode input:-webkit-autofill:hover, 
-body.light-mode input:-webkit-autofill:focus, 
-body.light-mode input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
-    -webkit-text-fill-color: #212529 !important;
 }
 
 .form-label {
     display: block;
     color: var(--color-text-main);
-    font-weight: 500;
+    font-weight: 600;
+    font-size: var(--text-sm);
     margin-bottom: 0.5rem;
+    letter-spacing: 0.2px;
 }
 
 /* --- Боковые панели (Сайдбары) и Списки --- */
@@ -1113,18 +1171,7 @@ body.light-mode .btn-close-white {
     filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-/* --- User Requested Form Styles --- */
-form input:not([type="submit"]):not([type="button"]):not([type="hidden"]):not(.bg-transparent):not(.search-input-huge), 
-form textarea:not(.bg-transparent), 
-form select:not(.bg-transparent) {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-}
-
-form input:not(.bg-transparent):not(.search-input-huge)::placeholder, 
-form textarea:not(.bg-transparent)::placeholder {
-    color: #64748b !important;
-}
+/* (Form styles handled by unified design tokens system above) */
 /* Стили загрузочного экрана (Preloader) */
 .page-preloader {
     position: fixed;

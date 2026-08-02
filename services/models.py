@@ -294,7 +294,11 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         elif self.price_type == 'range' and self.price_min and self.price_max:
             min_fmt = f"{self.price_min:,.0f}".replace(',', ' ')
             max_fmt = f"{self.price_max:,.0f}".replace(',', ' ')
-            return f"от {min_fmt}\nдо {max_fmt} {symbol}"
+            return format_html(
+                '<span style="color: #27ae60; display: block;">от {} {}</span>'
+                '<span style="color: #e74c3c; display: block;">до {} {}</span>',
+                min_fmt, symbol, max_fmt, symbol
+            )
             
         elif self.price_type == 'contact':
             return _("Определяется индивидуально")
