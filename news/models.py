@@ -181,6 +181,8 @@ class DailyEvent(TimestampModel):
             ('service_added', 'Добавлена услуга'), 
             ('service_updated', 'Обновлена услуга'),
             ('service_order_new', 'Новый заказ услуги'),
+            ('price_plan_added', 'Добавлен тарифный план'),
+            ('price_plan_updated', 'Обновлён тарифный план'),
             ('other', 'Другое событие'),
         ]
     )

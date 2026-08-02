@@ -192,7 +192,7 @@ def auto_create_news_event(sender, instance, created, **kwargs):
     from portfolio.models import Portfolio
     from reviews.models import Review
     from main.models import Page
-    from services.models import Service, ServiceOrder  # Добавлено
+    from services.models import Service, ServiceOrder, ServicePricePlan  # Добавлено
     
     # Получаем текущую дату
     today = timezone.now().date()
@@ -377,6 +377,72 @@ def auto_create_news_event(sender, instance, created, **kwargs):
                 title=event_title,
                 description=event_description,
                 related_obj=instance
+            )
+        
+        # БЛОК ДЛЯ ТАРИФНЫХ ПЛАНОВ
+        elif sender == ServicePricePlan:
+            # Получаем или создаем категорию «Услуги» (ту же, что и для Service)
+            news_category, _ = NewsCategory.objects.get_or_create(
+                name="Услуги",
+                defaults={
+                    'slug': 'services',
+                    'description': 'Новости об услугах и сервисах',
+                    'header_title': 'Новости об услугах',
+                    'header_description': 'Последние обновления в разделе услуг'
+                }
+            )
+            
+            # Получаем или создаем дневную новость
+            daily_news = get_or_create_daily_news(news_category, today)
+            
+            # Символ валюты из услуги
+            from services.models import CURRENCY_SYMBOLS
+            currency_symbol = CURRENCY_SYMBOLS.get(instance.service.currency, instance.service.currency)
+            price_formatted = f"{instance.price:,.0f}".replace(',', ' ')
+            
+            # Определяем тип события и заголовок
+            if created:
+                event_type = 'price_plan_added'
+                event_title = f"Добавлен тарифный план «{instance.title}» для услуги «{instance.service.title}»"
+                event_description = (
+                    f"<p>Добавлен новый тарифный план <strong>{instance.title}</strong> "
+                    f"для услуги <strong>{instance.service.title}</strong>.</p>"
+                )
+            else:
+                event_type = 'price_plan_updated'
+                event_title = f"Обновлён тарифный план «{instance.title}» для услуги «{instance.service.title}»"
+                event_description = (
+                    f"<p>Обновлён тарифный план <strong>{instance.title}</strong> "
+                    f"для услуги <strong>{instance.service.title}</strong>.</p>"
+                )
+            
+            # Добавляем информацию о цене
+            event_description += f"<p><strong>Цена:</strong> {price_formatted} {currency_symbol}</p>"
+            
+            # Добавляем описание тарифа, если есть
+            if instance.description:
+                event_description += f"<p><strong>Описание:</strong> {instance.description}</p>"
+            
+            # Добавляем список возможностей тарифа
+            features = instance.get_features()
+            if features:
+                event_description += "<p><strong>Возможности тарифа:</strong></p><ul>"
+                for feature in features:
+                    event_description += f"<li>{feature}</li>"
+                event_description += "</ul>"
+            
+            # Отметка рекомендуемого тарифа
+            if instance.is_recommended:
+                event_description += "<p>⭐ <em>Рекомендуемый тариф</em></p>"
+            
+            # Добавляем событие к дневной новости
+            add_event_to_daily_news(
+                news=daily_news,
+                event_type=event_type,
+                title=event_title,
+                description=event_description,
+                related_obj=instance,
+                image=instance.service.icon if instance.service.icon else None
             )
     
     except Exception as e:
