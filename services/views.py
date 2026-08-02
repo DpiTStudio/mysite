@@ -71,7 +71,11 @@ class ServiceListView(ListView):
         
         # 1. Фильтр по категории
         category_id = self.request.GET.get('category')
-        if category_id:
+        category_slug = self.kwargs.get('category_slug')
+        
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
+        elif category_id:
             queryset = queryset.filter(category_id=category_id)
 
         # 2. Фильтр по сложности
@@ -129,8 +133,12 @@ class ServiceListView(ListView):
         
         # Выбранная категория для хлебных крошек/заголовка
         category_id = self.request.GET.get('category')
+        category_slug = self.kwargs.get('category_slug')
         selected_category = None
-        if category_id and category_id.isdigit():
+        
+        if category_slug:
+            selected_category = categories.filter(slug=category_slug).first()
+        elif category_id and category_id.isdigit():
             selected_category = categories.filter(pk=category_id).first()
 
         # Список активных технологий для быстрой фильтрации
@@ -142,7 +150,7 @@ class ServiceListView(ListView):
         search_query = self.request.GET.get('q', '').strip()
         current_sort = self.request.GET.get('sort', '')
         
-        has_active_filters = bool(category_id or active_complexity or active_tech or search_query or current_sort)
+        has_active_filters = bool(category_id or category_slug or active_complexity or active_tech or search_query or current_sort)
 
         # Подготовка понятных метаданных для выбранной сложности, технологии и сортировки
         complexity_dict = dict(Service.COMPLEXITY_CHOICES)
