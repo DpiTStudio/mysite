@@ -1,10 +1,35 @@
-{% if service.deliverables %}
+{% if service.deliverables or service.deliverables_m2m.all %}
 <div class="mb-5">
     <h4 class="fw-bold mb-3 service-heading">
         <i class="fas fa-box-open text-warning me-2"></i>Что вы получите в результате
     </h4>
-    <div class="p-4 rounded-4 service-info-card text-subtle leading-relaxed shadow-sm">
+    
+    {% if service.deliverables %}
+    <div class="p-4 rounded-4 service-info-card text-subtle leading-relaxed shadow-sm mb-4">
         {{ service.deliverables|safe }}
     </div>
+    {% endif %}
+
+    {% if service.deliverables_m2m.all %}
+    <div class="row g-4">
+        {% for deliverable in service.deliverables_m2m.all %}
+        <div class="col-md-6">
+            <div class="p-4 rounded-4 service-info-card h-100 shadow-sm">
+                <h5 class="fw-bold mb-3"><i class="fas fa-check-circle text-success me-2"></i>{{ deliverable.title }}</h5>
+                {% if deliverable.get_items %}
+                <ul class="list-unstyled mb-0">
+                    {% for item in deliverable.get_items %}
+                    <li class="mb-2 d-flex align-items-start">
+                        <i class="fas fa-chevron-right text-primary mt-1 me-2" style="font-size: 0.8rem;"></i>
+                        <span class="text-subtle">{{ item }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 {% endif %}

@@ -477,3 +477,68 @@ body {
     color: var(--text-primary) !important;
 }
 
+/* Fix standard inputs, textareas, selects for Dark Mode Forms */
+input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="number"], input[type="tel"], textarea, select, .vTextField, .vLargeTextField, .vURLField, .vIntegerField {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--p-accent) !important;
+    box-shadow: 0 0 0 2px var(--p-accent-glow) !important;
+    outline: none !important;
+}
+
+/* Filter Vertical/Horizontal M2M widget fixes */
+.selector {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+}
+.selector-available, .selector-chosen {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.selector-available h2, .selector-chosen h2 {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+}
+.selector-filter {
+    background: transparent !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+}
+.selector-filter input {
+    color: var(--text-primary) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+.selector select {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+}
+.selector select option {
+    background-color: var(--p-surface);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+.selector select option:hover, .selector select option:checked {
+    background-color: var(--p-accent) !important;
+    color: #fff !important;
+}
+.selector-add, .selector-remove {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 50% !important;
+    transition: all 0.2s;
+}
+.selector-add:hover, .selector-remove:hover {
+    background-color: var(--p-accent) !important;
+}
+
+
