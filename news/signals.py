@@ -150,30 +150,11 @@ def add_event_to_daily_news(news, event_type, title, description, related_obj=No
 
 def update_news_content(news):
     """
-    Обновляет контент новости на основе всех её событий.
-    
-    Args:
-        news: Объект News
+    Ранее функция дублировала события в поле content.
+    Теперь события выводятся отдельно в шаблоне detail.html, поэтому здесь 
+    мы не перезаписываем пользовательский контент, чтобы избежать дублирования.
     """
-    events = news.events.all().order_by('order', '-created_at')
-    events_count = events.count()
-    
-    # Формируем новый контент
-    content_parts = [
-        f"<h2>События дня {news.news_date.strftime('%d.%m.%Y')}</h2>",
-        f"<p>В этот день произошло событий: <strong>{events_count}</strong></p>",
-        "<hr>"
-    ]
-    
-    for idx, event in enumerate(events, 1):
-        content_parts.append(f"<h3>{idx}. {event.title}</h3>")
-        content_parts.append(f"<p><em>Время: {event.created_at.strftime('%H:%M')}</em></p>")
-        content_parts.append(event.description)
-        content_parts.append("<hr>")
-    
-    news.content = "\n".join(content_parts)
-    news.save(update_fields=['content'])
-    logger.info(f"Обновлен контент новости {news.title} ({events_count} событий)")
+    pass
 
 
 @receiver(post_save)
