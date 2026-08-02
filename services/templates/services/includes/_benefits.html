@@ -1,21 +1,15 @@
 {% if benefits %}
 <div class="mb-5">
-    <h4 class="fw-bold mb-4 service-heading"><i class="fas fa-star text-warning me-2"></i>Преимущества</h4>
+    <h4 class="fw-bold mb-4 service-heading"><i class="fas fa-star text-warning me-2" aria-hidden="true"></i>Преимущества</h4>
     <div class="row g-4">
         {% for benefit in benefits %}
         <div class="col-md-6">
-            <div class="d-flex align-items-start p-3.5 rounded-4 service-info-card h-100 transition-all hover-glow shadow-sm">
-                {% if benefit.icon_code %}
-                <div class="benefit-icon me-3 mt-1 text-primary fs-4">
-                    <i class="{{ benefit.icon_code }}"></i>
+            <div class="d-flex align-items-start p-4 rounded-4 service-info-card h-100 transition-all hover-glow shadow-sm">
+                <div class="benefit-icon me-3 mt-1 text-primary fs-4 flex-shrink-0">
+                    <i class="{{ benefit.icon_code|default:'fas fa-check-circle' }}" aria-hidden="true"></i>
                 </div>
-                {% else %}
-                <div class="benefit-icon me-3 mt-1 text-primary fs-4">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                {% endif %}
                 <div>
-                    <h5 class="fw-bold service-heading mb-1.5 fs-6">{{ benefit.title }}</h5>
+                    <h5 class="fw-bold service-heading mb-2 fs-6">{{ benefit.title }}</h5>
                     <p class="small text-subtle mb-0">{{ benefit.description }}</p>
                 </div>
             </div>

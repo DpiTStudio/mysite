@@ -499,8 +499,8 @@ body:not(.light-mode) .badge-popular {
 
 .plan-description {
     color: var(--service-body-color) !important;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.3rem;
+    line-height: 0.5;
     height: 200px !important;
     overflow: hidden;
 }

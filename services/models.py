@@ -8,30 +8,33 @@ from tinymce.models import HTMLField
 from main.utils import RenameUploadTo
 from main.models import ActiveModel, SEOModel, TimestampModel
 from accounts.models import User
+
 # Импортируем Portfolio для ManyToMany связи, используем строковое имя для избежания циклических импортов если возникнут
 # from portfolio.models import Portfolio  # Но лучше через 'portfolio.Portfolio'
 
 
 # Регулярное выражение для контактных телефонов вынесено на уровень модуля
-PHONE_PATTERN = re.compile(r'^\+?[1-9][\d\-\(\)\.\s]{9,20}$')
+PHONE_PATTERN = re.compile(r"^\+?[1-9][\d\-\(\)\.\s]{9,20}$")
 
 # Словарь символов валют для отображения цен в каталоге и админке
 CURRENCY_SYMBOLS = {
-    'RUB': '₽',
-    'USD': '$',
-    'EUR': '€',
-    'KZT': '₸',
+    "RUB": "₽",
+    "USD": "$",
+    "EUR": "€",
+    "KZT": "₸",
 }
+
 
 class Technology(models.Model):
     """Модель для хранения неограниченного стека технологий (веб-разработка, графика и т.д.)."""
+
     name = models.CharField(
-        max_length=100, 
+        max_length=100,
         unique=True,
         verbose_name=_("Название технологии/инструмента"),
-        help_text=_("Например: Python, UI/UX Design, Docker, Figma")
+        help_text=_("Например: Python, UI/UX Design, Docker, Figma"),
     )
-    
+
     class Meta:
         verbose_name = _("Технология")
         verbose_name_plural = _("Технологии")
@@ -40,18 +43,20 @@ class Technology(models.Model):
     def __str__(self):
         return self.name
 
+
 class ServiceCategory(ActiveModel, SEOModel, TimestampModel):
     """
-    Модель категории услуг. 
+    Модель категории услуг.
     Позволяет группировать услуги по направлениям (напр. Разработка, Маркетинг).
     """
+
     name = models.CharField(max_length=100, verbose_name=_("Название категории"))
     slug = models.SlugField(unique=True, verbose_name=_("URL (slug)"), max_length=100)
     icon = models.FileField(
         upload_to=RenameUploadTo("services/categories/"),
         verbose_name=_("Иконка категории"),
         blank=True,
-        null=True
+        null=True,
     )
     description = models.TextField(verbose_name=_("Описание"), blank=True)
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок сортировки"))
@@ -66,79 +71,83 @@ class ServiceCategory(ActiveModel, SEOModel, TimestampModel):
 
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('services:category', kwargs={'category_slug': self.slug})
+
+        return reverse("services:category", kwargs={"category_slug": self.slug})
 
 
 class Service(ActiveModel, SEOModel, TimestampModel):
     """
     Модель услуги для предложения клиентам компании.
-    Услуга включает развернутое описание, тарифы, 
+    Услуга включает развернутое описание, тарифы,
     и указание стека технологий для предоставления результата.
     """
+
     title = models.CharField(
         max_length=200,
         verbose_name=_("Название услуги"),
-        help_text=_("Максимальная длина - 200 символов")
+        help_text=_("Максимальная длина - 200 символов"),
     )
     slug = models.SlugField(
         unique=True,
         verbose_name=_("URL"),
         max_length=200,
-        help_text=_("Уникальный идентификатор для URL")
+        help_text=_("Уникальный идентификатор для URL"),
     )
     icon = models.FileField(
         upload_to=RenameUploadTo("services/icons/"),
         verbose_name=_("Иконка (JPG/GIF/PNG/SVG)"),
         blank=True,
         null=True,
-        help_text=_("Рекомендуемый размер: 64x64 или 128x128 пикселей")
+        help_text=_("Рекомендуемый размер: 64x64 или 128x128 пикселей"),
     )
 
     short_description = HTMLField(
         verbose_name=_("Краткое описание"),
         blank=True,
-        help_text=_("Краткое описание для отображения в списках/карточках")
+        help_text=_("Краткое описание для отображения в списках/карточках"),
     )
     description = HTMLField(
         verbose_name=_("Полное описание"),
         default=_("<p>Описание услуги</p>"),
-        help_text=_("Подробное описание профиля услуги с использованием форматирования")
+        help_text=_(
+            "Подробное описание профиля услуги с использованием форматирования"
+        ),
     )
-    
+
     category = models.ForeignKey(
         ServiceCategory,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='services',
-        verbose_name=_("Категория")
+        related_name="services",
+        verbose_name=_("Категория"),
     )
     # Поле для обратной совместимости или временного хранения старой категории
     old_category_tag = models.CharField(
         max_length=100,
         verbose_name=_("Старый Тег (архив)"),
         blank=True,
-        help_text=_("Старое текстовое поле категории")
+        help_text=_("Старое текстовое поле категории"),
     )
     # --- Технологии ---
     technologies = models.ManyToManyField(
         Technology,
-        related_name='services',
+        related_name="services",
         verbose_name=_("Стек технологий"),
         blank=True,
-        help_text=_("Выберите стек технологий")
+        help_text=_("Выберите стек технологий"),
     )
 
     PRICE_TYPE_CHOICES = [
-        ('fixed', _('Фиксированная')),
-        ('range', _('От и До')),
-        ('contact', _('По договоренности')),
+        ("fixed", _("Фиксированная")),
+        ("range", _("От и До")),
+        ("contact", _("По договоренности")),
     ]
     price_type = models.CharField(
         max_length=10,
         choices=PRICE_TYPE_CHOICES,
-        default='fixed',
-        verbose_name=_("Тип ценообразования")
+        default="fixed",
+        verbose_name=_("Тип ценообразования"),
     )
     price_fixed = models.DecimalField(
         max_digits=12,
@@ -146,7 +155,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         null=True,
         blank=True,
         verbose_name=_("Фиксированная цена"),
-        help_text=_("Итоговая цена (при фиксированной оплате)")
+        help_text=_("Итоговая цена (при фиксированной оплате)"),
     )
     price_min = models.DecimalField(
         max_digits=12,
@@ -154,7 +163,7 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         null=True,
         blank=True,
         verbose_name=_("Начальная цена (ОТ)"),
-        help_text=_("Нижняя граница диапазона")
+        help_text=_("Нижняя граница диапазона"),
     )
     price_max = models.DecimalField(
         max_digits=12,
@@ -162,92 +171,93 @@ class Service(ActiveModel, SEOModel, TimestampModel):
         null=True,
         blank=True,
         verbose_name=_("Конечная цена (ДО)"),
-        help_text=_("Верхняя граница диапазона")
+        help_text=_("Верхняя граница диапазона"),
     )
-    
+
     CURRENCY_CHOICES = [
-        ('RUB', _('Рубль (₽)')),
-        ('USD', _('Доллар ($)')),
-        ('EUR', _('Евро (€)')),
-        ('KZT', _('Тенге (₸)')),
+        ("RUB", _("Рубль (₽)")),
+        ("USD", _("Доллар ($)")),
+        ("EUR", _("Евро (€)")),
+        ("KZT", _("Тенге (₸)")),
     ]
     currency = models.CharField(
-        max_length=10,
-        choices=CURRENCY_CHOICES,
-        default="RUB",
-        verbose_name=_("Валюта")
+        max_length=10, choices=CURRENCY_CHOICES, default="RUB", verbose_name=_("Валюта")
     )
     order = models.PositiveIntegerField(
         default=0,
         verbose_name=_("Индекс сортировки"),
-        help_text=_("Чем меньше номер, тем выше запись в каталоге")
+        help_text=_("Чем меньше номер, тем выше запись в каталоге"),
     )
     is_popular = models.BooleanField(
         default=False,
         verbose_name=_("Популярная услуга (Хит продаж)"),
-        help_text=_("Вывод услуги в спец-блоках с тегом 'популярное'")
+        help_text=_("Вывод услуги в спец-блоках с тегом 'популярное'"),
     )
     is_available_for_order = models.BooleanField(
         default=True,
         verbose_name=_("Доступно для заказа"),
-        help_text=_("Если отключено, вместо кнопки заказа будет выведено сообщение о временной недоступности")
+        help_text=_(
+            "Если отключено, вместо кнопки заказа будет выведено сообщение о временной недоступности"
+        ),
     )
     estimated_time = models.CharField(
         max_length=100,
         blank=True,
         verbose_name=_("Сроки выполнения"),
-        help_text=_("Например: '2-3 недели', 'до 5 рабочих дней'")
+        help_text=_("Например: '2-3 недели', 'до 5 рабочих дней'"),
     )
     views = models.PositiveIntegerField(
-        default=0,
-        verbose_name=_("Просмотры"),
-        editable=False
+        default=0, verbose_name=_("Просмотры"), editable=False
     )
 
-    
     # --- Связь с портфолио ---
     related_portfolio = models.ManyToManyField(
-        'portfolio.Portfolio',
+        "portfolio.Portfolio",
         blank=True,
-        related_name='related_services',
+        related_name="related_services",
         verbose_name=_("Связанные работы из портфолио"),
-        help_text=_("Выберите работы, которые будут отображаться как примеры для этой услуги")
+        help_text=_(
+            "Выберите работы, которые будут отображаться как примеры для этой услуги"
+        ),
     )
 
-    
     COMPLEXITY_CHOICES = [
-        ('simple', _('Простой')),
-        ('medium', _('Средний')),
-        ('complex', _('Сложный')),
-        ('expert', _('Ультра-кодинг')),
+        ("simple", _("Простой")),
+        ("medium", _("Средний")),
+        ("complex", _("Сложный")),
+        ("expert", _("Ультра-кодинг")),
     ]
     complexity_level = models.CharField(
         max_length=50,
         verbose_name=_("Уровень сложности"),
         choices=COMPLEXITY_CHOICES,
-        default='medium',
+        default="medium",
     )
     deliverables = HTMLField(
         verbose_name=_("Что будет в результате"),
         blank=True,
-        help_text=_("Результат который отправляется заказчику на руки (файлы, макеты, код)")
+        help_text=_(
+            "Результат который отправляется заказчику на руки (файлы, макеты, код)"
+        ),
     )
     deliverables_m2m = models.ManyToManyField(
-        'Deliverable',
+        "Deliverable",
         blank=True,
-        related_name='services',
+        related_name="services",
         verbose_name=_("Что вы получите в результате (пункты)"),
-        help_text=_("Выберите готовые пункты с подпунктами для отображения в результатах работы")
+        help_text=_(
+            "Выберите готовые пункты с подпунктами для отображения в результатах работы"
+        ),
     )
-    
+
     class Meta:
         verbose_name = _("Услуга")
         verbose_name_plural = _("Услуги")
         ordering = ["order", "title"]
         indexes = [
-            models.Index(fields=['order', 'is_active'], name='srv_ord_act_idx'),
-            models.Index(fields=['is_popular', 'is_active'], name='srv_pop_act_idx'),
-            models.Index(fields=['category', 'is_active'], name='srv_cat_act_idx'),
+            models.Index(fields=["order", "is_active"], name="srv_ord_act_idx"),
+            models.Index(fields=["is_popular", "is_active"], name="srv_pop_act_idx"),
+            models.Index(fields=["category", "is_active"], name="srv_cat_act_idx"),
         ]
 
     def __str__(self):
@@ -259,50 +269,61 @@ class Service(ActiveModel, SEOModel, TimestampModel):
             return False
         if not self.is_available_for_order:
             return False
-        if self.price_type == 'fixed' and (self.price_fixed is None or self.price_fixed <= 0):
+        if self.price_type == "fixed" and (
+            self.price_fixed is None or self.price_fixed <= 0
+        ):
             return False
         return True
 
     def clean(self):
         """Инвариантная проверка модели перед записью в БД."""
         super().clean()
-        
+
         # Обнуляем нерелевантные поля на основе типа цены:
-        if self.price_type != 'fixed':
+        if self.price_type != "fixed":
             self.price_fixed = None
-        if self.price_type != 'range':
+        if self.price_type != "range":
             self.price_min = None
             self.price_max = None
-            
-        if self.price_type == 'fixed' and self.price_fixed is None:
-            raise ValidationError({'price_fixed': _('Обязательно укажите фиксированную цену.')})
-            
-        elif self.price_type == 'range':
+
+        if self.price_type == "fixed" and self.price_fixed is None:
+            raise ValidationError(
+                {"price_fixed": _("Обязательно укажите фиксированную цену.")}
+            )
+
+        elif self.price_type == "range":
             if not self.price_min or not self.price_max:
-                raise ValidationError(_('Для ценового диапазона нужно задать границы ОТ и ДО.'))
+                raise ValidationError(
+                    _("Для ценового диапазона нужно задать границы ОТ и ДО.")
+                )
             if self.price_min >= self.price_max:
-                raise ValidationError({'price_max': _('Цена ДО должна быть строго больше цены ОТ.')})
+                raise ValidationError(
+                    {"price_max": _("Цена ДО должна быть строго больше цены ОТ.")}
+                )
 
     def get_price_display(self):
         """Возвращает строку с красиво отформатированной ценой на основе типа."""
         symbol = CURRENCY_SYMBOLS.get(self.currency, self.currency)
-        
-        if self.price_type == 'fixed' and self.price_fixed:
-            formatted = f"{self.price_fixed:,.0f}".replace(',', ' ')
+
+        if self.price_type == "fixed" and self.price_fixed:
+            formatted = f"{self.price_fixed:,.0f}".replace(",", " ")
             return f"{formatted} {symbol}"
-        
-        elif self.price_type == 'range' and self.price_min and self.price_max:
-            min_fmt = f"{self.price_min:,.0f}".replace(',', ' ')
-            max_fmt = f"{self.price_max:,.0f}".replace(',', ' ')
+
+        elif self.price_type == "range" and self.price_min and self.price_max:
+            min_fmt = f"{self.price_min:,.0f}".replace(",", " ")
+            max_fmt = f"{self.price_max:,.0f}".replace(",", " ")
             return format_html(
                 '<span style="color: #27ae60; display: block;">от {} {}</span>'
                 '<span style="color: #e74c3c; display: block;">до {} {}</span>',
-                min_fmt, symbol, max_fmt, symbol
+                min_fmt,
+                symbol,
+                max_fmt,
+                symbol,
             )
-            
-        elif self.price_type == 'contact':
+
+        elif self.price_type == "contact":
             return _("Определяется индивидуально")
-            
+
         return _("Уточняйте у менеджера")
 
     def get_tech_requirements_list(self):
@@ -316,9 +337,10 @@ class Service(ActiveModel, SEOModel, TimestampModel):
 
 class ServiceOrder(TimestampModel):
     """
-    Модель оформления заказа услуги. 
+    Модель оформления заказа услуги.
     Собирает обратную связь или "лиды".
     """
+
     STATUS_CHOICES = [
         ("new", _("Новый")),
         ("confirmed", _("Подтвержден")),
@@ -326,20 +348,20 @@ class ServiceOrder(TimestampModel):
         ("completed", _("Реализован/Выполнен")),
         ("cancelled", _("Отменен/Заморожен")),
     ]
-    
+
     service = models.ForeignKey(
         Service,
         on_delete=models.PROTECT,
         verbose_name=_("Назначенная услуга"),
-        related_name='orders'
+        related_name="orders",
     )
     selected_plan = models.ForeignKey(
-        'ServicePricePlan',
+        "ServicePricePlan",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         verbose_name=_("Выбранный тариф"),
-        related_name='orders'
+        related_name="orders",
     )
 
     user = models.ForeignKey(
@@ -348,26 +370,30 @@ class ServiceOrder(TimestampModel):
         null=True,
         blank=True,
         verbose_name=_("Покупатель"),
-        related_name='service_orders'
+        related_name="service_orders",
     )
     full_name = models.CharField(max_length=255, verbose_name=_("Имя покупателя"))
-    phone = models.CharField(max_length=25, verbose_name=_("Номер связи"), help_text=_("Примерном: +7(900)123-45-67"))
+    phone = models.CharField(
+        max_length=25,
+        verbose_name=_("Номер связи"),
+        help_text=_("Примерном: +7(900)123-45-67"),
+    )
     email = models.EmailField(verbose_name=_("Электронная почта"), max_length=255)
     message = models.TextField(
         verbose_name=_("Уточнения/Комментарий"),
         blank=True,
-        help_text=_("Детальное разъяснение задачи клиентом")
+        help_text=_("Детальное разъяснение задачи клиентом"),
     )
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default="new",
-        verbose_name=_("Статус заявки")
+        verbose_name=_("Статус заявки"),
     )
     admin_notes = models.TextField(
         verbose_name=_("Служебные пометки (невидимо клиенту)"),
         blank=True,
-        help_text=_("Для внутренней коммуникации команды")
+        help_text=_("Для внутренней коммуникации команды"),
     )
     estimated_budget = models.DecimalField(
         max_digits=12,
@@ -377,9 +403,7 @@ class ServiceOrder(TimestampModel):
         verbose_name=_("Указанный бюджет"),
     )
     deadline = models.DateField(
-        null=True,
-        blank=True,
-        verbose_name=_("Желательный дедлайн")
+        null=True, blank=True, verbose_name=_("Желательный дедлайн")
     )
 
     class Meta:
@@ -387,8 +411,8 @@ class ServiceOrder(TimestampModel):
         verbose_name_plural = _("Заявки на услуги")
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=['status', 'created_at']),
-            models.Index(fields=['service', 'status']),
+            models.Index(fields=["status", "created_at"]),
+            models.Index(fields=["service", "status"]),
         ]
 
     def __str__(self):
@@ -402,48 +426,62 @@ class ServiceOrder(TimestampModel):
     def clean(self):
         """Базовая проверка телефона."""
         super().clean()
-        
+
         if self.phone and not PHONE_PATTERN.match(self.phone):
-            raise ValidationError({'phone': _('Разрешен только корректный телефонный формат (+7...).')})
-            
+            raise ValidationError(
+                {"phone": _("Разрешен только корректный телефонный формат (+7...).")}
+            )
+
         if self.estimated_budget is not None and self.estimated_budget < 0:
-            raise ValidationError({'estimated_budget': _('Цена бюджета не может быть числом со знаком минус.')})
+            raise ValidationError(
+                {
+                    "estimated_budget": _(
+                        "Цена бюджета не может быть числом со знаком минус."
+                    )
+                }
+            )
 
     def get_status_display_with_color(self):
         """Возвращает защищенный HTML-тег для вывода подсвеченного статуса."""
         colors = {
-            'new': '#3498db',         # синий
-            'confirmed': '#27ae60',   # зеленый-спокойный
-            'in_progress': '#f39c12', # оранжевый
-            'completed': '#8e44ad',   # фиолетовый
-            'cancelled': '#e74c3c',   # ярко-красный
+            "new": "#3498db",  # синий
+            "confirmed": "#27ae60",  # зеленый-спокойный
+            "in_progress": "#f39c12",  # оранжевый
+            "completed": "#8e44ad",  # фиолетовый
+            "cancelled": "#e74c3c",  # ярко-красный
         }
-        
-        color = colors.get(self.status, '#7f8c8d')
+
+        color = colors.get(self.status, "#7f8c8d")
         return format_html(
             '<span style="background-color: {}; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase;">{}</span>',
             color,
-            self.get_status_display()
+            self.get_status_display(),
         )
 
 
 class ServiceBenefit(models.Model):
     """Преимущества/особенности конкретной услуги."""
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='benefits', verbose_name=_("Услуга"))
+
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE,
+        related_name="benefits",
+        verbose_name=_("Услуга"),
+    )
     title = models.CharField(max_length=200, verbose_name=_("Заголовок преимущества"))
     description = models.TextField(verbose_name=_("Описание преимущества"), blank=True)
     icon_code = models.CharField(
-        max_length=100, 
-        blank=True, 
+        max_length=100,
+        blank=True,
         verbose_name=_("Код иконки (FontAwesome/Bootstrap)"),
-        help_text=_("Например: 'fas fa-rocket' или 'bi-check-circle'")
+        help_text=_("Например: 'fas fa-rocket' или 'bi-check-circle'"),
     )
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок"))
 
     class Meta:
         verbose_name = _("Преимущество услуги")
         verbose_name_plural = _("Преимущества услуги")
-        ordering = ['order']
+        ordering = ["order"]
 
     def __str__(self):
         return self.title
@@ -452,24 +490,24 @@ class ServiceBenefit(models.Model):
         if not self.icon_code:
             text = f"{self.title} {self.description}".lower()
             icon_map = [
-                ('конверси', 'fas fa-chart-line'),
-                ('адаптивн', 'fas fa-mobile-alt'),
-                ('запуск', 'fas fa-rocket'),
-                ('цена', 'fas fa-piggy-bank'),
-                ('стоимост', 'fas fa-piggy-bank'),
-                ('дизайн', 'fas fa-paint-brush'),
-                ('быстр', 'fas fa-bolt'),
-                ('скорост', 'fas fa-bolt'),
-                ('поддержк', 'fas fa-headset'),
-                ('защит', 'fas fa-shield-alt'),
-                ('безопасн', 'fas fa-lock'),
-                ('сео', 'fas fa-search'),
-                ('seo', 'fas fa-search'),
-                ('код', 'fas fa-code'),
-                ('качеств', 'fas fa-award'),
-                ('гарант', 'fas fa-user-shield'),
+                ("конверси", "fas fa-chart-line"),
+                ("адаптивн", "fas fa-mobile-alt"),
+                ("запуск", "fas fa-rocket"),
+                ("цена", "fas fa-piggy-bank"),
+                ("стоимост", "fas fa-piggy-bank"),
+                ("дизайн", "fas fa-paint-brush"),
+                ("быстр", "fas fa-bolt"),
+                ("скорост", "fas fa-bolt"),
+                ("поддержк", "fas fa-headset"),
+                ("защит", "fas fa-shield-alt"),
+                ("безопасн", "fas fa-lock"),
+                ("сео", "fas fa-search"),
+                ("seo", "fas fa-search"),
+                ("код", "fas fa-code"),
+                ("качеств", "fas fa-award"),
+                ("гарант", "fas fa-user-shield"),
             ]
-            matched = 'fas fa-star'
+            matched = "fas fa-star"
             for kw, ic in icon_map:
                 if kw in text:
                     matched = ic
@@ -480,16 +518,24 @@ class ServiceBenefit(models.Model):
 
 class ServiceStep(models.Model):
     """Этапы выполнения услуги (Процесс работы)."""
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='steps', verbose_name=_("Услуга"))
+
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE,
+        related_name="steps",
+        verbose_name=_("Услуга"),
+    )
     step_number = models.PositiveIntegerField(verbose_name=_("Номер этапа"), default=1)
     title = models.CharField(max_length=200, verbose_name=_("Название этапа"))
-    description = models.TextField(verbose_name=_("Что делаем на этом этапе"), blank=True)
+    description = models.TextField(
+        verbose_name=_("Что делаем на этом этапе"), blank=True
+    )
     order = models.PositiveIntegerField(default=0, verbose_name=_("Сортировка"))
 
     class Meta:
         verbose_name = _("Этап работы")
         verbose_name_plural = _("Этапы работы")
-        ordering = ['step_number', 'order']
+        ordering = ["step_number", "order"]
 
     def __str__(self):
         return f"{self.step_number}. {self.title}"
@@ -497,7 +543,10 @@ class ServiceStep(models.Model):
 
 class ServiceFAQ(models.Model):
     """Часто задаваемые вопросы по услуге."""
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='faqs', verbose_name=_("Услуга"))
+
+    service = models.ForeignKey(
+        Service, on_delete=models.CASCADE, related_name="faqs", verbose_name=_("Услуга")
+    )
     question = models.CharField(max_length=255, verbose_name=_("Вопрос"))
     answer = models.TextField(verbose_name=_("Ответ"))
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок"))
@@ -505,7 +554,7 @@ class ServiceFAQ(models.Model):
     class Meta:
         verbose_name = _("FAQ услуги")
         verbose_name_plural = _("FAQ услуги")
-        ordering = ['order']
+        ordering = ["order"]
 
     def __str__(self):
         return self.question
@@ -513,18 +562,19 @@ class ServiceFAQ(models.Model):
 
 class PricePlanFeature(models.Model):
     """Модель для элементов/дополнений тарифного плана."""
+
     name = models.CharField(
         max_length=255,
         unique=True,
         verbose_name=_("Название пункта/дополнения"),
-        help_text=_("Например: Уникальный дизайн, Хостинг для сайта")
+        help_text=_("Например: Уникальный дизайн, Хостинг для сайта"),
     )
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок сортировки"))
 
     class Meta:
         verbose_name = _("Пункт тарифного плана")
         verbose_name_plural = _("Пункты тарифных планов")
-        ordering = ['order', 'name']
+        ordering = ["order", "name"]
 
     def __str__(self):
         return self.name
@@ -532,34 +582,48 @@ class PricePlanFeature(models.Model):
 
 class ServicePricePlan(models.Model):
     """Тарифные планы для услуги (напр. Базовый, Стандарт, VIP)."""
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='price_plans', verbose_name=_("Услуга"))
+
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE,
+        related_name="price_plans",
+        verbose_name=_("Услуга"),
+    )
     title = models.CharField(max_length=100, verbose_name=_("Название тарифа"))
-    description = models.TextField(verbose_name=_("Краткое описание тарифа"), blank=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена тарифа"))
+    description = models.TextField(
+        verbose_name=_("Краткое описание тарифа"), blank=True
+    )
+    price = models.DecimalField(
+        max_digits=12, decimal_places=2, verbose_name=_("Цена тарифа")
+    )
     features = models.ManyToManyField(
         PricePlanFeature,
         blank=True,
-        related_name='price_plans',
+        related_name="price_plans",
         verbose_name=_("Пункты/дополнения"),
-        help_text=_("Выберите пункты из списка или добавьте новые")
+        help_text=_("Выберите пункты из списка или добавьте новые"),
     )
     features_list = models.TextField(
-        verbose_name=_("Список возможностей (текстом)"), 
+        verbose_name=_("Список возможностей (текстом)"),
         blank=True,
-        help_text=_("Дополнительные текстовые пункты, каждая возможность с новой строки")
+        help_text=_(
+            "Дополнительные текстовые пункты, каждая возможность с новой строки"
+        ),
     )
-    is_recommended = models.BooleanField(default=False, verbose_name=_("Рекомендуемый тариф"))
+    is_recommended = models.BooleanField(
+        default=False, verbose_name=_("Рекомендуемый тариф")
+    )
     is_available_for_order = models.BooleanField(
         default=True,
         verbose_name=_("Доступно для заказа"),
-        help_text=_("Если отключено, этот тариф нельзя выбрать или заказать")
+        help_text=_("Если отключено, этот тариф нельзя выбрать или заказать"),
     )
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок"))
 
     class Meta:
         verbose_name = _("Тарифный план")
         verbose_name_plural = _("Тарифные планы")
-        ordering = ['order']
+        ordering = ["order"]
 
     def __str__(self):
         return f"{self.title} - {self.service.title}"
@@ -571,8 +635,8 @@ class ServicePricePlan(models.Model):
     def get_features(self):
         """Возвращает список возможностей (как из M2M пунктов, так и из текстового поля)."""
         m2m_features = [f.name for f in self.features.all()]
-        text_features = [f.strip() for f in self.features_list.split('\n') if f.strip()]
-        
+        text_features = [f.strip() for f in self.features_list.split("\n") if f.strip()]
+
         combined = []
         for item in m2m_features + text_features:
             if item and item not in combined:
@@ -586,29 +650,27 @@ class Deliverable(models.Model):
     Позволяет создавать пункты с подпунктами (редактировать в одном месте),
     которые потом можно привязывать к услугам (и товарам).
     """
+
     title = models.CharField(
-        max_length=255, 
+        max_length=255,
         verbose_name=_("Заголовок результата"),
-        help_text=_("Например: 'Пакет документов', 'Настроенная CRM'")
+        help_text=_("Например: 'Пакет документов', 'Настроенная CRM'"),
     )
     items_list = models.TextField(
-        verbose_name=_("Список подпунктов"), 
+        verbose_name=_("Список подпунктов"),
         blank=True,
-        help_text=_("Перечислите подпункты, каждый с новой строки.")
+        help_text=_("Перечислите подпункты, каждый с новой строки."),
     )
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок сортировки"))
 
     class Meta:
         verbose_name = _("Результат работы (Deliverable)")
         verbose_name_plural = _("Результаты работы")
-        ordering = ['order', 'title']
+        ordering = ["order", "title"]
 
     def __str__(self):
         return self.title
 
     def get_items(self):
         """Возвращает список подпунктов, разбивая по строкам."""
-        return [item.strip() for item in self.items_list.split('\n') if item.strip()]
-
-
-
+        return [item.strip() for item in self.items_list.split("\n") if item.strip()]
