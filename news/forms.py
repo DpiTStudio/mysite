@@ -18,7 +18,9 @@ class NewsForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "content": TinyMCE(attrs={"cols": 80, "rows": 30}),
-            "meta_description": TinyMCE(attrs={"cols": 80, "rows": 30}),
+            "meta_description": forms.Textarea(
+                attrs={"cols": 80, "rows": 4, "class": "vLargeTextField"}
+            ),
         }
 
 
@@ -31,16 +33,20 @@ class CommentForm(forms.ModelForm):
             "text": "Ваш комментарий",
         }
         widgets = {
-            "rating": forms.NumberInput(attrs={
-                "class": "form-control news-search-input py-2 shadow-none",
-                "min": 1,
-                "max": 5,
-                "value": 5,
-            }),
-            "text": forms.Textarea(attrs={
-                "class": "form-control news-search-input p-3 shadow-none",
-                "rows": 3,
-                "placeholder": "Поделитесь вашим мнением или отзывом о публикации...",
-                "style": "border-radius: 16px;",
-            }),
+            "rating": forms.NumberInput(
+                attrs={
+                    "class": "form-control news-search-input py-2 shadow-none",
+                    "min": 1,
+                    "max": 5,
+                    "value": 5,
+                }
+            ),
+            "text": forms.Textarea(
+                attrs={
+                    "class": "form-control news-search-input p-3 shadow-none",
+                    "rows": 3,
+                    "placeholder": "Поделитесь вашим мнением или отзывом о публикации...",
+                    "style": "border-radius: 16px;",
+                }
+            ),
         }

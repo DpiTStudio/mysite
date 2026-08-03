@@ -7,9 +7,9 @@
 # ------------------------------------------------------------
 # Библиотеки
 # ------------------------------------------------------------
-import os # Операционная система
-from pathlib import Path # Пути к файлам
-import importlib.util # Импорт модулей
+import os  # Операционная система
+from pathlib import Path  # Пути к файлам
+import importlib.util  # Импорт модулей
 from celery.schedules import crontab  # Расписание Celery Beat
 import environ  # django-environ для чтения .env
 
@@ -29,8 +29,13 @@ SECRET_KEY = env.str("SECRET_KEY")
 DEBUG = env.bool("DEBUG")
 
 # Доступные хосты: базовые всегда включены + дополнительные из .env
-domains = ['dpit-cms.ru:4234', 'www.dpit-cms.ru:4234']
-hosts = ['127.0.0.1:4234', 'localhost:4234', '46.149.71.34:4234', '192.168.0.4:4234'] + domains
+domains = ["dpit-cms.ru:4234", "www.dpit-cms.ru:4234"]
+hosts = [
+    "127.0.0.1:4234",
+    "localhost:4234",
+    "46.149.71.34:4234",
+    "192.168.0.4:4234",
+] + domains
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
 
@@ -49,7 +54,7 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
 #     "django.contrib.sitemaps",  # Для sitemap.xml
 #     "django.contrib.sites",     # Нужно для allauth
 #     "captcha",  # Капча
-    
+
 #     # Allauth
 #     "allauth",
 #     "allauth.account",
@@ -71,47 +76,43 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
 #     "cart.apps.CartConfig", # Корзина
 #     "favorites.apps.FavoritesConfig", # Избранное
 #     "knowledge_base.apps.KnowledgeBaseConfig", # База знаний
-#     "tinymce", # Редактор   
+#     "tinymce", # Редактор
 # ]
 INSTALLED_APPS = [
     # Внешний вид админки (должен быть первым)
     "jazzmin",
-    
     # ========== СТАНДАРТНЫЕ ПРИЛОЖЕНИЯ DJANGO ==========
-    "django.contrib.admin",           # Админ-панель
-    "django.contrib.auth",            # Аутентификация
-    "django.contrib.contenttypes",    # Работа с типами моделей
-    "django.contrib.sessions",        # Управление сессиями
-    "django.contrib.messages",        # Система сообщений
-    "django.contrib.staticfiles",     # Статические файлы (CSS, JS)
-    "django.contrib.sitemaps",        # Генерация sitemap.xml
-    "django.contrib.sites",           # Поддержка нескольких сайтов
-    
+    "django.contrib.admin",  # Админ-панель
+    "django.contrib.auth",  # Аутентификация
+    "django.contrib.contenttypes",  # Работа с типами моделей
+    "django.contrib.sessions",  # Управление сессиями
+    "django.contrib.messages",  # Система сообщений
+    "django.contrib.staticfiles",  # Статические файлы (CSS, JS)
+    "django.contrib.sitemaps",  # Генерация sitemap.xml
+    "django.contrib.sites",  # Поддержка нескольких сайтов
     # ========== СТОРОННИЕ ПРИЛОЖЕНИЯ ==========
     # Аутентификация через соцсети
-    "allauth",                                  # Allauth
-    "allauth.account",                          # Allauth account
-    "allauth.socialaccount",                    # Allauth social account
-    "allauth.socialaccount.providers.google",   # Allauth google
-    "allauth.socialaccount.providers.github",   # Allauth github
-    
+    "allauth",  # Allauth
+    "allauth.account",  # Allauth account
+    "allauth.socialaccount",  # Allauth social account
+    "allauth.socialaccount.providers.google",  # Allauth google
+    "allauth.socialaccount.providers.github",  # Allauth github
     # Прочие сторонние приложения
-    "captcha",        # Защита от ботов
-    "tinymce",        # Визуальный редактор
-    
+    "captcha",  # Защита от ботов
+    "tinymce",  # Визуальный редактор
     # ========== СОБСТВЕННЫЕ ПРИЛОЖЕНИЯ ==========
-    "main.apps.MainConfig",                     # Главная страница
-    "accounts.apps.AccountsConfig",             # Управление аккаунтами
-    "news.apps.NewsConfig",                     # Новости
-    "portfolio.apps.PortfolioConfig",           # Портфолио работ
-    "services.apps.ServicesConfig",             # Услуги
-    "reviews.apps.ReviewsConfig",               # Отзывы клиентов
-    "cart.apps.CartConfig",                     # Корзина покупок
-    "favorites.apps.FavoritesConfig",           # Избранное
-    "tickets.apps.TicketsConfig",               # Система тикетов (поддержка)
+    "main.apps.MainConfig",  # Главная страница
+    "accounts.apps.AccountsConfig",  # Управление аккаунтами
+    "news.apps.NewsConfig",  # Новости
+    "portfolio.apps.PortfolioConfig",  # Портфолио работ
+    "services.apps.ServicesConfig",  # Услуги
+    "reviews.apps.ReviewsConfig",  # Отзывы клиентов
+    "cart.apps.CartConfig",  # Корзина покупок
+    "favorites.apps.FavoritesConfig",  # Избранное
+    "tickets.apps.TicketsConfig",  # Система тикетов (поддержка)
     "knowledge_base.apps.KnowledgeBaseConfig",  # База знаний
-    "mail.apps.MailConfig",                     # Почтовые уведомления
-    "logfiles.apps.LogfilesConfig",             # Логирование действий
+    "mail.apps.MailConfig",  # Почтовые уведомления
+    "logfiles.apps.LogfilesConfig",  # Логирование действий
 ]
 
 
@@ -120,56 +121,60 @@ INSTALLED_APPS = [
 # ------------------------------------------------------------
 MIDDLEWARE = [
     # Основные middleware
-    "django.middleware.security.SecurityMiddleware",          # Безопасность
-    "django.middleware.gzip.GZipMiddleware",                  # Сжатие ответов (Ускорение)
-    "django.contrib.sessions.middleware.SessionMiddleware",   # Сессии
-    "django.middleware.common.CommonMiddleware",              # Общие настройки
-    "django.middleware.csrf.CsrfViewMiddleware",              # CSRF
-    "django.contrib.auth.middleware.AuthenticationMiddleware",# Аутентификация
-    "django.contrib.messages.middleware.MessageMiddleware",   # Сообщения
-    "django.middleware.clickjacking.XFrameOptionsMiddleware", # Защита от кликджекинга
-    "allauth.account.middleware.AccountMiddleware",           # Allauth
+    "django.middleware.security.SecurityMiddleware",  # Безопасность
+    "django.middleware.gzip.GZipMiddleware",  # Сжатие ответов (Ускорение)
+    "django.contrib.sessions.middleware.SessionMiddleware",  # Сессии
+    "django.middleware.common.CommonMiddleware",  # Общие настройки
+    "django.middleware.csrf.CsrfViewMiddleware",  # CSRF
+    "django.contrib.auth.middleware.AuthenticationMiddleware",  # Аутентификация
+    "django.contrib.messages.middleware.MessageMiddleware",  # Сообщения
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Защита от кликджекинга
+    "allauth.account.middleware.AccountMiddleware",  # Allauth
 ]
 # Подключаем WhiteNoise, если он установлен (обслуживание статики)
 HAS_WHITENOISE = importlib.util.find_spec("whitenoise") is not None
-if HAS_WHITENOISE: # Если WhiteNoise установлен
+if HAS_WHITENOISE:  # Если WhiteNoise установлен
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 # ------------------------------------------------------------
 # URL‑конфигурация и шаблоны
 # ------------------------------------------------------------
-ROOT_URLCONF = "mysite.urls" # Главная страница
+ROOT_URLCONF = "mysite.urls"  # Главная страница
 
 TEMPLATES = [
     {
         # Основные шаблоны
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")], # Шаблоны
-        "APP_DIRS": False, # Приложения (должно быть False, если заданы loaders)
+        "DIRS": [os.path.join(BASE_DIR, "templates")],  # Шаблоны
+        "APP_DIRS": False,  # Приложения (должно быть False, если заданы loaders)
         "OPTIONS": {
-            "loaders": [
-                (
-                    "django.template.loaders.cached.Loader",
-                    [
-                        "django.template.loaders.filesystem.Loader",
-                        "django.template.loaders.app_directories.Loader",
-                    ],
-                ),
-            ] if not DEBUG else [
-                "django.template.loaders.filesystem.Loader",
-                "django.template.loaders.app_directories.Loader",
-            ],
+            "loaders": (
+                [
+                    (
+                        "django.template.loaders.cached.Loader",
+                        [
+                            "django.template.loaders.filesystem.Loader",
+                            "django.template.loaders.app_directories.Loader",
+                        ],
+                    ),
+                ]
+                if not DEBUG
+                else [
+                    "django.template.loaders.filesystem.Loader",
+                    "django.template.loaders.app_directories.Loader",
+                ]
+            ),
             "context_processors": [
-                "django.template.context_processors.debug", # Отладка
-                "django.template.context_processors.request", # Запрос
-                "mysite.context_processors.season_theme", # Тема
-                "django.contrib.auth.context_processors.auth", # Аутентификация
-                "django.contrib.messages.context_processors.messages", # Сообщения
-                "main.context_processors.main_context", # Главная страница
-                "news.context_processors.latest_news", # Новости
-                "portfolio.context_processors.latest_portfolio", # Портфолио
-                "reviews.context_processors.latest_reviews", # Отзывы
-                "cart.context_processors.cart", # Корзина
+                "django.template.context_processors.debug",  # Отладка
+                "django.template.context_processors.request",  # Запрос
+                "mysite.context_processors.season_theme",  # Тема
+                "django.contrib.auth.context_processors.auth",  # Аутентификация
+                "django.contrib.messages.context_processors.messages",  # Сообщения
+                "main.context_processors.main_context",  # Главная страница
+                "news.context_processors.latest_news",  # Новости
+                "portfolio.context_processors.latest_portfolio",  # Портфолио
+                "reviews.context_processors.latest_reviews",  # Отзывы
+                "cart.context_processors.cart",  # Корзина
             ],
         },
     },
@@ -184,43 +189,43 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 DATABASES = {
     # Основная база данных
     "default": {
-        "ENGINE": "django.db.backends.sqlite3", # SQLite
-        "NAME": BASE_DIR / "db.sqlite3", # Путь к базе данных
+        "ENGINE": "django.db.backends.sqlite3",  # SQLite
+        "NAME": BASE_DIR / "db.sqlite3",  # Путь к базе данных
     },
 }
 
-LANGUAGE_CODE = "ru" # Основной язык
-TIME_ZONE = "Europe/Moscow" # Московское время
+LANGUAGE_CODE = "ru"  # Основной язык
+TIME_ZONE = "Europe/Moscow"  # Московское время
 USE_I18N = True  # Включить интернационализацию
 USE_L10N = True  # Включить локализацию
-USE_TZ = True # Часовые пояса
+USE_TZ = True  # Часовые пояса
 
 LANGUAGES = [
-    ('ru', 'Russian'),
+    ("ru", "Russian"),
 ]
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 
 # ------------------------------------------------------------
 # Статические и медиа‑файлы
 # ------------------------------------------------------------
-STATIC_URL = "/static/" # URL для статических файлов
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")] # Путь к статическим файлам
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles") # Путь к статическим файлам
+STATIC_URL = "/static/"  # URL для статических файлов
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # Путь к статическим файлам
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Путь к статическим файлам
 
-MEDIA_URL = "/media/" # URL для медиа‑файлов
-MEDIA_ROOT = os.path.join(BASE_DIR, "media") # Путь к медиа‑файлам
+MEDIA_URL = "/media/"  # URL для медиа‑файлов
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")  # Путь к медиа‑файлам
 
 # Хранилища (по умолчанию и для staticfiles)
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"}, 
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     # Хранилище по умолчанию
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}, 
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
     # Хранилище для статических файлов
 }
 # В продакшене используем манифесты для кеширования
-if not DEBUG and HAS_WHITENOISE: # Если DEBUG выключен и WhiteNoise установлен
+if not DEBUG and HAS_WHITENOISE:  # Если DEBUG выключен и WhiteNoise установлен
     # В продакшене используем CompressedManifestStaticFilesStorage без дополнительных опций,
     # чтобы избежать ошибки "unexpected keyword argument 'manifest_strict'".
     STORAGES["staticfiles"] = {
@@ -235,7 +240,7 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 # ------------------------------------------------------------
 # Пользовательская модель и Allauth
 # ------------------------------------------------------------
-AUTH_USER_MODEL = "accounts.User" # Пользовательская модель
+AUTH_USER_MODEL = "accounts.User"  # Пользовательская модель
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
@@ -245,41 +250,43 @@ AUTHENTICATION_BACKENDS = [
 
 # Настройки Allauth
 ACCOUNT_LOGIN_METHODS = {"email"}
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-ACCOUNT_EMAIL_VERIFICATION = "none" # "mandatory" для продакшена
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "none"  # "mandatory" для продакшена
 LOGIN_REDIRECT_URL = "accounts:profile"
 LOGOUT_REDIRECT_URL = "main:home"
 
 # Социальные провайдеры (Примеры конфигов)
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': '123_dummy_client_id_for_google',
-            'secret': 'dummy_secret_for_google',
-            'key': ''
+    "google": {
+        "APP": {
+            "client_id": "123_dummy_client_id_for_google",
+            "secret": "dummy_secret_for_google",
+            "key": "",
         },
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        'OAUTH_PKCE_ENABLED': True,
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+        "OAUTH_PKCE_ENABLED": True,
     },
-    'github': {
-        'APP': {
-            'client_id': '123_dummy_client_id_for_github',
-            'secret': 'dummy_secret_for_github',
-            'key': ''
+    "github": {
+        "APP": {
+            "client_id": "123_dummy_client_id_for_github",
+            "secret": "dummy_secret_for_github",
+            "key": "",
         },
-        'SCOPE': ['user', 'repo', 'read:org'],
-    }
+        "SCOPE": ["user", "repo", "read:org"],
+    },
 }
 
 # ------------------------------------------------------------
 # Настройки капчи
 # ------------------------------------------------------------
-CAPTCHA_CHALLENGE_FUNCT = "captcha.helpers.random_char_challenge" # Функция для генерации капчи
-CAPTCHA_LENGTH = 3 
+CAPTCHA_CHALLENGE_FUNCT = (
+    "captcha.helpers.random_char_challenge"  # Функция для генерации капчи
+)
+CAPTCHA_LENGTH = 3
 CAPTCHA_TIMEOUT = 5
-CAPTCHA_IMAGE_SIZE = (180, 80) # Размеры картинки (ширина, высота)
-CAPTCHA_FONT_SIZE = 48 # Размер шрифта на картинке
+CAPTCHA_IMAGE_SIZE = (180, 80)  # Размеры картинки (ширина, высота)
+CAPTCHA_FONT_SIZE = 48  # Размер шрифта на картинке
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # ------------------------------------------------------------
@@ -287,56 +294,59 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # ------------------------------------------------------------
 JAZZMIN_SETTINGS = {
     # Основные настройки
-    "site_title": "DPIT-CMS Admin", # Название админ-панели
-    "site_header": "DPIT-CMS", # Заголовок админ-панели
-    "site_brand": "DPIT-CMS", # Бренд админ-панели
-    "site_brand_small": "DPIT", # Маленький бренд админ-панели
-    "site_logo_classes": "img-circle", # Классы для логотипа
-    "site_logo": "images/logo.png", # Логотип админ-панели
-    "site_footer": "DPIT-CMS", # Футер админ-панели
-    "menu_open_first_child": True, # Открывать первый пункт меню
-    "welcome_sign": "Добро пожаловать в админ-панель DPIT-CMS", # Приветственное сообщение
-    "copyright": "DPIT-CMS", # Копирайт
-    "show_ui_builder": True, # Показывать UI builder
-    "changeform_format": "horizontal_tabs", # Формат изменения формы
+    "site_title": "DPIT-CMS Admin",  # Название админ-панели
+    "site_header": "DPIT-CMS",  # Заголовок админ-панели
+    "site_brand": "DPIT-CMS",  # Бренд админ-панели
+    "site_brand_small": "DPIT",  # Маленький бренд админ-панели
+    "site_logo_classes": "img-circle",  # Классы для логотипа
+    "site_logo": "images/logo.png",  # Логотип админ-панели
+    "site_footer": "DPIT-CMS",  # Футер админ-панели
+    "menu_open_first_child": True,  # Открывать первый пункт меню
+    "welcome_sign": "Добро пожаловать в админ-панель DPIT-CMS",  # Приветственное сообщение
+    "copyright": "DPIT-CMS",  # Копирайт
+    "show_ui_builder": True,  # Показывать UI builder
+    "changeform_format": "horizontal_tabs",  # Формат изменения формы
     "changeform_format_overrides": {
-        "auth.user": "collapsible", # Формат изменения формы для пользователя
-        "auth.group": "vertical_tabs", # Формат изменения формы для группы
-        "admin.logentry": "vertical_tabs", # Формат изменения формы для лога
+        "auth.user": "collapsible",  # Формат изменения формы для пользователя
+        "auth.group": "vertical_tabs",  # Формат изменения формы для группы
+        "admin.logentry": "vertical_tabs",  # Формат изменения формы для лога
     },
-    "use_google_fonts_cdn": True, # Использовать Google Fonts CDN
-    "show_sidebar": True, # Показывать боковую панель
-    "navigation_expanded": False, # Разворачивать боковую панель
-    "hide_apps": [], # Скрывать приложения
-    "hide_models": [], # Скрывать модели
+    "use_google_fonts_cdn": True,  # Использовать Google Fonts CDN
+    "show_sidebar": True,  # Показывать боковую панель
+    "navigation_expanded": False,  # Разворачивать боковую панель
+    "hide_apps": [],  # Скрывать приложения
+    "hide_models": [],  # Скрывать модели
     "order_with_respect_to": [
-        "auth", # Авторизация
-        "main", # Главная
-        "knowledge_base", # База знаний
-        "news", # Новости
-        "portfolio", # Портфолио
-        "services", # Услуги
-        "reviews", # Отзывы
-        "tickets", # Тикеты
-        "mail", # Почта
-        "cart", # Корзина
-        "accounts", # Аккаунты
-        "backup", # Бэкапы
-        "logfiles", # Логи
+        "auth",  # Авторизация
+        "main",  # Главная
+        "knowledge_base",  # База знаний
+        "news",  # Новости
+        "portfolio",  # Портфолио
+        "services",  # Услуги
+        "reviews",  # Отзывы
+        "tickets",  # Тикеты
+        "mail",  # Почта
+        "cart",  # Корзина
+        "accounts",  # Аккаунты
+        "backup",  # Бэкапы
+        "logfiles",  # Логи
     ],
     "custom_links": {
         # Главная
-        "main": [{
-            "name": "Вернуться на сайт",
-            "url": "/",
-            "icon": "fas fa-home",
-            "new_window": True,
-        }, {
-            "name": "Аналитика",
-            "url": "/admin/dashboard/",
-            "icon": "fas fa-chart-line",
-            "new_window": False,
-        }]
+        "main": [
+            {
+                "name": "Вернуться на сайт",
+                "url": "/",
+                "icon": "fas fa-home",
+                "new_window": True,
+            },
+            {
+                "name": "Аналитика",
+                "url": "/admin/dashboard/",
+                "icon": "fas fa-chart-line",
+                "new_window": False,
+            },
+        ]
     },
     "icons": {
         "auth": "fas fa-users-cog",
@@ -387,7 +397,11 @@ JAZZMIN_SETTINGS = {
         {"app": "cart", "icon": "fas fa-shopping-cart"},
         {"app": "accounts", "icon": "fas fa-users"},
         {"app": "logfiles", "icon": "fas fa-file-alt"},
-        {"model": "admin.LogEntry", "label": "История действий", "icon": "fas fa-history"},
+        {
+            "model": "admin.LogEntry",
+            "label": "История действий",
+            "icon": "fas fa-history",
+        },
     ],
 }
 JAZZMIN_UI_TWEAKS = {
@@ -418,9 +432,9 @@ JAZZMIN_UI_TWEAKS = {
         "info": "btn-outline-info",
         "warning": "btn-outline-warning",
         "danger": "btn-outline-danger",
-        "success": "btn-outline-success"
+        "success": "btn-outline-success",
     },
-    "actions_sticky_top": False
+    "actions_sticky_top": False,
 }
 
 # JAZZMIN_UI_TWEAKS = {
@@ -460,26 +474,28 @@ JAZZMIN_UI_TWEAKS = {
 # CSRF и безопасность
 # ------------------------------------------------------------
 CSRF_TRUSTED_ORIGINS = [
-    "https://dpit-cms.ru", # Доверенные источники
-    "http://dpit-cms.ru", # Доверенные источники
-    "https://www.dpit-cms.ru", # Доверенные источники
-    "http://www.dpit-cms.ru", # Доверенные источники
-    "http://localhost:4234", # Доверенные источники
-    "http://127.0.0.1:4234", # Доверенные источники
-    "http://localhost:8000", # Доверенные источники
-    "http://127.0.0.1:8000", # Доверенные источники
+    "https://dpit-cms.ru",  # Доверенные источники
+    "http://dpit-cms.ru",  # Доверенные источники
+    "https://www.dpit-cms.ru",  # Доверенные источники
+    "http://www.dpit-cms.ru",  # Доверенные источники
+    "http://localhost:4234",  # Доверенные источники
+    "http://127.0.0.1:4234",  # Доверенные источники
+    "http://localhost:8000",  # Доверенные источники
+    "http://127.0.0.1:8000",  # Доверенные источники
 ]
-CSRF_COOKIE_SAMESITE = "Lax" # Безопасность CSRF
-SESSION_COOKIE_SAMESITE = "Lax" # Безопасность сессий
-CSRF_COOKIE_SECURE = not DEBUG # Безопасность CSRF
-SESSION_COOKIE_SECURE = not DEBUG # Безопасность сессий
-SECURE_SSL_REDIRECT = False # Перенаправление на HTTPS
-SECURE_HSTS_SECONDS = 31536000 if not DEBUG and SECURE_SSL_REDIRECT else 0 # Безопасность HSTS
-SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG and SECURE_SSL_REDIRECT # Безопасность HSTS
-SECURE_HSTS_PRELOAD = not DEBUG and SECURE_SSL_REDIRECT # Безопасность HSTS
-SECURE_BROWSER_XSS_FILTER = True # Безопасность XSS
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https") # Безопасность прокси
-X_FRAME_OPTIONS = "DENY" # Безопасность XSS
+CSRF_COOKIE_SAMESITE = "Lax"  # Безопасность CSRF
+SESSION_COOKIE_SAMESITE = "Lax"  # Безопасность сессий
+CSRF_COOKIE_SECURE = not DEBUG  # Безопасность CSRF
+SESSION_COOKIE_SECURE = not DEBUG  # Безопасность сессий
+SECURE_SSL_REDIRECT = False  # Перенаправление на HTTPS
+SECURE_HSTS_SECONDS = (
+    31536000 if not DEBUG and SECURE_SSL_REDIRECT else 0
+)  # Безопасность HSTS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG and SECURE_SSL_REDIRECT  # Безопасность HSTS
+SECURE_HSTS_PRELOAD = not DEBUG and SECURE_SSL_REDIRECT  # Безопасность HSTS
+SECURE_BROWSER_XSS_FILTER = True  # Безопасность XSS
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")  # Безопасность прокси
+X_FRAME_OPTIONS = "DENY"  # Безопасность XSS
 
 # ------------------------------------------------------------
 # Логирование
@@ -517,9 +533,17 @@ LOGGING = {
     },
     "root": {"handlers": ["console", "file"], "level": "INFO"},
     "loggers": {
-        "django": {"handlers": ["console", "file"], "level": "INFO", "propagate": False},
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
         "django.server": {"handlers": ["console"], "level": "INFO", "propagate": False},
-        "news": {"handlers": ["console", "file"], "level": "DEBUG" if DEBUG else "INFO", "propagate": False},
+        "news": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG" if DEBUG else "INFO",
+            "propagate": False,
+        },
     },
 }
 
@@ -572,40 +596,58 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # Autodiscover задачи в backup_tasks и других модулях
 CELERY_IMPORTS = [
-    'mysite.backup_tasks',
+    "mysite.backup_tasks",
 ]
 
 # Расписание Celery Beat (периодические задачи)
 CELERY_BEAT_SCHEDULE = {
     # Полный бэкап (БД + медиа) каждую ночь в 03:00
-    'full-backup-nightly': {
-        'task': 'backup.full',
-        'schedule': crontab(hour=3, minute=0),
-        'options': {'expires': 3600},
+    "full-backup-nightly": {
+        "task": "backup.full",
+        "schedule": crontab(hour=3, minute=0),
+        "options": {"expires": 3600},
     },
     # Бэкап только БД каждые 12 часов (в 03:00 и 15:00)
-    'db-backup-twice-daily': {
-        'task': 'backup.database',
-        'schedule': crontab(hour='3,15', minute=0),
-        'options': {'expires': 3600},
+    "db-backup-twice-daily": {
+        "task": "backup.database",
+        "schedule": crontab(hour="3,15", minute=0),
+        "options": {"expires": 3600},
     },
     # Очистка старых бэкапов каждое воскресенье в 04:00
-    'cleanup-old-backups-weekly': {
-        'task': 'backup.cleanup',
-        'schedule': crontab(hour=4, minute=0, day_of_week=0),
+    "cleanup-old-backups-weekly": {
+        "task": "backup.cleanup",
+        "schedule": crontab(hour=4, minute=0, day_of_week=0),
     },
 }
 
 # ------------------------------------------------------------
 # Настройки резервного копирования
 # ------------------------------------------------------------
-BACKUP_MAX_DB_COUNT = 14     # Хранить последние 14 бэкапов БД
-BACKUP_MAX_MEDIA_COUNT = 7   # Хранить последние 7 архивов медиа
+BACKUP_MAX_DB_COUNT = 14  # Хранить последние 14 бэкапов БД
+BACKUP_MAX_MEDIA_COUNT = 7  # Хранить последние 7 архивов медиа
 
 # ------------------------------------------------------------
 # Идентификатор корзины в сессии
 # ------------------------------------------------------------
 CART_SESSION_ID = "cart"
+
+# ------------------------------------------------------------
+# Настройки TinyMCE
+# ------------------------------------------------------------
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 600,
+    "width": "auto",
+    "menubar": "file edit view insert format tools table help",
+    "plugins": "advlist autolink lists link image charmap print preview anchor "
+    "searchreplace visualblocks code fullscreen "
+    "insertdatetime media table paste code help wordcount",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | help",
+    "custom_undo_redo_levels": 10,
+    "language": "ru",
+}
 
 # ------------------------------------------------------------
 # Конец файла settings.py

@@ -45,6 +45,13 @@ class SEOModel(models.Model):
     class Meta:
         abstract = True
 
+    def clean(self):
+        super().clean()
+        if self.meta_keywords:
+            # Разделяем все слова (включая те, что через пробел или запятую) и объединяем через запятую
+            words = [w.strip() for w in self.meta_keywords.replace(',', ' ').split() if w.strip()]
+            self.meta_keywords = ", ".join(words)
+
 
 class HeaderModel(models.Model):
     """Абстрактная модель для настройки шапки страницы."""
