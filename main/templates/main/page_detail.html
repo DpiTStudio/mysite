@@ -71,7 +71,7 @@
                 <div class="glass-card p-4 h-100 d-flex flex-column justify-content-center align-items-center hover-scale transition">
                     <div class="text-primary fs-1 mb-2"><i class="bi bi-award"></i></div>
                     <h3 class="text-white fw-bold mb-1">99%</h3>
-                    <div class="text-white-50 small text-uppercase letter-spacing-1">Качество кода</div>
+                    <div class="text-white-10 small text-uppercase letter-spacing-1">Качество кода</div>
                 </div>
             </div>
         </div>
@@ -84,19 +84,19 @@
                     <div class="col-md-4">
                         <div class="glass-card p-4 h-100 border-top border-primary border-3 transition hover-bg">
                             <h4 class="text-white mb-3"><i class="bi bi-shield-check text-primary me-2"></i>Надежность</h4>
-                            <p class="text-white-50 mb-0">Мы создаем отказоустойчивые системы, которые работают 24/7 без сбоев и задержек, обеспечивая стабильность вашего бизнеса.</p>
+                            <p class="text-white-10 mb-0">Мы создаем отказоустойчивые системы, которые работают 24/7 без сбоев и задержек, обеспечивая стабильность вашего бизнеса.</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="glass-card p-4 h-100 border-top border-primary border-3 transition hover-bg">
                             <h4 class="text-white mb-3"><i class="bi bi-lightning text-primary me-2"></i>Инновации</h4>
-                            <p class="text-white-50 mb-0">Используем самые современные стек-технологии и подходы к разработке, чтобы ваш проект был на шаг впереди конкурентов.</p>
+                            <p class="text-white-10 mb-0">Используем самые современные стек-технологии и подходы к разработке, чтобы ваш проект был на шаг впереди конкурентов.</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="glass-card p-4 h-100 border-top border-primary border-3 transition hover-bg">
                             <h4 class="text-white mb-3"><i class="bi bi-people text-primary me-2"></i>Прозрачность</h4>
-                            <p class="text-white-50 mb-0">Честная оценка сроков и бюджета, регулярные отчеты и полная вовлеченность в процесс на каждом этапе работы.</p>
+                            <p class="text-white-10 mb-0">Честная оценка сроков и бюджета, регулярные отчеты и полная вовлеченность в процесс на каждом этапе работы.</p>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                     <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-25 filter-blur" style="z-index: 0;"></div>
                     <div class="position-relative" style="z-index: 1;">
                         <h3 class="text-white mb-3">Готовы начать свой проект?</h3>
-                        <p class="text-white-50 mb-4 mx-auto" style="max-width: 600px;">Свяжитесь с нами сегодня, чтобы обсудить ваши идеи и получить бесплатную консультацию от наших экспертов.</p>
+                        <p class="text-white-10 mb-4 mx-auto" style="max-width: 600px;">Свяжитесь с нами сегодня, чтобы обсудить ваши идеи и получить бесплатную консультацию от наших экспертов.</p>
                         <a href="{% url 'main:page_detail' slug='kontakty' %}" class="btn btn-primary btn-lg px-5 shine-effect rounded-pill">Связаться с нами</a>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
     <div class="row">
         <div class="col-12">
             <h1 class="mb-4 text-white text-gradient">{{ page.title }}</h1>
-            <div class="ckeditor-content mb-5 text-white-50 lh-lg article-glass-content">
+            <div class="ckeditor-content mb-5 text-white-10 lh-lg article-glass-content">
                 {{ page.content|safe }}
             </div>
         </div>
@@ -139,7 +139,7 @@
                     <div class="me-3 text-primary bg-primary bg-opacity-10 p-2 rounded"><i class="bi bi-map fs-5"></i></div>
                     <div>
                         <strong class="d-block text-white mb-1">Адрес:</strong>
-                        <span class="text-white-50">{{ site_settings.site_address }}</span>
+                        <span class="text-white-10">{{ site_settings.site_address }}</span>
                     </div>
                 </div>
                 {% endif %}
