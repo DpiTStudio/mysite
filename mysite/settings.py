@@ -635,18 +635,24 @@ CART_SESSION_ID = "cart"
 # Настройки TinyMCE
 # ------------------------------------------------------------
 TINYMCE_DEFAULT_CONFIG = {
-    "height": 600,
-    "width": "auto",
+    "height": 800,
+    "width": "100%",
     "menubar": "file edit view insert format tools table help",
-    "plugins": "advlist autolink lists link image charmap print preview anchor "
-    "searchreplace visualblocks code fullscreen "
-    "insertdatetime media table paste code help wordcount",
-    "toolbar": "undo redo | formatselect | "
-    "bold italic backcolor | alignleft aligncenter "
-    "alignright alignjustify | bullist numlist outdent indent | "
-    "removeformat | help",
+    "plugins": (
+        "advlist autolink lists link image charmap print preview anchor "
+        "searchreplace visualblocks code fullscreen "
+        "insertdatetime media table paste code help wordcount codesample"
+    ),
+    "toolbar": (
+        "fullscreen | undo redo | formatselect | "
+        "bold italic underline strikethrough | forecolor backcolor | "
+        "alignleft aligncenter alignright alignjustify | "
+        "bullist numlist outdent indent | link image media codesample | "
+        "removeformat | help"
+    ),
     "custom_undo_redo_levels": 10,
     "language": "ru",
+    "browser_spellcheck": True,
 }
 
 # ------------------------------------------------------------

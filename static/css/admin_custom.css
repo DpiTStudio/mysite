@@ -8,23 +8,24 @@
     --p-bg: #0a0b0d;
     --p-surface: #12141a;
     --p-card: rgba(30, 32, 40, 0.7);
-    --p-accent: #6366f1; /* Indigo vibrant */
+    --p-accent: #6366f1;
+    /* Indigo vibrant */
     --p-accent-glow: rgba(99, 102, 241, 0.4);
     --p-success: #10b981;
     --p-warning: #f59e0b;
     --p-danger: #ef4444;
     --p-info: #0ea5e9;
-    
+
     /* Glassmorphism */
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    
+
     /* Text */
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
-    
+
     /* Layout */
     --sidebar-width: 300px;
     --sidebar-collapsed-width: 73px;
@@ -40,13 +41,26 @@ body {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--p-bg); }
-::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--p-accent); }
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--p-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--p-accent);
+}
 
 /* Layout Wrappers */
-.wrapper, .content-wrapper {
+.wrapper,
+.content-wrapper {
     background-color: var(--p-bg) !important;
 }
 
@@ -67,7 +81,10 @@ body {
 
 /* Layout adjustments for the new width */
 @media (min-width: 992px) {
-    .content-wrapper, .main-header, .main-footer {
+
+    .content-wrapper,
+    .main-header,
+    .main-footer {
         margin-left: var(--sidebar-width) !important;
         transition: margin-left 0.3s ease-in-out !important;
     }
@@ -77,7 +94,7 @@ body {
     body.sidebar-collapse .main-sidebar::before {
         width: var(--sidebar-collapsed-width) !important;
     }
-    
+
     body.sidebar-collapse .content-wrapper,
     body.sidebar-collapse .main-header,
     body.sidebar-collapse .main-footer {
@@ -90,12 +107,14 @@ body {
     .main-sidebar {
         margin-left: calc(var(--sidebar-width) * -1) !important;
     }
-    
+
     body.sidebar-open .main-sidebar {
         margin-left: 0 !important;
     }
-    
-    .content-wrapper, .main-header, .main-footer {
+
+    .content-wrapper,
+    .main-header,
+    .main-footer {
         margin-left: 0 !important;
     }
 }
@@ -272,7 +291,7 @@ body {
 
 /* Search results in dashboard */
 #appsContainer .app-item-card {
-    background: rgba(255,255,255,0.03) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
     border-radius: 16px !important;
     padding: 20px !important;
     margin-bottom: 10px;
@@ -280,7 +299,7 @@ body {
 }
 
 #appsContainer .app-item-card:hover {
-    background: rgba(255,255,255,0.06) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
     border-color: var(--p-accent) !important;
     transform: scale(1.02);
 }
@@ -317,16 +336,25 @@ body {
 
 /* Animation for content loading */
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.content-header, .content {
+.content-header,
+.content {
     animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* Custom adjustments for compact list view and change forms */
-.table td input[name$="-order"], .table td input[name="order"] {
+.table td input[name$="-order"],
+.table td input[name="order"] {
     width: 65px !important;
     padding: 3px 6px !important;
     font-size: 0.85rem !important;
@@ -334,12 +362,13 @@ body {
     border-radius: 6px !important;
     margin: 0 auto !important;
     display: block !important;
-    background: rgba(255,255,255,0.03) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
     border: 1px solid var(--glass-border) !important;
     color: var(--text-primary) !important;
 }
 
-.table td input[name$="-order"]:focus, .table td input[name="order"]:focus {
+.table td input[name$="-order"]:focus,
+.table td input[name="order"]:focus {
     border-color: var(--p-accent) !important;
     box-shadow: 0 0 0 2px var(--p-accent-glow) !important;
 }
@@ -398,7 +427,7 @@ body {
 
 .admin-stats-badges .badge:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Service admin list and form polish */
@@ -409,20 +438,20 @@ body {
 
 #result_list thead th {
     padding: 0.75rem 0.9rem !important;
-    background: rgba(255,255,255,0.03) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
     border: none !important;
 }
 
 #result_list tbody td {
-    background: rgba(255,255,255,0.025) !important;
-    border: 1px solid rgba(255,255,255,0.06) !important;
+    background: rgba(255, 255, 255, 0.025) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-left: none !important;
     border-right: none !important;
     padding: 0.7rem 0.9rem !important;
 }
 
 #result_list tbody tr:hover td {
-    background: rgba(255,255,255,0.05) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     transform: translateY(-1px);
 }
 
@@ -430,7 +459,7 @@ body {
     border: 1px solid var(--glass-border) !important;
     border-radius: 16px !important;
     padding: 1rem !important;
-    background: linear-gradient(180deg, rgba(18,20,26,0.95), rgba(10,11,13,0.95)) !important;
+    background: linear-gradient(180deg, rgba(18, 20, 26, 0.95), rgba(10, 11, 13, 0.95)) !important;
 }
 
 #changelist-filter h3 {
@@ -444,7 +473,7 @@ body {
     border: 1px solid var(--glass-border) !important;
     border-radius: 14px !important;
     padding: 0.75rem 1rem !important;
-    background: rgba(255,255,255,0.025) !important;
+    background: rgba(255, 255, 255, 0.025) !important;
     margin-bottom: 1rem !important;
 }
 
@@ -452,12 +481,12 @@ body {
     border: 1px solid var(--glass-border) !important;
     border-radius: 14px !important;
     padding: 0.75rem 1rem !important;
-    background: rgba(255,255,255,0.025) !important;
+    background: rgba(255, 255, 255, 0.025) !important;
 }
 
 .form-row {
     padding: 0.75rem 0 !important;
-    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
 .form-row:last-child {
@@ -465,10 +494,10 @@ body {
 }
 
 .fieldset {
-    border: 1px solid rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-radius: 14px !important;
     padding: 1rem 1rem 0.25rem !important;
-    background: rgba(255,255,255,0.02) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
 }
 
 .fieldset .legend {
@@ -478,7 +507,18 @@ body {
 }
 
 /* Fix standard inputs, textareas, selects for Dark Mode Forms */
-input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="number"], input[type="tel"], textarea, select, .vTextField, .vLargeTextField, .vURLField, .vIntegerField {
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="tel"],
+textarea,
+select,
+.vTextField,
+.vLargeTextField,
+.vURLField,
+.vIntegerField {
     background-color: rgba(255, 255, 255, 0.05) !important;
     color: var(--text-primary) !important;
     border: 1px solid var(--glass-border) !important;
@@ -486,7 +526,9 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
     padding: 6px 10px !important;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
     border-color: var(--p-accent) !important;
     box-shadow: 0 0 0 2px var(--p-accent-glow) !important;
     outline: none !important;
@@ -497,48 +539,142 @@ input:focus, textarea:focus, select:focus {
     background: transparent !important;
     color: var(--text-primary) !important;
 }
-.selector-available, .selector-chosen {
+
+.selector-available,
+.selector-chosen {
     background: rgba(255, 255, 255, 0.02) !important;
     border: 1px solid var(--glass-border) !important;
     border-radius: 8px;
     overflow: hidden;
 }
-.selector-available h2, .selector-chosen h2 {
+
+.selector-available h2,
+.selector-chosen h2 {
     background: rgba(255, 255, 255, 0.05) !important;
     color: var(--text-primary) !important;
     border-bottom: 1px solid var(--glass-border) !important;
 }
+
 .selector-filter {
     background: transparent !important;
     border-bottom: 1px solid var(--glass-border) !important;
     color: var(--text-primary) !important;
 }
+
 .selector-filter input {
     color: var(--text-primary) !important;
     background: rgba(255, 255, 255, 0.05) !important;
 }
+
 .selector select {
     background-color: transparent !important;
     color: var(--text-primary) !important;
     border: none !important;
 }
+
 .selector select option {
     background-color: var(--p-surface);
     color: var(--text-primary);
     padding: 6px 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
-.selector select option:hover, .selector select option:checked {
+
+.selector select option:hover,
+.selector select option:checked {
     background-color: var(--p-accent) !important;
     color: #fff !important;
 }
-.selector-add, .selector-remove {
+
+.selector-add,
+.selector-remove {
     background-color: rgba(255, 255, 255, 0.05) !important;
     border-radius: 50% !important;
     transition: all 0.2s;
 }
-.selector-add:hover, .selector-remove:hover {
+
+.selector-add:hover,
+.selector-remove:hover {
     background-color: var(--p-accent) !important;
 }
 
+/* --- UI Enhancements --- */
 
+/* Improved Inputs */
+.form-control,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="tel"],
+textarea,
+select,
+.vTextField,
+.vLargeTextField,
+.vURLField,
+.vIntegerField {
+    padding: 0.85rem 1.25rem !important;
+    font-size: 0.95rem !important;
+    transition: all 0.2s ease-in-out !important;
+    border-radius: 10px !important;
+}
+
+.form-control:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    box-shadow: 0 0 0 3px var(--p-accent-glow) !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Improved Buttons */
+.btn {
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 10px !important;
+    letter-spacing: 0.02em;
+    font-size: 0.95rem !important;
+}
+
+.btn-primary:hover,
+.default:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px var(--p-accent-glow), 0 0 0 1px var(--p-accent) !important;
+    filter: brightness(1.1);
+}
+
+/* Sticky Submit Row */
+.submit-row {
+    padding: 1.25rem !important;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.3) !important;
+    position: sticky;
+    bottom: 0;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    background: rgba(18, 20, 26, 0.85) !important;
+}
+
+.submit-row a.deletelink {
+    margin-right: auto;
+}
+
+/* Table Enhancements */
+#result_list tbody td {
+    padding: 0.85rem 1rem !important;
+    font-size: 0.95rem !important;
+}
+
+#result_list tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.06) !important;
+    transform: none !important;
+}
+
+/* Make headers more prominent */
+.card-header,
+#changelist-filter h3 {
+    font-size: 1.15rem !important;
+    letter-spacing: 0.03em;
+}

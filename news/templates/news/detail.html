@@ -148,6 +148,14 @@
                        target="_blank" class="btn btn-sm news-dropdown-btn rounded-pill px-3" title="VKontakte">
                         <i class="bi bi-vk text-info me-1"></i>VK
                     </a>
+                    <a href="https://connect.ok.ru/offer?url={{ request.build_absolute_uri }}&title={{ news.title }}" 
+                       target="_blank" class="btn btn-sm news-dropdown-btn rounded-pill px-3" title="Odnoklassniki">
+                        <i class="bi bi-ok text-primary me-1"></i>OK
+                    </a>
+                    <a href="https://connect.mail.ru/share?url={{ request.build_absolute_uri }}&title={{ news.title }}" 
+                       target="_blank" class="btn btn-sm news-dropdown-btn rounded-pill px-3" title="Moi Mir">
+                        <i class="bi bi-moimir text-primary me-1"></i>Moi Mir
+                    </a>
                     <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ news.title }}" 
                        target="_blank" class="btn btn-sm news-dropdown-btn rounded-pill px-3" title="Telegram">
                         <i class="bi bi-telegram text-primary me-1"></i>Telegram
@@ -175,7 +183,7 @@
             <h3 class="news-heading h3 mb-4 fw-bold"><i class="bi bi-collection-play me-2 text-primary"></i>Связанные новости</h3>
             <div class="row g-4">
                 {% for related in related_news %}
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="news-card-modern p-4 h-100 d-flex flex-column position-relative">
                         <!-- Верхняя панель -->
                         <div class="d-flex justify-content-between align-items-center mb-3 position-relative z-2">
