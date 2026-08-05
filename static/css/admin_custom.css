@@ -628,18 +628,43 @@ select:focus {
 }
 
 /* Improved Buttons */
-.btn {
+.btn,
+.submit-row input[type="submit"],
+.submit-row input[type="button"] {
     padding: 0.75rem 1.5rem !important;
     border-radius: 10px !important;
     letter-spacing: 0.02em;
     font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    cursor: pointer;
+}
+
+.submit-row input[name="_save"] {
+    background: var(--p-accent) !important;
+    color: #fff !important;
+}
+
+.submit-row input[name="_addanother"],
+.submit-row input[name="_continue"] {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--glass-border) !important;
 }
 
 .btn-primary:hover,
-.default:hover {
+.default:hover,
+.submit-row input[name="_save"]:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px var(--p-accent-glow), 0 0 0 1px var(--p-accent) !important;
     filter: brightness(1.1);
+}
+
+.submit-row input[name="_addanother"]:hover,
+.submit-row input[name="_continue"]:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-2px);
 }
 
 /* Sticky Submit Row */
@@ -655,10 +680,57 @@ select:focus {
     z-index: 1000;
     backdrop-filter: blur(12px);
     background: rgba(18, 20, 26, 0.85) !important;
+    border-radius: 12px;
+}
+
+/* If save_on_top is enabled, make the top submit row stick to the top instead of bottom */
+form > div > .submit-row:first-of-type:not(:last-of-type) {
+    position: sticky;
+    top: calc(var(--header-height, 50px) + 10px);
+    bottom: auto;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3) !important;
+    z-index: 1002;
+    margin-bottom: 1.5rem !important;
 }
 
 .submit-row a.deletelink {
     margin-right: auto;
+}
+
+/* Object Tools (History, etc.) */
+.object-tools {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0 0 1rem 0;
+    margin: 0;
+    justify-content: flex-end;
+}
+
+.object-tools li {
+    list-style-type: none;
+}
+
+.object-tools a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.25rem;
+    background: var(--p-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: var(--glass-shadow);
+}
+
+.object-tools a:hover {
+    background: var(--p-accent);
+    border-color: var(--p-accent);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px var(--p-accent-glow);
 }
 
 /* Table Enhancements */
@@ -674,7 +746,234 @@ select:focus {
 
 /* Make headers more prominent */
 .card-header,
-#changelist-filter h3 {
+#changelist-filter h3,
+.fieldset h2,
+.module h2 {
     font-size: 1.15rem !important;
     letter-spacing: 0.03em;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 0.5rem;
 }
+
+/* --- Premium Layout Additions --- */
+
+/* Breadcrumbs */
+.breadcrumbs {
+    background: transparent !important;
+    padding: 1rem 1.5rem !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.breadcrumbs a {
+    color: var(--p-accent) !important;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.breadcrumbs a:hover {
+    color: #fff !important;
+}
+
+/* System Messages / Toasts */
+.messagelist {
+    padding: 0 !important;
+    margin: 1rem 1.5rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.messagelist li {
+    list-style: none;
+    padding: 1rem 1.5rem !important;
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    animation: slideInRight 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.messagelist li.success {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-left: 4px solid var(--p-success) !important;
+    color: #34d399 !important;
+}
+
+.messagelist li.warning {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-left: 4px solid var(--p-warning) !important;
+    color: #fbbf24 !important;
+}
+
+.messagelist li.error {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-left: 4px solid var(--p-danger) !important;
+    color: #f87171 !important;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Fieldset and Form Enhancements */
+.aligned label {
+    font-weight: 500 !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.95rem;
+}
+
+.help, .helptext {
+    color: var(--text-muted) !important;
+    font-size: 0.8rem !important;
+    margin-top: 0.4rem !important;
+    display: block;
+    font-style: italic;
+}
+
+/* Error states in forms */
+.errors {
+    background: rgba(239, 68, 68, 0.05) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    border-radius: 12px;
+    padding: 1rem !important;
+}
+
+.errors input, .errors select, .errors textarea {
+    border-color: var(--p-danger) !important;
+}
+
+.errornote {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    border-radius: 10px !important;
+    padding: 1rem !important;
+    color: #f87171 !important;
+    font-weight: 600 !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Select2 Dropdowns (Jazzmin & Default Admin) */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+    min-height: 42px !important;
+    padding: 4px 8px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: var(--p-accent) !important;
+    box-shadow: 0 0 0 3px var(--p-accent-glow) !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: var(--text-primary) !important;
+    line-height: 32px !important;
+}
+
+.select2-dropdown {
+    background-color: var(--p-surface) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 12px !important;
+    box-shadow: var(--glass-shadow) !important;
+    backdrop-filter: blur(12px) !important;
+    overflow: hidden !important;
+    z-index: 1050 !important;
+}
+
+.select2-results__option {
+    color: var(--text-primary) !important;
+    padding: 8px 12px !important;
+    font-size: 0.95rem !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option:hover {
+    background-color: var(--p-accent) !important;
+    color: #fff !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.select2-search--dropdown .select2-search__field {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 6px !important;
+    color: var(--text-primary) !important;
+}
+
+.select2-search--dropdown .select2-search__field:focus {
+    border-color: var(--p-accent) !important;
+    outline: none !important;
+}
+
+/* File Inputs */
+input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+    background: var(--p-accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--p-accent-glow);
+}
+
+input[type="file"]:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--p-accent);
+}
+
+/* DateTime Widgets */
+.datetimeshortcuts {
+    margin-left: 10px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.datetimeshortcuts a {
+    color: var(--p-accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.datetimeshortcuts a:hover {
+    color: #fff;
+}
