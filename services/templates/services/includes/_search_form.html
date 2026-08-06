@@ -1,0 +1,26 @@
+{% load services_extras %}
+
+<!-- Поисковая строка -->
+<div>
+    <div class="d-flex align-items-center justify-content-between mb-2.5">
+        <h6 class="services-filter-title text-uppercase letter-spacing-1 mb-0">
+            <i class="bi bi-search me-2 text-primary"></i>Поиск:
+        </h6>
+    </div>
+    <div class="services-search-wrapper position-relative">
+        <form method="get" action="{% url 'services:list' %}" class="d-flex align-items-center">
+            {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+            {% if request.GET.complexity %}<input type="hidden" name="complexity" value="{{ request.GET.complexity }}">{% endif %}
+            {% if request.GET.tech %}<input type="hidden" name="tech" value="{{ request.GET.tech }}">{% endif %}
+            {% if request.GET.sort %}<input type="hidden" name="sort" value="{{ request.GET.sort }}">{% endif %}
+            
+            <i class="bi bi-search services-search-icon"></i>
+            <input type="text" name="q" value="{{ search_query }}" class="form-control services-search-input py-2 shadow-none w-100" placeholder="Поиск по услугам и стеку...">
+            {% if search_query %}
+            <a href="?{% param_replace q=None page=None %}" class="position-absolute end-0 me-3 text-info text-decoration-none" title="Очистить поиск">
+                <i class="bi bi-x-circle-fill"></i>
+            </a>
+            {% endif %}
+        </form>
+    </div>
+</div>

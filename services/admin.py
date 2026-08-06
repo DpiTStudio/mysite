@@ -270,7 +270,61 @@ class ServiceAdmin(admin.ModelAdmin):
 
     readonly_fields = ("get_tech_display", "views")
 
-    actions = ["make_active", "make_inactive", "enable_order", "disable_order"]
+    actions = ["make_active", "make_inactive", "enable_order", "disable_order", "duplicate_selected"]
+
+    @admin.action(description="Копировать выбранные услуги")
+    def duplicate_selected(self, request, queryset):
+        import uuid
+        count = 0
+        for service in queryset:
+            original_techs = list(service.technologies.all())
+            original_portfolio = list(service.related_portfolio.all())
+            original_deliverables = list(service.deliverables_m2m.all())
+            
+            benefits = list(service.benefits.all())
+            steps = list(service.steps.all())
+            faqs = list(service.faqs.all())
+            price_plans = list(service.price_plans.all())
+
+            service.pk = None
+            service.id = None
+            service.title = f"{service.title} (Копия)"
+            service.slug = f"{service.slug}-copy-{str(uuid.uuid4())[:8]}"
+            service.is_active = False 
+            service.save()
+
+            service.technologies.set(original_techs)
+            service.related_portfolio.set(original_portfolio)
+            service.deliverables_m2m.set(original_deliverables)
+            
+            for benefit in benefits:
+                benefit.pk = None
+                benefit.id = None
+                benefit.service = service
+                benefit.save()
+                
+            for step in steps:
+                step.pk = None
+                step.id = None
+                step.service = service
+                step.save()
+                
+            for faq in faqs:
+                faq.pk = None
+                faq.id = None
+                faq.service = service
+                faq.save()
+                
+            for plan in price_plans:
+                original_plan_features = list(plan.features.all())
+                plan.pk = None
+                plan.id = None
+                plan.service = service
+                plan.save()
+                plan.features.set(original_plan_features)
+
+            count += 1
+        self.message_user(request, f"Скопировано услуг: {count}")
 
     fieldsets = (
         (
