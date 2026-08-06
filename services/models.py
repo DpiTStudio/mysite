@@ -58,7 +58,7 @@ class ServiceCategory(ActiveModel, SEOModel, TimestampModel):
         blank=True,
         null=True,
     )
-    description = models.TextField(verbose_name=_("Описание"), blank=True)
+    description = HTMLField(verbose_name=_("Описание"), blank=True)
     order = models.PositiveIntegerField(default=0, verbose_name=_("Порядок сортировки"))
 
     class Meta:

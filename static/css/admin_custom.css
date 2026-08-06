@@ -16,10 +16,10 @@
     --p-danger: #ef4444;
     --p-info: #0ea5e9;
 
-    /* Glassmorphism */
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    /* Glassmorphism Enhancements */
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
 
     /* Text */
     --text-primary: #f8fafc;
@@ -175,8 +175,9 @@ body {
 
 /* Header / Navbar */
 .main-header {
-    background: rgba(10, 11, 13, 0.8) !important;
-    backdrop-filter: blur(12px);
+    background: rgba(10, 11, 13, 0.7) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--glass-border) !important;
 }
 
@@ -192,7 +193,8 @@ body {
 /* Cards - Premium Glassmorphism */
 .card {
     background: var(--p-card) !important;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border) !important;
     border-radius: 20px !important;
     box-shadow: var(--glass-shadow) !important;
