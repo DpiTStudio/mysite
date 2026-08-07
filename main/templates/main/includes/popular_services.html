@@ -2,8 +2,20 @@
 {% if popular_services %}
 <section class="home-section py-5">
     <div class="section-title animate-up mb-5">
-        <h2 class="display-5 text-gradient">Наши Услуги</h2>
-        <p class="text-muted">Решения любой сложности для вашего бизнеса</p>
+        <h2 class="display-5 text-gradient">
+            {% if site_settings.services_block_title %}
+                {{ site_settings.services_block_title }}
+            {% else %}
+                Наши услуги
+            {% endif %}
+        </h2>
+        <p class="text-muted">
+            {% if site_settings.description_of_services_block %}
+                {{ site_settings.description_of_services_block }}
+            {% else %}
+                Решения любой сложности для вашего бизнеса
+            {% endif %}
+        </p>
     </div>
     
     <div class="bento-grid-services">

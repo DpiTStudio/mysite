@@ -89,6 +89,17 @@ class SiteSettings(ActiveModel, SEOModel):
     site_title = models.CharField(max_length=200, verbose_name="Название сайта")
     site_slogan = models.CharField(max_length=30, verbose_name="Слоган")
     site_description = models.TextField(max_length=255, verbose_name="Описание сайта")
+    services_block_title = models.CharField(
+        max_length=200, 
+        verbose_name="Заголовок блока услуг", 
+        default="Наши услуги",
+        blank=True
+    )
+    description_of_services_block = models.TextField(
+        verbose_name="Описание блока услуг", 
+        default="Профессиональные цифровые решения для роста и масштабирования вашего бизнеса.",
+        blank=True
+    )
     site_email = models.EmailField(max_length=30, verbose_name="Электронная почта")
     site_phone_1 = models.CharField(max_length=20, verbose_name="Телефон 1")
     site_phone_2 = models.CharField(max_length=20, verbose_name="Телефон 2")

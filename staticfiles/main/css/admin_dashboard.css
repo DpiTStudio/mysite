@@ -72,7 +72,7 @@
 /* App categories grid */
 .app-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px !important;
 }
 
@@ -85,29 +85,99 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    backdrop-filter: blur(5px);
+}
+
+.app-item-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(40, 42, 50, 0.6) !important;
+}
+
+.app-item-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.app-item-title i {
+    font-size: 1.6rem;
+    color: var(--accent-blue);
+    margin-right: 14px;
+    padding: 10px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 12px;
 }
 
 .app-item-title span {
-    font-size: 1.25rem !important;
+    font-size: 1.3rem !important;
     font-weight: 700 !important;
+    color: #f8fafc;
+    letter-spacing: 0.2px;
+}
+
+.model-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
 }
 
 .model-tag {
-    background: rgba(255, 255, 255, 0.04) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
     padding: 6px 12px !important;
-    margin: 2px 4px;
-    display: inline-block;
-    color: #cbd5e1 !important;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    color: #94a3b8 !important;
     font-weight: 500 !important;
+    font-size: 0.85rem;
+    transition: all 0.2s ease !important;
+}
+
+.model-tag i {
+    margin-right: 6px;
+    font-size: 0.9em;
+    opacity: 0.7;
+    transition: all 0.2s;
 }
 
 .model-tag:hover {
-    background: var(--accent-blue) !important;
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
     color: #fff !important;
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15) !important;
+}
+
+.model-tag:hover i {
+    opacity: 1;
+    color: var(--accent-blue);
+}
+
+.app-actions {
+    margin-top: auto;
+    border-top: 1px solid var(--dash-border);
+    padding-top: 18px;
+}
+
+.app-actions .btn {
+    width: 100%;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border-radius: 10px !important;
+}
+
+.app-actions .btn:hover {
+    background: var(--accent-blue);
+    color: white !important;
+    border-color: var(--accent-blue);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
 
 /* Scrollbar Dashboard */

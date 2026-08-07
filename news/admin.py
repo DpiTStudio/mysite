@@ -70,14 +70,15 @@ class NewsCategoryAdmin(admin.ModelAdmin):
 
 class NewsAdmin(admin.ModelAdmin):
     form = NewsForm
+    list_per_page = 5
     inlines = [DailyEventInline]
     list_display = [
         "title",
         "category",
-        "news_date",
+        "news_date_display",
         "events_count",
         "is_active",
-        "created_at",
+        "created_at_display",
         "views",
     ]
     list_editable = ["is_active"]
@@ -93,6 +94,7 @@ class NewsAdmin(admin.ModelAdmin):
         "content",
     ]
     date_hierarchy = "news_date"
+    ordering = ["category", "-news_date"]
 
     # Поля для отображения в админке
     fieldsets = (
@@ -110,6 +112,11 @@ class NewsAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        ("Custom Display", {
+            "fields": ("news_date_display", "created_at_display"),
+            "description": "Custom column headers for dates",
+            "classes": ("collapse",),
+        }),
         (
             "SEO настройки",
             {
@@ -140,6 +147,16 @@ class NewsAdmin(admin.ModelAdmin):
             count
         )
     events_count.short_description = "События"
+
+    def news_date_display(self, obj):
+        """Display news_date with custom column header"""
+        return obj.news_date
+    news_date_display.short_description = "Дата новости"
+
+    def created_at_display(self, obj):
+        """Display created_at with custom column header"""
+        return obj.created_at
+    created_at_display.short_description = "Дата создания"
 
     class Meta:
         verbose_name = "Новость"

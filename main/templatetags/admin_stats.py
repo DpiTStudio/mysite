@@ -1,6 +1,7 @@
 from django import template
 from django.db.models import Sum
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from news.models import News, NewsCategory
 from portfolio.models import Portfolio, PortfolioCategory
 from reviews.models import Review
@@ -16,30 +17,35 @@ User = get_user_model()
 
 @register.simple_tag
 def get_admin_stats():
-    stats = {
-        'users_count': User.objects.count(),
-        'news_count': News.objects.count(),
-        'news_categories_count': NewsCategory.objects.count(),
-        'portfolio_count': Portfolio.objects.count(),
-        'portfolio_categories_count': PortfolioCategory.objects.count(),
-        'reviews_count': Review.objects.count(),
-        'reviews_pending_count': Review.objects.filter(status='pending').count(),
-        'tickets_count': Ticket.objects.count(),
-        'tickets_open_count': Ticket.objects.exclude(status='closed').count(),
-        'pages_count': Page.objects.count(),
-        'services_count': Service.objects.count(),
-        'service_orders_count': ServiceOrder.objects.count(),
-        'service_orders_new_count': ServiceOrder.objects.filter(status='new').count(),
-        'total_news_views': News.objects.aggregate(Sum('views'))['views__sum'] or 0,
-        'total_portfolio_views': Portfolio.objects.aggregate(Sum('views'))['views__sum'] or 0,
+    stats = cache.get('admin_dashboard_stats')
+    
+    if not stats:
+        stats = {
+            'users_count': User.objects.count(),
+            'news_count': News.objects.count(),
+            'news_categories_count': NewsCategory.objects.count(),
+            'portfolio_count': Portfolio.objects.count(),
+            'portfolio_categories_count': PortfolioCategory.objects.count(),
+            'reviews_count': Review.objects.count(),
+            'reviews_pending_count': Review.objects.filter(status='pending').count(),
+            'tickets_count': Ticket.objects.count(),
+            'tickets_open_count': Ticket.objects.exclude(status='closed').count(),
+            'pages_count': Page.objects.count(),
+            'services_count': Service.objects.count(),
+            'service_orders_count': ServiceOrder.objects.count(),
+            'service_orders_new_count': ServiceOrder.objects.filter(status='new').count(),
+            'total_news_views': News.objects.aggregate(Sum('views'))['views__sum'] or 0,
+            'total_portfolio_views': Portfolio.objects.aggregate(Sum('views'))['views__sum'] or 0,
+            
+            # Новые статистики
+            'kb_articles_count': Article.objects.count(),
+            'kb_categories_count': KBCategory.objects.count(),
+            'cart_orders_count': CartOrder.objects.count(),
+            'cart_orders_new_count': CartOrder.objects.filter(status='new').count(),
+            'log_files_count': LogFile.objects.count(),
+        }
+        cache.set('admin_dashboard_stats', stats, 60) # Кэшируем на 60 секунд
         
-        # Новые статистики
-        'kb_articles_count': Article.objects.count(),
-        'kb_categories_count': KBCategory.objects.count(),
-        'cart_orders_count': CartOrder.objects.count(),
-        'cart_orders_new_count': CartOrder.objects.filter(status='new').count(),
-        'log_files_count': LogFile.objects.count(),
-    }
     return stats
 
 @register.filter
