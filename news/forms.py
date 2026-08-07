@@ -9,6 +9,28 @@ class NewsCategoryForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "description": TinyMCE(attrs={"cols": 80, "rows": 30}),
+            "meta_title": forms.TextInput(
+                attrs={
+                    "class": "vTextField",
+                    "placeholder": "Оптимально 50-60 символов...",
+                    "style": "width: 100%; max-width: 800px;",
+                }
+            ),
+            "meta_keywords": forms.TextInput(
+                attrs={
+                    "class": "vTextField",
+                    "placeholder": "Ключевое слово 1, ключевое слово 2...",
+                    "style": "width: 100%; max-width: 800px;",
+                }
+            ),
+            "meta_description": forms.Textarea(
+                attrs={
+                    "class": "vLargeTextField",
+                    "rows": 3,
+                    "placeholder": "Краткое описание страницы для поисковых систем (рекомендуется 150-160 символов)...",
+                    "style": "width: 100%; max-width: 800px;",
+                }
+            ),
         }
 
 
@@ -18,8 +40,27 @@ class NewsForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "content": TinyMCE(attrs={"cols": 80, "rows": 30}),
+            "meta_title": forms.TextInput(
+                attrs={
+                    "class": "vTextField",
+                    "placeholder": "Оптимально 50-60 символов...",
+                    "style": "width: 100%; max-width: 800px;",
+                }
+            ),
+            "meta_keywords": forms.TextInput(
+                attrs={
+                    "class": "vTextField",
+                    "placeholder": "Ключевое слово 1, ключевое слово 2...",
+                    "style": "width: 100%; max-width: 800px;",
+                }
+            ),
             "meta_description": forms.Textarea(
-                attrs={"cols": 80, "rows": 4, "class": "vLargeTextField"}
+                attrs={
+                    "class": "vLargeTextField",
+                    "rows": 3,
+                    "placeholder": "Краткое описание страницы для поисковых систем (рекомендуется 150-160 символов)...",
+                    "style": "width: 100%; max-width: 800px;",
+                }
             ),
         }
 

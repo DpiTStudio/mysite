@@ -52,7 +52,11 @@ class NewsCategoryAdmin(admin.ModelAdmin):
         ),
         (
             "SEO настройки",
-            {"fields": ("meta_title", "meta_keywords"), "classes": ("collapse",)},
+            {
+                "fields": ("meta_title", "meta_keywords", "meta_description"),
+                "description": "Заполните мета-теги для улучшения поисковой выдачи (SEO). Тщательно подобранные заголовок и описание увеличивают кликабельность в поисковиках.",
+                "classes": ("collapse",),
+            },
         ),
     )
     prepopulated_fields = {"slug": ("name",)}
@@ -114,6 +118,7 @@ class NewsAdmin(admin.ModelAdmin):
                     "meta_keywords",
                     "meta_description",
                 ),
+                "description": "Укажите мета-теги, которые будут отображаться в результатах поиска Яндекса и Google. Это поможет привлечь больше целевых посетителей на страницу новости.",
                 "classes": ("collapse",),
             },
         ),

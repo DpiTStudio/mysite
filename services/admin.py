@@ -33,7 +33,6 @@ class TechnologyAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
-
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "slug", "order", "is_active")
@@ -80,9 +79,13 @@ class IconSelectWidget(forms.TextInput):
 
     def render(self, name, value, attrs=None, renderer=None):
         input_html = super().render(name, value, attrs, renderer)
-        datalist_options = "".join(f'<option value="{icon}"></option>' for icon in POPULAR_BENEFIT_ICONS)
-        datalist_html = f'<datalist id="benefit_icon_list">{datalist_options}</datalist>'
-        return format_html('{}{}', input_html, format_html(datalist_html))
+        datalist_options = "".join(
+            f'<option value="{icon}"></option>' for icon in POPULAR_BENEFIT_ICONS
+        )
+        datalist_html = (
+            f'<datalist id="benefit_icon_list">{datalist_options}</datalist>'
+        )
+        return format_html("{}{}", input_html, format_html(datalist_html))
 
 
 class ServiceBenefitForm(forms.ModelForm):
@@ -203,7 +206,13 @@ class ServicePricePlanAdmin(admin.ModelAdmin):
         "order",
     )
     list_filter = ("service", "is_recommended", "is_available_for_order")
-    search_fields = ("title", "description", "features_list", "features__name", "service__title")
+    search_fields = (
+        "title",
+        "description",
+        "features_list",
+        "features__name",
+        "service__title",
+    )
     filter_vertical = ("features",)
     list_editable = ("price", "is_recommended", "is_available_for_order", "order")
     actions = ["duplicate_selected"]
@@ -219,12 +228,14 @@ class ServicePricePlanAdmin(admin.ModelAdmin):
             count += 1
         self.message_user(request, f"Скопировано тарифных планов: {count}")
 
+
 @admin.register(Deliverable)
 class DeliverableAdmin(admin.ModelAdmin):
     list_display = ("title", "order")
     list_editable = ("order",)
     search_fields = ("title", "items_list")
     ordering = ("order", "title")
+
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -237,7 +248,7 @@ class ServiceAdmin(admin.ModelAdmin):
         "icon_preview",
         "title_display",
         "category_price_display",
-        "stats_badges",
+        # "stats_badges",
         "is_active",
         "is_popular",
         "is_available_for_order",
@@ -270,17 +281,24 @@ class ServiceAdmin(admin.ModelAdmin):
 
     readonly_fields = ("get_tech_display", "views")
 
-    actions = ["make_active", "make_inactive", "enable_order", "disable_order", "duplicate_selected"]
+    actions = [
+        "make_active",
+        "make_inactive",
+        "enable_order",
+        "disable_order",
+        "duplicate_selected",
+    ]
 
     @admin.action(description="Копировать выбранные услуги")
     def duplicate_selected(self, request, queryset):
         import uuid
+
         count = 0
         for service in queryset:
             original_techs = list(service.technologies.all())
             original_portfolio = list(service.related_portfolio.all())
             original_deliverables = list(service.deliverables_m2m.all())
-            
+
             benefits = list(service.benefits.all())
             steps = list(service.steps.all())
             faqs = list(service.faqs.all())
@@ -290,31 +308,31 @@ class ServiceAdmin(admin.ModelAdmin):
             service.id = None
             service.title = f"{service.title} (Копия)"
             service.slug = f"{service.slug}-copy-{str(uuid.uuid4())[:8]}"
-            service.is_active = False 
+            service.is_active = False
             service.save()
 
             service.technologies.set(original_techs)
             service.related_portfolio.set(original_portfolio)
             service.deliverables_m2m.set(original_deliverables)
-            
+
             for benefit in benefits:
                 benefit.pk = None
                 benefit.id = None
                 benefit.service = service
                 benefit.save()
-                
+
             for step in steps:
                 step.pk = None
                 step.id = None
                 step.service = service
                 step.save()
-                
+
             for faq in faqs:
                 faq.pk = None
                 faq.id = None
                 faq.service = service
                 faq.save()
-                
+
             for plan in price_plans:
                 original_plan_features = list(plan.features.all())
                 plan.pk = None

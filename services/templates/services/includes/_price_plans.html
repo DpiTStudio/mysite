@@ -20,7 +20,7 @@
                 </div>
                 
                 {% if plan.description %}
-                <p class="mb-2 plan-description text-left text-dark" style="font-size: 0.95rem; opacity: 0.85;">{{ plan.description }}</p>
+                <p class="mb-2 plan-description text-left" style="font-size: 0.95rem;">{{ plan.description }}</p>
                 {% endif %}
                 
                 <hr class="plan-divider mb-4">
@@ -31,7 +31,7 @@
                         <div class="feature-icon-wrapper me-1 mt-1 flex-shrink-0">
                             <i class="fas fa-check text-white" style="font-size: 0.7rem;"></i>
                         </div>
-                        <span class="fw-semibold lh-base text-dark" style="font-size: 0.95rem;">{{ feature }}</span>
+                        <span class="fw-semibold lh-base" style="font-size: 0.95rem;">{{ feature }}</span>
                     </li>
                     {% endfor %}
                 </ul>

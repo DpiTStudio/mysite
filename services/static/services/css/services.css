@@ -597,26 +597,7 @@ body:not(.light-mode) .badge-popular {
     color: var(--service-body-color);
 }
 
-/* Modern Premium Pricing Plans (Light Theme) */
-.plan-card-modern {
-    border-radius: 24px;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    background: #ffffff !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    color: #1a1a1a !important;
-    /* Base black text */
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-}
 
-.plan-card-modern * {
-    color: inherit;
-}
-
-.plan-card-modern:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    border-color: rgba(0, 0, 0, 0.15) !important;
-}
 
 .plan-card-recommended {
     border: 2px solid transparent;
@@ -656,12 +637,12 @@ body:not(.light-mode) .badge-popular {
 }
 
 .price-display-modern {
-    color: #111827 !important;
+    color: var(--service-heading-color) !important;
     letter-spacing: -0.02em;
 }
 
 .plan-divider {
-    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    border-top: 1px dashed var(--service-filter-border);
     opacity: 1;
 }
 
@@ -693,15 +674,15 @@ body:not(.light-mode) .badge-popular {
 
 .btn-outline-modern {
     background: transparent;
-    border: 2px solid #e5e7eb;
-    color: #374151 !important;
+    border: 2px solid var(--service-btn-inactive-border);
+    color: var(--service-body-color) !important;
     font-weight: 600;
 }
 
 .btn-outline-modern:hover {
-    background: #f3f4f6;
-    border-color: #d1d5db;
-    color: #111827 !important;
+    background: var(--service-btn-inactive-bg);
+    border-color: var(--service-btn-inactive-border);
+    color: var(--service-heading-color) !important;
 }
 
 .tracking-wider {
