@@ -1,40 +1,52 @@
 {% if price_plans %}
-<div class="mb-5">
-    <h4 class="fw-bold mb-4 service-heading"><i class="fas fa-tags text-info me-2"></i>Тарифные планы</h4>
-    <div class="row g-4">
+<div class="mb-8 price-plans-section">
+    <div class="text-left mb-8" style="margin-bottom: 4rem;">
+        <h3 class="fw-bold service-heading"><i class="fas fa-tags text-primary me-2"></i>Тарифные планы</h3>
+        <p class="text-subtle mt-6">Выберите оптимальное решение для ваших задач</p>
+    </div>
+    <div class="row g-4 justify-content-left">
         {% for plan in price_plans %}
-        <div class="col-md-4">
-            <div class="plan-card-modern p-4 h-100 position-relative d-flex flex-column {% if plan.is_recommended %}border-top border-primary border-4 shadow-lg{% endif %}">
+        <div class="col-lg-4 col-md-6">
+            <div class="plan-card-modern p-4 p-xl-5 h-100 position-relative d-flex flex-column {% if plan.is_recommended %}plan-card-recommended{% endif %}">
                 {% if plan.is_recommended %}
-                <div class="badge badge-popular position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill small fw-bold">
-                    <i class="fas fa-fire me-1"></i> ХИТ ПРОДАЖ
+                <div class="plan-badge-popular position-absolute top-0 start-50 translate-middle px-1 py-1 rounded-pill small fw-bold text-white shadow-sm">
+                    <i class="fas fa-fire me-1 text-warning"></i> ХИТ ПРОДАЖ
                 </div>
                 {% endif %}
 
-                <h5 class="fw-bold service-heading mb-2 fs-5">{{ plan.title }}</h5>
-                <div class="h3 fw-bold price-display-lg mb-3">{{ plan.price|floatformat:0 }} ₽</div>
+                <div class="text-left mb-4 mt-3">
+                    <h5 class="fw-bold plan-title mb-3 fs-5">{{ plan.title }}</h5>
+                    <div class="h2 fw-bold price-display-modern mb-0">{{ plan.price|floatformat:0 }} <span class="fs-5 text-muted fw-normal">₽</span></div>
+                </div>
+                
                 {% if plan.description %}
-                <p class="small text-subtle mb-4 plan-description">{{ plan.description }}</p>
+                <p class="mb-2 plan-description text-left text-dark" style="font-size: 0.95rem; opacity: 0.85;">{{ plan.description }}</p>
                 {% endif %}
-                <hr>
-                <ul class="list-unstyled mb-4 flex-grow-1">
+                
+                <hr class="plan-divider mb-4">
+                
+                <ul class="list-unstyled mb-1 flex-grow-1 plan-features-list">
                     {% for feature in plan.get_features %}
-                    <li class="small text-subtle mb-2.5 d-flex align-items-center">
-                        <i class="fas fa-check-circle text-success me-2 fs-6"></i>
-                        <span class="fw-medium">{{ feature }}</span>
+                    <li class="mb-3 d-flex align-items-start">
+                        <div class="feature-icon-wrapper me-1 mt-1 flex-shrink-0">
+                            <i class="fas fa-check text-white" style="font-size: 0.7rem;"></i>
+                        </div>
+                        <span class="fw-semibold lh-base text-dark" style="font-size: 0.95rem;">{{ feature }}</span>
                     </li>
                     {% endfor %}
                 </ul>
-                <hr>
-                {% if plan.can_be_ordered %}
-                <a href="?plan={{ plan.id }}#order-form-widget" data-plan-id="{{ plan.id }}" class="btn select-plan-btn {% if plan.is_recommended %}btn-primary{% else %}btn-outline-light{% endif %} w-100 rounded-pill py-2.5 fw-semibold mt-auto">
-                    <i class="fas fa-check me-1"></i> Выбрать тариф
-                </a>
-                {% else %}
-                <button disabled class="btn btn-outline-secondary opacity-50 w-100 rounded-pill py-2.5 fw-medium mt-auto" style="cursor: not-allowed;">
-                    <i class="fas fa-ban me-1"></i> Недоступен для заказа
-                </button>
-                {% endif %}
+                
+                <div class="mt-auto">
+                    {% if plan.can_be_ordered %}
+                    <a href="?plan={{ plan.id }}#order-form-widget" data-plan-id="{{ plan.id }}" class="btn select-plan-btn {% if plan.is_recommended %}btn-gradient-primary shadow-lg{% else %}btn-outline-modern{% endif %} w-100 rounded-pill py-3 fw-bold text-uppercase tracking-wider transition-all">
+                        Выбрать тариф
+                    </a>
+                    {% else %}
+                    <button disabled class="btn btn-outline-secondary opacity-50 w-100 rounded-pill py-3 fw-bold text-uppercase tracking-wider transition-all" style="cursor: not-allowed;">
+                        Недоступен
+                    </button>
+                    {% endif %}
+                </div>
             </div>
         </div>
         {% endfor %}
