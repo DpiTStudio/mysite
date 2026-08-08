@@ -195,7 +195,7 @@
         <div class="row g-4">
             {% for service in services %}
             <div class="col-lg-4 col-md-6">
-                <div class="service-card-modern p-4 h-100 d-flex flex-column position-relative {% if not service.can_be_ordered %}opacity-85{% endif %}">
+                <div class="service-card-modern glass-card p-4 h-100 d-flex flex-column position-relative {% if not service.can_be_ordered %}opacity-85{% endif %}">
                     
                     <!-- Верхняя панель карточки: Категория и Статус/Просмотры -->
                     <div class="d-flex justify-content-between align-items-center mb-3 position-relative z-2">
@@ -384,4 +384,30 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+  // Debounce function to limit rapid form submissions for search
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func.apply(this, args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('.services-search-input');
+    if (searchInput) {
+      const form = searchInput.closest('form');
+      if (form) {
+        const debouncedSubmit = debounce(() => form.submit(), 500);
+        searchInput.addEventListener('input', debouncedSubmit);
+      }
+    }
+  });
+</script>
+
 {% endblock %}
