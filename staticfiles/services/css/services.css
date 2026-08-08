@@ -617,7 +617,7 @@ body:not(.light-mode) .badge-popular {
     left: -2px;
     z-index: -1;
     border-radius: 26px;
-    background: linear-gradient(135deg, #6366f1, #a855f7);
+    /* background: linear-gradient(135deg, #6366f1, #a855f7); */
     /* Primary theme gradient */
 }
 
