@@ -81,6 +81,7 @@ class NewsAdmin(admin.ModelAdmin):
         "created_at_display",
         "views",
     ]
+    readonly_fields = ("news_date_display", "created_at_display")
     list_editable = ["is_active"]
     prepopulated_fields = {"slug": ("title",)}
     list_filter = [
@@ -112,9 +113,9 @@ class NewsAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Custom Display", {
+        ("Кастомный вывод", {
             "fields": ("news_date_display", "created_at_display"),
-            "description": "Custom column headers for dates",
+            "description": "Кастомные заголовки столбцов для дат",
             "classes": ("collapse",),
         }),
         (

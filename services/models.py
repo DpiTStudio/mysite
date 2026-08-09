@@ -519,11 +519,19 @@ class ServiceBenefit(models.Model):
 class ServiceStep(models.Model):
     """Этапы выполнения услуги (Процесс работы)."""
 
-    service = models.ForeignKey(
+    # Many‑to‑many relationship to services – step can belong to multiple services
+    services = models.ManyToManyField(
         Service,
-        on_delete=models.CASCADE,
+        blank=True,
         related_name="steps",
-        verbose_name=_("Услуга"),
+        verbose_name=_("Услуги, которым принадлежит шаг"),
+    )
+    # Many‑to‑many relationship to price plans – optional linking to tariff plans
+    price_plans = models.ManyToManyField(
+        "ServicePricePlan",
+        blank=True,
+        related_name="steps",
+        verbose_name=_("Тарифные планы, включающие шаг"),
     )
     step_number = models.PositiveIntegerField(verbose_name=_("Номер этапа"), default=1)
     title = models.CharField(max_length=200, verbose_name=_("Название этапа"))

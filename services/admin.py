@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html, format_html_join
 from django.http import HttpResponse
+from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.db import models
 import csv
@@ -111,17 +112,20 @@ class ServiceBenefitInline(admin.TabularInline):
     }
 
 
-class ServiceStepInline(admin.TabularInline):
-    model = ServiceStep
+class ServiceStepServiceInline(admin.TabularInline):
+    model = ServiceStep.services.through
     extra = 1
-    show_change_link = True
-    formfield_overrides = {
-        models.TextField: {
-            "widget": forms.Textarea(
-                attrs={"rows": 2, "cols": 40, "style": "width: 100%; min-width: 200px;"}
-            )
-        },
-    }
+    verbose_name = _("Услуга")
+    verbose_name_plural = _("Услуги")
+    autocomplete_fields = ("service",)
+
+class ServiceStepPricePlanInline(admin.TabularInline):
+    model = ServiceStep.price_plans.through
+    extra = 1
+    verbose_name = _("Тарифный план")
+    verbose_name_plural = _("Тарифные планы")
+    autocomplete_fields = ("servicepriceplan",)
+
 
 
 class ServiceFAQInline(admin.TabularInline):
@@ -152,12 +156,16 @@ class ServicePricePlanInline(admin.TabularInline):
 
 @admin.register(ServiceStep)
 class ServiceStepAdmin(admin.ModelAdmin):
-    list_display = ("step_number", "title", "service", "order")
+    list_display = ("step_number", "title", "display_services", "order")
     list_display_links = ("title",)
-    list_filter = ("service",)
-    search_fields = ("title", "description", "service__title")
-    list_editable = ("step_number", "order")
-    ordering = ("service", "step_number", "order")
+    list_filter = ()
+    search_fields = ("title", "description")
+    list_editable = ("order",)
+    ordering = ("step_number", "order")
+
+    def display_services(self, obj):
+        return ", ".join([s.title for s in obj.services.all()])
+    display_services.short_description = _("Услуги")
 
 
 @admin.register(ServiceBenefit)
@@ -216,6 +224,7 @@ class ServicePricePlanAdmin(admin.ModelAdmin):
     filter_vertical = ("features",)
     list_editable = ("price", "is_recommended", "is_available_for_order", "order")
     actions = ["duplicate_selected"]
+    inlines = [ServiceStepPricePlanInline]
 
     @admin.action(description="Копировать выбранные тарифные планы")
     def duplicate_selected(self, request, queryset):
@@ -269,7 +278,7 @@ class ServiceAdmin(admin.ModelAdmin):
     filter_horizontal = ("technologies", "related_portfolio", "deliverables_m2m")
     inlines = [
         ServiceBenefitInline,
-        ServiceStepInline,
+        ServiceStepServiceInline,
         ServiceFAQInline,
         ServicePricePlanInline,
     ]
