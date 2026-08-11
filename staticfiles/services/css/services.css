@@ -692,3 +692,11 @@ body:not(.light-mode) .badge-popular {
 .transition-all {
     transition: all 0.3s ease;
 }
+
+/* Glassmorphism helper */
+.glass-card {
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
