@@ -429,15 +429,39 @@ a.site-domain:hover {
 
 /* Mobile fix for hover/active state and burger menu */
 @media (max-width: 991px) {
+    .navbar-collapse {
+        background: var(--color-dark-surface) !important;
+        border: 1px solid var(--color-glass-border);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1rem;
+        margin-top: 0.75rem;
+        box-shadow: var(--shadow-xl);
+    }
+    body.light-mode .navbar-collapse {
+        background: #ffffff !important;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
     .navbar-collapse .dropdown-menu {
         display: block !important;
         position: static !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: none !important;
+        background: var(--color-dark-subtle) !important;
+        border: 1px solid var(--color-glass-border) !important;
+        border-radius: var(--radius-md) !important;
         box-shadow: none !important;
-        padding-left: 1.5rem !important;
+        padding: 0.5rem 0.75rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
         opacity: 1 !important;
         visibility: visible !important;
+    }
+    body.light-mode .navbar-collapse .dropdown-menu {
+        background: #f8fafc !important;
+        border-color: rgba(0, 0, 0, 0.08) !important;
+    }
+    .navbar-collapse .nav-link {
+        padding: 0.6rem 0.8rem;
+        border-radius: var(--radius-sm);
     }
 }
 
@@ -536,12 +560,21 @@ a.site-domain:hover {
     border-color: var(--color-glass-border-bright);
 }
 
-/* На мобильных устройствах отключаем тяжелые фильтры */
+/* На мобильных устройствах оптимальные фоны и производительность */
 @media (max-width: 768px) {
-    .card, .glass-card, .glass-card-premium, .navbar, .user-top-bar {
+    .card, .glass-card, .glass-card-premium {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        background: rgba(15, 23, 42, 0.95) !important;
+        background: var(--color-dark-surface) !important;
+    }
+    body.light-mode .card,
+    body.light-mode .glass-card,
+    body.light-mode .glass-card-premium {
+        background: #ffffff !important;
+        border-color: rgba(15, 23, 42, 0.1) !important;
+    }
+    .card-body {
+        padding: clamp(1rem, 4vw, 1.5rem);
     }
 }
 
@@ -1094,8 +1127,15 @@ body.light-mode {
         radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.05) 0, transparent 40%);
 }
 
-body.light-mode .text-white {
+body.light-mode .text-white:not(.btn *):not(.badge *):not(.bg-primary *) {
     color: var(--color-text-main) !important;
+}
+
+body.light-mode .btn .text-white,
+body.light-mode .badge .text-white,
+body.light-mode .bg-primary .text-white,
+body.light-mode .btn-primary {
+    color: #ffffff !important;
 }
 
 body.light-mode .bg-transparent.text-white {
@@ -1631,3 +1671,42 @@ article.card,
     z-index: var(--z-toast);
     transition: width 0.1s;
 }
+
+/* --- МОБИЛЬНЫЕ УЛУЧШЕНИЯ & ACCESSIBILITY TOKENS v2.1 --- */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 44px;
+        font-size: var(--text-sm);
+    }
+    
+    .form-control, .form-select {
+        min-height: 44px;
+        font-size: var(--text-md);
+    }
+    
+    .fab-container {
+        bottom: var(--spacing-4);
+        right: var(--spacing-4);
+    }
+    
+    .table-responsive {
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-glass-border);
+    }
+}
+
+/* Light mode table & price box overrides */
+body.light-mode .price-value-text {
+    color: var(--color-text-main) !important;
+}
+
+body.light-mode .price-highlight-box {
+    background: #f1f5f9;
+    border-color: rgba(15, 23, 42, 0.1);
+}
+
+body.light-mode .table {
+    color: var(--color-text-main);
+    border-color: rgba(15, 23, 42, 0.1);
+}
+

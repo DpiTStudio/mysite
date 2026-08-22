@@ -2,36 +2,32 @@
 
 /* Основной заголовок (h1) внутри баннера */
 .title-hero {
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 4vw, 2.5rem);
     font-weight: 800;
     text-align: left;
     margin-bottom: 1rem;
-    margin-left: 1rem;
-    color: #fff;
-    text-shadow: 0 2px 10px rgba(226, 202, 105, 0.795);
+    color: var(--color-text-main);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 /* Подзаголовок или блок с тегами (слоган 1) */
 .sl_1 {
-    color: rgba(255, 255, 255, 0.9) !important;
-    text-shadow: 0 2px 10px rgba(226, 202, 105, 0.795);
-    font-size: clamp(1.1rem, 2.5vw, 1.9rem);
-    font-weight: 500;
+    color: var(--color-text-main) !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    font-size: clamp(1rem, 2.2vw, 1.4rem);
+    font-weight: 600;
     text-align: left;
     margin-bottom: 1rem;
-    margin-left: 1rem;
 }
 
-/* Описание или короткий текст под заголовками (слоган 2) 
-   ИСПРАВЛЕНО: был #000000 — чёрный текст на тёмном фоне! */
+/* Описание или короткий текст под заголовками (слоган 2) */
 .sl_2 {
-    color: #fff !important;
-    text-shadow: 0 2px 10px rgba(226, 202, 105, 0.795);
-    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-    font-weight: 500;
+    color: var(--color-text-muted) !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+    font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+    font-weight: 400;
     text-align: left;
     margin-bottom: 1rem;
-    margin-left: 1rem;
 }
 
 /* Общий контейнер, который хранит фоновое изображение героя */
