@@ -24,10 +24,10 @@
             {% load breadcrumbs %}
             
             <!-- Навигационная секция: Хлебные крошки (отображение текущего пути на сайте) -->
-            <nav aria-label="breadcrumb" class="mb-3 hero-breadcrumbs">
+            <div class="hero-breadcrumbs">
                 <!-- Вызов тега для отрисовки крошек -->
                 {% breadcrumbs %}
-            </nav>
+            </div>
             
             <!-- Основной заголовок страницы (H1). Классы отвечают за размер, отступ и анимацию появления -->
             <h1 class="display-4 mb-4 title-hero animate-fade">{{ header_data.title }}</h1>

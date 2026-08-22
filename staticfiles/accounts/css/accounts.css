@@ -28,8 +28,13 @@
 }
 
 .profile-nav a:hover, .profile-nav a.active {
-    background: rgba(99, 102, 241, 0.2);
-    color: #fff;
+    background: rgba(99, 102, 241, 0.18);
+    color: var(--color-primary) !important;
+}
+
+body.light-mode .profile-nav a:hover, body.light-mode .profile-nav a.active {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--color-primary-hover) !important;
 }
 
 .profile-nav a i {

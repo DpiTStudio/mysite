@@ -135,15 +135,41 @@
 
 /* АДАПТИВНОСТЬ: стили для планшетов и мобильных устройств (ширина экрана 768px и меньше) */
 @media (max-width: 768px) {
+    .portfolio-detail-header {
+        padding: 2.5rem 0 1.5rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
     /* Уменьшаем высоту главного изображения на маленьких экранах */
     .portfolio-image-detail, .portfolio-hero-image {
-        max-height: 350px; /* Достаточная высота для телефона, чтобы видеть контекст и картинку */
+        max-height: 280px;
     }
     
     /* Слегка уменьшаем размер шрифта описания проекта для экономии места на экране телефона */
     .portfolio-content {
-        font-size: 1.05rem; /* Переходим от 1.15rem к 1.05rem */
+        font-size: 1rem;
+        line-height: 1.65;
     }
+    
+    .portfolio-meta-detail {
+        padding: 1.25rem;
+    }
+}
+
+/* Light mode overrides for Portfolio */
+body.light-mode .portfolio-meta-detail {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.1);
+    color: var(--color-text-muted);
+}
+
+body.light-mode .service-info-box {
+    background: #f8fafc;
+}
+
+body.light-mode .related-portfolio-card {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.1);
 }
 
 /* Анимации при наведении для карточек портфолио */
@@ -151,5 +177,6 @@
 .glass-card-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0,0,0,0.3) !important; }
 .glass-card-premium:hover .portfolio-img { transform: scale(1.1); }
 .glass-card-premium:hover .portfolio-view-case i { transform: translateX(8px); }
-.glass-card-premium:hover .hover-primary { color: var(--bs-primary) !important; }
+.glass-card-premium:hover .hover-primary { color: var(--color-primary) !important; }
+
 

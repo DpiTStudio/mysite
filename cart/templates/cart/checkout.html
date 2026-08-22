@@ -11,13 +11,8 @@
 <div class="animate-up">
 
     {# Хлебные крошки #}
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'main:home' %}" class="text-white-50 text-decoration-none">Главная</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'cart:cart_detail' %}" class="text-white-50 text-decoration-none">Корзина</a></li>
-            <li class="breadcrumb-item active text-white">Оформление заказа</li>
-        </ol>
-    </nav>
+    {% load breadcrumbs %}
+    {% breadcrumbs %}
 
     <div class="row gx-5">
 

@@ -5,7 +5,6 @@
     font-family: var(--font-family-base);
     color: var(--color-text-main);
     text-shadow: none !important;
-    -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Изменено: Улучшенное выделение текста */
@@ -429,15 +428,39 @@ a.site-domain:hover {
 
 /* Mobile fix for hover/active state and burger menu */
 @media (max-width: 991px) {
+    .navbar-collapse {
+        background: var(--color-dark-surface) !important;
+        border: 1px solid var(--color-glass-border);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1rem;
+        margin-top: 0.75rem;
+        box-shadow: var(--shadow-xl);
+    }
+    body.light-mode .navbar-collapse {
+        background: #ffffff !important;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
     .navbar-collapse .dropdown-menu {
         display: block !important;
         position: static !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: none !important;
+        background: var(--color-dark-subtle) !important;
+        border: 1px solid var(--color-glass-border) !important;
+        border-radius: var(--radius-md) !important;
         box-shadow: none !important;
-        padding-left: 1.5rem !important;
+        padding: 0.5rem 0.75rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
         opacity: 1 !important;
         visibility: visible !important;
+    }
+    body.light-mode .navbar-collapse .dropdown-menu {
+        background: #f8fafc !important;
+        border-color: rgba(0, 0, 0, 0.08) !important;
+    }
+    .navbar-collapse .nav-link {
+        padding: 0.6rem 0.8rem;
+        border-radius: var(--radius-sm);
     }
 }
 
@@ -536,12 +559,21 @@ a.site-domain:hover {
     border-color: var(--color-glass-border-bright);
 }
 
-/* На мобильных устройствах отключаем тяжелые фильтры */
+/* На мобильных устройствах оптимальные фоны и производительность */
 @media (max-width: 768px) {
-    .card, .glass-card, .glass-card-premium, .navbar, .user-top-bar {
+    .card, .glass-card, .glass-card-premium {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        background: rgba(15, 23, 42, 0.95) !important;
+        background: var(--color-dark-surface) !important;
+    }
+    body.light-mode .card,
+    body.light-mode .glass-card,
+    body.light-mode .glass-card-premium {
+        background: #ffffff !important;
+        border-color: rgba(15, 23, 42, 0.1) !important;
+    }
+    .card-body {
+        padding: clamp(1rem, 4vw, 1.5rem);
     }
 }
 
@@ -833,31 +865,38 @@ input:-webkit-autofill:active {
 /* --- Хлебные крошки (Навигация) --- */
 .breadcrumb-fon {
     background: var(--color-glass);
-    padding: 0.75rem 1.25rem;
+    padding: 0.5rem 1rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--color-glass-border);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: inline-flex;
+    max-width: 100%;
+    margin-bottom: 1rem;
 }
 
 .breadcrumb {
     font-size: var(--text-sm);
     margin-bottom: 0;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .breadcrumb-item a {
-    color: var(--color-text-muted);
+    color: var(--color-text-muted) !important;
     font-size: var(--text-sm);
     font-weight: 500;
+    transition: var(--transition-fast);
 }
 
 .breadcrumb-item a:hover {
-    color: var(--color-primary);
+    color: var(--color-primary) !important;
     transform: none;
+    text-decoration: underline;
 }
 
 .breadcrumb-item.active {
-    color: var(--color-text-main);
+    color: var(--color-text-main) !important;
     font-weight: 600;
 }
 
@@ -869,55 +908,45 @@ input:-webkit-autofill:active {
     padding: 0 0.5rem;
 }
 
-/* --- Основная обертка для баннера-героя (Hero wrapper) --- */
-.bl-logo {
-    width: 100%;
-    /* Заменяем жесткую высоту (height) на минимальную (min-height), 
-       чтобы главный контент не наезжал на баннер, если внутри баннера много текста или карточек */
-    min-height: 450px;
-    height: auto;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+.hero-breadcrumbs {
+    display: inline-block;
+    margin-bottom: 1rem;
 }
 
-/* Секция самого героя внутри обертки */
-.hero-section {
-    width: 100%;
-    /* Заменяем жестко заданные 700px на min-height для правильного расчета высоты браузером (чтобы избежать залипаний) */
-    min-height: 250px;
-    height: auto;
-    /* Отступ до основного (нижнего) контента страницы */
-    margin-bottom: 3rem;
-    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+.hero-breadcrumbs .breadcrumb-fon {
+    margin-bottom: 0;
 }
 
-/* Большая версия героя для главной */
-.hero-large {
-    min-height: 700px;
-}
-.hero-large .logo-container {
-    min-height: 450px;
-}
-.hero-breadcrumbs .breadcrumb {
-    padding: 0;
-    margin-bottom: 0.5rem;
-    background: transparent;
-}
-
-.hero-breadcrumbs .breadcrumb-item, 
 .hero-breadcrumbs .breadcrumb-item a {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85rem;
+    color: var(--color-text-muted) !important;
+    font-size: var(--text-sm);
     font-weight: 500;
 }
 
 .hero-breadcrumbs .breadcrumb-item.active {
-    color: #fff;
+    color: var(--color-text-main) !important;
+    font-weight: 600;
 }
 
 .hero-breadcrumbs .breadcrumb-item a:hover {
-    color: var(--color-secondary);
+    color: var(--color-primary) !important;
+}
+
+body.light-mode .breadcrumb-fon {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+body.light-mode .breadcrumb-item a {
+    color: #475569 !important;
+}
+
+body.light-mode .breadcrumb-item a:hover {
+    color: var(--color-primary) !important;
+}
+
+body.light-mode .breadcrumb-item.active {
+    color: #0f172a !important;
 }
 
 /* --- Пагинация (Постраничная навигация) --- */
@@ -1094,8 +1123,15 @@ body.light-mode {
         radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.05) 0, transparent 40%);
 }
 
-body.light-mode .text-white {
+body.light-mode .text-white:not(.btn *):not(.badge *):not(.bg-primary *) {
     color: var(--color-text-main) !important;
+}
+
+body.light-mode .btn .text-white,
+body.light-mode .badge .text-white,
+body.light-mode .bg-primary .text-white,
+body.light-mode .btn-primary {
+    color: #ffffff !important;
 }
 
 body.light-mode .bg-transparent.text-white {
@@ -1631,3 +1667,42 @@ article.card,
     z-index: var(--z-toast);
     transition: width 0.1s;
 }
+
+/* --- МОБИЛЬНЫЕ УЛУЧШЕНИЯ & ACCESSIBILITY TOKENS v2.1 --- */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 44px;
+        font-size: var(--text-sm);
+    }
+    
+    .form-control, .form-select {
+        min-height: 44px;
+        font-size: var(--text-md);
+    }
+    
+    .fab-container {
+        bottom: var(--spacing-4);
+        right: var(--spacing-4);
+    }
+    
+    .table-responsive {
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-glass-border);
+    }
+}
+
+/* Light mode table & price box overrides */
+body.light-mode .price-value-text {
+    color: var(--color-text-main) !important;
+}
+
+body.light-mode .price-highlight-box {
+    background: #f1f5f9;
+    border-color: rgba(15, 23, 42, 0.1);
+}
+
+body.light-mode .table {
+    color: var(--color-text-main);
+    border-color: rgba(15, 23, 42, 0.1);
+}
+

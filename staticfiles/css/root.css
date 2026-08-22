@@ -38,8 +38,8 @@
 
     /* --- ТИПОГРАФИКА: ЦВЕТА --- */
     --color-text-main: #f8fafc;
-    --color-text-muted: #94a3b8;
-    --color-text-dim: #64748b;
+    --color-text-muted: #cbd5e1;
+    --color-text-dim: #94a3b8;
     --color-text-on-primary: #ffffff;
     --color-text-accent: var(--color-primary);
 
@@ -128,7 +128,7 @@ body.light-mode {
     --color-glass-dark: rgba(255, 255, 255, 0.9);
 
     --color-text-main: #0f172a;
-    --color-text-muted: #475569;
+    --color-text-muted: #334155;
     --color-text-dim: #64748b;
 
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
