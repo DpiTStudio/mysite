@@ -111,17 +111,39 @@
     --form-option-text: #f8fafc;
 }
 
+/* Bootstrap 5.3 Theme Integration Bridges & Smooth Theme Transitions */
+html, body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"],
+[data-bs-theme="dark"] {
+    --bs-body-bg: var(--color-dark-bg);
+    --bs-body-color: var(--color-text-main);
+    --bs-tertiary-bg: var(--color-dark-surface);
+    --bs-border-color: var(--color-glass-border);
+    --bs-secondary-color: var(--color-text-muted);
+}
+
 /* ==========================================================================
    СВЕТЛАЯ ТЕМА (LIGHT THEME)
    ========================================================================== */
 [data-theme="light"],
+[data-bs-theme="light"],
 body.light-mode {
+    --bs-body-bg: #f8fafc;
+    --bs-body-color: #0f172a;
+    --bs-tertiary-bg: #f1f5f9;
+    --bs-border-color: rgba(15, 23, 42, 0.1);
+    --bs-secondary-color: #64748b;
+    --bs-link-color: var(--color-primary);
+
     --color-dark-bg: #f8fafc;
     --color-dark-surface: #ffffff;
     --color-dark-subtle: #f1f5f9;
     --color-dark-highlight: #e2e8f0;
 
-    --color-glass: rgba(255, 255, 255, 0.82);
+    --color-glass: rgba(255, 255, 255, 0.85);
     --color-glass-hover: rgba(255, 255, 255, 0.95);
     --color-glass-border: rgba(15, 23, 42, 0.1);
     --color-glass-border-bright: rgba(79, 70, 229, 0.35);
@@ -146,4 +168,5 @@ body.light-mode {
     --form-input-focus-ring: rgba(79, 70, 229, 0.2);
     --form-option-bg: #ffffff;
     --form-option-text: #0f172a;
-}
+}
+

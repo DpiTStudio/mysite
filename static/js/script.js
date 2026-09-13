@@ -178,45 +178,63 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
 
-    // 9. Theme Switcher
-    const themeToggleBtn = document.getElementById('themeToggleBtn');
-    const themeIcon = document.getElementById('themeIcon');
-    
-    // Check saved theme or system preference
-    const savedTheme = localStorage.getItem('theme');
-    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-    
-    function applyTheme(isLight) {
-        if (isLight) {
-            document.body.classList.add('light-mode');
-            document.documentElement.setAttribute('data-theme', 'light');
-            document.body.setAttribute('data-theme', 'light');
-            if (themeIcon) {
-                themeIcon.classList.remove('bi-moon-stars');
-                themeIcon.classList.add('bi-sun');
+    // 9. Theme Switcher (Единый менеджер тем оформления)
+    (function initThemeManager() {
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+
+        function applyTheme(isLight) {
+            const themeStr = isLight ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', themeStr);
+            document.documentElement.setAttribute('data-bs-theme', themeStr);
+            document.body.setAttribute('data-theme', themeStr);
+            document.body.setAttribute('data-bs-theme', themeStr);
+
+            if (isLight) {
+                document.documentElement.classList.add('light-mode');
+                document.body.classList.add('light-mode');
+                if (themeIcon) {
+                    themeIcon.className = 'bi bi-sun-fill fs-5 text-warning';
+                }
+            } else {
+                document.documentElement.classList.remove('light-mode');
+                document.body.classList.remove('light-mode');
+                if (themeIcon) {
+                    themeIcon.className = 'bi bi-moon-stars-fill fs-5';
+                }
             }
-        } else {
-            document.body.classList.remove('light-mode');
-            document.documentElement.setAttribute('data-theme', 'dark');
-            document.body.setAttribute('data-theme', 'dark');
-            if (themeIcon) {
-                themeIcon.classList.remove('bi-sun');
-                themeIcon.classList.add('bi-moon-stars');
+
+            localStorage.setItem('app-theme', themeStr);
+            localStorage.setItem('theme', themeStr);
+
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) {
+                metaTheme.setAttribute('content', isLight ? '#f8fafc' : '#6c63ff');
             }
         }
-    }
 
-    const isInitiallyLight = savedTheme === 'light' || (!savedTheme && prefersLight);
-    applyTheme(isInitiallyLight);
-    
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const isNowLight = !document.body.classList.contains('light-mode');
-            localStorage.setItem('theme', isNowLight ? 'light' : 'dark');
-            applyTheme(isNowLight);
-        });
-    }
+        const savedTheme = localStorage.getItem('app-theme') || localStorage.getItem('theme');
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        const isInitiallyLight = savedTheme === 'light' || (!savedTheme && prefersLight);
+
+        applyTheme(isInitiallyLight);
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isCurrentLight = document.documentElement.getAttribute('data-theme') === 'light' || document.body.classList.contains('light-mode');
+                applyTheme(!isCurrentLight);
+            });
+        }
+
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('app-theme') && !localStorage.getItem('theme')) {
+                    applyTheme(e.matches);
+                }
+            });
+        }
+    })();
 
     // 10. Configure HTMX to send Django CSRF token
     document.body.addEventListener('htmx:configRequest', (event) => {
@@ -360,35 +378,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     })();
 
-    // ============================================================
-    // 15. Theme Switcher (Светлая / Темная тема)
-    // ============================================================
-    (function initThemeSwitcher() {
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
-        const themeIcon = document.getElementById('themeIcon');
-        if (!themeToggleBtn || !themeIcon) return;
-
-        const savedTheme = localStorage.getItem('app-theme') || 'dark';
-        if (savedTheme === 'light') {
-            document.documentElement.setAttribute('data-theme', 'light');
-            themeIcon.className = 'bi bi-sun-fill fs-5 text-warning';
-        } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            themeIcon.className = 'bi bi-moon-stars-fill fs-5';
-        }
-
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            if (currentTheme === 'light') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('app-theme', 'dark');
-                themeIcon.className = 'bi bi-moon-stars-fill fs-5';
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('app-theme', 'light');
-                themeIcon.className = 'bi bi-sun-fill fs-5 text-warning';
-            }
-        });
-    })();
 });
 

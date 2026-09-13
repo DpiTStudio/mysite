@@ -57,6 +57,24 @@
     <meta name="apple-mobile-web-app-title" content="{% if site_settings %}{{ site_settings.site_title }}{% else %}DPIT-CMS{% endif %}">
     <meta name="theme-color" content="#6c63ff">
     
+    <!-- Инициализация темы оформления до рендеринга для предотвращения мигания (FOUC) -->
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('app-theme') || localStorage.getItem('theme');
+            var theme = savedTheme;
+            if (!theme) {
+                theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            if (theme === 'light') {
+                document.documentElement.classList.add('light-mode');
+            } else {
+                document.documentElement.classList.remove('light-mode');
+            }
+        })();
+    </script>
+    
     <!-- Оптимизация загрузки ресурсов (Предварительное подключение к серверам) -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">

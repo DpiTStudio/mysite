@@ -50,6 +50,7 @@
 }
 
 [data-theme="light"],
+[data-bs-theme="light"],
 body.light-mode {
     --news-card-bg: rgba(255, 255, 255, 0.94);
     --news-card-border: rgba(148, 163, 184, 0.28);
