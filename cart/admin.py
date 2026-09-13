@@ -6,9 +6,10 @@ from .models import Order, OrderItem, PromoCode, PromoCodeUsage
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ['service', 'portfolio']
+    filter_horizontal = ['selected_plans']
     extra = 0
     readonly_fields = ['get_item_title', 'get_price_display', 'get_cost']
-    fields = ['service', 'portfolio', 'price_type', 'price', 'price_min', 'price_max', 'quantity', 'get_cost']
+    fields = ['service', 'portfolio', 'selected_plans', 'price_type', 'price', 'price_min', 'price_max', 'quantity', 'get_cost']
 
     def get_item_title(self, obj):
         return obj.get_item_title()

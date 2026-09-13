@@ -10,10 +10,6 @@
 {% block content %}
 <div class="animate-up">
 
-    {# Хлебные крошки #}
-    {% load breadcrumbs %}
-    {% breadcrumbs %}
-
     <div class="row gx-5">
 
         {# ── Левая колонка: форма ────────────────────────────────────── #}
@@ -166,6 +162,18 @@
                                     Кол-во: {{ item.quantity }}
                                     {% if item.item_type == 'service' %}<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 ms-2 rounded-pill">Услуга</span>{% else %}<span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 ms-2 rounded-pill">Работа</span>{% endif %}
                                 </small>
+                                {% if item.selected_plans %}
+                                    <div class="mt-2">
+                                        <small class="text-white-50 d-block mb-1" style="font-size: 0.75rem;">Тарифы для переговоров:</small>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            {% for plan in item.selected_plans %}
+                                                <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 rounded-pill" style="font-size: 0.7rem;">
+                                                    <i class="bi bi-tag-fill me-1"></i>{{ plan.title }}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                             <span class="text-white fw-medium ms-2 text-nowrap price-display">{{ item.total_price_display|linebreaksbr }}</span>
                         </li>

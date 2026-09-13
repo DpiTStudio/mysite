@@ -978,4 +978,430 @@ input[type="file"]:hover {
 
 .datetimeshortcuts a:hover {
     color: #fff;
+}
+
+/* ==========================================================================
+   UNIFIED ADMIN FORMS & HIGH CONTRAST VISIBILITY ENHANCEMENTS
+   ========================================================================== */
+
+/* 1. Global Form Fields & Inputs Standard */
+.form-control,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea,
+select,
+.vTextField,
+.vLargeTextField,
+.vURLField,
+.vIntegerField,
+.vDateField,
+.vTimeField,
+.vBigIntegerField,
+.vForeignKeyRawIdAdminField {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    padding: 0.65rem 0.9rem !important;
+    font-size: 0.925rem !important;
+    font-family: inherit !important;
+    line-height: 1.4 !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+/* Field Focus State */
+.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus,
+textarea:focus,
+select:focus,
+.vTextField:focus,
+.vLargeTextField:focus,
+.vURLField:focus,
+.vIntegerField:focus {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35) !important;
+    outline: none !important;
+}
+
+/* Placeholder Styling */
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8 !important;
+    opacity: 0.8 !important;
+}
+
+/* 2. Explicit Native Select & Option Formatting (Windows/Chrome Fix) */
+select option {
+    background-color: #1e202a !important;
+    color: #f8fafc !important;
+    padding: 8px 12px !important;
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+    background-color: #6366f1 !important;
+    color: #ffffff !important;
+}
+
+/* 3. Read-Only Fields (High Contrast & Clean Styling) */
+.readonly,
+div.readonly,
+p.readonly,
+.field-box .readonly,
+.form-row .readonly {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 8px !important;
+    padding: 0.6rem 0.9rem !important;
+    color: #f8fafc !important;
+    font-weight: 500 !important;
+    font-size: 0.925rem !important;
+    min-height: 38px !important;
+    display: block !important;
+    line-height: 1.5 !important;
+    word-break: break-word !important;
+}
+
+/* 4. Labels & Fieldset Row Formatting */
+label,
+.aligned label,
+.form-row label {
+    color: #cbd5e1 !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    margin-bottom: 0.35rem !important;
+    display: inline-block !important;
+    letter-spacing: 0.01em !important;
+}
+
+/* Required Field Asterisk */
+.required label::after,
+label.required::after,
+span.required {
+    content: " *" !important;
+    color: #ef4444 !important;
+    font-weight: bold !important;
+}
+
+/* Help Text Visibility */
+.help,
+.helptext,
+p.help,
+span.help {
+    color: #94a3b8 !important;
+    font-size: 0.8rem !important;
+    margin-top: 0.35rem !important;
+    display: block !important;
+    font-style: normal !important;
+    line-height: 1.4 !important;
+}
+
+/* 5. Checkboxes & Radio Buttons */
+input[type="checkbox"],
+input[type="radio"] {
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: #6366f1 !important;
+    cursor: pointer !important;
+    vertical-align: middle !important;
+    margin-right: 8px !important;
+}
+
+/* 6. Select2 Dropdowns & Tags Formatting */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    min-height: 40px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: rgba(99, 102, 241, 0.25) !important;
+    border: 1px solid rgba(99, 102, 241, 0.5) !important;
+    color: #f8fafc !important;
+    border-radius: 6px !important;
+    padding: 2px 8px !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #cbd5e1 !important;
+    margin-right: 6px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #ef4444 !important;
+}
+
+/* 7. Inline Formsets (TabularInline & StackedInline) High Contrast */
+.inline-group {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 14px !important;
+    background: rgba(18, 20, 26, 0.6) !important;
+    padding: 1rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.inline-group h2,
+.inline-group .card-header {
+    background: transparent !important;
+    color: #f8fafc !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding-bottom: 0.75rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.inline-related {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    margin-bottom: 1rem !important;
+    padding: 0.75rem !important;
+}
+
+.inline-group table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+.inline-group table th {
+    color: #94a3b8 !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 8px 10px !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.inline-group table td {
+    padding: 8px 10px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    vertical-align: middle !important;
+}
+
+/* Add Row Button in Inlines */
+.add-row a,
+.inline-group .add-row a {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 0.5rem 1rem !important;
+    background: rgba(99, 102, 241, 0.15) !important;
+    border: 1px solid rgba(99, 102, 241, 0.4) !important;
+    color: #818cf8 !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.add-row a:hover,
+.inline-group .add-row a:hover {
+    background: #6366f1 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Delete Checkbox in Inlines */
+.delete input[type="checkbox"] {
+    accent-color: #ef4444 !important;
+}
+
+/* 8. CKEditor Container & Source Code Editing Dark Mode Contrast */
+.django-ckeditor-widget,
+.cke_chrome {
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.cke_inner {
+    background: #1e202a !important;
+}
+
+.cke_top {
+    background: #181b22 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.cke_toolgroup {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 6px !important;
+}
+
+.cke_button_icon {
+    filter: invert(0.85) !important;
+}
+
+.cke_bottom {
+    background: #181b22 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
+}
+
+/* CKEditor 4 & 5 Source Code Editing Area (High Contrast Dark Mode) */
+.cke_contents textarea.cke_source,
+textarea.cke_source,
+.cke_source,
+.ck-source-editing-area,
+.ck-source-editing-area textarea,
+textarea.ck-source-editing-area__textarea {
+    background-color: #0f172a !important; /* Deep dark slate background */
+    color: #f8fafc !important;            /* High contrast crisp white text */
+    font-family: 'Fira Code', 'Cascadia Code', 'Consolas', 'Courier New', monospace !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    padding: 1rem !important;
+    border: none !important;
+    outline: none !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    box-sizing: border-box !important;
+    resize: vertical !important;
+}
+
+/* CodeMirror Integration inside CKEditor Source Mode */
+.cke_contents .CodeMirror,
+.CodeMirror {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    font-family: 'Fira Code', 'Consolas', monospace !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+}
+
+.CodeMirror-gutters {
+    background-color: #1e293b !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.CodeMirror-linenumber {
+    color: #64748b !important;
+    padding: 0 8px !important;
+}
+
+.CodeMirror-lines {
+    padding: 8px 0 !important;
+}
+
+/* CodeMirror Syntax Colors for Dark Mode */
+.cm-s-default .cm-tag { color: #f43f5e !important; font-weight: bold; }
+.cm-s-default .cm-attribute { color: #38bdf8 !important; }
+.cm-s-default .cm-string { color: #34d399 !important; }
+.cm-s-default .cm-operator { color: #cbd5e1 !important; }
+.cm-s-default .cm-comment { color: #94a3b8 !important; font-style: italic; }
+.cm-s-default .cm-atom { color: #c084fc !important; }
+.cm-s-default .cm-number { color: #fbbf24 !important; }
+.cm-s-default .cm-keyword { color: #818cf8 !important; font-weight: bold; }
+
+/* Active Source Button in CKEditor Toolbar */
+.cke_button__source.cke_button_on,
+.cke_button__source_single.cke_button_on {
+    background: #6366f1 !important;
+    border-color: #6366f1 !important;
+    border-radius: 4px !important;
+}
+
+.cke_button__source.cke_button_on .cke_button_label,
+.cke_button__source_single.cke_button_on .cke_button_label {
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+/* 9. Action Bar, Changelist & Filters High Contrast */
+#changelist #toolbar {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+#changelist #searchbar {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 0.9rem !important;
+    font-size: 0.9rem !important;
+}
+
+#changelist .actions {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    padding: 0.6rem 1rem !important;
+    margin-bottom: 1rem !important;
+    color: #cbd5e1 !important;
+}
+
+#changelist .actions select {
+    margin: 0 8px !important;
+}
+
+.action-counter {
+    color: #818cf8 !important;
+    font-weight: 600 !important;
+    margin-left: 8px !important;
+}
+
+/* Pagination Links */
+.paginator {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    padding: 0.6rem 1rem !important;
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+}
+
+.paginator a:link,
+.paginator a:visited {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #818cf8 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 6px !important;
+    padding: 4px 10px !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.paginator a:hover {
+    background: #6366f1 !important;
+    color: #ffffff !important;
+}
+
+.paginator .this-page {
+    background: #6366f1 !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    border-radius: 6px !important;
+    padding: 4px 10px !important;
 }

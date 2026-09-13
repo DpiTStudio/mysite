@@ -1,16 +1,27 @@
-<nav aria-label="breadcrumb" class="mb-3 breadcrumb-fon">
-    <ol class="breadcrumb">
+{% if breadcrumbs and breadcrumbs|length > 1 %}
+<nav aria-label="хлебные крошки" class="mb-3 breadcrumb-fon">
+    <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
         {% for breadcrumb in breadcrumbs %}
-            {% if breadcrumb.active %}
-                <li class="breadcrumb-item active" aria-current="page">
-                    {{ breadcrumb.title }}
-                </li>
-            {% else %}
-                <li class="breadcrumb-item">
-                    <a href="{{ breadcrumb.url }}">{{ breadcrumb.title }}</a>
-                </li>
-            {% endif %}
+            <li class="breadcrumb-item {% if breadcrumb.active %}active{% endif %}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                {% if breadcrumb.active %}
+                    <span itemprop="name" aria-current="page">
+                        {% if forloop.first %}<i class="bi bi-house-door-fill me-1 opacity-75"></i>{% endif %}
+                        {{ breadcrumb.title }}
+                    </span>
+                    <meta itemprop="position" content="{{ forloop.counter }}" />
+                {% else %}
+                    <a href="{{ breadcrumb.url }}" itemprop="item">
+                        <span itemprop="name">
+                            {% if forloop.first %}<i class="bi bi-house-door-fill me-1 opacity-75"></i>{% endif %}
+                            {{ breadcrumb.title }}
+                        </span>
+                    </a>
+                    <meta itemprop="position" content="{{ forloop.counter }}" />
+                {% endif %}
+            </li>
         {% endfor %}
     </ol>
 </nav>
+{% endif %}
+
 

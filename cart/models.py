@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from decimal import Decimal
-from services.models import Service
+from services.models import Service, ServicePricePlan
 from accounts.models import User
 
 
@@ -87,6 +87,10 @@ class OrderItem(models.Model):
     portfolio = models.ForeignKey(
         'portfolio.Portfolio', related_name='order_items', on_delete=models.PROTECT,
         verbose_name=_("Работа (Портфолио)"), null=True, blank=True
+    )
+    selected_plans = models.ManyToManyField(
+        ServicePricePlan, blank=True,
+        verbose_name=_("Выбранные тарифные планы для переговоров")
     )
     price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Цена (фикс)"), null=True, blank=True)
     price_type = models.CharField(max_length=10, default='fixed', verbose_name=_("Тип цены"))

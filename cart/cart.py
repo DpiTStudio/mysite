@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from services.models import Service
+from services.models import Service, ServicePricePlan
 from portfolio.models import Portfolio
 
 class Cart:
@@ -15,7 +15,7 @@ class Cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, item, item_type='service', quantity=1, override_quantity=False):
+    def add(self, item, item_type='service', quantity=1, override_quantity=False, selected_plan_ids=None):
         """
         Добавить товар/услугу в корзину или обновить ее количество.
         """
@@ -27,13 +27,27 @@ class Cart:
                 'item_type': item_type,
                 'item_id': item_id,
                 'quantity': 0,
+                'selected_plan_ids': [],
             }
             
         if override_quantity:
             self.cart[cart_key]['quantity'] = quantity
         else:
             self.cart[cart_key]['quantity'] += quantity
+
+        if selected_plan_ids is not None:
+            self.cart[cart_key]['selected_plan_ids'] = [int(pid) for pid in selected_plan_ids if str(pid).isdigit()]
+
         self.save()
+
+    def update_plans(self, item_type, item_id, selected_plan_ids):
+        """
+        Обновление выбранных тарифных планов для услуги в корзине.
+        """
+        cart_key = f"{item_type}_{item_id}"
+        if cart_key in self.cart:
+            self.cart[cart_key]['selected_plan_ids'] = [int(pid) for pid in selected_plan_ids if str(pid).isdigit()]
+            self.save()
 
     def save(self):
         # пометить сессию как "измененную", чтобы обеспечить ее сохранение
@@ -62,6 +76,16 @@ class Cart:
         services = Service.objects.filter(id__in=service_ids)
         portfolios = Portfolio.objects.filter(id__in=portfolio_ids)
         
+        # Загрузка тарифных планов для услуг
+        available_plans_qs = ServicePricePlan.objects.filter(
+            service_id__in=service_ids,
+            is_available_for_order=True
+        ).prefetch_related('features')
+
+        plans_by_service = {}
+        for plan in available_plans_qs:
+            plans_by_service.setdefault(plan.service_id, []).append(plan)
+
         # Создание словарей для быстрого доступа
         service_dict = {s.id: s for s in services}
         portfolio_dict = {p.id: p for p in portfolios}
@@ -114,9 +138,28 @@ class Cart:
             # Рассчитываем итоговую цену на основе количества
             quantity = item.get('quantity', 1)
             item['quantity'] = quantity
+
+            # Тарифные планы для услуги
+            if item_type == 'service':
+                available_plans = plans_by_service.get(item_id, [])
+                item['available_plans'] = available_plans
+                selected_plan_ids = [int(pid) for pid in item.get('selected_plan_ids', []) if str(pid).isdigit()]
+                item['selected_plan_ids'] = selected_plan_ids
+                item['selected_plans'] = [p for p in available_plans if p.id in selected_plan_ids]
+                if item['selected_plans']:
+                    plans_sum = sum(p.price for p in item['selected_plans'])
+                    item['price'] = Decimal(str(plans_sum))
+                    item['price_type'] = 'fixed'
+            else:
+                item['available_plans'] = []
+                item['selected_plan_ids'] = []
+                item['selected_plans'] = []
             
             # Извлечение символа валюты через get_price_display() если возможно
-            if hasattr(obj, 'get_price_display'):
+            if item.get('selected_plans'):
+                formatted_price = f"{item['price']:,.0f}".replace(',', ' ')
+                item['price_display'] = f"{formatted_price} ₽"
+            elif hasattr(obj, 'get_price_display'):
                 item['price_display'] = obj.get_price_display()
             else:
                 item['price_display'] = f"{item['price'].normalize():g} ₽" if item['price'] else "0 ₽"
@@ -143,7 +186,7 @@ class Cart:
                 item['total_price'] = Decimal('0')
                 item['total_price_display'] = "По договоренности"
             
-            item['has_flexible_price'] = item['price_type'] != 'fixed'
+            item['has_flexible_price'] = (item['price_type'] != 'fixed') and not bool(item.get('selected_plans'))
             
             yield item
 

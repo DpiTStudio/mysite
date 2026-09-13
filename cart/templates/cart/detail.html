@@ -54,12 +54,19 @@
                                                 <div>
                                                     <h5 class="mb-0 text-white">{{ obj.title }}</h5>
                                                     <small class="text-muted">{{ obj.category }}</small>
+                                                    <div class="mt-1 d-flex flex-wrap gap-1 {% if not item.selected_plans %}d-none{% endif %}" id="selected-plans-badges-{{ obj.id }}">
+                                                        {% for plan in item.selected_plans %}
+                                                            <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 rounded-pill" style="font-size: 0.75rem;">
+                                                                <i class="bi bi-tag-fill me-1"></i>{{ plan.title }} ({{ plan.price|floatformat:0 }} ₽)
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-white fw-medium price-display">{{ item.price_display|linebreaksbr }}</td>
+                                        <td class="text-white fw-medium price-display" id="item-price-{{ obj.id }}">{{ item.price_display|linebreaksbr }}</td>
                                         <td class="text-center text-white">{{ item.quantity }}</td>
-                                        <td class="fw-bold text-primary price-display">{{ item.total_price_display|linebreaksbr }}</td>
+                                        <td class="fw-bold text-primary price-display" id="item-total-{{ obj.id }}">{{ item.total_price_display|linebreaksbr }}</td>
                                         <td class="text-end pe-4">
                                             <form action="{% url 'cart:cart_remove' type obj.id %}" method="post" class="d-inline">
                                                 {% csrf_token %}
@@ -69,13 +76,62 @@
                                             </form>
                                         </td>
                                     </tr>
+
+                                    {% if type == 'service' and item.available_plans %}
+                                    <tr class="bg-black bg-opacity-25 border-bottom border-secondary border-opacity-25">
+                                        <td colspan="5" class="ps-4 pe-4 py-3">
+                                            <div class="p-3 rounded-3 border border-secondary border-opacity-25 bg-dark bg-opacity-50" id="plans-container-{{ obj.id }}">
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <div class="fw-bold text-white small">
+                                                        <i class="bi bi-tags text-primary me-2"></i>Тарифные планы для обсуждения и переговоров:
+                                                    </div>
+                                                    <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 rounded-pill small">
+                                                        Выберите один или несколько вариантов
+                                                    </span>
+                                                </div>
+                                                <p class="text-white-50 small mb-3" style="font-size: 0.85rem;">
+                                                    Вы можете отметить один или несколько тарифных планов, чтобы обсудить их подробнее с нашим менеджером или оператором в процессе переговоров.
+                                                </p>
+                                                <div class="row g-2">
+                                                    {% for plan in item.available_plans %}
+                                                        <div class="col-md-6 col-lg-4">
+                                                            <div class="plan-select-card p-3 rounded-3 border transition-all {% if plan.id in item.selected_plan_ids %}border-primary bg-primary bg-opacity-10 text-white{% else %}border-secondary border-opacity-25 text-white-50 hover-border-secondary{% endif %}"
+                                                                 style="cursor: pointer;"
+                                                                 onclick="togglePlanCard(event, '{{ type }}', {{ obj.id }}, {{ plan.id }})">
+                                                                <div class="form-check d-flex align-items-start gap-2 mb-0">
+                                                                    <input class="form-check-input mt-1 plan-checkbox" 
+                                                                           type="checkbox" 
+                                                                           id="plan_{{ obj.id }}_{{ plan.id }}" 
+                                                                           value="{{ plan.id }}"
+                                                                           {% if plan.id in item.selected_plan_ids %}checked{% endif %}
+                                                                           onchange="updateCartPlans('{{ type }}', {{ obj.id }})">
+                                                                    <label class="form-check-label w-100 cursor-pointer text-white" for="plan_{{ obj.id }}_{{ plan.id }}" onclick="event.stopPropagation();">
+                                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                                            <span class="fw-bold text-white small">{{ plan.title }}</span>
+                                                                            <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-50 rounded-pill small">{{ plan.price|floatformat:0 }} ₽</span>
+                                                                        </div>
+                                                                        {% if plan.description %}
+                                                                            <div class="text-white-50 extra-small" style="font-size: 0.8rem;">
+                                                                                {{ plan.description }}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
                                 {% endwith %}
                             {% endfor %}
                         </tbody>
                         <tfoot>
                             <tr class="fs-4">
                                 <td colspan="3" class="text-end border-0 pt-4">Всего к оплате:</td>
-                                <td colspan="2" class="text-gradient border-0 fw-bold pt-4 pe-4 price-display">{{ cart.get_total_price_display|linebreaksbr }}</td>
+                                <td colspan="2" class="text-gradient border-0 fw-bold pt-4 pe-4 price-display" id="cart-total-price">{{ cart.get_total_price_display|linebreaksbr }}</td>
                             </tr>
                             {% if cart.has_flexible_prices %}
                             <tr>
@@ -111,5 +167,94 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+<script>
+function getCsrfToken() {
+    return document.cookie.match(/csrftoken=([^;]+)/)?.[1] || '';
+}
+
+function togglePlanCard(event, itemType, itemId, planId) {
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'LABEL') {
+        return;
+    }
+    const checkbox = document.getElementById(`plan_${itemId}_${planId}`);
+    if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        updateCartPlans(itemType, itemId);
+    }
+}
+
+function updateCartPlans(itemType, itemId) {
+    const container = document.getElementById(`plans-container-${itemId}`);
+    if (!container) return;
+
+    const checkboxes = container.querySelectorAll('.plan-checkbox:checked');
+    const planIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+    fetch(`/cart/update-plans/${itemType}/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify({ plan_ids: planIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const allCheckboxes = container.querySelectorAll('.plan-checkbox');
+            allCheckboxes.forEach(cb => {
+                const card = cb.closest('.plan-select-card');
+                if (card) {
+                    if (cb.checked) {
+                        card.classList.add('border-primary', 'bg-primary', 'bg-opacity-10', 'text-white');
+                        card.classList.remove('border-secondary', 'border-opacity-25', 'text-white-50');
+                    } else {
+                        card.classList.remove('border-primary', 'bg-primary', 'bg-opacity-10', 'text-white');
+                        card.classList.add('border-secondary', 'border-opacity-25', 'text-white-50');
+                    }
+                }
+            });
+
+            // Обновляем единичную цену услуги
+            const priceEl = document.getElementById(`item-price-${itemId}`);
+            if (priceEl && data.item_price_display !== undefined) {
+                priceEl.innerHTML = data.item_price_display;
+            }
+
+            // Обновляем итоговую цену услуги
+            const totalEl = document.getElementById(`item-total-${itemId}`);
+            if (totalEl && data.item_total_price_display !== undefined) {
+                totalEl.innerHTML = data.item_total_price_display;
+            }
+
+            // Обновляем общий итог корзины ("Всего к оплате:")
+            const cartTotalEl = document.getElementById('cart-total-price');
+            if (cartTotalEl && data.cart_total_price_display !== undefined) {
+                cartTotalEl.innerHTML = data.cart_total_price_display;
+            }
+
+            // Обновляем бейджи под названием услуги
+            const badgesContainer = document.getElementById(`selected-plans-badges-${itemId}`);
+            if (badgesContainer) {
+                if (data.selected_plans_info && data.selected_plans_info.length > 0) {
+                    badgesContainer.innerHTML = data.selected_plans_info.map(p => 
+                        `<span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 rounded-pill" style="font-size: 0.75rem;">
+                            <i class="bi bi-tag-fill me-1"></i>${p.title} (${p.price} ₽)
+                         </span>`
+                    ).join('');
+                    badgesContainer.classList.remove('d-none');
+                } else {
+                    badgesContainer.innerHTML = '';
+                    badgesContainer.classList.add('d-none');
+                }
+            }
+        }
+    })
+    .catch(err => console.error('Error updating plans:', err));
+}
+</script>
+{% endblock %}
 
 {% endblock %}

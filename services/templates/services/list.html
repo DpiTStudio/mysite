@@ -20,17 +20,23 @@
             <div class="position-relative z-2">
                 <h1 class="display-4 fw-bolder mb-3 text-white" style="letter-spacing: -1px;">
                     {% if selected_category %}
-                        <span class="text-gradient">{{ selected_category.name }}</span>
+                        <span class="text-gradient">{{ selected_category.name|safe }}</span>
                     {% else %}
-                        <span class="text-gradient">{% if site_settings.services_block_title %}{{ site_settings.services_block_title }}{% else %}Наши Услуги{% endif %}</span>
+                        <span class="text-gradient">
+                            {% if site_settings.services_block_title %}
+                                {{ site_settings.services_block_title|safe }}
+                            {% else %}
+                                Наши Услуги
+                            {% endif %}
+                        </span>
                     {% endif %}
                 </h1>
                 <p class="fs-5 mb-0 fw-light lh-lg" style="max-width: 100%;">
                     {% if selected_category and selected_category.description %}
-                        {{ selected_category.description|linebreaksbr }}
+                        {{ selected_category.description|safe|linebreaksbr }}
                     {% else %}
                         {% if site_settings.description_of_services_block %}
-                            {{ site_settings.description_of_services_block }}
+                            {{ site_settings.description_of_services_block|safe|linebreaksbr }}
                         {% else %}
                             Профессиональные цифровые решения для роста и масштабирования вашего бизнеса.
                         {% endif %}

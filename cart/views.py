@@ -73,10 +73,12 @@ def _send_order_confirmation(request, order, auto_password=None):
         from django.conf import settings
 
         subject = f"Ваш заказ #{order.id} принят"
-        items_text = "\n".join(
-            f"  • {item.get_item_title()} — {item.get_price_display()} × {item.quantity}"
-            for item in order.items.all()
-        )
+        items_lines = []
+        for item in order.items.prefetch_related('selected_plans').all():
+            plans = item.selected_plans.all()
+            plans_text = f" [Тарифы для переговоров: {', '.join(p.title for p in plans)}]" if plans else ""
+            items_lines.append(f"  • {item.get_item_title()}{plans_text} — {item.get_price_display()} × {item.quantity}")
+        items_text = "\n".join(items_lines)
 
         body_lines = [
             f"Здравствуйте, {order.first_name}!",
@@ -147,7 +149,10 @@ def cart_add(request, item_type, item_id):
         messages.error(request, f'К сожалению, "{item.title}" временно недоступно для заказа.')
         return redirect(request.META.get('HTTP_REFERER', 'main:home'))
 
-    cart.add(item=item, item_type=item_type)
+    plan_id = request.POST.get('plan') or request.GET.get('plan')
+    selected_plan_ids = [plan_id] if plan_id else None
+
+    cart.add(item=item, item_type=item_type, selected_plan_ids=selected_plan_ids)
 
     if 'HX-Request' in request.headers:
         return render(request, 'cart/detail_partial.html', {'cart': cart})
@@ -169,6 +174,50 @@ def cart_remove(request, item_type, item_id):
 
     messages.info(request, 'Элемент удален из корзины')
     return redirect('cart:cart_detail')
+
+
+@require_POST
+def cart_update_plans(request, item_type, item_id):
+    """
+    Обновляет выбранные тарифные планы для услуги в корзине.
+    """
+    cart = Cart(request)
+    try:
+        data = json.loads(request.body)
+        plan_ids = data.get('plan_ids', [])
+    except (json.JSONDecodeError, AttributeError):
+        plan_ids = request.POST.getlist('plan_ids')
+
+    cart.update_plans(item_type=item_type, item_id=item_id, selected_plan_ids=plan_ids)
+
+    if 'HX-Request' in request.headers:
+        return render(request, 'cart/detail_partial.html', {'cart': cart})
+
+    # Получаем обновленные данные по текущему элементу
+    item_price_display = ""
+    item_total_price_display = ""
+    selected_plans_info = []
+
+    for item in cart:
+        if item.get('item_type') == item_type and int(item.get('item_id')) == int(item_id):
+            item_price_display = str(item.get('price_display', '')).replace('\n', '<br>')
+            item_total_price_display = str(item.get('total_price_display', '')).replace('\n', '<br>')
+            for p in item.get('selected_plans', []):
+                selected_plans_info.append({
+                    'id': p.id,
+                    'title': p.title,
+                    'price': f"{p.price:,.0f}".replace(',', ' ')
+                })
+            break
+
+    return JsonResponse({
+        'success': True,
+        'selected_plan_ids': plan_ids,
+        'item_price_display': item_price_display,
+        'item_total_price_display': item_total_price_display,
+        'cart_total_price_display': cart.get_total_price_display().replace('\n', '<br>'),
+        'selected_plans_info': selected_plans_info,
+    })
 
 
 def cart_detail(request):
@@ -253,7 +302,9 @@ def order_create(request):
                     kwargs['service'] = item['item_obj']
                 else:
                     kwargs['portfolio'] = item['item_obj']
-                OrderItem.objects.create(**kwargs)
+                order_item = OrderItem.objects.create(**kwargs)
+                if item.get('selected_plans'):
+                    order_item.selected_plans.set(item['selected_plans'])
 
             # ── Промокод: фиксируем использование ───────────────────────────
             if promo_obj and promo_discount is not None:
