@@ -9,7 +9,7 @@
             </div>
             <div>
                 <h5 class="fw-bold service-heading mb-2 fs-6">{{ step.title }}</h5>
-                <p class="text-subtle small mb-0">{{ step.description }}</p>
+                <p class="text-subtle small mb-0">{{ step.description|linebreaksbr }}</p>
             </div>
         </div>
         {% endfor %}
