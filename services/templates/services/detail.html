@@ -69,7 +69,7 @@
             {% if field.name == 'selected_plan' %}
             <div class="mb-3 selected-plan-wrapper">
                 <label for="{{ field.id_for_label }}" class="form-label fw-semibold d-flex justify-content-between align-items-center mb-2">
-                    <span><i class="bi bi-layers-half text-primary me-1.5"></i> {{ field.label }}</span>
+                    <span><i class="bi bi-layers-half text-primary me-2"></i> {{ field.label }}</span>
                     {% if price_plans %}
                     <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-2 py-1 small">
                         {{ price_plans|length }} доступно
@@ -86,8 +86,8 @@
 
                 {% if price_plans %}
                 <div class="plan-quick-selector mt-2 pt-1">
-                    <div class="small text-subtle mb-1.5 fw-medium opacity-75" style="font-size: 0.78rem;">Быстрый выбор тарифа:</div>
-                    <div class="d-flex flex-wrap gap-1.5 align-items-center">
+                    <div class="small text-subtle mb-2 fw-medium opacity-75" style="font-size: 0.78rem;">Быстрый выбор тарифа:</div>
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
                         <button type="button" class="btn btn-sm plan-chip-btn plan-chip-reset" data-plan-id="">
                             <i class="bi bi-x-circle me-1"></i>Без тарифа
                         </button>
@@ -105,7 +105,7 @@
                 {% endif %}
 
                 {% if field.errors %}
-                <div class="text-danger small mt-1.5 fw-medium">{{ field.errors.0 }}</div>
+                <div class="text-danger small mt-2 fw-medium">{{ field.errors.0 }}</div>
                 {% endif %}
             </div>
             {% else %}
@@ -120,7 +120,7 @@
             {% endfor %}
             
             <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-2.5 shadow-lg">Отправить заявку</button>
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-3 shadow-lg">Отправить заявку</button>
             </div>
             <div class="text-center mt-3 mb-4 border-bottom border-secondary border-opacity-30 pb-4">
                 <small class="text-subtle" style="font-size: 0.8rem;">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</small>
@@ -131,7 +131,7 @@
             <div class="text-subtle small mb-3 fw-medium">Или добавьте услугу в общую корзину:</div>
             <form action="{% url 'cart:cart_add' 'service' service.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-success btn-lg w-100 rounded-pill fw-bold py-2.5">
+                <button type="submit" class="btn btn-outline-success btn-lg w-100 rounded-pill fw-bold py-3">
                     <i class="bi bi-cart-plus me-2"></i> В корзину
                 </button>
             </form>

@@ -6,27 +6,27 @@
         <h1 class="display-5 fw-bold mb-2 service-heading">{{ service.title }}</h1>
         <div class="d-flex flex-wrap gap-2 align-items-center">
             {% if service.category %}
-                <span class="badge badge-category px-3 py-1.5 rounded-pill small">
+                <span class="badge badge-category px-3 py-1 rounded-pill small">
                     <i class="fas fa-folder me-1"></i> {{ service.category.name }}
                 </span>
             {% endif %}
             {% if service.is_popular %}
-                <span class="badge badge-popular px-3 py-1.5 rounded-pill small">
+                <span class="badge badge-popular px-3 py-1 rounded-pill small">
                     <i class="fas fa-fire me-1"></i> Хит продаж
                 </span>
             {% endif %}
             {% if service.estimated_time %}
-                <span class="badge badge-time-detail px-3 py-1.5 rounded-pill small">
+                <span class="badge badge-time-detail px-3 py-1 rounded-pill small">
                     <i class="fas fa-clock me-1"></i> {{ service.estimated_time }}
                 </span>
             {% endif %}
             {% if service.complexity_level %}
-                <span class="badge badge-complexity-detail px-3 py-1.5 rounded-pill small">
+                <span class="badge badge-complexity-detail px-3 py-1 rounded-pill small">
                     <i class="fas fa-layer-group me-1"></i> Сложность: {{ service.get_complexity_level_display }}
                 </span>
             {% endif %}
             {% if not service.can_be_ordered %}
-                <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-40 px-3 py-1.5 rounded-pill small">
+                <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-40 px-3 py-1 rounded-pill small">
                     <i class="fas fa-ban me-1"></i> Заказ недоступен
                 </span>
             {% endif %}
