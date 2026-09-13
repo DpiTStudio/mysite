@@ -372,7 +372,7 @@ class ServiceOrder(TimestampModel):
         verbose_name=_("Покупатель"),
         related_name="service_orders",
     )
-    full_name = models.CharField(max_length=255, verbose_name=_("Имя покупателя"))
+    full_name = models.CharField(max_length=255, verbose_name=_("Имя заказчика"))
     phone = models.CharField(
         max_length=25,
         verbose_name=_("Номер связи"),
@@ -395,16 +395,16 @@ class ServiceOrder(TimestampModel):
         blank=True,
         help_text=_("Для внутренней коммуникации команды"),
     )
-    estimated_budget = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        verbose_name=_("Указанный бюджет"),
-    )
-    deadline = models.DateField(
-        null=True, blank=True, verbose_name=_("Желательный дедлайн")
-    )
+    # estimated_budget = models.DecimalField(
+    #     max_digits=12,
+    #     decimal_places=2,
+    #     null=True,
+    #     blank=True,
+    #     verbose_name=_("Указанный бюджет"),
+    # )
+    # deadline = models.DateField(
+    #     null=True, blank=True, verbose_name=_("Желательный дедлайн")
+    # )
 
     class Meta:
         verbose_name = _("Заявка на услугу")
@@ -430,15 +430,6 @@ class ServiceOrder(TimestampModel):
         if self.phone and not PHONE_PATTERN.match(self.phone):
             raise ValidationError(
                 {"phone": _("Разрешен только корректный телефонный формат (+7...).")}
-            )
-
-        if self.estimated_budget is not None and self.estimated_budget < 0:
-            raise ValidationError(
-                {
-                    "estimated_budget": _(
-                        "Цена бюджета не может быть числом со знаком минус."
-                    )
-                }
             )
 
     def get_status_display_with_color(self):

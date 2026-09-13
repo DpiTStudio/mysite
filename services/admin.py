@@ -119,13 +119,13 @@ class ServiceStepServiceInline(admin.TabularInline):
     verbose_name_plural = _("Услуги")
     autocomplete_fields = ("service",)
 
+
 class ServiceStepPricePlanInline(admin.TabularInline):
     model = ServiceStep.price_plans.through
     extra = 1
     verbose_name = _("Тарифный план")
     verbose_name_plural = _("Тарифные планы")
     autocomplete_fields = ("servicepriceplan",)
-
 
 
 class ServiceFAQInline(admin.TabularInline):
@@ -165,6 +165,7 @@ class ServiceStepAdmin(admin.ModelAdmin):
 
     def display_services(self, obj):
         return ", ".join([s.title for s in obj.services.all()])
+
     display_services.short_description = _("Услуги")
 
 
@@ -568,7 +569,7 @@ class ServiceOrderAdmin(admin.ModelAdmin):
         (
             "Детали заказа",
             {
-                "fields": ("estimated_budget", "deadline", "admin_notes"),
+                "fields": ("estimated_budget", "admin_notes"),
                 "classes": ("wide",),
             },
         ),

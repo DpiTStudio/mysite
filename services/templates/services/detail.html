@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="service-detail-container service-detail-card mb-5 animate-left p-0 border-0">
+<div class="service-detail-container service-detail-card mb-5 animate-fade p-0 border-0">
     <div class="card-body p-4 p-md-5">
         {% include 'services/includes/_hero.html' %}
         {% include 'services/includes/_deliverables.html' %}
@@ -66,6 +66,49 @@
         <form action="{% url 'services:order' service.slug %}" method="post">
             {% csrf_token %}
             {% for field in form %}
+            {% if field.name == 'selected_plan' %}
+            <div class="mb-3 selected-plan-wrapper">
+                <label for="{{ field.id_for_label }}" class="form-label fw-semibold d-flex justify-content-between align-items-center mb-2">
+                    <span><i class="bi bi-layers-half text-primary me-1.5"></i> {{ field.label }}</span>
+                    {% if price_plans %}
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-2 py-1 small">
+                        {{ price_plans|length }} доступно
+                    </span>
+                    {% endif %}
+                </label>
+
+                <div class="input-group plan-select-group">
+                    <span class="input-group-text plan-select-icon">
+                        <i class="bi bi-tags-fill text-primary"></i>
+                    </span>
+                    {{ field }}
+                </div>
+
+                {% if price_plans %}
+                <div class="plan-quick-selector mt-2 pt-1">
+                    <div class="small text-subtle mb-1.5 fw-medium opacity-75" style="font-size: 0.78rem;">Быстрый выбор тарифа:</div>
+                    <div class="d-flex flex-wrap gap-1.5 align-items-center">
+                        <button type="button" class="btn btn-sm plan-chip-btn plan-chip-reset" data-plan-id="">
+                            <i class="bi bi-x-circle me-1"></i>Без тарифа
+                        </button>
+                        {% for plan in price_plans %}
+                        {% if plan.can_be_ordered %}
+                        <button type="button"
+                                class="btn btn-sm plan-chip-btn {% if plan.is_recommended %}recommended{% endif %}"
+                                data-plan-id="{{ plan.id }}">
+                            {% if plan.is_recommended %}<i class="bi bi-fire text-warning me-1"></i>{% else %}<i class="bi bi-check2 me-1"></i>{% endif %}{{ plan.title }}
+                        </button>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if field.errors %}
+                <div class="text-danger small mt-1.5 fw-medium">{{ field.errors.0 }}</div>
+                {% endif %}
+            </div>
+            {% else %}
             <div class="mb-3">
                 <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
                 {{ field }}
@@ -73,6 +116,7 @@
                 <div class="text-danger small mt-1 fw-medium">{{ field.errors.0 }}</div>
                 {% endif %}
             </div>
+            {% endif %}
             {% endfor %}
             
             <div class="d-grid mt-4">
@@ -110,20 +154,57 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const planButtons = document.querySelectorAll('.select-plan-btn');
     const planSelect = document.getElementById('id_selected_plan');
     const orderWidget = document.getElementById('order-form-widget');
+    const planButtons = document.querySelectorAll('.select-plan-btn');
+    const chipBtns = document.querySelectorAll('.plan-chip-btn');
+    const wrapper = document.querySelector('.selected-plan-wrapper');
+
+    function updatePillsState(selectedVal) {
+        chipBtns.forEach(btn => {
+            const planId = btn.getAttribute('data-plan-id');
+            if (String(planId) === String(selectedVal || '')) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function selectPlan(planId) {
+        if (!planSelect) return;
+        planSelect.value = planId || '';
+        updatePillsState(planSelect.value);
+
+        if (wrapper) {
+            wrapper.classList.add('plan-selected-glow');
+            setTimeout(() => wrapper.classList.remove('plan-selected-glow'), 1800);
+        }
+    }
+
+    if (planSelect) {
+        updatePillsState(planSelect.value);
+        planSelect.addEventListener('change', function () {
+            updatePillsState(this.value);
+            if (wrapper) {
+                wrapper.classList.add('plan-selected-glow');
+                setTimeout(() => wrapper.classList.remove('plan-selected-glow'), 1200);
+            }
+        });
+    }
+
+    chipBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const planId = this.getAttribute('data-plan-id');
+            selectPlan(planId);
+        });
+    });
 
     planButtons.forEach(button => {
         button.addEventListener('click', function (e) {
             const planId = this.getAttribute('data-plan-id');
-            if (planId && planSelect) {
-                planSelect.value = planId;
-                
-                // Визуальный акцент на поле выбора
-                planSelect.classList.add('is-valid');
-                setTimeout(() => planSelect.classList.remove('is-valid'), 2000);
-
+            if (planId) {
+                selectPlan(planId);
                 if (orderWidget) {
                     e.preventDefault();
                     orderWidget.scrollIntoView({ behavior: 'smooth', block: 'start' });

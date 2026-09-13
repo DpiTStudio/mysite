@@ -561,6 +561,77 @@ body:not(.light-mode) .badge-popular {
     color: var(--service-input-text) !important;
 }
 
+/* Enhanced Selected Plan Field Styling */
+.selected-plan-wrapper {
+    background: var(--service-hero-desc-bg);
+    border: 1px solid var(--service-hero-desc-border);
+    border-radius: 16px;
+    padding: 0.9rem 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.selected-plan-wrapper.plan-selected-glow {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.35) !important;
+    transform: translateY(-1px);
+}
+
+.plan-select-group .plan-select-icon {
+    background: var(--service-input-bg) !important;
+    border: 1px solid var(--service-input-border) !important;
+    border-right: 0 !important;
+    border-top-left-radius: 12px !important;
+    border-bottom-left-radius: 12px !important;
+    padding-left: 0.85rem;
+    padding-right: 0.6rem;
+}
+
+.plan-select-group select.form-select {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.plan-chip-btn {
+    background: var(--service-btn-inactive-bg);
+    color: var(--service-btn-inactive-text);
+    border: 1px solid var(--service-btn-inactive-border);
+    border-radius: 20px;
+    padding: 0.28rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.plan-chip-btn:hover {
+    background: var(--service-tech-bg);
+    color: var(--service-tech-text);
+    border-color: var(--service-tech-border);
+    transform: translateY(-1px);
+}
+
+.plan-chip-btn.active {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    box-shadow: 0 3px 10px rgba(99, 102, 241, 0.4);
+}
+
+.plan-chip-btn.recommended.active {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4);
+}
+
+.plan-chip-reset {
+    opacity: 0.75;
+}
+
+.plan-chip-reset:hover {
+    opacity: 1;
+}
+
 /* Buttons */
 .btn-primary {
     background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;

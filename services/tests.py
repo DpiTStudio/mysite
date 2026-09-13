@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib import admin
 
 from .models import Service, ServiceStep, ServicePricePlan, ServiceOrder, PricePlanFeature
-from .admin import ServiceAdmin, ServiceStepAdmin, ServiceStepInline, ServicePricePlanAdmin
+from .admin import ServiceAdmin, ServiceStepAdmin, ServicePricePlanAdmin
 from .forms import ServiceOrderForm
 
 
@@ -25,13 +25,13 @@ class ServiceAdminTests(TestCase):
             price_fixed=1000,
         )
         step = ServiceStep.objects.create(
-            service=service,
             step_number=1,
             title="Этап 1: Аналитика",
             description="Проведение исследования",
             order=1,
         )
-        self.assertEqual(step.service, service)
+        step.services.add(service)
+        self.assertIn(service, step.services.all())
         self.assertEqual(str(step), "1. Этап 1: Аналитика")
         self.assertEqual(service.steps.count(), 1)
 

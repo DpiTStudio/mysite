@@ -1,7 +1,7 @@
 from knowledge_base.models import Category as KBCategory
 from news.models import NewsCategory
 from portfolio.models import PortfolioCategory
-from services.models import ServiceCategory
+from services.models import Service, ServiceCategory
 
 from .models import AnalyticsScript, Page, SiteSettings
 
@@ -76,9 +76,33 @@ def main_context(request):
 
         # 3. Логика для Услуг
         elif app_name == "services":
-            header_data["title"] = "Профессиональные услуги"
-            header_data["description"] = "Решения для развития вашего бизнеса"
-            found_header = True
+            if "category" in path_parts and len(path_parts) > path_parts.index("category") + 1:
+                slug = path_parts[path_parts.index("category") + 1]
+                obj = ServiceCategory.objects.filter(slug=slug, is_active=True).first()
+            elif len(path_parts) > 1 and path_parts[1] not in ["search", "order"]:
+                service = Service.objects.filter(slug=path_parts[1], is_active=True).first()
+                obj = service.category if service else None
+                if service:
+                    from django.utils.html import strip_tags
+                    header_data["title"] = service.title
+                    header_data["description"] = strip_tags(service.short_description).strip() if service.short_description else (service.category.name if service.category else "")
+                    if service.icon:
+                        header_data["image"] = service.icon.url
+                    found_header = True
+            else:
+                obj = None
+            
+            if not found_header:
+                if obj:
+                    header_data["title"] = getattr(obj, "header_title", None) or obj.name
+                    header_data["description"] = getattr(obj, "header_description", None) or getattr(obj, "description", "")
+                    if getattr(obj, "header_image", None):
+                        header_data["image"] = obj.header_image.url
+                    found_header = True
+                else:
+                    header_data["title"] = "Профессиональные услуги"
+                    header_data["description"] = "Решения для развития вашего бизнеса"
+                    found_header = True
         
         # 4. Логика для других приложений
         elif app_name == "reviews":
