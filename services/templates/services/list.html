@@ -246,7 +246,7 @@
 
                     <!-- Краткое описание -->
                     <p class="service-desc mb-3 flex-grow-1">
-                        {{ service.short_description|striptags|truncatewords:16 }}
+                        {{ service.short_description|striptags|truncatewords:16|safe }}
                     </p>
 
                     <!-- Доп. характеристики: Сложность и Сроки -->

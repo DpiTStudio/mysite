@@ -1,12 +1,12 @@
 <div class="sidebar-card mb-4">
     <div class="sidebar-header">
-        <h5 class="mb-0 text-white"><i class="bi bi-briefcase me-2"></i>Последние работы</h5>
+        <h5 class="mb-0 text-body"><i class="bi bi-briefcase me-2"></i>Последние работы</h5>
     </div>
     <div class="card-body">
         {% for work in latest_portfolio %}
         <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
             <h6 class="fw-semibold mb-1">
-                <a href="{% url 'portfolio:detail' work.slug %}" class="text-white text-decoration-none">
+                <a href="{% url 'portfolio:detail' work.slug %}" class="text-body text-decoration-none">
                     {{ work.title }}
                 </a>
             </h6>

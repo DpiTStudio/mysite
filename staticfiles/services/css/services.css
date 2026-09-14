@@ -1,54 +1,83 @@
 /* ==========================================================================
-   SERVICES CATALOG & DETAIL STYLES (FLUID, THEME-ADAPTIVE & WCAG ACCESSIBLE)
+   СТИЛИ КАТАЛОГА И ДЕТАЛЬНОЙ СТРАНИЦЫ УСЛУГ (SERVICES STYLES v2026)
+   Данный файл определяет стилевое оформление каталога услуг, тарифов, списков
+   преимуществ, фильтров, карточек и страницы детализации услуги DPIT-CMS.
    ========================================================================== */
 
-/* 1. Global Color Tokens for Services */
+/* 1. Глобальные CSS-токены для раздела услуг */
 :root {
+    /* Фон карточки услуги в темной теме */
     --service-card-bg: rgba(18, 18, 20, 0.88);
+    /* Граница карточки услуги */
     --service-card-border: rgba(255, 255, 255, 0.12);
+    /* Глубокая тень карточки услуги */
     --service-card-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    /* Граница карточки при наведении */
     --service-card-hover-border: rgba(56, 189, 248, 0.5);
+    /* Тень карточки при наведении с неоновой подсветкой */
     --service-card-hover-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.2);
 
+    /* Фон контейнера фильтров */
     --service-filter-bg: rgba(18, 18, 20, 0.9);
+    /* Граница контейнера фильтров */
     --service-filter-border: rgba(255, 255, 255, 0.12);
 
+    /* Фон инпута поиска услуг */
     --service-input-bg: rgba(9, 9, 11, 0.9);
+    /* Цвет текста в инпуте */
     --service-input-text: #f8fafc;
+    /* Цвет подсказки в инпуте */
     --service-input-placeholder: #94a3b8;
+    /* Рамка инпута поиска */
     --service-input-border: rgba(148, 163, 184, 0.3);
 
+    /* Фон неактивных кнопок */
     --service-btn-inactive-bg: rgba(28, 28, 31, 0.85);
+    /* Цвет текста неактивных кнопок */
     --service-btn-inactive-text: #e2e8f0;
+    /* Рамка неактивных кнопок */
     --service-btn-inactive-border: rgba(148, 163, 184, 0.3);
 
+    /* Фон бейджей категорий */
     --service-badge-cat-bg: rgba(9, 9, 11, 0.85);
+    /* Голубой цвет текста бейджа */
     --service-badge-cat-text: #38bdf8;
+    /* Граница бейджа */
     --service-badge-cat-border: rgba(56, 189, 248, 0.3);
 
+    /* Фон детальной карточки услуги */
     --service-detail-bg: rgba(18, 18, 20, 0.9);
+    /* Граница детальной карточки */
     --service-detail-border: rgba(255, 255, 255, 0.12);
 
+    /* Фон описывающего блока услуги */
     --service-hero-desc-bg: rgba(28, 28, 31, 0.85);
+    /* Граница описывающего блока */
     --service-hero-desc-border: rgba(56, 189, 248, 0.35);
+    /* Текст описывающего блока */
     --service-hero-desc-text: #f1f5f9;
 
+    /* Акцентный технологический фон */
     --service-tech-bg: rgba(56, 189, 248, 0.12);
     --service-tech-text: #38bdf8;
     --service-tech-border: rgba(56, 189, 248, 0.35);
 
+    /* Радиальный фон иконки услуги */
     --service-icon-bg: radial-gradient(circle at center, rgba(56, 189, 248, 0.12) 0%, rgba(18, 18, 20, 0.6) 75%);
     --service-icon-border: rgba(255, 255, 255, 0.08);
 
+    /* Цвета заголовков и текста */
     --service-heading-color: #ffffff;
     --service-body-color: #cbd5e1;
     --service-muted-color: #94a3b8;
 
+    /* Стили активного фильтра */
     --service-active-filter-bg: rgba(56, 189, 248, 0.18);
     --service-active-filter-border: rgba(56, 189, 248, 0.45);
     --service-active-filter-text: #38bdf8;
 }
 
+/* Переопределение переменных услуг под светлую тему */
 [data-theme="light"],
 [data-bs-theme="light"],
 body.light-mode {
@@ -97,7 +126,7 @@ body.light-mode {
     --service-active-filter-text: #0284c7;
 }
 
-/* 2. Global Text & Container Rules */
+/* 2. Общие правила оформления текстов и контейнера услуг */
 .services-page-container,
 .service-detail-container {
     color: var(--service-body-color);
@@ -131,7 +160,7 @@ body.light-mode {
     font-weight: 700;
 }
 
-/* 3. Detail Page Hero & Container */
+/* 3. Детальная карточка услуги */
 .service-detail-card {
     background: var(--service-detail-bg) !important;
     backdrop-filter: blur(20px);
@@ -149,28 +178,6 @@ body.light-mode {
     font-weight: 600;
 }
 
-.badge-time-detail {
-    background: rgba(14, 165, 233, 0.15) !important;
-    color: #0284c7 !important;
-    border: 1px solid rgba(56, 189, 248, 0.4) !important;
-    font-weight: 600;
-}
-
-body:not(.light-mode) .badge-time-detail {
-    color: #38bdf8 !important;
-}
-
-.badge-complexity-detail {
-    background: rgba(168, 85, 247, 0.15) !important;
-    color: #9333ea !important;
-    border: 1px solid rgba(192, 132, 252, 0.4) !important;
-    font-weight: 600;
-}
-
-body:not(.light-mode) .badge-complexity-detail {
-    color: #c084fc !important;
-}
-
 .lead-description {
     background: var(--service-hero-desc-bg) !important;
     border: 1px solid var(--service-hero-desc-border) !important;
@@ -180,7 +187,7 @@ body:not(.light-mode) .badge-complexity-detail {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* 4. Filter Card & Controls */
+/* 4. Поиск и карточка фильтров */
 .services-filter-card {
     background: var(--service-filter-bg) !important;
     backdrop-filter: blur(20px);
@@ -191,47 +198,6 @@ body:not(.light-mode) .badge-complexity-detail {
     transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-.services-filter-title {
-    color: var(--service-heading-color) !important;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-}
-
-/* Filter Buttons */
-.service-cat-btn {
-    transition: all 0.25s ease-in-out;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-.btn-cat-inactive {
-    background: var(--service-btn-inactive-bg) !important;
-    color: var(--service-btn-inactive-text) !important;
-    border: 1px solid var(--service-btn-inactive-border) !important;
-}
-
-.btn-cat-inactive:hover {
-    background: var(--service-tech-bg) !important;
-    color: var(--service-tech-text) !important;
-    border-color: var(--service-tech-border) !important;
-    transform: translateY(-2px);
-}
-
-.service-cat-btn .badge-cat {
-    background: var(--service-badge-cat-bg) !important;
-    color: var(--service-badge-cat-text) !important;
-    border: 1px solid var(--service-badge-cat-border);
-    font-weight: 700;
-}
-
-.btn-primary .badge-cat {
-    background: rgba(255, 255, 255, 0.25) !important;
-    color: #ffffff !important;
-    border: none;
-}
-
-/* Search input */
 .services-search-input {
     background: var(--service-input-bg) !important;
     border: 1px solid var(--service-input-border) !important;
@@ -240,6 +206,7 @@ body:not(.light-mode) .badge-complexity-detail {
     border-radius: 50rem;
     padding-left: 2.75rem;
     transition: all 0.3s ease;
+    min-height: var(--touch-target-min);
 }
 
 .services-search-input::placeholder {
@@ -249,526 +216,22 @@ body:not(.light-mode) .badge-complexity-detail {
 .services-search-input:focus {
     border-color: #38bdf8 !important;
     box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
-    color: var(--service-input-text) !important;
 }
 
-.services-search-icon {
-    position: absolute;
-    left: 1.1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--service-tech-text) !important;
-    font-size: 1.1rem;
-    pointer-events: none;
-}
-
-/* Dropdowns & Sort Buttons */
-.services-dropdown-btn,
-.services-sort-btn {
-    background: var(--service-btn-inactive-bg) !important;
-    color: var(--service-btn-inactive-text) !important;
-    border: 1px solid var(--service-btn-inactive-border) !important;
-    font-weight: 600;
-    transition: all 0.25s ease;
-}
-
-.services-dropdown-btn:hover,
-.services-sort-btn:hover {
-    background: var(--service-tech-bg) !important;
-    color: var(--service-tech-text) !important;
-    border-color: var(--service-tech-border) !important;
-}
-
-.services-sort-btn.active {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-    color: #ffffff !important;
-    border-color: #818cf8 !important;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-    font-weight: 700;
-}
-
-.services-sort-btn.active .bi-fire {
-    color: #fef08a !important;
-    filter: drop-shadow(0 0 4px rgba(253, 224, 71, 0.6));
-}
-
-/* 5. Service Card Modern */
-.service-card-modern {
-    background: var(--service-card-bg) !important;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--service-card-border) !important;
-    border-radius: 20px;
-    box-shadow: var(--service-card-shadow);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-    overflow: hidden;
-}
-
-.service-card-modern:hover {
-    transform: translateY(-6px);
-    border-color: var(--service-card-hover-border) !important;
-    box-shadow: var(--service-card-hover-shadow);
-}
-
-.service-card-icon-wrapper {
-    background: var(--service-icon-bg);
-    border: 1px solid var(--service-icon-border);
-    border-radius: 16px;
-}
-
-.service-card-title {
-    color: var(--service-heading-color) !important;
-    font-weight: 700 !important;
-    font-size: 1.25rem;
-    line-height: 1.35;
-}
-
-.service-card-title a {
-    color: var(--service-heading-color) !important;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.service-card-title a:hover {
-    color: var(--service-tech-text) !important;
-}
-
-.service-desc {
-    color: var(--service-body-color) !important;
-    font-size: 0.925rem;
-    line-height: 1.6;
-    font-weight: 400;
-}
-
-/* Complexity Badges */
-.badge-complexity-simple {
-    background: rgba(14, 165, 233, 0.15) !important;
-    color: #0284c7 !important;
-    border: 1px solid rgba(56, 189, 248, 0.4) !important;
-    font-weight: 600;
-}
-
-body:not(.light-mode) .badge-complexity-simple {
-    color: #38bdf8 !important;
-}
-
-.badge-complexity-medium {
-    background: rgba(99, 102, 241, 0.15) !important;
-    color: #4f46e5 !important;
-    border: 1px solid rgba(129, 140, 248, 0.4) !important;
-    font-weight: 600;
-}
-
-body:not(.light-mode) .badge-complexity-medium {
-    color: #818cf8 !important;
-}
-
-.badge-complexity-complex {
-    background: rgba(245, 158, 11, 0.15) !important;
-    color: #d97706 !important;
-    border: 1px solid rgba(251, 191, 36, 0.4) !important;
-    font-weight: 600;
-}
-
-body:not(.light-mode) .badge-complexity-complex {
-    color: #fbbf24 !important;
-}
-
-.badge-complexity-expert {
-    background: rgba(239, 68, 68, 0.15) !important;
-    color: #dc2626 !important;
-    border: 1px solid rgba(248, 113, 113, 0.4) !important;
-    font-weight: 600;
-}
-
-body:not(.light-mode) .badge-complexity-expert {
-    color: #f87171 !important;
-}
-
-.badge-time {
-    background: var(--service-btn-inactive-bg) !important;
-    color: var(--service-btn-inactive-text) !important;
-    border: 1px solid var(--service-btn-inactive-border) !important;
-    font-weight: 500;
-}
-
-.badge-popular {
-    background: rgba(245, 158, 11, 0.2) !important;
-    color: #b45309 !important;
-    border: 1px solid rgba(245, 158, 11, 0.4) !important;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-}
-
-body:not(.light-mode) .badge-popular {
-    color: #fde047 !important;
-    border-color: rgba(250, 204, 21, 0.5) !important;
-}
-
-.views-count-badge {
-    color: var(--service-muted-color) !important;
-    font-weight: 600;
-    font-size: 0.85rem;
-}
-
-.views-count-badge .bi-eye {
-    color: var(--service-tech-text) !important;
-    font-weight: bold;
-}
-
-.tech-pill {
-    background: var(--service-tech-bg) !important;
-    border: 1px solid var(--service-tech-border) !important;
-    color: var(--service-tech-text) !important;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.25rem 0.7rem;
-    border-radius: 50rem;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.2s ease;
-}
-
-.tech-pill:hover {
-    background: var(--service-tech-border) !important;
-    color: #ffffff !important;
-}
-
-/* Active Filter Badges */
-.active-filter-badge {
-    background: var(--service-active-filter-bg) !important;
-    border: 1px solid var(--service-active-filter-border) !important;
-    color: var(--service-active-filter-text) !important;
-    font-weight: 600;
-    padding: 0.4rem 0.9rem;
-    border-radius: 50rem;
-    font-size: 0.825rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.active-filter-badge:hover {
-    background: rgba(239, 68, 68, 0.2) !important;
-    border-color: rgba(239, 68, 68, 0.5) !important;
-    color: #ef4444 !important;
-}
-
-.active-filter-container {
-    background: var(--service-filter-bg) !important;
-    border: 1px solid var(--service-filter-border) !important;
-    border-radius: 16px;
-}
-
-/* Price Display */
-.price-label {
-    color: var(--service-muted-color) !important;
-    font-weight: 500;
-    font-size: 0.85rem;
-}
-
-.price-display-lg,
-.price-display-widget {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--service-tech-text) !important;
-}
-
-.price-box-card {
-    background: var(--service-btn-inactive-bg) !important;
-    border: 1px solid var(--service-filter-border) !important;
-    border-radius: 16px;
-}
-
-/* Price Plan Cards */
-.plan-card-modern {
-    background: var(--service-card-bg) !important;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--service-card-border) !important;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.plan-card-modern:hover {
-    transform: translateY(-4px);
-    border-color: var(--service-card-hover-border) !important;
-    box-shadow: var(--service-card-shadow);
-}
-
-.plan-description {
-    color: var(--service-body-color) !important;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    height: 150px !important;
-    overflow: hidden;
-}
-
-/* FAQ Accordion Styling */
-.faq-accordion .accordion-button {
-    color: var(--service-heading-color) !important;
-    font-weight: 600;
-    font-size: 1.05rem;
-    background: transparent !important;
-    padding: 1.25rem 0;
-}
-
-.faq-accordion .accordion-button:not(.collapsed) {
-    color: var(--service-tech-text) !important;
-    box-shadow: none !important;
-}
-
-.faq-accordion .accordion-body {
-    color: var(--service-body-color) !important;
-    font-size: 0.95rem;
-    line-height: 1.75;
-}
-
-/* Order Form Widget */
-#order-form-widget {
-    background: var(--service-filter-bg) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--service-filter-border) !important;
-    box-shadow: var(--service-card-shadow);
-    border-radius: 24px;
-}
-
-#order-form-widget form label {
-    color: var(--service-heading-color) !important;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
-}
-
-#order-form-widget form input,
-#order-form-widget form select,
-#order-form-widget form textarea {
-    background: var(--service-input-bg) !important;
-    border: 1px solid var(--service-input-border) !important;
-    color: var(--service-input-text) !important;
-    border-radius: 12px;
-    padding: 0.6rem 0.9rem;
-    transition: all 0.25s ease;
-}
-
-#order-form-widget form input:focus,
-#order-form-widget form select:focus,
-#order-form-widget form textarea:focus {
-    border-color: #38bdf8 !important;
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25) !important;
-    color: var(--service-input-text) !important;
-}
-
-/* Enhanced Selected Plan Field Styling */
-.selected-plan-wrapper {
-    background: var(--service-hero-desc-bg);
-    border: 1px solid var(--service-hero-desc-border);
-    border-radius: 16px;
-    padding: 0.9rem 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-.selected-plan-wrapper.plan-selected-glow {
-    border-color: #38bdf8 !important;
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.35) !important;
-    transform: translateY(-1px);
-}
-
-.plan-select-group .plan-select-icon {
-    background: var(--service-input-bg) !important;
-    border: 1px solid var(--service-input-border) !important;
-    border-right: 0 !important;
-    border-top-left-radius: 12px !important;
-    border-bottom-left-radius: 12px !important;
-    padding-left: 0.85rem;
-    padding-right: 0.6rem;
-}
-
-.plan-select-group select.form-select {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.plan-chip-btn {
-    background: var(--service-btn-inactive-bg);
-    color: var(--service-btn-inactive-text);
-    border: 1px solid var(--service-btn-inactive-border);
-    border-radius: 20px;
-    padding: 0.28rem 0.75rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.plan-chip-btn:hover {
-    background: var(--service-tech-bg);
-    color: var(--service-tech-text);
-    border-color: var(--service-tech-border);
-    transform: translateY(-1px);
-}
-
-.plan-chip-btn.active {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-    color: #ffffff !important;
-    border-color: transparent !important;
-    box-shadow: 0 3px 10px rgba(99, 102, 241, 0.4);
-}
-
-.plan-chip-btn.recommended.active {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
-    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4);
-}
-
-.plan-chip-reset {
-    opacity: 0.75;
-}
-
-.plan-chip-reset:hover {
-    opacity: 1;
-}
-
-/* Buttons */
-.btn-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-    border: none !important;
-    color: #ffffff !important;
-    font-weight: 600;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
-    transition: all 0.25s ease;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-    transform: translateY(-1px);
-}
-
-.btn-outline-light {
-    border-color: var(--service-btn-inactive-border) !important;
-    color: var(--service-heading-color) !important;
-    font-weight: 500;
-}
-
-.btn-outline-light:hover {
-    background: var(--service-tech-bg) !important;
-    color: var(--service-tech-text) !important;
-    border-color: var(--service-tech-border) !important;
-}
-
-/* Service Info Cards */
-.service-info-card {
-    background: var(--service-btn-inactive-bg) !important;
-    border: 1px solid var(--service-filter-border) !important;
-    border-radius: 16px;
-    color: var(--service-body-color);
-}
-
-
-
-.plan-card-recommended {
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    position: relative;
-    transform: scale(1.05);
-    z-index: 2;
-    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
-}
-
-.plan-card-recommended::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    bottom: -2px;
-    left: -2px;
-    z-index: -1;
-    border-radius: 26px;
-    /* background: linear-gradient(135deg, #6366f1, #a855f7); */
-    /* Primary theme gradient */
-}
-
-@media (max-width: 991.98px) {
-    .plan-card-recommended {
-        transform: scale(1);
-        z-index: 1;
-        margin-top: 2rem;
+/* 5. Мобильная адаптация карточек услуг */
+@media (max-width: 768px) {
+    .service-linear-card {
+        flex-direction: column !important;
+        padding: 1.25rem !important;
     }
-}
-
-.plan-badge-popular {
-    background: linear-gradient(135deg, #6366f1, #a855f7);
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-    letter-spacing: 0.05em;
-    color: #ffffff !important;
-}
-
-.price-display-modern {
-    color: var(--service-heading-color) !important;
-    letter-spacing: -0.02em;
-}
-
-.plan-divider {
-    border-top: 1px dashed var(--service-filter-border);
-    opacity: 1;
-}
-
-.feature-icon-wrapper {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #10b981, #059669);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-}
-
-.btn-gradient-primary {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    background-size: 200% auto;
-    color: #ffffff !important;
-    border: none;
-    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.35);
-}
-
-.btn-gradient-primary:hover {
-    background-position: right center;
-    color: #ffffff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 15px 25px rgba(99, 102, 241, 0.5);
-}
-
-.btn-outline-modern {
-    background: transparent;
-    border: 2px solid var(--service-btn-inactive-border);
-    color: var(--service-body-color) !important;
-    font-weight: 600;
-}
-
-.btn-outline-modern:hover {
-    background: var(--service-btn-inactive-bg);
-    border-color: var(--service-btn-inactive-border);
-    color: var(--service-heading-color) !important;
-}
-
-.tracking-wider {
-    letter-spacing: 0.05em;
-}
-
-.transition-all {
-    transition: all 0.3s ease;
-}
-
-/* Glassmorphism helper */
-.glass-card {
-    background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(12px);
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    .service-icon-wrapper {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+    .price-highlight-box {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
 }

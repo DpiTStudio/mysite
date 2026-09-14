@@ -28,9 +28,25 @@
         {{ site_settings.meta_description|safe }}
     </p>
     {% if site_settings and site_settings.meta_keywords %}
-    <p class="footer_content_op text-muted mb-4">
-        {{ site_settings.meta_keywords }}
-    </p>
+    <div class="footer-keywords mb-4" data-keywords="{{ site_settings.meta_keywords }}">
+        <!-- Keywords will be rendered here -->
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var container = document.querySelector('.footer-keywords');
+            if (container && container.dataset.keywords) {
+                var keywords = container.dataset.keywords.split(',');
+                var html = '';
+                keywords.forEach(function(kw) {
+                    var text = kw.trim();
+                    if (text) {
+                        html += '<span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 me-1 mb-1 fw-normal rounded-pill px-2 py-1" style="font-size: 0.75rem;">' + text + '</span>';
+                    }
+                });
+                container.innerHTML = html;
+            }
+        });
+    </script>
     {% endif %}
     <p class="text-footer-title mb-4">Мы в социальных сетях:</p>
     <hr class="my-4 bg-secondary">

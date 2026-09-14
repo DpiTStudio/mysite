@@ -1,54 +1,84 @@
 /* ==========================================================================
-   NEWS CATALOG & DETAIL STYLES (FLUID, THEME-ADAPTIVE & WCAG ACCESSIBLE)
+   СТИЛИ КАТАЛОГА И ДЕТАЛЬНОЙ СТРАНИЦЫ НОВОСТЕЙ (NEWS STYLES v2026)
+   Данный файл описывает внешнее оформление раздела новостей: карточки публикаций,
+   фильтрацию по категориям, поисковую строку, хронологическую ленту событий (timeline),
+   детальный просмотр статьи и адаптирован под светлую и темную темы.
    ========================================================================== */
 
-/* 1. Global Color Tokens for News */
+/* 1. Глобальные CSS-токены для новостного модуля */
 :root {
+    /* Фон карточек новостей в темной теме */
     --news-card-bg: rgba(18, 18, 20, 0.88);
+    /* Полупрозрачная граница карточки */
     --news-card-border: rgba(255, 255, 255, 0.12);
+    /* Глубокая тень карточки */
     --news-card-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    /* Граница карточки при наведении (голубая подсветка) */
     --news-card-hover-border: rgba(56, 189, 248, 0.5);
+    /* Тень карточки при наведении с неоновым свечением */
     --news-card-hover-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.2);
 
+    /* Фон блока фильтров и категорий */
     --news-filter-bg: rgba(18, 18, 20, 0.9);
+    /* Граница блока фильтров */
     --news-filter-border: rgba(255, 255, 255, 0.12);
     
+    /* Фон инпута поиска новостей */
     --news-input-bg: rgba(9, 9, 11, 0.9);
+    /* Цвет вводимого текста */
     --news-input-text: #f8fafc;
+    /* Цвет подсказки (placeholder) */
     --news-input-placeholder: #94a3b8;
+    /* Рамка инпута поиска */
     --news-input-border: rgba(148, 163, 184, 0.3);
 
+    /* Фон неактивных кнопок фильтров */
     --news-btn-inactive-bg: rgba(28, 28, 31, 0.85);
+    /* Цвет текста неактивных кнопок */
     --news-btn-inactive-text: #e2e8f0;
+    /* Рамка неактивных кнопок */
     --news-btn-inactive-border: rgba(148, 163, 184, 0.3);
 
+    /* Фон бейджа категории */
     --news-badge-cat-bg: rgba(9, 9, 11, 0.85);
+    /* Голубой цвет текста бейджа */
     --news-badge-cat-text: #38bdf8;
+    /* Граница бейджа категории */
     --news-badge-cat-border: rgba(56, 189, 248, 0.3);
 
+    /* Фон детальной карточки новости */
     --news-detail-bg: rgba(18, 18, 20, 0.9);
+    /* Рамка детальной карточки новости */
     --news-detail-border: rgba(255, 255, 255, 0.12);
 
+    /* Фон описывающего блока лид-абзаца новости */
     --news-hero-desc-bg: rgba(28, 28, 31, 0.85);
+    /* Рамка лид-абзаца */
     --news-hero-desc-border: rgba(56, 189, 248, 0.35);
+    /* Цвет текста лид-абзаца */
     --news-hero-desc-text: #f1f5f9;
 
+    /* Технические бейджи и акценты */
     --news-tech-bg: rgba(56, 189, 248, 0.12);
     --news-tech-text: #38bdf8;
     --news-tech-border: rgba(56, 189, 248, 0.35);
 
+    /* Фон иконок на новостных карточках */
     --news-icon-bg: radial-gradient(circle at center, rgba(56, 189, 248, 0.12) 0%, rgba(18, 18, 20, 0.6) 75%);
     --news-icon-border: rgba(255, 255, 255, 0.08);
 
+    /* Цвета текста новостного раздела */
     --news-heading-color: #ffffff;
     --news-body-color: #f1f5f9;
     --news-muted-color: #94a3b8;
 
+    /* Стилизация активных фильтров */
     --news-active-filter-bg: rgba(56, 189, 248, 0.18);
     --news-active-filter-border: rgba(56, 189, 248, 0.45);
     --news-active-filter-text: #38bdf8;
 }
 
+/* Переопределение переменных новостей под светлую тему */
 [data-theme="light"],
 [data-bs-theme="light"],
 body.light-mode {
@@ -97,9 +127,10 @@ body.light-mode {
     --news-active-filter-text: #0284c7;
 }
 
-/* 2. Global Text & Container Rules */
+/* 2. Общие контейнеры и оформление текста новостей */
 .news-page-container,
 .news-detail-container {
+    /* Цвет основной области новостного раздела */
     color: var(--news-body-color);
 }
 
@@ -109,6 +140,7 @@ body.light-mode {
     font-size: 1.1rem;
 }
 
+/* Тело публикации новости */
 .content-body,
 .content-body p,
 .content-body li,
@@ -135,12 +167,11 @@ body.light-mode {
 
 .content-body blockquote {
     border-left: 4px solid var(--news-tech-border);
-    padding-left: 1.25rem;
+    padding: 1.5rem;
     margin: 1.5rem 0;
     font-style: italic;
     color: var(--news-muted-color) !important;
     background: var(--news-icon-bg);
-    padding: 1.5rem;
     border-radius: 0 12px 12px 0;
 }
 
@@ -163,7 +194,7 @@ body.light-mode {
 .content-body h4 { font-size: 1.5rem; margin-top: 1.75rem; margin-bottom: 0.75rem; line-height: 1.4; }
 .content-body h5 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
 
-/* 3. Detail Page Hero & Container */
+/* 3. Карточка подробного просмотра новости */
 .news-detail-card {
     background: var(--news-detail-bg) !important;
     backdrop-filter: blur(20px);
@@ -192,7 +223,7 @@ body.light-mode {
     letter-spacing: 0.01em;
 }
 
-/* 4. Filter Card & Controls */
+/* 4. Карточка фильтрации и поиска */
 .news-filter-card {
     background: var(--news-filter-bg) !important;
     backdrop-filter: blur(20px);
@@ -210,7 +241,7 @@ body.light-mode {
     letter-spacing: 0.05em;
 }
 
-/* Filter Buttons */
+/* Кнопки категорий новостей */
 .news-cat-btn {
     transition: all 0.25s ease-in-out;
     font-size: 0.875rem;
@@ -237,13 +268,7 @@ body.light-mode {
     font-weight: 700;
 }
 
-.btn-primary .badge-cat {
-    background: rgba(255, 255, 255, 0.25) !important;
-    color: #ffffff !important;
-    border: none;
-}
-
-/* Search input */
+/* Поле поиска новостей */
 .news-search-input {
     background: var(--news-input-bg) !important;
     border: 1px solid var(--news-input-border) !important;
@@ -252,6 +277,7 @@ body.light-mode {
     border-radius: 50rem;
     padding-left: 2.75rem;
     transition: all 0.3s ease;
+    min-height: var(--touch-target-min);
 }
 
 .news-search-input::placeholder {
@@ -274,37 +300,7 @@ body.light-mode {
     pointer-events: none;
 }
 
-/* Dropdowns & Sort Buttons */
-.news-dropdown-btn,
-.news-sort-btn {
-    background: var(--news-btn-inactive-bg) !important;
-    color: var(--news-btn-inactive-text) !important;
-    border: 1px solid var(--news-btn-inactive-border) !important;
-    font-weight: 600;
-    transition: all 0.25s ease;
-}
-
-.news-dropdown-btn:hover,
-.news-sort-btn:hover {
-    background: var(--news-tech-bg) !important;
-    color: var(--news-tech-text) !important;
-    border-color: var(--news-tech-border) !important;
-}
-
-.news-sort-btn.active {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-    color: #ffffff !important;
-    border-color: #818cf8 !important;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-    font-weight: 700;
-}
-
-.news-sort-btn.active .bi-fire {
-    color: #fef08a !important;
-    filter: drop-shadow(0 0 4px rgba(253, 224, 71, 0.6));
-}
-
-/* 5. News Card Modern */
+/* 5. Соврменные карточки новостей */
 .news-card-modern {
     background: var(--news-card-bg) !important;
     backdrop-filter: blur(16px);
@@ -362,6 +358,7 @@ body.light-mode {
     font-weight: 400;
 }
 
+/* Бейджи активности и популярности */
 .badge-time {
     background: var(--news-btn-inactive-bg) !important;
     color: var(--news-btn-inactive-text) !important;
@@ -393,7 +390,7 @@ body:not(.light-mode) .badge-popular {
     font-weight: bold;
 }
 
-/* Active Filter Badges */
+/* Активные бейджи фильтрации */
 .active-filter-badge {
     background: var(--news-active-filter-bg) !important;
     border: 1px solid var(--news-active-filter-border) !important;
@@ -415,80 +412,17 @@ body:not(.light-mode) .badge-popular {
     color: #ef4444 !important;
 }
 
-.active-filter-container {
-    background: var(--news-filter-bg) !important;
-    border: 1px solid var(--news-filter-border) !important;
-    border-radius: 16px;
-}
-
-/* Timeline & Events */
-.events-timeline .timeline {
-    position: relative;
-}
-
-.events-timeline .timeline::before {
-    content: '';
-    position: absolute;
-    left: 19px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, #6366f1, rgba(99, 102, 241, 0.1));
-}
-
-.timeline-item {
-    position: relative;
-    padding-left: 55px;
-}
-
-.timeline-marker {
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-.event-description {
-    line-height: 1.85;
-    font-size: 1.15rem;
-    color: var(--news-body-color) !important;
-}
-
-.event-description p {
-    margin-bottom: 1rem;
-}
-
-/* Buttons */
-.btn-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
-    border: none !important;
-    color: #ffffff !important;
-    font-weight: 600;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
-    transition: all 0.25s ease;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-    transform: translateY(-1px);
-}
-
-.btn-outline-light {
-    border-color: var(--news-btn-inactive-border) !important;
-    color: var(--news-heading-color) !important;
-    font-weight: 500;
-}
-
-.btn-outline-light:hover {
-    background: var(--news-tech-bg) !important;
-    color: var(--news-tech-text) !important;
-    border-color: var(--news-tech-border) !important;
-}
-
-/* Responsive tweaks */
+/* 6. Мобильная адаптация блока новостей */
 @media (max-width: 768px) {
     .news-search-wrapper {
         max-width: 100% !important;
         width: 100%;
+    }
+    .content-body {
+        font-size: 1.1rem;
+    }
+    .lead-description {
+        font-size: 1.15rem;
+        padding: 1.25rem !important;
     }
 }

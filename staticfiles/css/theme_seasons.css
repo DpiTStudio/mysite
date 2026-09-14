@@ -18,11 +18,17 @@
 }
 
 .autumn {
-    --color-primary: #ea580c; /* Orange */
-    --color-secondary: #c2410c; /* Dark Orange */
-    --color-accent: #f97316; /* Light Orange */
-    /* Subtle background tint */
-    --gradient-premium: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    --color-primary: #d4621a; /* Warm Copper - sophisticated, not harsh */
+    --color-secondary: #a84d12; /* Deep Copper */
+    --color-accent: #e88743; /* Soft Amber */
+    --color-primary-hover: #b5531a;
+    --color-primary-alpha: rgba(212, 98, 26, 0.18);
+    --color-primary-glow: rgba(212, 98, 26, 0.35);
+    /* Smooth warm gradient */
+    --gradient-premium: linear-gradient(135deg, #d4621a 0%, #a84d12 100%);
+    --gradient-accent: linear-gradient(135deg, #e88743 0%, #d4621a 100%);
+    /* Shadow with warm tint */
+    --shadow-glow: 0 0 20px rgba(212, 98, 26, 0.3);
 }
 
 .winter {

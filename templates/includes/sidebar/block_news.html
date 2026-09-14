@@ -1,6 +1,6 @@
 <div class="sidebar-card mb-4">
     <div class="sidebar-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 text-white"><i class="bi bi-newspaper me-2"></i>Последние новости</h5>
+        <h5 class="mb-0 text-body"><i class="bi bi-newspaper me-2"></i>Последние новости</h5>
         <a href="{% url 'news:feed' %}" class="text-muted small" title="RSS лента">
             <i class="bi bi-rss"></i>
         </a>
@@ -9,7 +9,7 @@
         {% for latest in latest_news %}
         <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
             <h6 class="fw-semibold mb-1">
-                <a href="{% url 'news:detail' latest.slug %}" class="text-white text-decoration-none hover-primary">
+                <a href="{% url 'news:detail' latest.slug %}" class="text-body text-decoration-none hover-primary">
                     {{ latest.title|truncatewords:10 }}
                 </a>
             </h6>

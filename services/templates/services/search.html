@@ -55,7 +55,7 @@
                     <h3 class="h5 fw-bold mb-3 service-heading">{{ service.title }}</h3>
                     
                     <p class="small text-subtle mb-4 flex-grow-1" style="line-height: 1.6;">
-                        {{ service.short_description|striptags|truncatewords:15 }}
+                        {{ service.short_description|striptags|truncatewords:15|safe }}
                     </p>
                     
                     <div class="price-display-lg mb-4">

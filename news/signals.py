@@ -86,7 +86,7 @@ def get_or_create_daily_news(category, event_date):
         slug=slug,
         category=category,
         news_date=event_date,
-        content=f"<h2>События дня {event_date.strftime('%d.%m.%Y')}</h2><p>В этот день произошли следующие события:</p>",
+        content=f"<h2>События дня {event_date.strftime('%d.%m.%Y')}</h2> <p>В этот день произошли следующие события:</p>",
         is_active=True
     )
     
