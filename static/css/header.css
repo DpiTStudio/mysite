@@ -25,18 +25,25 @@
 
 /* Навигационный бар — фон на всю ширину и высоту nav-блока */
 .premium-navbar {
-    /* Фон покрывает весь блок navbar без зазоров */
-    background: rgba(2, 19, 63, 0.545) !important;
+    /* Прозрачный фон для гармонии с размытием шапки */
+    background: transparent !important;
     /* Растягиваем на всю ширину, компенсируя внутренние отступы шапки */
     width: 100%;
     /* Высота подстраивается под контент */
     height: auto;
     /* Убираем возможные внутренние отступы, мешающие заливке */
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0.25rem 0 !important;
     /* Блочный элемент на всю ширину */
     display: flex !important;
-    align-items: stretch !important;
+    align-items: center !important;
+    /* Тонкая разделительная линия сверху */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Светлая тема для навигационного бара */
+body.light-mode .premium-navbar {
+    border-top: 1px solid rgba(15, 23, 42, 0.05);
 }
 
 /* Элементы главного меню навигации */
@@ -209,7 +216,7 @@ body.light-mode .mega-dropdown-menu {
 /* Круглые кнопки действий в светлой теме */
 body.light-mode .action-btn {
     /* Легкий серый фон кнопки */
-    background: rgba(15, 23, 42, 0.04);
+    background: hsl(23.46deg 78.85% 44.51%);
     /* Светлая граница кнопки */
     border-color: rgba(15, 23, 42, 0.1);
     /* Темный цвет иконки */
@@ -245,6 +252,29 @@ body.light-mode .action-btn {
     /* Элементы меню на всю ширину обеих колонок */
     .mega-dropdown-2col > li.full-width {
         grid-column: span 2;
+    }
+
+    /* Открытие выпадающих меню при наведении (только на десктопе) */
+    .main-nav-item:hover .dropdown-menu {
+        display: block !important;
+        visibility: visible !important;
+        top: 100%;
+        animation: dropFade 0.3s var(--transition-normal) forwards;
+    }
+    
+    /* Мост, чтобы курсор не терял меню при переходе через отступ */
+    .main-nav-item {
+        position: relative;
+    }
+    .main-nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        z-index: 100;
+        background: transparent;
     }
 }
 

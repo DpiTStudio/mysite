@@ -738,6 +738,7 @@ body.no-sidebar .main-header {
 
 .navbar-nav .brand-link {
     padding-top: 3px;
+    background: hsl(23.46deg 78.85% 44.51%);
 }
 
 .breadcrumb {
