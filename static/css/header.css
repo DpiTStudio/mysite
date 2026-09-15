@@ -1,0 +1,319 @@
+/* ==========================================================================
+   СТИЛИ НАВИГАЦИОННОЙ ШАПКИ (PREMIUM HEADER & NAVBAR)
+   Данный файл описывает внешний вид зафиксированной верхней панели, главного навигационного меню,
+   выпадающих списков (Mega-Dropdown), кнопок быстрых действий (поиск, тема, корзина, профиль),
+   а также мобильной версии навигации для смартфонов и планшетов.
+   ========================================================================== */
+
+/* Премиальная зафиксированная шапка сайта с эффектом размытия заднего плана */
+.premium-header {
+    /* Плавный переход стилей при прокрутке страницы */
+    transition: var(--transition-normal);
+    /* Высший слой отображения, поверх всех стандартных элементов страницы */
+    z-index: 1050;
+    /* Полупрозрачный фон с достаточной непрозрачностью чтобы контент не просвечивал сквозь */
+    background: rgba(9, 9, 11, 0.88) !important;
+    /* Размытие заднего фона 16px (эффект стекла) */
+    backdrop-filter: blur(16px) saturate(180%);
+    /* Поддержка размытия для Safari */
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    /* Тонкая полупрозрачная граница снизу шапки */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    /* Тень средней глубины под шапкой */
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Навигационный бар — фон на всю ширину и высоту nav-блока */
+.premium-navbar {
+    /* Прозрачный фон для гармонии с размытием шапки */
+    background: transparent !important;
+    /* Растягиваем на всю ширину, компенсируя внутренние отступы шапки */
+    width: 100%;
+    /* Высота подстраивается под контент */
+    height: auto;
+    /* Убираем возможные внутренние отступы, мешающие заливке */
+    margin: 0 !important;
+    padding: 0.25rem 0 !important;
+    /* Блочный элемент на всю ширину */
+    display: flex !important;
+    align-items: center !important;
+    /* Тонкая разделительная линия сверху */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Светлая тема для навигационного бара */
+body.light-mode .premium-navbar {
+    border-top: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+/* Элементы главного меню навигации */
+.main-nav-item .nav-link {
+    /* Шрифт заголовков для пунктов навигации */
+    font-family: var(--font-family-headings);
+    /* Полужирное написание текста */
+    font-weight: 600;
+    /* Средний размер шрифта */
+    font-size: var(--text-md);
+    /* Внутренние отступы пункта меню (вертикальные 0.6rem, горизонтальные 1.2rem) */
+    padding: 0.6rem 1.2rem;
+    /* Средний радиус скругления углов */
+    border-radius: var(--radius-md);
+    /* Быстрый плавный отклик при наведении */
+    transition: var(--transition-fast);
+    /* Основной цвет текста пункта меню */
+    color: var(--color-text-main);
+    /* Межбуквенный интервал 0.3px для лучшей читаемости */
+    letter-spacing: 0.3px;
+}
+
+/* Состояние пунктов меню при наведении, фокусе или активном выпадающем списке */
+.main-nav-item .nav-link:hover,
+.main-nav-item .nav-link:focus,
+.main-nav-item .nav-link[aria-expanded="true"] {
+    /* Фиолетовый полупрозрачный фон подсветки */
+    background: var(--color-primary-alpha);
+    /* Яркий фиолетовый цвет текста */
+    color: var(--color-primary) !important;
+    /* Смещение пункта меню вверх на 2px для визуального отклика */
+    transform: translateY(-2px);
+}
+
+/* Кнопки быстрых действий в шапке (смена темы, поиск, корзина, профиль) */
+.action-btn {
+    /* Фиксированная ширина круглых кнопок 42px на ПК */
+    width: 42px;
+    /* Фиксированная высота круглых кнопок 42px на ПК */
+    height: 42px;
+    /* Минимальная зона клика для мобильной доступности */
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
+    /* Включение Flexbox для центрирования иконки */
+    display: flex;
+    /* Выравнивание иконки по горизонтали */
+    align-items: center;
+    /* Выравнивание иконки по вертикали */
+    justify-content: center;
+    /* Полное скругление кнопки в круг */
+    border-radius: 50%;
+    /* Быстрый переход при наведении */
+    transition: var(--transition-fast);
+    /* Темный полупрозрачный фон */
+    background: var(--color-glass-dark);
+    /* Тонкая рамка вокруг кнопки */
+    border: 1px solid var(--color-glass-border);
+    /* Цвет иконки внутри кнопки */
+    color: var(--color-text-main);
+}
+
+/* Состояние круглых кнопок действий при наведении мышью */
+.action-btn:hover {
+    /* Заливка ярким фиолетовым акцентным цветом */
+    background: var(--color-primary);
+    /* Белая иконка при наведении */
+    color: white !important;
+    /* Легкое увеличение кнопки в размерах (1.1x) */
+    transform: scale(1.1);
+    /* Фиолетовое неоновое свечение вокруг кнопки */
+    box-shadow: var(--shadow-glow);
+}
+
+/* Выпадающие меню большого формата (Mega Dropdown) */
+.mega-dropdown-menu {
+    /* Тонкая полупрозрачная рамка меню */
+    border: 1px solid var(--color-glass-border);
+    /* Увеличенный радиус скругления углов меню (20px) */
+    border-radius: var(--radius-lg);
+    /* Глубокая объемная тень меню */
+    box-shadow: var(--shadow-xl);
+    /* Темный фон поверхности UI */
+    background: var(--color-dark-surface);
+    /* Размытие заднего плана под меню */
+    backdrop-filter: blur(var(--glass-blur));
+    /* Внутренние отступы со всех сторон */
+    padding: var(--spacing-4);
+    /* Анимация появления всплывающего меню */
+    animation: dropFade 0.4s var(--transition-normal) forwards;
+}
+
+/* Ключевые кадры плавной анимации появления выпадающих меню */
+@keyframes dropFade {
+    /* Начальное состояние: прозрачность 0, смещение вниз на 10px, уменьшение масштаба */
+    from { opacity: 0; transform: translateY(10px) scale(0.95); }
+    /* Конечное состояние: полная видимость, обычное положение и размер */
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Текст доменного имени в логотипе */
+.brand-text {
+    /* Очень жирный шрифт логотипа */
+    font-weight: 800;
+    /* Уменьшенный межбуквенный интервал */
+    letter-spacing: -0.5px;
+    /* Премиальный градиент от фиолетового к пурпурному */
+    background: var(--gradient-premium);
+    /* Обрезка градиента по контуру букв текста */
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* Прозрачный заполнитель текста для показа градиента */
+    -webkit-text-fill-color: transparent;
+}
+
+/* Отдельные элементы выпадающих списков */
+.dropdown-item {
+    /* Быстрый переход цвета и смещения */
+    transition: var(--transition-fast);
+    /* Маленький аккуратный шрифт текста */
+    font-size: var(--text-sm);
+    /* Средняя жирность букв */
+    font-weight: 500;
+    /* Приглушенный цвет текста */
+    color: var(--color-text-muted);
+    /* Скругление углов элементов списка 8px */
+    border-radius: var(--radius-sm);
+    /* Внутренние отступы строки 0.6rem сверху/снизу, 1rem по бокам */
+    padding: 0.6rem 1rem;
+}
+
+/* Состояние строки меню при наведении мышью или касании */
+.dropdown-item:hover {
+    /* Прозрачный фиолетовый фон подсветки */
+    background: var(--color-primary-alpha);
+    /* Яркий фиолетовый цвет текста */
+    color: var(--color-primary);
+    /* Смещение строки вправо на 5px для динамичности */
+    transform: translateX(5px);
+}
+
+/* Заголовки разделов внутри выпадающих меню */
+.dropdown-header {
+    /* Жирный шрифт для категорий */
+    font-weight: 700;
+    /* Очень маленький размер шрифта */
+    font-size: var(--text-xs);
+    /* Увеличенный межбуквенный интервал 1.5px (заглавные буквы) */
+    letter-spacing: 1.5px;
+    /* Тусклый цвет текста категорий */
+    color: var(--color-text-dim);
+}
+
+/* Стили шапки при включенной светлой теме оформления */
+body.light-mode .premium-header {
+    /* Полупрозрачный белый фон в светлом режиме */
+    background: rgba(255, 255, 255, 0.95) !important;
+    /* Тонкая темная граница снизу */
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* Выпадающее меню в светлой теме */
+body.light-mode .mega-dropdown-menu {
+    /* Чистый белый фон всплывающего меню */
+    background: #ffffff !important;
+    /* Светлая граница вокруг меню */
+    border-color: rgba(15, 23, 42, 0.1);
+}
+
+/* Круглые кнопки действий в светлой теме */
+body.light-mode .action-btn {
+    /* Легкий серый фон кнопки */
+    background: hsl(23.46deg 78.85% 44.51%);
+    /* Светлая граница кнопки */
+    border-color: rgba(15, 23, 42, 0.1);
+    /* Темный цвет иконки */
+    color: var(--color-text-main);
+}
+
+/* Кнопка гамбургер-меню при нажатии и активности */
+.navbar-toggler:focus,
+.navbar-toggler[aria-expanded="true"] {
+    /* Фиолетовая подсветка фона кнопки */
+    background: var(--color-primary-alpha) !important;
+    /* Фиолетовая иконка кнопки */
+    color: var(--color-primary) !important;
+    /* Фиолетовая граница кнопки */
+    border-color: var(--color-primary) !important;
+}
+
+/* ==========================================================================
+   АДАПТИВНОСТЬ ШАПКИ НА РАЗЛИЧНЫХ ЭКРАНАХ (RESPONSIVE MEDIA QUERIES)
+   ========================================================================== */
+
+/* Двухколоночное выпадающее меню на десктопных экранах шириной от 992px */
+@media (min-width: 992px) {
+    .mega-dropdown-2col {
+        /* Минимальная ширина двуколоночного меню 500px */
+        min-width: 500px !important;
+        /* Включение сетки Grid в две равные колонки */
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Зазор между элементами сетки 0.5rem */
+        gap: 0.5rem;
+    }
+    /* Элементы меню на всю ширину обеих колонок */
+    .mega-dropdown-2col > li.full-width {
+        grid-column: span 2;
+    }
+
+    /* Открытие выпадающих меню при наведении (только на десктопе) */
+    .main-nav-item:hover .dropdown-menu {
+        display: block !important;
+        visibility: visible !important;
+        top: 100%;
+        animation: dropFade 0.3s var(--transition-normal) forwards;
+    }
+    
+    /* Мост, чтобы курсор не терял меню при переходе через отступ */
+    .main-nav-item {
+        position: relative;
+    }
+    .main-nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        z-index: 100;
+        background: transparent;
+    }
+}
+
+/* Адаптация навигации на мобильных экранах до 991px включительно */
+@media (max-width: 991px) {
+    /* Выезжающий контейнер мобильного меню */
+    .navbar-collapse {
+        /* Полупрозрачный фоновый блок для выпадающего меню на мобильных */
+        background: var(--color-dark-surface);
+        /* Внутренние отступы внутри мобильного меню */
+        padding: 1.25rem;
+        /* Скругление углов мобильного меню */
+        border-radius: var(--radius-lg);
+        /* Граница вокруг выезжающего меню */
+        border: 1px solid var(--color-glass-border);
+        /* Глубокая тень для оверлея */
+        box-shadow: var(--shadow-xl);
+        /* Максимальная высота с вертикальным скроллом при необходимости */
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    /* Элементы меню в мобильной версии */
+    .main-nav-item .nav-link {
+        /* Отступы увеличены для удобного клика пальцем */
+        padding: 0.75rem 1rem;
+        font-size: var(--text-lg);
+    }
+}
+
+/* Мобильная адаптация для узких смартфонов шириной до 575px */
+@media (max-width: 575px) {
+    /* Оптимизация размера круглых кнопок действий на смартфонах */
+    .action-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+    }
+    /* Адаптация размера шрифта домена в логотипе на компактных экранах */
+    .site-domain {
+        font-size: 1.1rem !important;
+    }
+}

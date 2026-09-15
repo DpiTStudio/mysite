@@ -1,0 +1,117 @@
+/* ==========================================================================
+   СТИЛИ СИСТЕМЫ ТИКЕТОВ И ТЕХПОДДЕРЖКИ (TICKETS STYLES v2026)
+   Данный файл описывает стилизацию списка тикетов, статусов обращений (Открыт,
+   В работе, Решен, Закрыт), приоритетов, чата переписки и мобильной версии.
+   ========================================================================== */
+
+/* Плашка статуса тикета */
+.ticket-status {
+    /* Инлайново-блочный вывод */
+    display: inline-block;
+    /* Внутренние отступы бейджа */
+    padding: 0.35rem 0.75rem;
+    /* Полное скругление в овальную капсулу */
+    border-radius: 50px;
+    /* Маленький аккуратный размер шрифта */
+    font-size: 0.75rem;
+    /* Жирный шрифт текста статуса */
+    font-weight: 700;
+    /* Заглавные буквы для статусов */
+    text-transform: uppercase;
+    /* Межбуквенный интервал 0.05em */
+    letter-spacing: 0.05em;
+    /* Тонкая граница для четкости */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Статус "Открыт" (зеленая подсветка) */
+.status-open { 
+    background: rgba(16, 185, 129, 0.2); 
+    color: #10b981; 
+    border-color: rgba(16, 185, 129, 0.3); 
+}
+
+/* Статус "В работе" (оранжевая подсветка) */
+.status-in_progress { 
+    background: rgba(245, 158, 11, 0.2); 
+    color: #f59e0b; 
+    border-color: rgba(245, 158, 11, 0.3); 
+}
+
+/* Статус "Решен" (фиолетовая подсветка) */
+.status-resolved { 
+    background: rgba(99, 102, 241, 0.2); 
+    color: var(--color-primary); 
+    border-color: rgba(99, 102, 241, 0.3); 
+}
+
+/* Статус "Закрыт" (серая подсветка) */
+.status-closed { 
+    background: rgba(100, 116, 139, 0.2); 
+    color: #94a3b8; 
+    border-color: rgba(100, 116, 139, 0.3); 
+}
+
+/* Плашка приоритета тикета */
+.priority-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+/* Приоритет "Низкий" */
+.priority-low { background: rgba(100, 116, 139, 0.1); color: #94a3b8; }
+/* Приоритет "Средний" */
+.priority-medium { background: rgba(99, 102, 241, 0.1); color: var(--color-primary); }
+/* Приоритет "Высокий" */
+.priority-high { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+/* Приоритет "Критический/Срочный" */
+.priority-urgent { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+/* Сообщение внутри чата тикета */
+.message {
+    border-left: 4px solid var(--color-primary);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: var(--color-glass);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Шапка сообщения с автором и временем */
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+}
+
+/* Автор сообщения */
+.message-author {
+    font-weight: 600;
+    color: var(--color-text-main);
+}
+
+/* Анимация при наведении на строку тикетов */
+.glass-card-premium { transition: box-shadow 0.3s ease; }
+.glass-card-premium:hover { box-shadow: 0 15px 50px rgba(0,0,0,0.3) !important; }
+.hover-bg:hover { background-color: rgba(var(--bs-primary-rgb), 0.05) !important; }
+
+/* ==========================================================================
+   МОБИЛЬНАЯ АДАПТАЦИЯ МОДУЛЯ ТИКЕТОВ
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .message {
+        padding: 1rem;
+    }
+    .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}

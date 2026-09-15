@@ -1,0 +1,833 @@
+/* ==========================================================================
+   ГЛОБАЛЬНЫЙ МАКЕТ И СТИЛИ ОФОРМЛЕНИЯ DPIT-CMS (STYLE.CSS v2026)
+   Данный файл содержит базовый сброс CSS, стилизацию типографики, компоненты карточек,
+   кнопок, элементов ввода форм, хлебных крошек, пагинации, боковых панелей (сайдбаров),
+   а также адаптивные медиазапросы для идеального отображения на всех мобильных устройствах.
+   ========================================================================== */
+
+/* Базовый универсальный сброс отступов и установка семейства шрифтов */
+* {
+    /* Сброс внешних отступов у всех элементов */
+    margin: 0;
+    /* Сброс внутренних отступов */
+    padding: 0;
+    /* Расчет размеров включая границы и отступы (box-sizing) */
+    box-sizing: border-box;
+    /* Использование базового семейства шрифтов */
+    font-family: var(--font-family-base);
+    /* Цвет текста по умолчанию */
+    color: var(--color-text-main);
+    /* Отключение устаревших теней текста */
+    text-shadow: none !important;
+}
+
+/* Стилизация выделения текста пользователем */
+::selection {
+    /* Фон выделения текста */
+    background: var(--color-selection-bg);
+    /* Цвет выделенного текста */
+    color: var(--color-selection-text);
+}
+
+/* Корневой элемент страницы HTML */
+html {
+    /* Отключение стандартного плавной прокрутки CSS во избежание конфликтов с Lenis JS */
+    scroll-behavior: auto !important;
+    /* Отступ при прокрутке к якорям с учетом высоты десктопной шапки */
+    scroll-padding-top: var(--header-height-desktop);
+    /* Запрет горизонтальной прокрутки на уровне всей страницы */
+    overflow-x: hidden;
+}
+
+/* Основное тело документа BODY */
+body {
+    /* Базовый шрифт документа */
+    font-family: var(--font-family-base);
+    /* Цвет фона страницы */
+    background-color: var(--color-dark-bg);
+    /* Основной цвет текста */
+    color: var(--color-text-main);
+    /* Размер шрифта по умолчанию */
+    font-size: var(--text-md);
+    /* Межстрочный интервал */
+    line-height: 1.6;
+    /* Отступ сверху для компенсации зафиксированной навигационной шапки */
+    padding-top: var(--header-height-desktop);
+    /* Скрытие выходящего за пределы ширины экрана контента */
+    overflow-x: hidden;
+    /* Ограничение максимальной ширины рамки просмотра */
+    max-width: 100vw;
+    /* Премиальный динамический фоновый радиальный градиент */
+    background-image: 
+        radial-gradient(
+            at 0% 0%, 
+            rgba(99, 102, 241, 0.1) 0, 
+            transparent 40%
+        ), 
+        radial-gradient(
+            at 100% 0%, 
+            rgba(59, 130, 246, 0.08) 0, 
+            transparent 40%
+        ),
+        radial-gradient(
+            at 50% 50%, 
+            rgba(168, 85, 247, 0.05) 0, 
+            transparent 50%
+        );
+    /* Фиксация фона при прокрутке */
+    background-attachment: fixed;
+    /* Минимальная высота страницы на весь экран */
+    min-height: 100vh;
+    /* Использование Flexbox для прижатия футера книзу */
+    display: flex;
+    /* Вертикальное направление элементов */
+    flex-direction: column;
+}
+
+/* Информационный текст контактной зоны в верхней панели */
+.logo-info-zone-time {
+    /* Размер шрифта контактов */
+    font-size: 1rem !important;
+    /* Мягкая тень текста */
+    text-shadow: 1px 1px 3px hsla(0, 92%, 34%, 0.359);
+    /* Приглушенный цвет текста */
+    color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   ТИПОГРАФИКА (ЗАГОЛОВКИ И ТЕКСТЫ)
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    /* Шрифт заголовков Outfit */
+    font-family: var(--font-family-headings);
+    /* Жирный шрифт */
+    font-weight: 700;
+    /* Межбуквенный интервал */
+    letter-spacing: -0.025em;
+    /* Цвет заголовков */
+    color: var(--color-text-main);
+    /* Отступ снизу */
+    margin-bottom: 1rem;
+    /* Балансировка переноса слов в заголовках */
+    text-wrap: balance;
+}
+
+/* Иерархия размеров заголовков от H1 до H6 */
+h1 { font-size: var(--text-4xl); line-height: 1.1; }
+h2 { font-size: var(--text-3xl); line-height: 1.2; }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-md); }
+
+/* Параграфы текста */
+p {
+    /* Отступ снизу параграфа */
+    margin-bottom: 1.25rem;
+    /* Приглушенный цвет текста */
+    color: var(--color-text-muted);
+    /* Размер шрифта параграфа */
+    font-size: var(--text-md);
+}
+
+/* Ссылки по умолчанию */
+a {
+    /* Первичный акцентный цвет ссылок */
+    color: var(--color-primary);
+    /* Отсутствие подчеркивания по умолчанию */
+    text-decoration: none;
+    /* Быстрый переход при наведении */
+    transition: var(--transition-fast);
+}
+
+/* Ссылки при наведении */
+a:hover {
+    /* Вторичный цвет ссылки при наведении */
+    color: var(--color-secondary);
+}
+
+/* Заголовок домена сайта */
+.site-domain {
+    /* Размер текста домена */
+    font-size: 2.4rem !important;
+    /* Акцентный шрифт заголовков */
+    font-family: var(--font-family-headings);
+    /* Жирное написание текста */
+    font-weight: 800;
+    /* Межбуквенный интервал */
+    letter-spacing: -1.5px;
+    /* Премиальный градиент */
+    background: var(--gradient-premium);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    transition: var(--transition-fast);
+}
+
+/* Заголовок домена при наведении */
+a.site-domain:hover {
+    filter: brightness(1.2);
+    -webkit-text-fill-color: transparent;
+}
+
+/* Маленький подзаголовок сайта */
+.site-title-text {
+    font-size: 0.62rem !important;
+    font-family: var(--font-family-headings);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--color-text-dim) !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--color-text-dim) !important;
+    opacity: 0.75;
+    display: block;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 380px; /* Увеличено чтобы предотвратить обрезку длинных слоганов */
+}
+
+/* Мобильная версия доменного текста */
+.site-domain-mobile {
+    font-size: var(--text-3xl) !important;
+    font-family: var(--font-family-headings);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: var(--gradient-premium);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 1px hsl(0, 96%, 10%);
+}
+
+/* Читаемый блок статьи */
+.text-content {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.readable-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--color-text-main);
+}
+
+.readable-text p {
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   ГЛАССМОРФИЗМ (PREMIUM GLASS CARDS)
+   ========================================================================== */
+
+.glass-card-premium {
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card-premium::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.glass-card-premium:hover::before {
+    left: 100%;
+}
+
+/* ==========================================================================
+   КАРТОЧКИ (CARDS) И ИХ ИНТЕРАКТИВНОСТЬ
+   ========================================================================== */
+
+.card, .glass-card {
+    background: var(--color-glass);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition-normal);
+    box-shadow: var(--shadow-md);
+    height: 100%;
+    will-change: transform;
+}
+
+.card-premium {
+    background: var(--color-glass);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-normal);
+}
+
+.card-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+    border-color: var(--color-glass-border-bright);
+}
+
+.card-body {
+    padding: 1.75rem;
+}
+
+.card-title {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   КНОПКИ (BUTTONS)
+   ========================================================================== */
+
+.btn {
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: var(--transition-normal);
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: var(--touch-target-min);
+}
+
+.btn-primary,
+.btn-primary:not(:disabled):not(.disabled) {
+    background: var(--gradient-premium) !important;
+    border: none !important;
+    color: #fff !important;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    filter: brightness(1.15);
+    color: #fff !important;
+}
+
+/* Bootstrap override for primary buttons (top bar registration button) */
+.btn.btn-primary {
+    background: var(--gradient-premium) !important;
+    border: none !important;
+}
+
+.btn-outline-primary {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--color-primary);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn-glass {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    color: #fff;
+    backdrop-filter: blur(5px);
+}
+
+.btn-glass:hover {
+    background: var(--color-glass-hover);
+    border-color: #fff;
+    color: #fff;
+}
+
+/* ==========================================================================
+   ФОРМЫ И ЭЛЕМЕНТЫ ВВОДА (FORM CONTROLS)
+   ========================================================================== */
+
+.form-control, 
+.form-select, 
+form input:not([type="submit"]):not([type="button"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.search-input-huge), 
+form textarea:not(.bg-transparent), 
+form select:not(.bg-transparent) {
+    background-color: var(--form-input-bg) !important;
+    border: 1px solid var(--form-input-border) !important;
+    border-radius: var(--radius-md);
+    color: var(--form-input-text) !important;
+    padding: 0.75rem 1rem;
+    font-size: var(--text-md);
+    line-height: 1.5;
+    transition: var(--transition-fast);
+    min-height: var(--touch-target-min);
+}
+
+.form-control:focus, 
+.form-select:focus, 
+form input:focus:not([type="submit"]):not([type="button"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.search-input-huge), 
+form textarea:focus:not(.bg-transparent), 
+form select:focus:not(.bg-transparent) {
+    background-color: var(--form-input-focus-bg) !important;
+    border-color: var(--form-input-focus-border) !important;
+    box-shadow: 0 0 0 4px var(--form-input-focus-ring) !important;
+    outline: none;
+    color: var(--form-input-text) !important;
+}
+
+.form-control::placeholder,
+form input::placeholder,
+form textarea::placeholder {
+    color: var(--form-input-placeholder) !important;
+    opacity: 0.85;
+}
+
+select option,
+.form-select option {
+    background-color: var(--form-option-bg) !important;
+    color: var(--form-option-text) !important;
+    padding: 0.5rem;
+}
+
+/* Чекбоксы и радио-кнопки */
+.form-check-input {
+    background-color: var(--form-input-bg);
+    border: 1px solid var(--form-input-border);
+    width: 1.2em;
+    height: 1.2em;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px var(--form-input-focus-ring);
+    border-color: var(--color-primary);
+}
+
+.form-check-label {
+    color: var(--color-text-main);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   БОКОВЫЕ ПАНЕЛИ (SIDEBARS) И СПИСКИ
+   ========================================================================== */
+
+.sidebar-card {
+    background: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.sidebar-header {
+    background: var(--color-dark-subtle);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-glass-border);
+}
+
+.list-group-item {
+    background: transparent;
+    border-color: var(--color-glass-border);
+    color: var(--color-text-muted);
+    padding: 1rem 1.5rem;
+    transition: var(--transition-fast);
+}
+
+.list-group-item:hover {
+    background: var(--color-glass);
+    color: #fff;
+}
+
+/* ==========================================================================
+   ПОДВАЛ САЙТА (FOOTER)
+   ========================================================================== */
+
+.footer {
+    background: var(--color-dark-bg);
+    padding-top: 4rem;
+    padding-bottom: 2.5rem;
+    border-top: 1px solid var(--color-glass-border);
+    color: var(--color-text-muted);
+    margin-top: auto;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 400px;
+    position: relative;
+}
+
+/* Subtle top accent line for footer */
+.footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-premium);
+    opacity: 0.4;
+}
+
+.footer h5 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.footer-link {
+    color: var(--color-text-muted);
+    transition: var(--transition-fast);
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.footer-link:hover {
+    color: #fff;
+    transform: translateX(5px);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    color: var(--color-text-main) !important;
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-dark-bg);
+    border: 1px solid var(--color-glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-main);
+    transition: var(--transition-normal);
+}
+
+.social-btn:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    transform: rotate(15deg) scale(1.1);
+}
+
+/* ==========================================================================
+   ХЛЕБНЫЕ КРОШКИ (BREADCRUMBS)
+   ========================================================================== */
+
+.breadcrumb-fon {
+    background: rgba(15, 23, 42, 0.65);
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-md, 12px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: inline-flex;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.breadcrumb {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+}
+
+.breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+}
+
+.breadcrumb-item a, 
+.hero-breadcrumbs .breadcrumb-item a {
+    color: rgba(241, 245, 249, 0.85) !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none !important;
+}
+
+.breadcrumb-item a:hover, 
+.hero-breadcrumbs .breadcrumb-item a:hover {
+    color: var(--color-primary-light, #a5b4fc) !important;
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+.breadcrumb-item.active,
+.breadcrumb-item.active span {
+    color: #ffffff !important;
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, 0.45);
+    content: "\F285";
+    font-family: "bootstrap-icons";
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
+}
+
+/* ==========================================================================
+   BENTO GRID SYSTEM (ПРОДВИНУТЫЕ СЕТКИ КАРТОЧЕК)
+   ========================================================================== */
+
+.bento-grid-services,
+.bento-grid-portfolio,
+.bento-grid-news,
+.bento-grid-reviews {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(250px, auto);
+    gap: var(--spacing-6);
+}
+
+.bento-item {
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.bento-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3), var(--shadow-glow);
+    transform: translateY(-8px);
+}
+
+/* ==========================================================================
+   ПЛАВАЮЩАЯ КНОПКА ДЕЙСТВИЙ (FLOATING ACTION BUTTON - FAB)
+   ========================================================================== */
+
+.fab-container {
+    position: fixed;
+    bottom: var(--spacing-8);
+    right: var(--spacing-8);
+    z-index: 1040;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--spacing-4);
+    align-items: center;
+}
+
+.fab-main {
+    width: 56px;
+    height: 56px;
+    background: var(--gradient-premium);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    transition: var(--transition-normal);
+    border: none;
+}
+
+.fab-main:hover {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.fab-item {
+    width: 45px;
+    height: 45px;
+    background: var(--color-dark-surface);
+    border: 1px solid var(--color-glass-border);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.fab-container:hover .fab-item {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   ВЫЕЗЖАЮЩАЯ КОРЗИНА И МОДАЛЬНЫЙ ПОИСК
+   ========================================================================== */
+
+.glass-offcanvas {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-left: 1px solid var(--color-glass-border);
+}
+
+.glass-offcanvas-header {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.glass-search-modal {
+    backdrop-filter: blur(25px);
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+.search-input-huge {
+    box-shadow: none !important;
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+.search-input-huge::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+/* Индикатор прогресса HTMX */
+#htmx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--gradient-premium);
+    z-index: 100000;
+    transition: width 0.4s ease, opacity 0.4s ease;
+    box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+/* Индикатор прокрутки */
+#scroll-progress {
+    height: 3px;
+    background: var(--gradient-premium);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100000;
+    transition: width 0.1s;
+}
+
+/* ==========================================================================
+   МОБИЛЬНАЯ АДАПТАЦИЯ (RESPONSIVE MEDIA QUERIES FOR MOBILE & TABLETS)
+   ========================================================================== */
+
+/* Адаптация для планшетов и мобильных устройств шириной до 991px включительно */
+@media (max-width: 991px) {
+    /* Коррекция верхнего отступа BODY с учетом скрытия верхней панели на смартфонах */
+    body {
+        padding-top: var(--header-height-mobile);
+    }
+    /* Отступ при якорной прокрутке HTML для мобильных */
+    html {
+        scroll-padding-top: var(--header-height-mobile);
+    }
+    /* Превращение Bento-сеток в 2 колонки */
+    .bento-grid-services,
+    .bento-grid-portfolio,
+    .bento-grid-news,
+    .bento-grid-reviews {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    /* Коррекция отступов центрального обертывающего блока */
+    .content-wrapper {
+        padding: 1rem 0.5rem;
+    }
+    /* ВЫравнивание сайдбара на мобильных устройствах под контентом */
+    .sidebar-wrapper {
+        position: static !important;
+        margin-top: 2rem;
+    }
+}
+
+/* Адаптация для смартфонов шириной до 768px */
+@media (max-width: 768px) {
+    /* Отключение тяжелонагруженного блюра на мобильных процессорах для производительности */
+    .card, .glass-card, .glass-card-premium {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: var(--color-dark-surface) !important;
+    }
+    body.light-mode .card,
+    body.light-mode .glass-card,
+    body.light-mode .glass-card-premium {
+        background: #ffffff !important;
+        border-color: rgba(15, 23, 42, 0.1) !important;
+    }
+    /* Высота обложки карточек на смартфонах */
+    .card-img-top {
+        height: 170px;
+    }
+    /* Коррекция положения плавающей кнопки FAB на смартфонах */
+    .fab-container {
+        bottom: var(--spacing-4);
+        right: var(--spacing-4);
+    }
+    /* Адаптивность таблиц с округлением границ */
+    .table-responsive {
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-glass-border);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Адаптация для узких мобильных экранов до 575px */
+@media (max-width: 575px) {
+    /* Перевод всех Bento-сеток в 1 колонку на смартфонах */
+    .bento-grid-services,
+    .bento-grid-portfolio,
+    .bento-grid-news,
+    .bento-grid-reviews {
+        grid-template-columns: 1fr;
+    }
+    /* Увеличение мобильных отступов кнопок */
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}

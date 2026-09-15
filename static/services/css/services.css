@@ -1,0 +1,237 @@
+/* ==========================================================================
+   СТИЛИ КАТАЛОГА И ДЕТАЛЬНОЙ СТРАНИЦЫ УСЛУГ (SERVICES STYLES v2026)
+   Данный файл определяет стилевое оформление каталога услуг, тарифов, списков
+   преимуществ, фильтров, карточек и страницы детализации услуги DPIT-CMS.
+   ========================================================================== */
+
+/* 1. Глобальные CSS-токены для раздела услуг */
+:root {
+    /* Фон карточки услуги в темной теме */
+    --service-card-bg: rgba(18, 18, 20, 0.88);
+    /* Граница карточки услуги */
+    --service-card-border: rgba(255, 255, 255, 0.12);
+    /* Глубокая тень карточки услуги */
+    --service-card-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    /* Граница карточки при наведении */
+    --service-card-hover-border: rgba(56, 189, 248, 0.5);
+    /* Тень карточки при наведении с неоновой подсветкой */
+    --service-card-hover-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.2);
+
+    /* Фон контейнера фильтров */
+    --service-filter-bg: rgba(18, 18, 20, 0.9);
+    /* Граница контейнера фильтров */
+    --service-filter-border: rgba(255, 255, 255, 0.12);
+
+    /* Фон инпута поиска услуг */
+    --service-input-bg: rgba(9, 9, 11, 0.9);
+    /* Цвет текста в инпуте */
+    --service-input-text: #f8fafc;
+    /* Цвет подсказки в инпуте */
+    --service-input-placeholder: #94a3b8;
+    /* Рамка инпута поиска */
+    --service-input-border: rgba(148, 163, 184, 0.3);
+
+    /* Фон неактивных кнопок */
+    --service-btn-inactive-bg: rgba(28, 28, 31, 0.85);
+    /* Цвет текста неактивных кнопок */
+    --service-btn-inactive-text: #e2e8f0;
+    /* Рамка неактивных кнопок */
+    --service-btn-inactive-border: rgba(148, 163, 184, 0.3);
+
+    /* Фон бейджей категорий */
+    --service-badge-cat-bg: rgba(9, 9, 11, 0.85);
+    /* Голубой цвет текста бейджа */
+    --service-badge-cat-text: #38bdf8;
+    /* Граница бейджа */
+    --service-badge-cat-border: rgba(56, 189, 248, 0.3);
+
+    /* Фон детальной карточки услуги */
+    --service-detail-bg: rgba(18, 18, 20, 0.9);
+    /* Граница детальной карточки */
+    --service-detail-border: rgba(255, 255, 255, 0.12);
+
+    /* Фон описывающего блока услуги */
+    --service-hero-desc-bg: rgba(28, 28, 31, 0.85);
+    /* Граница описывающего блока */
+    --service-hero-desc-border: rgba(56, 189, 248, 0.35);
+    /* Текст описывающего блока */
+    --service-hero-desc-text: #f1f5f9;
+
+    /* Акцентный технологический фон */
+    --service-tech-bg: rgba(56, 189, 248, 0.12);
+    --service-tech-text: #38bdf8;
+    --service-tech-border: rgba(56, 189, 248, 0.35);
+
+    /* Радиальный фон иконки услуги */
+    --service-icon-bg: radial-gradient(circle at center, rgba(56, 189, 248, 0.12) 0%, rgba(18, 18, 20, 0.6) 75%);
+    --service-icon-border: rgba(255, 255, 255, 0.08);
+
+    /* Цвета заголовков и текста */
+    --service-heading-color: #ffffff;
+    --service-body-color: #cbd5e1;
+    --service-muted-color: #94a3b8;
+
+    /* Стили активного фильтра */
+    --service-active-filter-bg: rgba(56, 189, 248, 0.18);
+    --service-active-filter-border: rgba(56, 189, 248, 0.45);
+    --service-active-filter-text: #38bdf8;
+}
+
+/* Переопределение переменных услуг под светлую тему */
+[data-theme="light"],
+[data-bs-theme="light"],
+body.light-mode {
+    --service-card-bg: rgba(255, 255, 255, 0.94);
+    --service-card-border: rgba(148, 163, 184, 0.28);
+    --service-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    --service-card-hover-border: rgba(2, 132, 199, 0.5);
+    --service-card-hover-shadow: 0 15px 35px rgba(2, 132, 199, 0.15);
+
+    --service-filter-bg: rgba(255, 255, 255, 0.96);
+    --service-filter-border: rgba(148, 163, 184, 0.28);
+
+    --service-input-bg: #ffffff;
+    --service-input-text: #0f172a;
+    --service-input-placeholder: #64748b;
+    --service-input-border: rgba(148, 163, 184, 0.4);
+
+    --service-btn-inactive-bg: #f1f5f9;
+    --service-btn-inactive-text: #334155;
+    --service-btn-inactive-border: rgba(148, 163, 184, 0.4);
+
+    --service-badge-cat-bg: #e0f2fe;
+    --service-badge-cat-text: #0284c7;
+    --service-badge-cat-border: rgba(2, 132, 199, 0.3);
+
+    --service-detail-bg: rgba(255, 255, 255, 0.96);
+    --service-detail-border: rgba(148, 163, 184, 0.28);
+
+    --service-hero-desc-bg: #f8fafc;
+    --service-hero-desc-border: rgba(2, 132, 199, 0.3);
+    --service-hero-desc-text: #0f172a;
+
+    --service-tech-bg: #e0f2fe;
+    --service-tech-text: #0284c7;
+    --service-tech-border: rgba(2, 132, 199, 0.35);
+
+    --service-icon-bg: radial-gradient(circle at center, rgba(2, 132, 199, 0.08) 0%, rgba(248, 250, 252, 0.8) 75%);
+    --service-icon-border: rgba(148, 163, 184, 0.2);
+
+    --service-heading-color: #0f172a;
+    --service-body-color: #334155;
+    --service-muted-color: #64748b;
+
+    --service-active-filter-bg: rgba(2, 132, 199, 0.12);
+    --service-active-filter-border: rgba(2, 132, 199, 0.4);
+    --service-active-filter-text: #0284c7;
+}
+
+/* 2. Общие правила оформления текстов и контейнера услуг */
+.services-page-container,
+.service-detail-container {
+    color: var(--service-body-color);
+}
+
+.text-subtle {
+    color: var(--service-body-color) !important;
+    line-height: 1.65;
+}
+
+.content-body,
+.content-body p,
+.content-body li,
+.content-body span,
+.content-body div {
+    color: var(--service-body-color) !important;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.content-body strong,
+.content-body b,
+.content-body h1,
+.content-body h2,
+.content-body h3,
+.content-body h4,
+.content-body h5,
+.content-body h6,
+.service-heading {
+    color: var(--service-heading-color) !important;
+    font-weight: 700;
+}
+
+/* 3. Детальная карточка услуги */
+.service-detail-card {
+    background: var(--service-detail-bg) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--service-detail-border) !important;
+    border-radius: 24px;
+    box-shadow: var(--service-card-shadow);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge-category {
+    background: var(--service-tech-bg) !important;
+    color: var(--service-tech-text) !important;
+    border: 1px solid var(--service-tech-border) !important;
+    font-weight: 600;
+}
+
+.lead-description {
+    background: var(--service-hero-desc-bg) !important;
+    border: 1px solid var(--service-hero-desc-border) !important;
+    color: var(--service-hero-desc-text) !important;
+    font-weight: 500;
+    line-height: 1.7;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* 4. Поиск и карточка фильтров */
+.services-filter-card {
+    background: var(--service-filter-bg) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--service-filter-border) !important;
+    border-radius: 20px;
+    box-shadow: var(--service-card-shadow);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.services-search-input {
+    background: var(--service-input-bg) !important;
+    border: 1px solid var(--service-input-border) !important;
+    color: var(--service-input-text) !important;
+    font-weight: 500;
+    border-radius: 50rem;
+    padding-left: 2.75rem;
+    transition: all 0.3s ease;
+    min-height: var(--touch-target-min);
+}
+
+.services-search-input::placeholder {
+    color: var(--service-input-placeholder) !important;
+}
+
+.services-search-input:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
+}
+
+/* 5. Мобильная адаптация карточек услуг */
+@media (max-width: 768px) {
+    .service-linear-card {
+        flex-direction: column !important;
+        padding: 1.25rem !important;
+    }
+    .service-icon-wrapper {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+    .price-highlight-box {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+}

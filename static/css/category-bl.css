@@ -1,0 +1,51 @@
+/* --- Стили для карточек категорий (category-bl.css) v2.0 --- */
+
+/* --- Иконки --- */
+.category-icon-1 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--color-primary) !important;
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 4px 12px var(--color-primary-alpha));
+    transition: var(--transition-fast);
+}
+
+.glass-card:hover .category-icon-1 {
+    transform: scale(1.1) translateY(-2px);
+}
+
+/* --- Заголовки категорий --- */
+.category-text-ti {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.2px;
+    color: var(--color-text-main) !important;
+    text-shadow: none !important;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Описание категорий --- */
+.category-text-op {
+    font-size: var(--text-sm) !important;
+    color: var(--color-text-muted) !important;
+    line-height: 1.5;
+    text-shadow: none !important;
+}
+
+/* --- Кнопки категорий --- */
+.category-btn {
+    color: #ffffff !important;
+    background: var(--gradient-premium) !important;
+    border: none !important;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+    padding: 0.6rem 1.2rem;
+}
+
+.category-btn:hover {
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    filter: brightness(1.1);
+}
