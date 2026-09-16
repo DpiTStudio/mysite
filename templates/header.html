@@ -85,7 +85,7 @@
         </div>
     </div>
     <!-- Основной Навигационный Бар (Главное меню) -->
-    <nav class="navbar navbar-expand-lg premium-navbar py-0" aria-label="Навигация по разделам">
+    <nav class="navbar navbar-expand-lg premium-navbar py-0 navbar-block" aria-label="Навигация по разделам">
         <div class="container-fluid px-3 px-lg-4">
             <!-- Логотип компании -->
             <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'main:home' %}" aria-label="На главную">
@@ -95,7 +95,7 @@
                 {% else %}
                     <!-- Заглушка, если логотип не настроен -->
                     <div class="bg-gradient bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 48px; height: 48px; font-size: 1.2rem;">
-                        DPIT
+                        DPIT-CMS
                     </div>
                 {% endif %}
                 <!-- Текстовая часть бренда -->

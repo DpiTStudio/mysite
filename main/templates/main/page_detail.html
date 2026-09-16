@@ -13,7 +13,7 @@
         <!-- Hero Content (from DB) -->
         <div class="row mb-5">
             <div class="col-12">
-                <h1 class="mb-5 text-dark text-gradient display-4 fw-bold text-left">{{ page.title }}</h1>
+                <h1 class="mb-5 text-adaptive text-gradient display-4 fw-bold text-left">{{ page.title }}</h1>
                 <div class="glass-card p-3 p-md-4 text-start shadow-sm" style="border-radius: 12px; background-color: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1);">
                     <div class="ckeditor-content custom-article-text lh-lg fs-5">
                         {{ page.content|safe }}
@@ -26,10 +26,10 @@
             .custom-article-text p {
                 margin-bottom: 1.2rem;
                 font-weight: 400;
-                color: #212529; /* Black text */
+                color: var(--color-text-main);
             }
             .custom-article-text strong, .custom-article-text b {
-                color: #000;
+                color: var(--color-text-main);
                 font-weight: 700;
                 display: block;
                 margin-top: 1.5rem;
@@ -37,7 +37,7 @@
                 font-size: 1.25rem;
             }
             .custom-article-text h1, .custom-article-text h2, .custom-article-text h3 {
-                color: #000;
+                color: var(--color-text-main);
                 margin-top: 2rem;
                 margin-bottom: 1rem;
                 font-weight: 700;
@@ -49,29 +49,29 @@
             <div class="col-6 col-md-3">
                 <div class="glass-card p-4 h-100 d-flex flex-column justify-content-center align-items-center hover-scale transition">
                     <div class="text-primary fs-1 mb-2"><i class="bi bi-briefcase"></i></div>
-                    <h3 class="text-white fw-bold mb-1">5+</h3>
-                    <div class="text-white-50 small text-uppercase letter-spacing-1">Лет на рынке</div>
+                    <h3 class="text-adaptive fw-bold mb-1">5+</h3>
+                    <div class="text-adaptive-muted small text-uppercase letter-spacing-1">Лет на рынке</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="glass-card p-4 h-100 d-flex flex-column justify-content-center align-items-center hover-scale transition">
                     <div class="text-primary fs-1 mb-2"><i class="bi bi-emoji-smile"></i></div>
-                    <h3 class="text-white fw-bold mb-1">100+</h3>
-                    <div class="text-white-50 small text-uppercase letter-spacing-1">Довольных клиентов</div>
+                    <h3 class="text-adaptive fw-bold mb-1">100+</h3>
+                    <div class="text-adaptive-muted small text-uppercase letter-spacing-1">Довольных клиентов</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="glass-card p-4 h-100 d-flex flex-column justify-content-center align-items-center hover-scale transition">
                     <div class="text-primary fs-1 mb-2"><i class="bi bi-code-slash"></i></div>
-                    <h3 class="text-white fw-bold mb-1">200+</h3>
-                    <div class="text-white-50 small text-uppercase letter-spacing-1">Успешных проектов</div>
+                    <h3 class="text-adaptive fw-bold mb-1">200+</h3>
+                    <div class="text-adaptive-muted small text-uppercase letter-spacing-1">Успешных проектов</div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
                 <div class="glass-card p-4 h-100 d-flex flex-column justify-content-center align-items-center hover-scale transition">
                     <div class="text-primary fs-1 mb-2"><i class="bi bi-award"></i></div>
-                    <h3 class="text-white fw-bold mb-1">99%</h3>
-                    <div class="text-white-10 small text-uppercase letter-spacing-1">Качество кода</div>
+                    <h3 class="text-adaptive fw-bold mb-1">99%</h3>
+                    <div class="text-adaptive-dim small text-uppercase letter-spacing-1">Качество кода</div>
                 </div>
             </div>
         </div>
@@ -79,24 +79,24 @@
         <!-- Our Principles / Values -->
         <div class="row mb-5">
             <div class="col-12">
-                <h2 class="h2 mb-4 text-white text-center">Наши принципы</h2>
+                <h2 class="h2 mb-4 text-adaptive text-center">Наши принципы</h2>
                 <div class="row g-4">
                     <div class="col-md-4">
                         <div class="glass-card p-4 h-100 border-top border-primary border-3 transition hover-bg">
-                            <h4 class="text-white mb-3"><i class="bi bi-shield-check text-primary me-2"></i>Надежность</h4>
-                            <p class="text-white-10 mb-0">Мы создаем отказоустойчивые системы, которые работают 24/7 без сбоев и задержек, обеспечивая стабильность вашего бизнеса.</p>
+                            <h4 class="text-adaptive mb-3"><i class="bi bi-shield-check text-primary me-2"></i>Надежность</h4>
+                            <p class="text-adaptive-dim mb-0">Мы создаем отказоустойчивые системы, которые работают 24/7 без сбоев и задержек, обеспечивая стабильность вашего бизнеса.</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="glass-card p-4 h-100 border-top border-primary border-3 transition hover-bg">
-                            <h4 class="text-white mb-3"><i class="bi bi-lightning text-primary me-2"></i>Инновации</h4>
-                            <p class="text-white-10 mb-0">Используем самые современные стек-технологии и подходы к разработке, чтобы ваш проект был на шаг впереди конкурентов.</p>
+                            <h4 class="text-adaptive mb-3"><i class="bi bi-lightning text-primary me-2"></i>Инновации</h4>
+                            <p class="text-adaptive-dim mb-0">Используем самые современные стек-технологии и подходы к разработке, чтобы ваш проект был на шаг впереди конкурентов.</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="glass-card p-4 h-100 border-top border-primary border-3 transition hover-bg">
-                            <h4 class="text-white mb-3"><i class="bi bi-people text-primary me-2"></i>Прозрачность</h4>
-                            <p class="text-white-10 mb-0">Честная оценка сроков и бюджета, регулярные отчеты и полная вовлеченность в процесс на каждом этапе работы.</p>
+                            <h4 class="text-adaptive mb-3"><i class="bi bi-people text-primary me-2"></i>Прозрачность</h4>
+                            <p class="text-adaptive-dim mb-0">Честная оценка сроков и бюджета, регулярные отчеты и полная вовлеченность в процесс на каждом этапе работы.</p>
                         </div>
                     </div>
                 </div>
@@ -109,8 +109,8 @@
                 <div class="glass-card p-5 text-center bg-primary bg-opacity-10 position-relative overflow-hidden">
                     <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-25 filter-blur" style="z-index: 0;"></div>
                     <div class="position-relative" style="z-index: 1;">
-                        <h3 class="text-white mb-3">Готовы начать свой проект?</h3>
-                        <p class="text-white-10 mb-4 mx-auto" style="max-width: 600px;">Свяжитесь с нами сегодня, чтобы обсудить ваши идеи и получить бесплатную консультацию от наших экспертов.</p>
+                        <h3 class="text-adaptive mb-3">Готовы начать свой проект?</h3>
+                        <p class="text-adaptive-dim mb-4 mx-auto" style="max-width: 600px;">Свяжитесь с нами сегодня, чтобы обсудить ваши идеи и получить бесплатную консультацию от наших экспертов.</p>
                         <a href="{% url 'main:page_detail' slug='kontakty' %}" class="btn btn-primary btn-lg px-5 shine-effect rounded-pill">Связаться с нами</a>
                     </div>
                 </div>
@@ -120,8 +120,8 @@
     {% else %}
     <div class="row">
         <div class="col-12">
-            <h1 class="mb-4 text-white text-gradient">{{ page.title }}</h1>
-            <div class="ckeditor-content mb-5 text-white-10 lh-lg article-glass-content">
+            <h1 class="mb-4 text-adaptive text-gradient">{{ page.title }}</h1>
+            <div class="ckeditor-content mb-5 text-adaptive-dim lh-lg article-glass-content">
                 {{ page.content|safe }}
             </div>
         </div>
@@ -132,14 +132,14 @@
     <div class="row mt-4 gx-5">
         <div class="col-md-5 mb-5 mb-md-0 animate-left">
             <div class="glass-card h-100 p-4">
-                <h3 class="h4 mb-4 fw-bold text-white"><i class="bi bi-geo-alt text-primary me-2"></i> Наши контакты</h3>
+                <h3 class="h4 mb-4 fw-bold text-adaptive"><i class="bi bi-geo-alt text-primary me-2"></i> Наши контакты</h3>
                 
                 {% if site_settings.site_address %}
                 <div class="mb-4 d-flex align-items-start">
                     <div class="me-3 text-primary bg-primary bg-opacity-10 p-2 rounded"><i class="bi bi-map fs-5"></i></div>
                     <div>
-                        <strong class="d-block text-white mb-1">Адрес:</strong>
-                        <span class="text-white-10">{{ site_settings.site_address }}</span>
+                        <strong class="d-block text-adaptive mb-1">Адрес:</strong>
+                        <span class="text-adaptive-muted">{{ site_settings.site_address }}</span>
                     </div>
                 </div>
                 {% endif %}
@@ -148,10 +148,10 @@
                 <div class="mb-4 d-flex align-items-start">
                     <div class="me-3 text-primary bg-primary bg-opacity-10 p-2 rounded"><i class="bi bi-telephone fs-5"></i></div>
                     <div>
-                        <strong class="d-block text-white mb-1">Телефон:</strong>
-                        <a href="tel:{{ site_settings.site_phone_1 }}" class="text-decoration-none text-white-50 hover-primary d-block transition">{{ site_settings.site_phone_1 }}</a>
+                        <strong class="d-block text-adaptive mb-1">Телефон:</strong>
+                        <a href="tel:{{ site_settings.site_phone_1 }}" class="text-decoration-none text-adaptive-muted hover-primary d-block transition">{{ site_settings.site_phone_1 }}</a>
                         {% if site_settings.site_phone_2 %}
-                        <a href="tel:{{ site_settings.site_phone_2 }}" class="text-decoration-none text-white-50 hover-primary d-block transition">{{ site_settings.site_phone_2 }}</a>
+                        <a href="tel:{{ site_settings.site_phone_2 }}" class="text-decoration-none text-adaptive-muted hover-primary d-block transition">{{ site_settings.site_phone_2 }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -161,8 +161,8 @@
                 <div class="mb-4 d-flex align-items-start">
                     <div class="me-3 text-primary bg-primary bg-opacity-10 p-2 rounded"><i class="bi bi-envelope fs-5"></i></div>
                     <div>
-                        <strong class="d-block text-white mb-1">Email:</strong>
-                        <a href="mailto:{{ site_settings.site_email }}" class="text-decoration-none text-white-50 hover-primary transition">{{ site_settings.site_email }}</a>
+                        <strong class="d-block text-adaptive mb-1">Email:</strong>
+                        <a href="mailto:{{ site_settings.site_email }}" class="text-decoration-none text-adaptive-muted hover-primary transition">{{ site_settings.site_email }}</a>
                     </div>
                 </div>
                 {% endif %}
@@ -171,8 +171,8 @@
                 <div class="d-flex align-items-start">
                     <div class="me-3 text-primary bg-primary bg-opacity-10 p-2 rounded"><i class="bi bi-clock fs-5"></i></div>
                     <div>
-                        <strong class="d-block text-white mb-1">Время работы:</strong>
-                        <span class="text-white-50">{{ site_settings.site_work_time }}</span>
+                        <strong class="d-block text-adaptive mb-1">Время работы:</strong>
+                        <span class="text-adaptive-muted">{{ site_settings.site_work_time }}</span>
                     </div>
                 </div>
                 {% endif %}
@@ -182,7 +182,7 @@
         <div class="col-md-7 animate-right">
             <div class="glass-card mb-5">
                 <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
-                    <h3 class="h4 mb-0 fw-bold text-white"><i class="bi bi-chat-square-text text-primary me-2"></i> Напишите нам</h3>
+                    <h3 class="h4 mb-0 fw-bold text-adaptive"><i class="bi bi-chat-square-text text-primary me-2"></i> Напишите нам</h3>
                 </div>
                 <div class="card-body p-4 p-md-5">
                     <form method="post" class="needs-validation">
@@ -195,7 +195,7 @@
                         {% endif %}
 
                         <div class="mb-4">
-                            <label for="{{ form.name.id_for_label }}" class="form-label text-white-50">{{ form.name.label }}</label>
+                            <label for="{{ form.name.id_for_label }}" class="form-label text-adaptive-muted">{{ form.name.label }}</label>
                             {{ form.name }}
                             {% if form.name.errors %}
                             <div class="text-danger small mt-1">{{ form.name.errors }}</div>
@@ -204,14 +204,14 @@
 
                         <div class="row g-4 mb-4">
                             <div class="col-md-6">
-                                <label for="{{ form.phone.id_for_label }}" class="form-label text-white-50">{{ form.phone.label }}</label>
+                                <label for="{{ form.phone.id_for_label }}" class="form-label text-adaptive-muted">{{ form.phone.label }}</label>
                                 {{ form.phone }}
                                 {% if form.phone.errors %}
                                 <div class="text-danger small mt-1">{{ form.phone.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6">
-                                <label for="{{ form.email.id_for_label }}" class="form-label text-white-50">{{ form.email.label }}</label>
+                                <label for="{{ form.email.id_for_label }}" class="form-label text-adaptive-muted">{{ form.email.label }}</label>
                                 {{ form.email }}
                                 {% if form.email.errors %}
                                 <div class="text-danger small mt-1">{{ form.email.errors }}</div>
@@ -220,7 +220,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="{{ form.message.id_for_label }}" class="form-label text-white-50">{{ form.message.label }}</label>
+                            <label for="{{ form.message.id_for_label }}" class="form-label text-adaptive-muted">{{ form.message.label }}</label>
                             {{ form.message }}
                             {% if form.message.errors %}
                             <div class="text-danger small mt-1">{{ form.message.errors }}</div>
@@ -228,7 +228,7 @@
                         </div>
 
                         <div class="mb-4 captcha-container">
-                            <label class="form-label text-white-50">{{ form.captcha.label }}</label>
+                            <label class="form-label text-adaptive-muted">{{ form.captcha.label }}</label>
                             {{ form.captcha }}
                             {% if form.captcha.errors %}
                             <div class="text-danger small mt-1">{{ form.captcha.errors }}</div>

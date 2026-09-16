@@ -25,8 +25,6 @@
 
 /* Навигационный бар — фон на всю ширину и высоту nav-блока */
 .premium-navbar {
-    /* Прозрачный фон для гармонии с размытием шапки */
-    background: transparent !important;
     /* Растягиваем на всю ширину, компенсируя внутренние отступы шапки */
     width: 100%;
     /* Высота подстраивается под контент */
@@ -41,6 +39,17 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/*КОСТЫЛИ ДЛЯ ШИРИНЫ НАВИГАЦИИ*/
+.navbar-block {
+    height: 450px !important;
+    background: rgb(9, 9, 11) !important;
+}
+
+/* Светлая тема навбар-блока */
+body.light-mode .navbar-block {
+    background: rgb(255, 255, 255) !important;
+}
+/*КОНЕЦ КОСТЫЛЕЙ*/
 /* Светлая тема для навигационного бара */
 body.light-mode .premium-navbar {
     border-top: 1px solid rgba(15, 23, 42, 0.05);
