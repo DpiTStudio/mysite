@@ -39,7 +39,6 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Убран жесткий фикс высоты для навигации (были .navbar-block) */
 /* Светлая тема для навигационного бара */
 body.light-mode .premium-navbar {
     border-top: 1px solid rgba(15, 23, 42, 0.05);
