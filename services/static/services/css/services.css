@@ -75,6 +75,64 @@
     --service-active-filter-bg: rgba(56, 189, 248, 0.18);
     --service-active-filter-border: rgba(56, 189, 248, 0.45);
     --service-active-filter-text: #38bdf8;
+
+    /* Герой-блок */
+    --service-hero-bg: linear-gradient(135deg, rgba(30, 30, 40, 0.8) 0%, rgba(15, 15, 20, 0.95) 100%);
+    --service-hero-glow-primary: var(--bs-primary);
+    --service-hero-glow-secondary: var(--bs-info);
+    --service-hero-text: #ffffff;
+    --service-hero-subtitle: #cbd5e1;
+
+    /* Кнопка сортировки */
+    --service-sort-btn-bg: rgba(28, 28, 31, 0.85);
+    --service-sort-btn-text: #e2e8f0;
+    --service-sort-btn-border: rgba(148, 163, 184, 0.3);
+    --service-sort-btn-active-bg: var(--bs-primary);
+    --service-sort-btn-active-text: #ffffff;
+
+    /* Цена */
+    --service-price-label-color: #94a3b8;
+    --service-price-value-color: #38bdf8;
+
+    /* Просмотры */
+    --service-views-color: #94a3b8;
+
+    /* Бейдж популярности */
+    --service-popular-bg: rgba(250, 204, 21, 0.18);
+    --service-popular-text: #facc15;
+    --service-popular-border: rgba(250, 204, 21, 0.4);
+
+    /* Бейджи сложности */
+    --service-complexity-simple-bg: rgba(34, 197, 94, 0.15);
+    --service-complexity-simple-text: #22c55e;
+    --service-complexity-simple-border: rgba(34, 197, 94, 0.35);
+
+    --service-complexity-medium-bg: rgba(250, 204, 21, 0.15);
+    --service-complexity-medium-text: #facc15;
+    --service-complexity-medium-border: rgba(250, 204, 21, 0.35);
+
+    --service-complexity-complex-bg: rgba(249, 115, 22, 0.15);
+    --service-complexity-complex-text: #f97316;
+    --service-complexity-complex-border: rgba(249, 115, 22, 0.35);
+
+    --service-complexity-expert-bg: rgba(239, 68, 68, 0.15);
+    --service-complexity-expert-text: #ef4444;
+    --service-complexity-expert-border: rgba(239, 68, 68, 0.35);
+
+    /* Бейдж времени */
+    --service-time-bg: rgba(56, 189, 248, 0.12);
+    --service-time-text: #94a3b8;
+    --service-time-border: rgba(56, 189, 248, 0.25);
+
+    /* Кнопка «Подробнее» */
+    --service-outline-btn-color: #e2e8f0;
+    --service-outline-btn-border: rgba(226, 232, 240, 0.3);
+    --service-outline-btn-hover-bg: rgba(226, 232, 240, 0.1);
+
+    /* Дропдаун-кнопки фильтров */
+    --service-dropdown-bg: rgba(28, 28, 31, 0.85);
+    --service-dropdown-text: #e2e8f0;
+    --service-dropdown-border: rgba(148, 163, 184, 0.3);
 }
 
 /* Переопределение переменных услуг под светлую тему */
@@ -124,6 +182,64 @@ body.light-mode {
     --service-active-filter-bg: rgba(2, 132, 199, 0.12);
     --service-active-filter-border: rgba(2, 132, 199, 0.4);
     --service-active-filter-text: #0284c7;
+
+    /* Герой-блок — светлая тема */
+    --service-hero-bg: linear-gradient(135deg, rgba(224, 242, 254, 0.9) 0%, rgba(241, 245, 249, 0.98) 100%);
+    --service-hero-glow-primary: rgba(2, 132, 199, 0.6);
+    --service-hero-glow-secondary: rgba(6, 182, 212, 0.5);
+    --service-hero-text: #0f172a;
+    --service-hero-subtitle: #334155;
+
+    /* Кнопка сортировки — светлая */
+    --service-sort-btn-bg: #f1f5f9;
+    --service-sort-btn-text: #334155;
+    --service-sort-btn-border: rgba(148, 163, 184, 0.4);
+    --service-sort-btn-active-bg: var(--bs-primary);
+    --service-sort-btn-active-text: #ffffff;
+
+    /* Цена — светлая */
+    --service-price-label-color: #64748b;
+    --service-price-value-color: #0284c7;
+
+    /* Просмотры — светлая */
+    --service-views-color: #64748b;
+
+    /* Бейдж популярности — светлая */
+    --service-popular-bg: rgba(202, 138, 4, 0.12);
+    --service-popular-text: #a16207;
+    --service-popular-border: rgba(202, 138, 4, 0.35);
+
+    /* Бейджи сложности — светлая */
+    --service-complexity-simple-bg: rgba(22, 163, 74, 0.1);
+    --service-complexity-simple-text: #15803d;
+    --service-complexity-simple-border: rgba(22, 163, 74, 0.3);
+
+    --service-complexity-medium-bg: rgba(202, 138, 4, 0.1);
+    --service-complexity-medium-text: #a16207;
+    --service-complexity-medium-border: rgba(202, 138, 4, 0.3);
+
+    --service-complexity-complex-bg: rgba(234, 88, 12, 0.1);
+    --service-complexity-complex-text: #c2410c;
+    --service-complexity-complex-border: rgba(234, 88, 12, 0.3);
+
+    --service-complexity-expert-bg: rgba(220, 38, 38, 0.1);
+    --service-complexity-expert-text: #dc2626;
+    --service-complexity-expert-border: rgba(220, 38, 38, 0.3);
+
+    /* Бейдж времени — светлая */
+    --service-time-bg: rgba(2, 132, 199, 0.08);
+    --service-time-text: #64748b;
+    --service-time-border: rgba(2, 132, 199, 0.2);
+
+    /* Кнопка «Подробнее» — светлая */
+    --service-outline-btn-color: #334155;
+    --service-outline-btn-border: rgba(51, 65, 85, 0.3);
+    --service-outline-btn-hover-bg: rgba(51, 65, 85, 0.08);
+
+    /* Дропдаун-кнопки фильтров — светлая */
+    --service-dropdown-bg: #f1f5f9;
+    --service-dropdown-text: #334155;
+    --service-dropdown-border: rgba(148, 163, 184, 0.4);
 }
 
 /* 2. Общие правила оформления текстов и контейнера услуг */
@@ -160,7 +276,105 @@ body.light-mode {
     font-weight: 700;
 }
 
-/* 3. Детальная карточка услуги */
+/* ==========================================================================
+   3. ГЕРОЙ-БЛОК (заголовок страницы услуг)
+   ========================================================================== */
+.services-hero-block {
+    background: var(--service-hero-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background 0.3s ease;
+}
+
+.services-hero-block .services-hero-title {
+    color: var(--service-hero-text) !important;
+}
+
+.services-hero-block .services-hero-subtitle {
+    color: var(--service-hero-subtitle) !important;
+}
+
+/* Декоративные свечения адаптированы к теме */
+.services-hero-glow-primary {
+    background: radial-gradient(circle, var(--service-hero-glow-primary) 0%, transparent 70%);
+    opacity: 0.15;
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+.services-hero-glow-secondary {
+    background: radial-gradient(circle, var(--service-hero-glow-secondary) 0%, transparent 70%);
+    opacity: 0.15;
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   4. КАРТОЧКА УСЛУГИ (service-card-modern)
+   ========================================================================== */
+.service-card-modern {
+    background: var(--service-card-bg) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--service-card-border) !important;
+    border-radius: 24px;
+    box-shadow: var(--service-card-shadow);
+    transition: transform 0.35s cubic-bezier(.4, 0, .2, 1),
+                box-shadow 0.35s cubic-bezier(.4, 0, .2, 1),
+                border-color 0.35s ease,
+                background 0.3s ease;
+    overflow: hidden;
+}
+
+.service-card-modern:hover {
+    transform: translateY(-6px);
+    border-color: var(--service-card-hover-border) !important;
+    box-shadow: var(--service-card-hover-shadow);
+}
+
+/* Заголовок карточки */
+.service-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.service-card-title a {
+    color: var(--service-heading-color) !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.service-card-title a:hover {
+    color: var(--service-tech-text) !important;
+}
+
+/* Описание карточки */
+.service-desc {
+    color: var(--service-body-color) !important;
+    font-size: 0.92rem;
+    line-height: 1.65;
+}
+
+/* Обёртка иконки в карточке */
+.service-card-icon-wrapper {
+    background: var(--service-icon-bg);
+    border: 1px solid var(--service-icon-border);
+    border-radius: 16px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* ==========================================================================
+   5. ДЕТАЛЬНАЯ КАРТОЧКА УСЛУГИ
+   ========================================================================== */
+.dop-cart-info {
+    background: var(--service-tech-bg) !important;
+    border-radius: 24px;
+    box-shadow: var(--service-card-shadow);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
 .service-detail-card {
     background: var(--service-detail-bg) !important;
     backdrop-filter: blur(20px);
@@ -171,11 +385,133 @@ body.light-mode {
     transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* ==========================================================================
+   6. БЕЙДЖИ
+   ========================================================================== */
+
+/* Бейдж категории */
 .badge-category {
     background: var(--service-tech-bg) !important;
     color: var(--service-tech-text) !important;
     border: 1px solid var(--service-tech-border) !important;
     font-weight: 600;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.badge-category:hover {
+    background: var(--service-tech-border) !important;
+}
+
+/* Бейдж «Хит» (популярная) */
+.badge-popular {
+    background: var(--service-popular-bg) !important;
+    color: var(--service-popular-text) !important;
+    border: 1px solid var(--service-popular-border) !important;
+    font-weight: 600;
+}
+
+/* Бейдж счётчика в категории */
+.badge-cat {
+    background: var(--service-badge-cat-bg) !important;
+    color: var(--service-badge-cat-text) !important;
+    border: 1px solid var(--service-badge-cat-border) !important;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+/* Счётчик просмотров */
+.views-count-badge {
+    color: var(--service-views-color) !important;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Бейджи сложности */
+.badge-complexity-simple {
+    background: var(--service-complexity-simple-bg) !important;
+    color: var(--service-complexity-simple-text) !important;
+    border: 1px solid var(--service-complexity-simple-border) !important;
+    font-weight: 600;
+}
+
+.badge-complexity-medium {
+    background: var(--service-complexity-medium-bg) !important;
+    color: var(--service-complexity-medium-text) !important;
+    border: 1px solid var(--service-complexity-medium-border) !important;
+    font-weight: 600;
+}
+
+.badge-complexity-complex {
+    background: var(--service-complexity-complex-bg) !important;
+    color: var(--service-complexity-complex-text) !important;
+    border: 1px solid var(--service-complexity-complex-border) !important;
+    font-weight: 600;
+}
+
+.badge-complexity-expert {
+    background: var(--service-complexity-expert-bg) !important;
+    color: var(--service-complexity-expert-text) !important;
+    border: 1px solid var(--service-complexity-expert-border) !important;
+    font-weight: 600;
+}
+
+/* Бейдж времени */
+.badge-time {
+    background: var(--service-time-bg) !important;
+    color: var(--service-time-text) !important;
+    border: 1px solid var(--service-time-border) !important;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   7. СТЕК ТЕХНОЛОГИЙ (tech-pill)
+   ========================================================================== */
+.tech-pill {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 50rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: var(--service-tech-bg) !important;
+    color: var(--service-tech-text) !important;
+    border: 1px solid var(--service-tech-border);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.tech-pill:hover {
+    background: var(--service-tech-border) !important;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   8. ЦЕНА И ДЕЙСТВИЯ
+   ========================================================================== */
+.price-label {
+    color: var(--service-price-label-color) !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.price-display-lg {
+    color: var(--service-price-value-color) !important;
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+/* Кнопка «Подробнее» — заменяет btn-outline-light для тем */
+.services-page-container .btn-outline-light {
+    color: var(--service-outline-btn-color) !important;
+    border-color: var(--service-outline-btn-border) !important;
+    background: transparent !important;
+}
+
+.services-page-container .btn-outline-light:hover {
+    background: var(--service-outline-btn-hover-bg) !important;
+    color: var(--service-heading-color) !important;
+    border-color: var(--service-heading-color) !important;
 }
 
 .lead-description {
@@ -187,7 +523,9 @@ body.light-mode {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* 4. Поиск и карточка фильтров */
+/* ==========================================================================
+   9. ПОИСК И КАРТОЧКА ФИЛЬТРОВ
+   ========================================================================== */
 .services-filter-card {
     background: var(--service-filter-bg) !important;
     backdrop-filter: blur(20px);
@@ -196,6 +534,14 @@ body.light-mode {
     border-radius: 20px;
     box-shadow: var(--service-card-shadow);
     transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Заголовок секции фильтра */
+.services-filter-title {
+    color: var(--service-muted-color) !important;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
 }
 
 .services-search-input {
@@ -214,12 +560,138 @@ body.light-mode {
 }
 
 .services-search-input:focus {
-    border-color: #38bdf8 !important;
-    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
+    border-color: var(--service-tech-text) !important;
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2) !important;
 }
 
-/* 5. Мобильная адаптация карточек услуг */
+/* Иконка поиска внутри поля */
+.services-search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--service-muted-color);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   10. КНОПКИ ФИЛЬТРОВ: КАТЕГОРИИ, ДРОПДАУНЫ, СОРТИРОВКА
+   ========================================================================== */
+
+/* Неактивная кнопка категории */
+.btn-cat-inactive {
+    background: var(--service-btn-inactive-bg) !important;
+    color: var(--service-btn-inactive-text) !important;
+    border: 1px solid var(--service-btn-inactive-border) !important;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-cat-inactive:hover {
+    background: var(--service-card-hover-border) !important;
+    color: #fff !important;
+    border-color: var(--service-card-hover-border) !important;
+    transform: translateY(-1px);
+}
+
+/* Кнопка-дропдаун фильтра */
+.services-dropdown-btn {
+    background: var(--service-dropdown-bg) !important;
+    color: var(--service-dropdown-text) !important;
+    border: 1px solid var(--service-dropdown-border) !important;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.services-dropdown-btn:hover {
+    border-color: var(--service-card-hover-border) !important;
+    color: var(--service-heading-color) !important;
+}
+
+/* Кнопка сортировки */
+.services-sort-btn {
+    background: var(--service-sort-btn-bg) !important;
+    color: var(--service-sort-btn-text) !important;
+    border: 1px solid var(--service-sort-btn-border) !important;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.services-sort-btn:hover {
+    border-color: var(--service-card-hover-border) !important;
+    color: var(--service-heading-color) !important;
+}
+
+.services-sort-btn.active {
+    background: var(--service-sort-btn-active-bg) !important;
+    color: var(--service-sort-btn-active-text) !important;
+    border-color: transparent !important;
+    box-shadow: 0 2px 8px rgba(var(--bs-primary-rgb, 79, 70, 229), 0.3);
+}
+
+/* ==========================================================================
+   11. АКТИВНЫЕ ФИЛЬТРЫ (плашки примененных фильтров)
+   ========================================================================== */
+.active-filter-container {
+    background: var(--service-filter-bg);
+    border: 1px solid var(--service-filter-border);
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.active-filter-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.85rem;
+    border-radius: 50rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    background: var(--service-active-filter-bg) !important;
+    color: var(--service-active-filter-text) !important;
+    border: 1px solid var(--service-active-filter-border) !important;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.active-filter-badge:hover {
+    transform: translateY(-1px);
+    background: var(--service-active-filter-border) !important;
+    color: #ffffff !important;
+}
+
+.active-filter-badge-sort {
+    background: rgba(234, 179, 8, 0.15) !important;
+    color: #eab308 !important;
+    border-color: rgba(234, 179, 8, 0.35) !important;
+}
+
+[data-theme="light"] .active-filter-badge-sort,
+[data-bs-theme="light"] .active-filter-badge-sort,
+body.light-mode .active-filter-badge-sort {
+    background: rgba(161, 98, 7, 0.1) !important;
+    color: #92400e !important;
+    border-color: rgba(161, 98, 7, 0.3) !important;
+}
+
+/* ==========================================================================
+   12. ПАГИНАЦИЯ
+   ========================================================================== */
+.services-page-container .page-link {
+    color: var(--service-body-color);
+}
+
+/* ==========================================================================
+   13. МОБИЛЬНАЯ АДАПТАЦИЯ КАРТОЧЕК УСЛУГ
+   ========================================================================== */
 @media (max-width: 768px) {
+    .service-card-modern {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
     .service-linear-card {
         flex-direction: column !important;
         padding: 1.25rem !important;
@@ -234,4 +706,309 @@ body.light-mode {
         justify-content: space-between;
         margin-top: 1rem;
     }
+
+    .service-card-icon-wrapper {
+        height: 120px !important;
+    }
+}
+
+/* ==========================================================================
+   14. ДЕТАЛЬНАЯ СТРАНИЦА УСЛУГИ — ВНУТРЕННИЕ КОМПОНЕНТЫ
+   ========================================================================== */
+
+/* Инфо-карточка (используется в deliverables, benefits, steps, portfolio, tech stack) */
+.service-info-card {
+    background: var(--service-card-bg) !important;
+    border: 1px solid var(--service-card-border) !important;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-info-card h5,
+.service-info-card .fw-bold {
+    color: var(--service-heading-color) !important;
+}
+
+.service-info-card .text-subtle,
+.service-info-card p,
+.service-info-card span,
+.service-info-card li {
+    color: var(--service-body-color) !important;
+}
+
+/* Бейджи для детальной страницы (время и сложность) */
+.badge-time-detail {
+    background: var(--service-time-bg) !important;
+    color: var(--service-time-text) !important;
+    border: 1px solid var(--service-time-border) !important;
+    font-weight: 600;
+}
+
+.badge-complexity-detail {
+    background: var(--service-complexity-medium-bg) !important;
+    color: var(--service-complexity-medium-text) !important;
+    border: 1px solid var(--service-complexity-medium-border) !important;
+    font-weight: 600;
+}
+
+/* Hover-эффект свечения (для карточек преимуществ и шагов) */
+.hover-glow:hover {
+    border-color: var(--service-card-hover-border) !important;
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.12);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   15. ТАРИФНЫЕ ПЛАНЫ (price plans)
+   ========================================================================== */
+
+/* Карточка тарифного плана */
+.plan-card-modern {
+    background: var(--service-card-bg) !important;
+    border: 1px solid var(--service-card-border);
+    border-radius: 24px;
+    transition: transform 0.35s cubic-bezier(.4, 0, .2, 1),
+                box-shadow 0.35s cubic-bezier(.4, 0, .2, 1),
+                border-color 0.35s ease;
+    overflow: hidden;
+}
+
+.plan-card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--service-card-hover-shadow);
+    border-color: var(--service-card-hover-border);
+}
+
+/* Рекомендованная карточка — акцентный стиль */
+.plan-card-recommended {
+    border-color: var(--service-card-hover-border) !important;
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
+}
+
+/* Бейдж «ХИТ ПРОДАЖ» на карточке */
+.plan-badge-popular {
+    background: linear-gradient(135deg, #f97316, #ef4444) !important;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    z-index: 2;
+}
+
+/* Заголовок плана */
+.plan-title {
+    color: var(--service-heading-color) !important;
+}
+
+/* Цена в карточке плана */
+.price-display-modern {
+    color: var(--service-price-value-color) !important;
+    font-weight: 800;
+}
+
+.price-display-modern .text-muted {
+    color: var(--service-muted-color) !important;
+}
+
+/* Описание плана */
+.plan-description {
+    color: var(--service-body-color) !important;
+    line-height: 1.6;
+}
+
+/* Разделитель в карточке */
+.plan-divider {
+    border-color: var(--service-card-border) !important;
+    opacity: 0.5;
+}
+
+/* Список фич тарифного плана */
+.plan-features-list li span {
+    color: var(--service-body-color) !important;
+}
+
+/* Иконка галочки в списке фич */
+.feature-icon-wrapper {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--bs-primary), #38bdf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-icon-wrapper i {
+    color: #ffffff !important;
+}
+
+/* Кнопка «Выбрать тариф» — градиентная */
+.btn-gradient-primary {
+    background: linear-gradient(135deg, var(--bs-primary), #38bdf8) !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-gradient-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35) !important;
+    color: #ffffff !important;
+}
+
+/* Кнопка «Выбрать тариф» — обводочная */
+.btn-outline-modern {
+    background: transparent !important;
+    color: var(--service-outline-btn-color) !important;
+    border: 2px solid var(--service-outline-btn-border) !important;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-modern:hover {
+    background: var(--service-outline-btn-hover-bg) !important;
+    border-color: var(--service-heading-color) !important;
+    color: var(--service-heading-color) !important;
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   16. БОКОВАЯ ПАНЕЛЬ (sidebar) — Заказ услуги
+   ========================================================================== */
+
+/* Блок цены в сайдбаре */
+.price-box-card {
+    background: var(--service-tech-bg) !important;
+    border: 1px solid var(--service-tech-border) !important;
+    border-radius: 16px;
+}
+
+/* Цена-виджет в сайдбаре */
+.price-display-widget {
+    color: var(--service-price-value-color) !important;
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+/* Чипы-кнопки быстрого выбора тарифа */
+.plan-chip-btn {
+    background: var(--service-btn-inactive-bg) !important;
+    color: var(--service-btn-inactive-text) !important;
+    border: 1px solid var(--service-btn-inactive-border) !important;
+    border-radius: 50rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.plan-chip-btn:hover {
+    border-color: var(--service-card-hover-border) !important;
+    color: var(--service-heading-color) !important;
+}
+
+.plan-chip-btn.active {
+    background: var(--bs-primary) !important;
+    color: #ffffff !important;
+    border-color: var(--bs-primary) !important;
+}
+
+.plan-chip-btn.recommended {
+    border-color: var(--service-popular-border) !important;
+}
+
+.plan-chip-btn.plan-chip-reset {
+    background: transparent !important;
+    border-style: dashed !important;
+}
+
+/* Анимация подсветки при выборе плана */
+.plan-selected-glow {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+    transition: box-shadow 0.5s ease;
+}
+
+/* Группа выбора тарифа (input-group) */
+.plan-select-group .input-group-text.plan-select-icon {
+    background: var(--service-tech-bg) !important;
+    border: 1px solid var(--service-input-border) !important;
+    border-right: none !important;
+    border-radius: 12px 0 0 12px;
+}
+
+.plan-select-group select,
+.plan-select-group .form-select {
+    background: var(--service-input-bg) !important;
+    color: var(--service-input-text) !important;
+    border: 1px solid var(--service-input-border) !important;
+    border-radius: 0 12px 12px 0;
+}
+
+/* ==========================================================================
+   17. СТЕК ТЕХНОЛОГИЙ — ПЕРЕОПРЕДЕЛЕНИЕ для detail page
+   ========================================================================== */
+
+/* Контейнер стека технологий */
+.tech-stack-container {
+    background: var(--service-card-bg) !important;
+    border: 1px solid var(--service-card-border) !important;
+}
+
+/* Плашки технологий на странице детали — переопределяют hardcoded bg-white/text-dark */
+.tech-stack-container .tech-pill {
+    background: var(--service-tech-bg) !important;
+    color: var(--service-tech-text) !important;
+    border: 1px solid var(--service-tech-border) !important;
+    box-shadow: none;
+}
+
+.tech-stack-container .tech-pill .text-dark,
+.tech-stack-container .tech-pill span,
+.tech-stack-container .tech-pill .fw-medium {
+    color: var(--service-tech-text) !important;
+}
+
+.tech-stack-container .tech-pill i {
+    color: var(--service-tech-text) !important;
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   18. FAQ СЕКЦИЯ — Дополнительные стили
+   ========================================================================== */
+.faq-section .accordion-item {
+    background: var(--service-card-bg) !important;
+    border: 1px solid var(--service-card-border) !important;
+}
+
+.faq-section .accordion-button {
+    color: var(--service-heading-color) !important;
+    background: transparent !important;
+}
+
+.faq-section .accordion-button::after {
+    filter: var(--service-accordion-chevron-filter, none);
+}
+
+.faq-section .accordion-button:not(.collapsed) {
+    background: var(--service-tech-bg) !important;
+    color: var(--service-heading-color) !important;
+    box-shadow: none;
+}
+
+.faq-section .accordion-body {
+    color: var(--service-body-color) !important;
+}
+
+/* Инверсия шеврона аккордеона на тёмной теме */
+:root {
+    --service-accordion-chevron-filter: invert(1);
+}
+
+[data-theme="light"],
+[data-bs-theme="light"],
+body.light-mode {
+    --service-accordion-chevron-filter: none;
 }

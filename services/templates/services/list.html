@@ -12,13 +12,13 @@
 <div class="services-page-container row">
     <!-- Заголовок и инфо-панель -->
     <div class="col-12 mb-5 animate-left">
-        <div class="services-filter-card p-5 position-relative overflow-hidden rounded-4 border border-secondary border-opacity-25 shadow-lg" style="background: linear-gradient(135deg, rgba(30,30,40,0.8) 0%, rgba(15,15,20,0.95) 100%); backdrop-filter: blur(12px);">
+        <div class="services-hero-block services-filter-card p-5 position-relative overflow-hidden rounded-4 border border-secondary border-opacity-25 shadow-lg">
             <!-- Декоративные свечения -->
-            <div class="position-absolute top-0 end-0" style="width: 250px; height: 250px; background: radial-gradient(circle, var(--bs-primary) 0%, transparent 70%); opacity: 0.15; filter: blur(40px); transform: translate(30%, -30%); pointer-events: none;"></div>
-            <div class="position-absolute bottom-0 start-0" style="width: 200px; height: 200px; background: radial-gradient(circle, var(--bs-info) 0%, transparent 70%); opacity: 0.15; filter: blur(40px); transform: translate(-30%, 30%); pointer-events: none;"></div>
+            <div class="services-hero-glow-primary position-absolute top-0 end-0" style="width: 250px; height: 250px; transform: translate(30%, -30%);"></div>
+            <div class="services-hero-glow-secondary position-absolute bottom-0 start-0" style="width: 200px; height: 200px; transform: translate(-30%, 30%);"></div>
 
             <div class="position-relative z-2">
-                <h1 class="display-4 fw-bolder mb-3 text-white" style="letter-spacing: -1px;">
+                <h1 class="display-4 fw-bolder mb-3 services-hero-title" style="letter-spacing: -1px;">
                     {% if selected_category %}
                         <span class="text-gradient">{{ selected_category.name|safe }}</span>
                     {% else %}
@@ -31,7 +31,7 @@
                         </span>
                     {% endif %}
                 </h1>
-                <p class="fs-5 mb-0 fw-light lh-lg" style="max-width: 100%;">
+                <p class="fs-5 mb-0 fw-light lh-lg services-hero-subtitle">
                     {% if selected_category and selected_category.description %}
                         {{ selected_category.description|safe|linebreaksbr }}
                     {% else %}
@@ -250,7 +250,7 @@
                     </p>
 
                     <!-- Доп. характеристики: Сложность и Сроки -->
-                    <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                    <div class="d-flex dop-cart-info align-items-center flex-wrap gap-2 mb-3">
                         {% if service.complexity_level == 'simple' %}
                         <span class="badge badge-complexity-simple rounded-pill px-2 py-1 small">
                             <i class="bi bi-speedometer2 me-1"></i>Простой
