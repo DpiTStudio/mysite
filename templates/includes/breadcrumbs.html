@@ -10,7 +10,7 @@
                     </span>
                     <meta itemprop="position" content="{{ forloop.counter }}" />
                 {% else %}
-                    <a href="{{ breadcrumb.url }}" itemprop="item">
+                    <a href="{{ breadcrumb.url }}" class="breadcrumb-linkers" itemprop="item">
                         <span itemprop="name">
                             {% if forloop.first %}<i class="bi bi-house-door-fill me-1 opacity-75"></i>{% endif %}
                             {{ breadcrumb.title }}

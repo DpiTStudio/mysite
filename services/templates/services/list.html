@@ -78,57 +78,47 @@
                 <div class="pt-3 border-top border-secondary border-opacity-30 d-flex justify-content-between align-items-center flex-wrap gap-3">
                     
                     <!-- Дополнительные фильтры: Сложность и Технологии -->
-                    <div class="d-flex align-items-center flex-wrap gap-2">
-                        <span class="services-filter-title text-uppercase letter-spacing-1 me-1">
-                            <i class="bi bi-funnel me-1 text-info"></i>Фильтры:
-                        </span>
+                    <div class="d-flex flex-column gap-3">
                         
-                        <!-- Дропдаун Сложность -->
-                        <div class="dropdown">
-                            <button class="btn btn-sm services-dropdown-btn {% if selected_complexity %}btn-info text-dark fw-bold{% endif %} rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-bar-chart-steps me-1"></i>
-                                {% if selected_complexity_label %}{{ selected_complexity_label }}{% else %}Сложность{% endif %}
-                            </button>
-                            <ul class="dropdown-menu shadow-lg border-0">
-                                <li><a class="dropdown-item {% if not selected_complexity %}active{% endif %}" href="?{% param_replace complexity=None page=None %}">Все уровни</a></li>
-                                <li><hr class="dropdown-divider opacity-25"></li>
-                                {% for val, label in complexity_choices %}
-                                <li>
-                                    <a class="dropdown-item {% if selected_complexity == val %}active{% endif %}" href="?{% param_replace complexity=val page=None %}">
-                                        {{ label }}
-                                    </a>
-                                </li>
-                                {% endfor %}
-                            </ul>
+                        <!-- Сложность (Инлайн) -->
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <span class="services-filter-title text-uppercase letter-spacing-1 me-2">
+                                <i class="bi bi-bar-chart-steps me-1 text-info"></i>Сложность:
+                            </span>
+                            <a href="?{% param_replace complexity=None page=None %}" 
+                               class="btn service-cat-btn rounded-pill px-3 py-1 {% if not selected_complexity %}btn-primary shadow-sm{% else %}btn-cat-inactive{% endif %}">
+                                Все уровни
+                            </a>
+                            {% for val, label in complexity_choices %}
+                            <a href="?{% param_replace complexity=val page=None %}" 
+                               class="btn service-cat-btn rounded-pill px-3 py-1 {% if selected_complexity == val %}btn-primary shadow-sm{% else %}btn-cat-inactive{% endif %}">
+                                {{ label }}
+                            </a>
+                            {% endfor %}
                         </div>
 
-                        <!-- Дропдаун Технологии -->
+                        <!-- Технологии (Инлайн) -->
                         {% if technologies %}
-                        <div class="dropdown">
-                            <button class="btn btn-sm services-dropdown-btn {% if selected_tech %}btn-info text-dark fw-bold{% endif %} rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-code-slash me-1"></i>
-                                {% if selected_tech_obj %}{{ selected_tech_obj.name }}{% else %}Стек{% endif %}
-                            </button>
-                            <ul class="dropdown-menu shadow-lg border-0" style="max-height: 280px; overflow-y: auto;">
-                                <li><a class="dropdown-item {% if not selected_tech %}active{% endif %}" href="?{% param_replace tech=None page=None %}">Все технологии</a></li>
-                                <li><hr class="dropdown-divider opacity-25"></li>
-                                {% for tech in technologies %}
-                                <li>
-                                    <a class="dropdown-item {% if selected_tech == tech.id|stringformat:'s' or selected_tech == tech.name %}active{% endif %}" href="?{% param_replace tech=tech.id page=None %}">
-                                        {{ tech.name }}
-                                    </a>
-                                </li>
-                                {% endfor %}
-                            </ul>
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <span class="services-filter-title text-uppercase letter-spacing-1 me-2">
+                                <i class="bi bi-code-slash me-1 text-info"></i>Стек:
+                            </span>
+                            <a href="?{% param_replace tech=None page=None %}" 
+                               class="btn service-cat-btn rounded-pill px-3 py-1 {% if not selected_tech %}btn-primary shadow-sm{% else %}btn-cat-inactive{% endif %}">
+                                Все технологии
+                            </a>
+                            {% for tech in technologies %}
+                            <a href="?{% param_replace tech=tech.id page=None %}" 
+                               class="btn service-cat-btn rounded-pill px-3 py-1 {% if selected_tech == tech.id|stringformat:'s' or selected_tech == tech.name %}btn-primary shadow-sm{% else %}btn-cat-inactive{% endif %}">
+                                {{ tech.name }}
+                            </a>
+                            {% endfor %}
                         </div>
                         {% endif %}
                     </div>
 
                     <!-- Блок управления сортировкой -->
                     <div class="d-flex align-items-center gap-2">
-                        <span class="services-filter-title text-uppercase letter-spacing-1 me-1">
-                            <i class="bi bi-sort-down me-1 text-warning"></i>Сортировка:
-                        </span>
                         <div class="d-flex flex-wrap gap-2" role="group">
                             <a href="?{% param_replace sort=None page=None %}" 
                                class="btn btn-sm services-sort-btn rounded-pill px-3 {% if not current_sort %}active{% endif %}" title="По порядку">

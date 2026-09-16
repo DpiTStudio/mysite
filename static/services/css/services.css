@@ -534,6 +534,8 @@ body.light-mode {
     border-radius: 20px;
     box-shadow: var(--service-card-shadow);
     transition: background 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    z-index: 10;
 }
 
 /* Заголовок секции фильтра */
@@ -607,6 +609,38 @@ body.light-mode {
 .services-dropdown-btn:hover {
     border-color: var(--service-card-hover-border) !important;
     color: var(--service-heading-color) !important;
+}
+
+/* Дропдаун-меню (чтобы не было прозрачным) */
+.services-page-container .dropdown-menu {
+    background: var(--service-dropdown-bg) !important;
+    border: 1px solid var(--service-dropdown-border) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 0.5rem 0;
+}
+
+.services-page-container .dropdown-item {
+    color: var(--service-dropdown-text) !important;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.services-page-container .dropdown-item:hover,
+.services-page-container .dropdown-item:focus {
+    background: var(--service-active-filter-bg) !important;
+    color: var(--service-active-filter-text) !important;
+}
+
+.services-page-container .dropdown-item.active {
+    background: var(--bs-primary) !important;
+    color: #ffffff !important;
+}
+
+.services-page-container .dropdown-divider {
+    border-top-color: var(--service-dropdown-border) !important;
 }
 
 /* Кнопка сортировки */
