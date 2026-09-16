@@ -58,29 +58,6 @@
                     </a>
                 </div>
                 {% endif %}
-                <!-- Разделитель (вертикальная линия) -->
-                <div class="vr mx-1 opacity-25 d-none d-lg-block" style="height: 20px; align-self: center;"></div>
-                <!-- Кнопка переключения тем (Светлая/Темная) -->
-                <button class="btn action-btn border-0 shadow-none p-2" id="themeToggleBtn" aria-label="Смена темы оформления" title="Переключить тему">
-                    <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
-                </button>
-                <!-- Глобальный поиск (вызывает модальное окно) -->
-                <button class="btn action-btn border-0 shadow-none p-2" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Поиск по сайту" title="Открыть поиск">
-                    <i class="bi bi-search fs-5"></i>
-                </button>
-                <!-- Кнопка корзины (вызывает боковую панель Offcanvas) -->
-                <a class="btn action-btn border-0 shadow-none p-2 position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина покупок" hx-boost="false">
-                    <i class="bi bi-bag-fill fs-5"></i>
-                    <!-- Индикатор количества товаров (Badge) -->
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm {% if cart|length == 0 %}d-none{% endif %}" id="header-cart-badge" style="font-size: 0.65rem; border: 2px solid var(--bs-body-bg);">
-                        {{ cart|length }}
-                        <span class="visually-hidden">товаров в корзине</span>
-                    </span>
-                </a>
-                <!-- Кнопка мобильного меню (разворачивает навигацию на смартфонах) -->
-                <button class="navbar-toggler border-0 shadow-none p-2 d-lg-none action-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mainPremiumNav" aria-controls="mainPremiumNav" aria-expanded="false" aria-label="Открыть главное меню">
-                    <i class="bi bi-list fs-3"></i>
-                </button>
             </div>
         </div>
     </div>
@@ -112,6 +89,32 @@
                     </span>
                 </div>
             </a>
+            
+            <!-- Глобальные кнопки и мобильное меню (перенесены из верхней панели) -->
+            <div class="d-flex align-items-center gap-2 order-2 ms-auto ms-lg-0 order-lg-3">
+                <!-- Кнопка переключения тем (Светлая/Темная) -->
+                <button class="btn action-btn border-0 shadow-none p-2" id="themeToggleBtn" aria-label="Смена темы оформления" title="Переключить тему">
+                    <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
+                </button>
+                <!-- Глобальный поиск (вызывает модальное окно) -->
+                <button class="btn action-btn border-0 shadow-none p-2" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Поиск по сайту" title="Открыть поиск">
+                    <i class="bi bi-search fs-5"></i>
+                </button>
+                <!-- Кнопка корзины (вызывает боковую панель Offcanvas) -->
+                <a class="btn action-btn border-0 shadow-none p-2 position-relative" href="{% url 'cart:cart_detail' %}" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Корзина покупок" hx-boost="false">
+                    <i class="bi bi-bag-fill fs-5"></i>
+                    <!-- Индикатор количества товаров (Badge) -->
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm {% if cart|length == 0 %}d-none{% endif %}" id="header-cart-badge" style="font-size: 0.65rem; border: 2px solid var(--bs-body-bg);">
+                        {{ cart|length }}
+                        <span class="visually-hidden">товаров в корзине</span>
+                    </span>
+                </a>
+                <!-- Кнопка мобильного меню (разворачивает навигацию на смартфонах) -->
+                <button class="navbar-toggler border-0 shadow-none p-2 d-lg-none action-btn ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#mainPremiumNav" aria-controls="mainPremiumNav" aria-expanded="false" aria-label="Открыть главное меню">
+                    <i class="bi bi-list fs-3"></i>
+                </button>
+            </div>
+
             <!-- Центральное сворачиваемое меню (Bootstrap collapse) -->
             <div class="collapse navbar-collapse justify-content-center order-3 order-lg-2 mt-3 mt-lg-0" id="mainPremiumNav">
                 <ul class="navbar-nav gap-lg-1">
