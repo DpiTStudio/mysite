@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row gx-5 animate-up">
     <div class="col-lg-8 animate-left">
-        <h2 class="h3 mb-4 text-white"><i class="bi bi-book text-primary me-2"></i> База знаний</h2>
+        <h2 class="h3 mb-4"><i class="bi bi-book text-primary me-2"></i> База знаний</h2>
         <div class="row g-4">
             {% for cat in categories %}
             <div class="col-md-6 mb-4">
@@ -28,8 +28,8 @@
             {% empty %}
             <div class="col-12">
                 <div class="glass-card p-5 text-center w-100">
-                    <i class="bi bi-folder-x display-4 text-white-50 mb-3 d-block"></i>
-                    <p class="text-white-50 mb-0">Категорий пока нет.</p>
+                    <i class="bi bi-folder-x display-4 mb-3 d-block"></i>
+                    <p class="mb-0">Категорий пока нет.</p>
                 </div>
             </div>
             {% endfor %}
@@ -39,7 +39,7 @@
     <div class="col-lg-4 animate-right mt-5 mt-lg-0">
         <div class="glass-card sticky-top" style="top: 100px;">
             <div class="card-header border-bottom border-secondary border-opacity-25 p-4">
-                <h3 class="h5 mb-0 text-white"><i class="bi bi-journal-text text-primary me-2"></i> Новые статьи</h3>
+                <h3 class="h5 mb-0"><i class="bi bi-journal-text text-primary me-2"></i> Новые статьи</h3>
             </div>
             <div class="card-body p-0">
                 <div class="list-group list-group-flush bg-transparent">
