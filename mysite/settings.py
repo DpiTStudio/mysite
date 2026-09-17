@@ -420,8 +420,8 @@ JAZZMIN_UI_TWEAKS = {
     "brand_colour": "navbar-indigo",
     "accent": "accent-indigo",
     "navbar": "navbar-dark",
-    "no_navbar_border": True,
-    "navbar_fixed": False,
+    "no_navbar_border": False,
+    "navbar_fixed": True,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": True,
@@ -431,7 +431,7 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": True,
     "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": True,
+    "sidebar_nav_flat_style": False,
     "theme": "darkly",
     "dark_mode_theme": None,
     "button_classes": {
@@ -444,40 +444,6 @@ JAZZMIN_UI_TWEAKS = {
     },
     "actions_sticky_top": False,
 }
-
-# JAZZMIN_UI_TWEAKS = {
-#     # Настройки внешнего вида
-#     "navbar_small_text": True,
-#     "footer_small_text": True,
-#     "body_small_text": True,
-#     "brand_small_text": True,
-#     "brand_colour": "navbar-dark",
-#     "accent": "accent-primary",
-#     "navbar": "navbar-dark",
-#     "no_navbar_border": True,
-#     "navbar_fixed": False,
-#     "layout_boxed": False,
-#     "footer_fixed": True,
-#     "sidebar_fixed": True,
-#     "sidebar": "sidebar-dark-primary",
-#     "sidebar_nav_small_text": True,
-#     "sidebar_disable_expand": True,
-#     "sidebar_nav_child_indent": False,  # Убрать отступы для компактности
-#     "sidebar_nav_compact_style": True,
-#     "sidebar_nav_legacy_style": False,  # Отключить старый стиль
-#     "sidebar_nav_flat_style": True,
-#     "theme": "darkly",
-#     "dark_mode_theme": None,
-#     "button_classes": {
-#         "primary": "btn-primary",
-#         "secondary": "btn-secondary",
-#         "info": "btn-info",
-#         "warning": "btn-warning",
-#         "danger": "btn-danger",
-#         "success": "btn-success",
-#     },
-# }
-
 # ------------------------------------------------------------
 # CSRF и безопасность
 # ------------------------------------------------------------

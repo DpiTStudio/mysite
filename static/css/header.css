@@ -355,3 +355,58 @@ body.light-mode .action-btn:hover {
         font-size: 1.1rem !important;
     }
 }
+
+/* ==========================================================================
+   СТИЛИ ДЛЯ ВИДЖЕТА GOOGLE TRANSLATE
+   ========================================================================== */
+
+/* Общий контейнер виджета */
+#google_translate_element .goog-te-gadget {
+    color: transparent !important; /* Прячем текст "Powered by Google" */
+    font-size: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Выпадающий список выбора языка */
+#google_translate_element .goog-te-combo {
+    background-color: var(--color-glass-dark);
+    color: var(--color-text-main);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.5rem;
+    font-size: var(--text-sm);
+    font-family: var(--font-family-base);
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+/* Наведение на выпадающий список */
+#google_translate_element .goog-te-combo:hover,
+#google_translate_element .goog-te-combo:focus {
+    border-color: var(--color-primary);
+    background-color: var(--color-dark-surface);
+}
+
+/* Прячем логотип Google */
+.goog-te-gadget .goog-logo-link {
+    display: none !important;
+}
+.goog-te-gadget img {
+    display: none !important;
+}
+
+/* Светлая тема для виджета */
+body.light-mode #google_translate_element .goog-te-combo {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #1e293b;
+    border-color: rgba(15, 23, 42, 0.2);
+}
+
+/* Прячем верхнюю панель Google (которая сдвигает сайт вниз) */
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+}
+body {
+    top: 0px !important;
+}

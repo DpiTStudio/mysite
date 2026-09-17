@@ -92,6 +92,15 @@
             
             <!-- Глобальные кнопки и мобильное меню (перенесены из верхней панели) -->
             <div class="d-flex align-items-center gap-2 order-2 ms-auto ms-lg-0 order-lg-3">
+                <!-- Виджет Google Translate -->
+                <div id="google_translate_element" class="d-none d-sm-block me-1"></div>
+                <script type="text/javascript">
+                function googleTranslateElementInit() {
+                  new google.translate.TranslateElement({pageLanguage: 'ru', includedLanguages: 'hy,ru,en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                }
+                </script>
+                <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                
                 <!-- Кнопка переключения тем (Светлая/Темная) -->
                 <button class="btn action-btn border-0 shadow-none p-2" id="themeToggleBtn" aria-label="Смена темы оформления" title="Переключить тему">
                     <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
