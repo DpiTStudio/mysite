@@ -628,6 +628,50 @@ select option,
     padding: 0 0.5rem;
 }
 
+/* Светлая тема (Light Mode) для Хлебных крошек */
+[data-theme="light"] .breadcrumb-fon,
+[data-bs-theme="light"] .breadcrumb-fon,
+body.light-mode .breadcrumb-fon {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .breadcrumb-item a, 
+[data-theme="light"] .hero-breadcrumbs .breadcrumb-item a,
+[data-bs-theme="light"] .breadcrumb-item a,
+[data-bs-theme="light"] .hero-breadcrumbs .breadcrumb-item a,
+body.light-mode .breadcrumb-item a,
+body.light-mode .hero-breadcrumbs .breadcrumb-item a {
+    color: rgba(15, 23, 42, 0.85) !important;
+}
+
+[data-theme="light"] .breadcrumb-item a:hover, 
+[data-theme="light"] .hero-breadcrumbs .breadcrumb-item a:hover,
+[data-bs-theme="light"] .breadcrumb-item a:hover,
+[data-bs-theme="light"] .hero-breadcrumbs .breadcrumb-item a:hover,
+body.light-mode .breadcrumb-item a:hover,
+body.light-mode .hero-breadcrumbs .breadcrumb-item a:hover {
+    color: var(--color-primary) !important;
+    text-shadow: none;
+}
+
+[data-theme="light"] .breadcrumb-item.active,
+[data-theme="light"] .breadcrumb-item.active span,
+[data-bs-theme="light"] .breadcrumb-item.active,
+[data-bs-theme="light"] .breadcrumb-item.active span,
+body.light-mode .breadcrumb-item.active,
+body.light-mode .breadcrumb-item.active span {
+    color: #0f172a !important;
+    text-shadow: none;
+}
+
+[data-theme="light"] .breadcrumb-item + .breadcrumb-item::before,
+[data-bs-theme="light"] .breadcrumb-item + .breadcrumb-item::before,
+body.light-mode .breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(15, 23, 42, 0.45);
+}
+
 /* ==========================================================================
    BENTO GRID SYSTEM (ПРОДВИНУТЫЕ СЕТКИ КАРТОЧЕК)
    ========================================================================== */
