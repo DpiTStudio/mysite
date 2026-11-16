@@ -214,6 +214,12 @@ if "mysql" in DATABASES["default"].get("ENGINE", ""):
     if socket_path:
         DATABASES["default"]["OPTIONS"]["unix_socket"] = socket_path
 
+# Отключение предупреждений системных проверок Django
+# models.W036: MariaDB does not support unique constraints with conditions (allauth EmailAddress)
+SILENCED_SYSTEM_CHECKS = [
+    "models.W036",
+]
+
 LANGUAGE_CODE = "ru"  # Основной язык
 TIME_ZONE = "Europe/Moscow"  # Московское время
 USE_I18N = True  # Включить интернационализацию
