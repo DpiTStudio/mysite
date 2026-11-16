@@ -1,5 +1,5 @@
 """
-Конфигурация URL для проекта mysite.
+Конфигурация URL для проекта app.
 
 Список `urlpatterns` направляет URL-адреса в представления (views). Дополнительную информацию можно найти здесь:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/

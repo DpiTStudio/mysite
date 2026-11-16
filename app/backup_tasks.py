@@ -7,7 +7,7 @@ Celery-задачи для автоматического резервного �
 - cleanup_old_backups: удаление старых бэкапов
 
 Настройка расписания Celery Beat:
-    см. mysite/settings.py -> CELERY_BEAT_SCHEDULE
+    см. app/settings.py -> CELERY_BEAT_SCHEDULE
 """
 
 import os
@@ -95,6 +95,38 @@ def backup_database(self):
             size_mb = backup_path.stat().st_size / 1024 / 1024
             logger.info(f'[Backup] PostgreSQL бэкап создан: {backup_filename} ({size_mb:.2f} MB)')
             return str(backup_path)
+
+        elif 'mysql' in engine:
+            import subprocess
+            backup_filename = f'db_mysql_{timestamp}.sql'
+            backup_path = DB_BACKUP_DIR / backup_filename
+
+            cmd = [
+                'mysqldump',
+                '-h', db_config.get('HOST', '127.0.0.1'),
+                '-P', str(db_config.get('PORT', 3306)),
+                '-u', db_config.get('USER', 'root'),
+            ]
+            if db_config.get('PASSWORD'):
+                cmd.append(f"-p{db_config['PASSWORD']}")
+            cmd.extend([
+                '--default-character-set=utf8mb4',
+                '--single-transaction',
+                '--quick',
+                db_config.get('NAME', ''),
+            ])
+            try:
+                with open(backup_path, 'w', encoding='utf-8') as out:
+                    result = subprocess.run(cmd, stdout=out, stderr=subprocess.PIPE, text=True, timeout=120)
+                if result.returncode != 0:
+                    logger.error(f'[Backup] mysqldump ошибка: {result.stderr}')
+                    raise Exception(f'mysqldump failed: {result.stderr}')
+                size_mb = backup_path.stat().st_size / 1024 / 1024
+                logger.info(f'[Backup] MySQL бэкап создан: {backup_filename} ({size_mb:.2f} MB)')
+                return str(backup_path)
+            except FileNotFoundError:
+                logger.warning('[Backup] Утилита mysqldump не найдена в PATH, бэкап пропущен')
+                return None
         
         else:
             logger.warning(f'[Backup] Неподдерживаемый движок БД: {engine}')

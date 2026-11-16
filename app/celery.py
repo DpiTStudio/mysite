@@ -5,9 +5,9 @@ import os
 from celery import Celery
 
 # Устанавливаем переменную окружения для настроек Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
 
-app = Celery('mysite')
+app = Celery('app')
 
 # Читаем конфигурацию из настроек Django (ключи с префиксом CELERY_)
 app.config_from_object('django.conf:settings', namespace='CELERY')

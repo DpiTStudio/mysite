@@ -33,8 +33,6 @@ domains = ["dpit-cms.ru:4234", "www.dpit-cms.ru:4234"]
 hosts = [
     "127.0.0.1:4234",
     "localhost:4234",
-    "46.149.71.34:4234",
-    "192.168.0.4:4234",
 ] + domains
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
@@ -139,7 +137,7 @@ if HAS_WHITENOISE:  # Если WhiteNoise установлен
 # ------------------------------------------------------------
 # URL‑конфигурация и шаблоны
 # ------------------------------------------------------------
-ROOT_URLCONF = "mysite.urls"  # Главная страница
+ROOT_URLCONF = "app.urls"  # Главная страница
 
 TEMPLATES = [
     {
@@ -167,7 +165,7 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.debug",  # Отладка
                 "django.template.context_processors.request",  # Запрос
-                "mysite.context_processors.season_theme",  # Тема
+                "app.context_processors.season_theme",  # Тема
                 "django.contrib.auth.context_processors.auth",  # Аутентификация
                 "django.contrib.messages.context_processors.messages",  # Сообщения
                 "main.context_processors.main_context",  # Главная страница
@@ -181,18 +179,34 @@ TEMPLATES = [
 ]
 
 # Главная страница
-WSGI_APPLICATION = "mysite.wsgi.application"
+WSGI_APPLICATION = "app.wsgi.application"
 
 # ------------------------------------------------------------
 # База данных
 # ------------------------------------------------------------
-DATABASES = {
-    # Основная база данных
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",  # SQLite
-        "NAME": BASE_DIR / "db.sqlite3",  # Путь к базе данных
-    },
-}
+if env.str("DATABASE_URL", default=""):
+    DATABASES = {
+        "default": env.db("DATABASE_URL")
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": env.str("DB_ENGINE", default="django.db.backends.sqlite3"),
+            "NAME": env.str("DB_NAME", default=str(BASE_DIR / "db.sqlite3")),
+            "USER": env.str("DB_USER", default=""),
+            "PASSWORD": env.str("DB_PASSWORD", default=""),
+            "HOST": env.str("DB_HOST", default=""),
+            "PORT": env.str("DB_PORT", default=""),
+        }
+    }
+
+# Опции для MySQL
+if "mysql" in DATABASES["default"].get("ENGINE", ""):
+    DATABASES["default"].setdefault("OPTIONS", {})
+    DATABASES["default"]["OPTIONS"].update({
+        "charset": "utf8mb4",
+        "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+    })
 
 LANGUAGE_CODE = "ru"  # Основной язык
 TIME_ZONE = "Europe/Moscow"  # Московское время
@@ -570,7 +584,7 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # Autodiscover задачи в backup_tasks и других модулях
 CELERY_IMPORTS = [
-    "mysite.backup_tasks",
+    "app.backup_tasks",
 ]
 
 # Расписание Celery Beat (периодические задачи)

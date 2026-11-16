@@ -16,7 +16,7 @@
 - `.gitignore` — Список файлов и папок, игнорируемых системой контроля версий Git.
 - `db.sqlite3` — База данных SQLite (используется для разработки).
 
-### ⚙️ Ядро системы (`mysite/mysite/`)
+### ⚙️ Ядро системы (`mysite/app/`)
 Центральная папка с настройками всего проекта:
 - `settings.py` — Главный файл конфигурации (установленные приложения, настройки безопасности, БД, Celery).
 - `urls.py` — Корневой файл маршрутизации, объединяющий пути всех приложений.
@@ -82,8 +82,8 @@
 
 5. **Фоновые задачи (Celery)**:
    ```bash
-   celery -A mysite worker --loglevel=info
-   celery -A mysite beat --loglevel=info
+   celery -A app worker --loglevel=info
+   celery -A app beat --loglevel=info
    ```
 
 ---
