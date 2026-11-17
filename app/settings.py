@@ -51,42 +51,6 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
 # ------------------------------------------------------------
 # Приложения (INSTALLED_APPS)
 # ------------------------------------------------------------
-# INSTALLED_APPS = [
-#     "jazzmin",
-#     # Основные приложения
-#     "django.contrib.admin", # Админ панель
-#     "django.contrib.auth", # Аутентификация
-#     "django.contrib.contenttypes", # Типы контента
-#     "django.contrib.sessions", # Сессии
-#     "django.contrib.messages", # Сообщения
-#     "django.contrib.staticfiles", # Статические файлы
-#     "django.contrib.sitemaps",  # Для sitemap.xml
-#     "django.contrib.sites",     # Нужно для allauth
-#     "captcha",  # Капча
-
-#     # Allauth
-#     "allauth",
-#     "allauth.account",
-#     "allauth.socialaccount",
-#     "allauth.socialaccount.providers.google",
-#     "allauth.socialaccount.providers.github",
-
-
-#     # Мои приложения
-#     "main.apps.MainConfig", # Главная страница
-#     "news.apps.NewsConfig", # Новости
-#     "portfolio.apps.PortfolioConfig", # Портфолио
-#     "reviews.apps.ReviewsConfig", # Отзывы
-#     "logfiles.apps.LogfilesConfig", # Логи
-#     "accounts.apps.AccountsConfig", # Аккаунты
-#     "tickets.apps.TicketsConfig", # Тикеты
-#     "mail.apps.MailConfig", # Почта
-#     "services.apps.ServicesConfig", # Услуги
-#     "cart.apps.CartConfig", # Корзина
-#     "favorites.apps.FavoritesConfig", # Избранное
-#     "knowledge_base.apps.KnowledgeBaseConfig", # База знаний
-#     "tinymce", # Редактор
-# ]
 INSTALLED_APPS = [
     # Внешний вид админки (должен быть первым)
     "jazzmin",
@@ -210,6 +174,7 @@ DB_PORT = os.environ.get("DB_PORT", "3306")
 # На хостинге NetAngels MySQL работает через unix-сокет.
 # На Windows (локальная разработка) AF_UNIX недоступен — используем TCP.
 import platform as _platform
+
 _IS_WINDOWS = _platform.system() == "Windows"
 
 DB_SOCKET = None
