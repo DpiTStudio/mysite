@@ -16,9 +16,17 @@ import environ  # django-environ для чтения .env
 # Путь к корню проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Инициализация django-environ: читаем .env из корня проекта (рядом с manage.py)
+# Инициализация django-environ
 env = environ.Env()
-environ.Env.read_env(BASE_DIR / ".env")
+# Читаем .env файл из корня проекта (рядом с manage.py)
+env.read_env(str(BASE_DIR / ".env"))
+
+# Путь к директории NetAngels (для продакшн) может быть задан в .env
+NETANGELS_DIR = env.path("NETANGELS_DIR", default=Path("/home/c504113/dpit-cms.ru"))
+# Флаги окружения для различения серверных и продакшен настроек
+IS_SERVER = env.bool("IS_SERVER", default=False)
+IS_PRODUCTION = env.bool("IS_PRODUCTION", default=False)
+
 
 # ------------------------------------------------------------
 # Безопасность
@@ -27,6 +35,9 @@ environ.Env.read_env(BASE_DIR / ".env")
 SECRET_KEY = env.str("SECRET_KEY")
 # Режим отладки – НЕ включать в продакшн! (по умолчанию False — безопасно)
 DEBUG = env.bool("DEBUG")
+# Отключаем отладку в продакшене
+if IS_PRODUCTION:
+    DEBUG = False
 
 # Доступные хосты: базовые всегда включены + дополнительные из .env
 domains = ["dpit-cms.ru:4234", "www.dpit-cms.ru:4234"]
@@ -182,43 +193,57 @@ TEMPLATES = [
 WSGI_APPLICATION = "app.wsgi.application"
 
 # ------------------------------------------------------------
-# База данных
+# База данных (локальная и продакшн)
 # ------------------------------------------------------------
-if env.str("DATABASE_URL", default=""):
-    DATABASES = {"default": env.db("DATABASE_URL")}
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": env.str("DB_ENGINE", default="django.db.backends.sqlite3"),
-            "NAME": env.str("DB_NAME", default=str(BASE_DIR / "db.sqlite3")),
-            "USER": env.str("DB_USER", default=""),
-            "PASSWORD": env.str("DB_PASSWORD", default=""),
-            "HOST": env.str("DB_HOST", default=""),
-            "PORT": env.str("DB_PORT", default=""),
-        }
-    }
 
-# Опции для MySQL
-if "mysql" in DATABASES["default"].get("ENGINE", ""):
-    DATABASES["default"].setdefault("OPTIONS", {})
-    DATABASES["default"]["OPTIONS"].update(
-        {
+# База данных
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
+DB_NAME = os.environ.get("DB_NAME") or os.environ.get("DBNAME") or "c504113_dpit_cms_ru"
+DB_USER = os.environ.get("DB_USER") or os.environ.get("DBUSER") or "c504113_dpit_cms_ru"
+DB_PASSWORD = (
+    os.environ.get("DB_PASSWORD") or os.environ.get("DBPASS") or "7u7CPzCm3oCHRv_"
+)
+DB_HOST = os.environ.get("DB_HOST") or os.environ.get("DBHOST")
+DB_PORT = os.environ.get("DB_PORT", "3306")
+
+# На хостинге NetAngels MySQL работает через unix-сокет.
+# На Windows (локальная разработка) AF_UNIX недоступен — используем TCP.
+import platform as _platform
+_IS_WINDOWS = _platform.system() == "Windows"
+
+DB_SOCKET = None
+if not _IS_WINDOWS:
+    # Проверяем unix-сокет только на Linux/macOS (хостинг, WSL)
+    _socket_from_env = os.environ.get("MYSQL_SOCKET")
+    if _socket_from_env:
+        DB_SOCKET = _socket_from_env
+    else:
+        for candidate in ["/run/mysqld/mysqld.sock", "/var/run/mysqld/mysqld.sock"]:
+            if Path(candidate).exists():
+                DB_SOCKET = candidate
+                break
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        # На Linux/хостинге — unix-сокет, на Windows — TCP
+        "HOST": DB_SOCKET if DB_SOCKET else (DB_HOST or "127.0.0.1"),
+        "PORT": "" if DB_SOCKET else DB_PORT,
+        "CONN_MAX_AGE": 60,
+        "OPTIONS": {
             "charset": "utf8mb4",
             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
-    )
-    # Поддержка unix-сокета (например, на хостинге NetAngels /run/mysqld/mysqld.sock)
-    socket_path = env.str("MYSQL_SOCKET", default=os.environ.get("MYSQL_SOCKET", ""))
-    if not socket_path and os.path.exists("/run/mysqld/mysqld.sock"):
-        socket_path = "/run/mysqld/mysqld.sock"
-    if socket_path:
-        DATABASES["default"]["OPTIONS"]["unix_socket"] = socket_path
+        },
+    }
+}
 
 # Отключение предупреждений системных проверок Django
 # models.W036: MariaDB does not support unique constraints with conditions (allauth EmailAddress)
-SILENCED_SYSTEM_CHECKS = [
-    "models.W036",
-]
+SILENCED_SYSTEM_CHECKS = ["models.W036"]
 
 LANGUAGE_CODE = "ru"  # Основной язык
 TIME_ZONE = "Europe/Moscow"  # Московское время
@@ -236,6 +261,11 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 # ------------------------------------------------------------
 # Статические и медиа‑файлы
 # ------------------------------------------------------------
+# URL-префикс для статических файлов (обязателен, иначе Django падает)
+STATIC_URL = "/static/"
+# URL-префикс для медиа-файлов (загружаемые пользователями файлы)
+MEDIA_URL = "/media/"
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -245,8 +275,8 @@ if IS_SERVER:
     STATIC_ROOT = NETANGELS_DIR / "www" / "static"
     MEDIA_ROOT = NETANGELS_DIR / "www" / "media"
 elif IS_PRODUCTION:
-    STATIC_ROOT = Path("/home/c504113/dpitscms.ru/www/static")
-    MEDIA_ROOT = Path("/home/c504113/dpitscms.ru/www/media")
+    STATIC_ROOT = Path("/home/c504113/dpit-cms.ru/www/static")
+    MEDIA_ROOT = Path("/home/c504113/dpit-cms.ru/www/media")
 else:
     # Development paths (локально)
     STATIC_ROOT = BASE_DIR / "staticfiles"
