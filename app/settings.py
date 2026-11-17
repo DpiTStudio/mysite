@@ -185,9 +185,7 @@ WSGI_APPLICATION = "app.wsgi.application"
 # База данных
 # ------------------------------------------------------------
 if env.str("DATABASE_URL", default=""):
-    DATABASES = {
-        "default": env.db("DATABASE_URL")
-    }
+    DATABASES = {"default": env.db("DATABASE_URL")}
 else:
     DATABASES = {
         "default": {
@@ -203,10 +201,12 @@ else:
 # Опции для MySQL
 if "mysql" in DATABASES["default"].get("ENGINE", ""):
     DATABASES["default"].setdefault("OPTIONS", {})
-    DATABASES["default"]["OPTIONS"].update({
-        "charset": "utf8mb4",
-        "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-    })
+    DATABASES["default"]["OPTIONS"].update(
+        {
+            "charset": "utf8mb4",
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
+    )
     # Поддержка unix-сокета (например, на хостинге NetAngels /run/mysqld/mysqld.sock)
     socket_path = env.str("MYSQL_SOCKET", default=os.environ.get("MYSQL_SOCKET", ""))
     if not socket_path and os.path.exists("/run/mysqld/mysqld.sock"):
@@ -236,12 +236,21 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 # ------------------------------------------------------------
 # Статические и медиа‑файлы
 # ------------------------------------------------------------
-STATIC_URL = "/static/"  # URL для статических файлов
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # Путь к статическим файлам
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Путь к статическим файлам
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
-MEDIA_URL = "/media/"  # URL для медиа‑файлов
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")  # Путь к медиа‑файлам
+if IS_SERVER:
+    # Production paths на хостинге NetAngels
+    STATIC_ROOT = NETANGELS_DIR / "www" / "static"
+    MEDIA_ROOT = NETANGELS_DIR / "www" / "media"
+elif IS_PRODUCTION:
+    STATIC_ROOT = Path("/home/c504113/dpitscms.ru/www/static")
+    MEDIA_ROOT = Path("/home/c504113/dpitscms.ru/www/media")
+else:
+    # Development paths (локально)
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    MEDIA_ROOT = BASE_DIR / "media"
 
 # Хранилища (по умолчанию и для staticfiles)
 STORAGES = {
