@@ -8,45 +8,74 @@
 # Библиотеки
 # ------------------------------------------------------------
 import os  # Операционная система
+import platform  # Определение ОС
 from pathlib import Path  # Пути к файлам
 import importlib.util  # Импорт модулей
 from celery.schedules import crontab  # Расписание Celery Beat
-import environ  # django-environ для чтения .env
 
 # Путь к корню проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Инициализация django-environ
-env = environ.Env()
-# Читаем .env файл из корня проекта (рядом с manage.py)
-env.read_env(str(BASE_DIR / ".env"))
+# Загружаем .env вручную (без django-environ), чтобы os.environ.get() работал
+_env_file = BASE_DIR / ".env"
+if _env_file.exists():
+    with open(_env_file, encoding="utf-8") as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _key, _, _val = _line.partition("=")
+                # Снимаем кавычки, если они есть
+                _val = _val.strip().strip('"').strip("'")
+                os.environ.setdefault(_key.strip(), _val)
 
-# Путь к директории NetAngels (для продакшн) может быть задан в .env
-NETANGELS_DIR = env.path("NETANGELS_DIR", default=Path("/home/c504113/dpit-cms.ru"))
-# Флаги окружения для различения серверных и продакшен настроек
-IS_SERVER = env.bool("IS_SERVER", default=False)
-IS_PRODUCTION = env.bool("IS_PRODUCTION", default=False)
+
+# ------------------------------------------------------------
+# Определение окружения (сервер / локалка)
+# ------------------------------------------------------------
+# Путь к директории на хостинге NetAngels — если существует, значит мы на сервере
+NETANGELS_DIR = Path(os.environ.get("NETANGELS_DIR", "/home/c504113/dpit-cms.ru"))
+IS_SERVER = NETANGELS_DIR.exists()
+
+# ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: не запускайте production с включённым DEBUG!
+_debug_env = os.environ.get("DJANGO_DEBUG") or os.environ.get("DEBUG")
+if _debug_env is not None:
+    DEBUG = _debug_env.lower() in ("true", "1", "yes")
+else:
+    DEBUG = not IS_SERVER  # True локально, False на сервере
+
+IS_PRODUCTION = IS_SERVER or not DEBUG
 
 
 # ------------------------------------------------------------
 # Безопасность
 # ------------------------------------------------------------
-# Секретный ключ (обязательно в .env, fallback только для тестов)
-SECRET_KEY = env.str("SECRET_KEY")
-# Режим отладки – НЕ включать в продакшн! (по умолчанию False — безопасно)
-DEBUG = env.bool("DEBUG")
-# Отключаем отладку в продакшене
-if IS_PRODUCTION:
-    DEBUG = False
+# ПРЕДУПРЕЖДЕНИЕ О БЕЗОПАСНОСТИ: храните секретный ключ в тайне!
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    os.environ.get(
+        "DJANGO_SECRET_KEY",
+        # Fallback только для локальной разработки — НИКОГДА не использовать в продакшне
+        "django-insecure-8*2@x&p^+-j7s=e!k_v$i3(4l%z)t1w5y#9_q^0r+2m",
+    ),
+)
 
-# Доступные хосты: базовые всегда включены + дополнительные из .env
-domains = ["dpit-cms.ru:4234", "www.dpit-cms.ru:4234"]
-hosts = [
+# Доступные хосты — базовые + из переменной окружения ALLOWED_HOSTS
+_default_hosts = [
+    "127.0.0.1",
     "127.0.0.1:4234",
+    "localhost",
     "localhost:4234",
-] + domains
-
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=hosts)
+    "dpit-cms.ru",
+    "dpit-cms.ru:4234",
+    "www.dpit-cms.ru",
+    "www.dpit-cms.ru:4234",
+]
+_hosts_env = os.environ.get("ALLOWED_HOSTS", "")
+ALLOWED_HOSTS = (
+    [h.strip() for h in _hosts_env.split(",") if h.strip()]
+    if _hosts_env
+    else _default_hosts
+)
 
 # ------------------------------------------------------------
 # Приложения (INSTALLED_APPS)
@@ -159,34 +188,28 @@ WSGI_APPLICATION = "app.wsgi.application"
 # ------------------------------------------------------------
 # База данных (локальная и продакшн)
 # ------------------------------------------------------------
-
-# База данных
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DB_NAME = os.environ.get("DB_NAME") or os.environ.get("DBNAME") or "c504113_dpit_cms_ru"
-DB_USER = os.environ.get("DB_USER") or os.environ.get("DBUSER") or "c504113_dpit_cms_ru"
-DB_PASSWORD = (
-    os.environ.get("DB_PASSWORD") or os.environ.get("DBPASS") or "7u7CPzCm3oCHRv_"
-)
-DB_HOST = os.environ.get("DB_HOST") or os.environ.get("DBHOST")
+DB_NAME = os.environ.get("DB_NAME") or "c504113_dpit_cms_ru"
+DB_USER = os.environ.get("DB_USER") or "c504113_dpit_cms_ru"
+DB_PASSWORD = os.environ.get("DB_PASSWORD") or "7u7CPzCm3oCHRv_"
+DB_HOST = os.environ.get("DB_HOST", "127.0.0.1")
 DB_PORT = os.environ.get("DB_PORT", "3306")
 
 # На хостинге NetAngels MySQL работает через unix-сокет.
-# На Windows (локальная разработка) AF_UNIX недоступен — используем TCP.
-import platform as _platform
-
-_IS_WINDOWS = _platform.system() == "Windows"
+# На Windows (локальная разработка) socket.AF_UNIX недоступен — используем TCP.
+_IS_WINDOWS = platform.system() == "Windows"
 
 DB_SOCKET = None
 if not _IS_WINDOWS:
     # Проверяем unix-сокет только на Linux/macOS (хостинг, WSL)
-    _socket_from_env = os.environ.get("MYSQL_SOCKET")
-    if _socket_from_env:
-        DB_SOCKET = _socket_from_env
+    _socket_env = os.environ.get("MYSQL_SOCKET")
+    if _socket_env:
+        DB_SOCKET = _socket_env
     else:
-        for candidate in ["/run/mysqld/mysqld.sock", "/var/run/mysqld/mysqld.sock"]:
-            if Path(candidate).exists():
-                DB_SOCKET = candidate
+        for _candidate in ["/run/mysqld/mysqld.sock", "/var/run/mysqld/mysqld.sock"]:
+            if Path(_candidate).exists():
+                DB_SOCKET = _candidate
                 break
 
 DATABASES = {
@@ -196,7 +219,7 @@ DATABASES = {
         "USER": DB_USER,
         "PASSWORD": DB_PASSWORD,
         # На Linux/хостинге — unix-сокет, на Windows — TCP
-        "HOST": DB_SOCKET if DB_SOCKET else (DB_HOST or "127.0.0.1"),
+        "HOST": DB_SOCKET if DB_SOCKET else DB_HOST,
         "PORT": "" if DB_SOCKET else DB_PORT,
         "CONN_MAX_AGE": 60,
         "OPTIONS": {
@@ -239,11 +262,8 @@ if IS_SERVER:
     # Production paths на хостинге NetAngels
     STATIC_ROOT = NETANGELS_DIR / "www" / "static"
     MEDIA_ROOT = NETANGELS_DIR / "www" / "media"
-elif IS_PRODUCTION:
-    STATIC_ROOT = Path("/home/c504113/dpit-cms.ru/www/static")
-    MEDIA_ROOT = Path("/home/c504113/dpit-cms.ru/www/media")
 else:
-    # Development paths (локально)
+    # Development paths (локально) или нестандартный продакшн
     STATIC_ROOT = BASE_DIR / "staticfiles"
     MEDIA_ROOT = BASE_DIR / "media"
 
@@ -568,25 +588,25 @@ if not logs_dir.exists():
     os.makedirs(logs_dir, exist_ok=True)
 
 # ------------------------------------------------------------
-# Настройки почты (читаются из .env)
+# Настройки почты (читаются из переменных окружения)
 # ------------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env.str("EMAIL_HOST", default="smtp.timeweb.ru")
-EMAIL_PORT = env.int("EMAIL_PORT", default=465)
-EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=True)
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=False)
-EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.timeweb.ru")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "465"))
+EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "True").lower() in ("true", "1", "yes")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "False").lower() in ("true", "1", "yes")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
 # ------------------------------------------------------------
-# Настройки IMAP (читаются из .env)
+# Настройки IMAP (читаются из переменных окружения)
 # ------------------------------------------------------------
-IMAP_HOST = env.str("IMAP_HOST", default="imap.timeweb.ru")
-IMAP_PORT = env.int("IMAP_PORT", default=993)
-IMAP_USER = env.str("IMAP_USER", default=EMAIL_HOST_USER)
-IMAP_PASSWORD = env.str("IMAP_PASSWORD", default=EMAIL_HOST_PASSWORD)
+IMAP_HOST = os.environ.get("IMAP_HOST", "imap.timeweb.ru")
+IMAP_PORT = int(os.environ.get("IMAP_PORT", "993"))
+IMAP_USER = os.environ.get("IMAP_USER", EMAIL_HOST_USER)
+IMAP_PASSWORD = os.environ.get("IMAP_PASSWORD", EMAIL_HOST_PASSWORD)
 
 # ------------------------------------------------------------
 # Celery
